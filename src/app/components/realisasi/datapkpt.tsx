@@ -142,7 +142,10 @@ const MapDataPkpt = () => {
             <h1>{item.jenis_pengawasan}</h1>
             <p>{item.tim}</p>
             <hr className="mb-3" />
-            <ButtonLinkComponent Text="Input Realisasi" linkTo="#" />
+            <ButtonLinkComponent
+              Text="Input Realisasi"
+              linkTo="/perencanaan/realisasipkpt/inputrealisasi/1"
+            />
           </CardComponents>
         ))}
       </section>

@@ -1,15 +1,12 @@
 import DailyActivity from '@/app/components/dashboard/DailyActivity';
-import {
-  CardComponents,
-  CardHeaderContent,
-} from '@/app/components/Global/Card';
+import { CardComponents } from '@/app/components/Global/Card';
 import { InputFiledComponent } from '@/app/components/Global/Input';
 import { NotofikasiEdit } from '@/app/components/Global/Notif';
 
 // Cara 1: Menggunakan props params
 interface PageProps {
   params: {
-    id_pkpt: string;
+    id_pkpt: number;
   };
 }
 
@@ -20,26 +17,26 @@ const ViewPkptPage = ({ params }: PageProps) => {
 
   const dummyDummyNOtifikasi = [
     {
-      username:"reza",
-      date:"12-11-2024 - 14.50 wib"
+      username: 'reza',
+      date: '12-11-2024 - 14.50 wib',
     },
     {
-      username:"reza",
-      date:"12-11-2024 - 14.50 wib"
+      username: 'reza',
+      date: '12-11-2024 - 14.50 wib',
     },
     {
-      username:"reza",
-      date:"12-11-2024 - 14.50 wib"
+      username: 'reza',
+      date: '12-11-2024 - 14.50 wib',
     },
     {
-      username:"reza",
-      date:"12-11-2024 - 14.50 wib"
+      username: 'reza',
+      date: '12-11-2024 - 14.50 wib',
     },
     {
-      username:"reza",
-      date:"12-11-2024 - 14.50 wib"
+      username: 'reza',
+      date: '12-11-2024 - 14.50 wib',
     },
-  ]
+  ];
   return (
     <div className="space-y-3">
       <section className="flex justify-between items-center">

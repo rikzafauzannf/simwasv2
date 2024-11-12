@@ -22,9 +22,7 @@ export const NotofikasiEdit: React.FC<Props> = ({ data }) => {
               <div className="w-[60px] h-[60px] rounded-full shadow"></div>
               <div>
                 <h3>{items.username}</h3>
-                <small className="text-end text-slate-800">
-                  {items.date}
-                </small>
+                <small className="text-end text-slate-800">{items.date}</small>
               </div>
             </div>
           </div>

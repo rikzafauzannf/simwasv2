@@ -15,7 +15,9 @@ interface Props {
 const CollapseComponents: React.FC<Props> = ({ children, title }) => {
   return (
     <Disclosure>
-      <DisclosureButton className="py-2">{title}</DisclosureButton>
+      <DisclosureButton className="py-2 px-4 text-white bg-primary hover:bg-lightprimary rounded-md shadow-md font-semibold">
+        {title}
+      </DisclosureButton>
       <DisclosurePanel className="text-gray-500">{children}</DisclosurePanel>
     </Disclosure>
   );
