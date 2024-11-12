@@ -38,10 +38,10 @@ const TablePKPT = () => {
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={'#'}
+            href={'/perencanaan/pkpt/1'}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
-            <FaEye /> 
+            <FaEye />
           </Link>
           <Link
             href={'#'}

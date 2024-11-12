@@ -1,15 +1,32 @@
-'use client';
-import React from 'react';
-import { CardComponents } from '../../Global/Card';
-import { InputFiledComponent } from '../../Global/Input';
-import { ButtonType } from '../../Global/Button';
+import { CardComponents } from '@/app/components/Global/Card'
+import { InputFiledComponent } from '@/app/components/Global/Input'
 
-const InputPKPT = () => {
+// Cara 1: Menggunakan props params
+interface PageProps {
+  params: {
+    id_pkpt: string
+  }
+}
+
+const ViewPkptPage = ({ params }: PageProps) => {
+  // Sekarang kita bisa menggunakan params.id_pkpt
+  console.log('ID PKPT:', params.id_pkpt)
+    const id_pkpt = params.id_pkpt;
   return (
-    <form className="space-y-4">
-      {/* persiapan data */}
-      <CardComponents>
-        <h3>Data Non-PKPT</h3>
+    <div className='space-y-3'>
+    
+    <section className='flex justify-between items-center'>
+    <h3>Lihat PKPT ({id_pkpt})</h3>
+    <div className='space-x-3'>
+        <button className='py-1 px-2 bg-slate-300 rounded-md shadow-md'>2</button>
+        <button className='py-1 px-2 bg-slate-300 rounded-md shadow-md'>2</button>
+    </div>
+    </section>
+    
+    {/* persiapan data */}
+    <section className='grid grid-cols-3 gap-3'>
+    <div className='col-span-2 space-y-3'>
+    <CardComponents>
         <section className="grid md:grid-cols-2 w-full gap-3">
           <InputFiledComponent
             label="Jenis Pengawasan"
@@ -61,6 +78,13 @@ const InputPKPT = () => {
           />
         </section>
       </CardComponents>
+    </div>
+      {/* notif */}
+      <CardComponents>
+        <p>notif</p>
+      </CardComponents>
+    </section>
+      
       {/* Hari Penugasan */}
       <CardComponents>
         <h3>Hari Penugasan</h3>
@@ -146,13 +170,8 @@ const InputPKPT = () => {
           </div>
         </section>
       </CardComponents>
-      {/* button action */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <ButtonType Text="Ulangi" type="reset" />
-        <ButtonType Text="Simpan Data" type="submit" />
-      </section>
-    </form>
-  );
-};
+    </div>
+  )
+}
 
-export default InputPKPT;
+export default ViewPkptPage

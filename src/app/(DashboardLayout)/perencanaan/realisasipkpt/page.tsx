@@ -11,7 +11,7 @@ const RealisasiPKPTPage = () => {
       </div>
 
       <CollapseComponents title="Input Data Realisasi">
-        <MapDataPkpt/>
+        <MapDataPkpt />
       </CollapseComponents>
     </>
   );
