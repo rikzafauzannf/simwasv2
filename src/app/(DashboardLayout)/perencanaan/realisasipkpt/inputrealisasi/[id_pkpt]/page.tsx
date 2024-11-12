@@ -1,7 +1,5 @@
-import { CardComponents } from '@/app/components/Global/Card';
-import CollapseComponents from '@/app/components/Global/Collapse';
-import TablePKPT from '@/app/components/perencanaan/table/TablePKPT';
 import Collapsedatapkpt from '@/app/components/realisasi/collapsedatapkpt';
+import InputRealisasi from '@/app/components/realisasi/InputRealisasi';
 import React from 'react';
 
 interface PageProps {
@@ -18,6 +16,8 @@ const RealisasiPKPTPage = ({ params }: PageProps) => {
       <h3>Input Realisasi ({id_pkpt})</h3>
       {/* cek data pkpt */}
       <Collapsedatapkpt id={1} />
+      {/* input field */}
+      <InputRealisasi id={1} />
     </div>
   );
 };
