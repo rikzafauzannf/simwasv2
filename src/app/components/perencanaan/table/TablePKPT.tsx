@@ -44,7 +44,7 @@ const TablePKPT = () => {
             <FaEye />
           </Link>
           <Link
-            href={'#'}
+            href={'/perencanaan/realisasipkpt/inputrealisasi'}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             realisasi

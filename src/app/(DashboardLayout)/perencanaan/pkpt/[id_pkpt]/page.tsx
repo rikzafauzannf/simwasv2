@@ -1,3 +1,4 @@
+import DailyActivity from '@/app/components/dashboard/DailyActivity';
 import {
   CardComponents,
   CardHeaderContent,
@@ -111,7 +112,8 @@ const ViewPkptPage = ({ params }: PageProps) => {
           </CardComponents>
         </div>
         {/* notif */}
-        <NotofikasiEdit data={dummyDummyNOtifikasi}/>
+        {/* <NotofikasiEdit data={dummyDummyNOtifikasi}/> */}
+        <DailyActivity />
       </section>
 
       {/* Hari Penugasan */}

@@ -136,7 +136,7 @@ const MapDataPkpt = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <section className="grid grid-cols-4 gap-3">
+      <section className="grid md:grid-cols-4 gap-3">
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
             <h1>{item.jenis_pengawasan}</h1>
