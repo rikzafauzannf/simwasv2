@@ -53,7 +53,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
       </section>
 
       {/* persiapan data */}
-      <section className="grid grid-cols-3 gap-3">
+      <section className="md:grid grid-cols-3 gap-3">
         <div className="col-span-2 space-y-3">
           <CardComponents>
             <section className="grid md:grid-cols-2 w-full gap-3">
