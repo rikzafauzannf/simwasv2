@@ -9,7 +9,7 @@ const InputPKPT = () => {
     <form className="space-y-4">
       {/* persiapan data */}
       <CardComponents>
-        <h3>Data Non-PKPT</h3>
+        <h3>Data PKPT</h3>
         <section className="grid md:grid-cols-2 w-full gap-3">
           <InputFiledComponent
             label="Jenis Pengawasan"
