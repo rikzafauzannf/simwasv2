@@ -1,4 +1,4 @@
-import { CardComponents } from '@/app/components/Global/Card'
+import { CardComponents, CardHeaderContent } from '@/app/components/Global/Card'
 import { InputFiledComponent } from '@/app/components/Global/Input'
 
 // Cara 1: Menggunakan props params
@@ -18,8 +18,8 @@ const ViewPkptPage = ({ params }: PageProps) => {
     <section className='flex justify-between items-center'>
     <h3>Lihat PKPT ({id_pkpt})</h3>
     <div className='space-x-3'>
-        <button className='py-1 px-2 bg-slate-300 rounded-md shadow-md'>2</button>
-        <button className='py-1 px-2 bg-slate-300 rounded-md shadow-md'>2</button>
+        <button className='py-1 px-2 bg-slate-300 rounded-md shadow-md'>Hapus</button>
+        <button className='py-1 px-2 bg-slate-300 rounded-md shadow-md'>Edit</button>
     </div>
     </section>
     
@@ -81,7 +81,18 @@ const ViewPkptPage = ({ params }: PageProps) => {
     </div>
       {/* notif */}
       <CardComponents>
-        <p>notif</p>
+        <h3>Perubahan data oleh</h3>
+        <div className='max-h-[100%] overflow-y-scroll space-y-3'>
+            <div className='p-2 bg-slate-300/50 rounded-md shadow-md'>
+              <div className='flex space-x-3 items-center'>
+                <div className='w-[60px] h-[60px] rounded-full shadow'></div>
+                <div>
+                <h3>Reza</h3>
+                <small className='text-end text-slate-800'>19:00 wib. 12-11-2024</small>
+                </div>
+              </div>
+            </div>            
+        </div>
       </CardComponents>
     </section>
       
