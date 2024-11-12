@@ -14,7 +14,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
       {/* input realisasi pkpt */}
       <CardComponents>
         <h3 className="mb-3">Realisasi PKPT</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="md:grid grid-cols-2 gap-3">
           <div className="col-span-2">
             <InputFiledComponent
               label="Program Audit / Kegiatan"
@@ -57,7 +57,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
       {/* tim st */}
       <CardComponents>
         <h3 className="mb-3">TIM ST</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="md:grid grid-cols-2 gap-3">
         <InputFiledComponent
             label="Tim Pemeriksa / Pelaksana Kegiatan"
             identiti="TPemeriksa"
@@ -91,7 +91,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
       {/* jumlah objek laporan */}
       <CardComponents>
         <h3 className='mb-3'>Jumlah Objek dan Laporan</h3>
-        <div className='grid grid-cols-2 gap-3'>
+        <div className='md:grid grid-cols-2 gap-3'>
           <InputFiledComponent
             label="Jumlah Objek Pengawasan"
             identiti="JObjekPengawasan"
