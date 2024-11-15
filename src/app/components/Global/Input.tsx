@@ -35,6 +35,7 @@ interface InputFieldProps {
   placeholder: string;
   register: any;
   error?: FieldError;
+  disabled?: boolean;
 }
 
 interface DataProps {
@@ -54,22 +55,24 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
   placeholder,
   register,
   error,
+  disabled = false,
 }) => {
   return (
-    <div className="flex flex-col space-y-2 justify-start">
+    <div className="flex flex-col space-y-2">
       <label htmlFor={identiti} className="text-slate-800">
         {label}
       </label>
       <input
         id={identiti}
         type={type}
-        {...register}
         placeholder={placeholder}
-        className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
+        {...register}
+        disabled={disabled}
+        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black 
+          ${disabled ? 'bg-gray-100' : 'bg-slate-200/25'} 
+          ${error ? 'border-red-500' : ''}`}
       />
-      {error && (
-        <span className="text-red-500 font-semibold">{error.message}</span>
-      )}
+      {error && <span className="text-red-500 text-sm">{error.message}</span>}
     </div>
   );
 };
