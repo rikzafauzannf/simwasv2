@@ -52,7 +52,7 @@ const SidebarLayout = () => {
                   ))}
                 </Sidebar.ItemGroup>
               </Sidebar.Items>
-              <Upgrade />
+              {/* <Upgrade /> */}
             </SimpleBar>
           </Sidebar>
         </div>
