@@ -16,7 +16,7 @@ const RealisasiPKPTPage = () => {
 
       <div className="grid w-full gap-3">
         <CardComponents>
-        <TableRealisasi />
+          <TableRealisasi />
         </CardComponents>
       </div>
     </div>

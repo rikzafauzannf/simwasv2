@@ -33,7 +33,7 @@ const TableRealisasi = () => {
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={'/perencanaan/pkpt/1'}
+            href={'/perencanaan/realisasipkpt/1'}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />

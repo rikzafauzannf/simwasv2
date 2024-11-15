@@ -10,7 +10,7 @@ const manrope = Manrope({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Simwas Kota Tasikmalaya',
-  description: 'Aplikasi pengawasan terpusat Kota Tasikmalaya'
+  description: 'Aplikasi pengawasan terpusat Kota Tasikmalaya',
 };
 
 export default function RootLayout({
