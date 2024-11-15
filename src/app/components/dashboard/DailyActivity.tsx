@@ -44,7 +44,7 @@ const DailyActivity = () => {
   return (
     <>
       <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
-        <h5 className="card-title mb-6">Daily activities</h5>
+        <h5 className="card-title mb-6">Notifikasi</h5>
 
         <div className="max-h-[250px] overflow-auto">
           <div className="flex flex-col mt-2">
