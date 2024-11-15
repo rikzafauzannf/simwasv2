@@ -7,81 +7,140 @@ import {
   ComboboxOptions,
 } from '@headlessui/react';
 import React, { useState } from 'react';
+import {
+  useForm,
+  SubmitHandler,
+  FieldError,
+  UseFormRegister,
+} from 'react-hook-form';
 
-interface DataProps {
-  id: number;
-  name: string;
-}
+// interface Props {
+//   label: string;
+//   identiti: string;
+//   name: string;
+//   type: string;
+//   placeholder: string;
+// }
 
-interface Props {
-  label: string;
-  identiti: string;
-  name: string;
-  type: string;
-  placeholder: string;
-}
-
-interface PropSelect {
-  data: DataProps[];
-}
+// interface PropSelect {
+//   data: DataProps[];
+// }
 
 // global type
-export const InputFiledComponent: React.FC<Props> = ({
+interface InputFieldProps {
+  label: string;
+  identiti: string;
+  type: string;
+  name: string;
+  placeholder: string;
+  register: any;
+  error?: FieldError;
+}
+
+interface DataProps {
+  value: string;
+  title: string;
+}
+
+interface SelectFieldProps extends InputFieldProps {
+  options: DataProps[];
+}
+
+export const InputFieldComponent: React.FC<InputFieldProps> = ({
   label,
   identiti,
-  name,
   type,
+  name,
   placeholder,
+  register,
+  error,
 }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col space-y-2 justify-start">
       <label htmlFor={identiti} className="text-slate-800">
         {label}
       </label>
       <input
-        type={type}
-        name={name}
         id={identiti}
+        type={type}
+        {...register}
         placeholder={placeholder}
-        className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25"
+        className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
       />
+      {error && (
+        <span className="text-red-500 font-semibold">{error.message}</span>
+      )}
     </div>
   );
 };
 
 // select type
-export const SelectField: React.FC<PropSelect> = ({ data }) => {
-  const [selecteddata, setSelecteddata] = useState<DataProps | null>(data[0]);
-  const [query, setQuery] = useState('');
+// export const SelectField: React.FC<PropSelect> = ({ data }) => {
+//   const [selecteddata, setSelecteddata] = useState<DataProps | null>(data[0]);
+//   const [query, setQuery] = useState('');
 
-  const filteredData =
-    query === ''
-      ? data
-      : data.filter((item) => {
-          return item.name.toLowerCase().includes(query.toLowerCase());
-        });
+//   const filteredData =
+//     query === ''
+//       ? data
+//       : data.filter((item) => {
+//           return item.name.toLowerCase().includes(query.toLowerCase());
+//         });
+//   return (
+//     <Combobox
+//       value={selecteddata}
+//       onChange={setSelecteddata}
+//       onClose={() => setQuery('')}
+//     >
+//       <ComboboxInput
+//         aria-label="Assignee"
+//         displayValue={(selected: DataProps | null) => selected?.name || ''}
+//         onChange={(event) => setQuery(event.target.value)}
+//       />
+//       <ComboboxOptions anchor="bottom" className="border empty:invisible">
+//         {filteredData.map((items) => (
+//           <ComboboxOption
+//             key={items.id}
+//             value={items}
+//             className="data-[focus]:bg-blue-100"
+//           >
+//             {items.name}
+//           </ComboboxOption>
+//         ))}
+//       </ComboboxOptions>
+//     </Combobox>
+//   );
+// };
+
+export const SelectInputField: React.FC<SelectFieldProps> = ({
+  label,
+  identiti,
+  options,
+  register,
+  error,
+  placeholder,
+}) => {
   return (
-    <Combobox
-      value={selecteddata}
-      onChange={setSelecteddata}
-      onClose={() => setQuery('')}
-    >
-      <ComboboxInput
-        aria-label="Assignee"
-        displayValue={(selected: DataProps | null) => selected?.name || ''}
-        onChange={(event) => setQuery(event.target.value)}
-      />
-      <ComboboxOptions anchor="bottom" className="border empty:invisible">
-        {filteredData.map((items) => (
-          <ComboboxOption
-            key={items.id}
-            value={items}
-            className="data-[focus]:bg-blue-100"
-          >
-            {items.name}
-          </ComboboxOption>
+    <div className="flex flex-col space-y-2">
+      <label htmlFor={identiti} className="text-slate-800">
+        {label}
+      </label>
+      <select
+        id={identiti}
+        {...register}
+        className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
+      >
+        <option value="" disabled selected>
+          {placeholder}
+        </option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.title}
+          </option>
         ))}
-      </ComboboxOptions>
-    </Combobox>
+      </select>
+      {error && (
+        <span className="text-red-500 font-semibold">{error.message}</span>
+      )}
+    </div>
   );
 };

@@ -37,11 +37,11 @@ const page = () => {
           <p className="text-base">
             Design and Developed by{' '}
             <Link
-              href="https://adminmart.com/"
+              href="#"
               target="_blank"
               className="pl-1 text-primary underline decoration-primary"
             >
-              adminmart.com
+              Tim IT
             </Link>
           </p>
         </div>

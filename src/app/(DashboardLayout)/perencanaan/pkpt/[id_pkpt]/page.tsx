@@ -148,11 +148,11 @@ const ViewPkptPage = ({ params }: PageProps) => {
             placeholder="Tentukan ketua tim"
           />
           <InputFiledComponent
-            label="TIM"
-            identiti="Tim"
+            label="AnggotaTIM"
+            identiti="ATim"
             type="text"
-            name="Tim"
-            placeholder="Tentukan TIM"
+            name="ATim"
+            placeholder="Masukan Anggota Tim"
           />
           <InputFiledComponent
             label="Jumlah"
@@ -161,6 +161,20 @@ const ViewPkptPage = ({ params }: PageProps) => {
             name="Jumlah"
             placeholder="Jumlah TIM"
           />
+          <div className="col-span-2">
+            <InputFiledComponent
+              label="TIM"
+              identiti="Tim"
+              type="text"
+              name="Tim"
+              placeholder="Tentukan TIM"
+            />
+          </div>
+        </section>
+      </CardComponents>
+      {/* optional data */}
+      <CardComponents>
+        <section className="md:grid md:grid-cols-2 gap-3">
           <InputFiledComponent
             label="Anggaran (Opsional)"
             identiti="Anggaran"

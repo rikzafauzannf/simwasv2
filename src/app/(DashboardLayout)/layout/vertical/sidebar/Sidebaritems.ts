@@ -34,6 +34,23 @@ const SidebarContent: MenuItem[] = [
     ],
   },
   {
+    heading: 'Referensi',
+    children: [
+      {
+        name: 'Jenis Pengawasan',
+        icon: 'solar:widget-add-line-duotone',
+        id: uniqueId(),
+        url: '/',
+      },
+      {
+        name: 'Kelompok Temuan',
+        icon: 'solar:widget-add-line-duotone',
+        id: uniqueId(),
+        url: '/',
+      },
+    ],
+  },
+  {
     heading: 'Tahap Perencanaan',
     children: [
       {
@@ -99,6 +116,17 @@ const SidebarContent: MenuItem[] = [
         icon: 'solar:notes-minimalistic-outline',
         id: uniqueId(),
         url: '/sample-page',
+      },
+    ],
+  },
+  {
+    heading: 'Manage',
+    children: [
+      {
+        name: 'User Account',
+        icon: 'solar:smile-circle-outline',
+        id: uniqueId(),
+        url: '/usermanage',
       },
     ],
   },
