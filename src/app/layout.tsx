@@ -9,7 +9,8 @@ import './css/globals.css';
 const manrope = Manrope({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'MatDash-Nextjs-Free',
+  title: 'Simwas Kota Tasikmalaya',
+  description: 'Aplikasi pengawasan terpusat Kota Tasikmalaya'
 };
 
 export default function RootLayout({
