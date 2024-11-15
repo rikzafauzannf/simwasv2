@@ -176,6 +176,27 @@ const TablePKPT = () => {
       TingkatRisiko: 'string',
       Keterangan: 'string',
     },
+    {
+      id: 2,
+      Status: 'Non-PKPT',
+      JenisPengawasan: 'string',
+      AreaPengawasan: 'string',
+      RuangLingkup: 'string',
+      Tujuan: 'string',
+      RencanaPenugasan: 'string',
+      RencanaPenerbitan: 'string',
+      PenanggungJawab: 'string',
+      WakilPenanggungJawab: 'string',
+      PengendaliTeknis: 'string',
+      KetuaTIM: 'string',
+      TIM: 'string',
+      Jumlah: 12,
+      Anggaran: 12,
+      JumlahLaporan: 'string',
+      Saran: 'string',
+      TingkatRisiko: 'string',
+      Keterangan: 'string',
+    },
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

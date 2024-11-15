@@ -8,17 +8,19 @@ const FullLogo = () => {
   return (
     <Link href={'/'}>
       {/* Dark Logo   */}
-      <Image
+      {/* <Image
         src={Logo}
         alt="logo"
         className="block dark:hidden rtl:scale-x-[-1]"
-      />
+      /> */}
+      <h1 className='text-2xl italic block dark:hidden'>Simwas</h1>
       {/* Light Logo  */}
-      <Image
+      {/* <Image
         src={Logowhite}
         alt="logo"
         className="hidden dark:block rtl:scale-x-[-1]"
-      />
+      /> */}
+      <h1 className='text-2xl italic hidden dark:block'>Simwas</h1>
     </Link>
   );
 };

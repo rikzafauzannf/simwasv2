@@ -19,9 +19,6 @@ const PkptPage = () => {
         <CardComponents>
           <TablePKPT />
         </CardComponents>
-        <CardComponents>
-          <TablePKPT />
-        </CardComponents>
       </div>
     </div>
   );

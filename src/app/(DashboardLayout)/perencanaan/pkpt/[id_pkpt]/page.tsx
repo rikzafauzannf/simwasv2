@@ -54,7 +54,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
 
       {/* persiapan data */}
       <section className="md:grid grid-cols-3 gap-3">
-        <div className="col-span-2 space-y-3">
+        <div className="col-span-2 space-y-3 order-2 md:order-1">
           <CardComponents>
             <section className="grid md:grid-cols-2 w-full gap-3">
               <InputFiledComponent
@@ -110,7 +110,9 @@ const ViewPkptPage = ({ params }: PageProps) => {
         </div>
         {/* notif */}
         {/* <NotofikasiEdit data={dummyDummyNOtifikasi}/> */}
+        <div className='order-1 md:order-2'>
         <DailyActivity />
+        </div>
       </section>
 
       {/* Hari Penugasan */}
