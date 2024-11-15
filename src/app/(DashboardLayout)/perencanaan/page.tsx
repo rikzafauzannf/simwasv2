@@ -1,4 +1,5 @@
 // import { ButtonLinkComponent } from '@/app/components/Global/Button';
+import DailyActivity from '@/app/components/dashboard/DailyActivity';
 import { CardComponents } from '@/app/components/Global/Card';
 import AkumulasiData from '@/app/components/perencanaan/AkumulasiData';
 import TablePKPT from '@/app/components/perencanaan/table/TablePKPT';
@@ -22,7 +23,8 @@ const PerencanaanPage = () => {
             <TablePKPT />
           </CardComponents>
         </div>
-        <CardComponents>Notifikasi</CardComponents>
+        {/* <CardComponents>Notifikasi</CardComponents> */}
+        <DailyActivity/>
       </section>
     </div>
   );
