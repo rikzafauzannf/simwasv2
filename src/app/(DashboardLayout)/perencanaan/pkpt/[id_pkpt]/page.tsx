@@ -110,8 +110,8 @@ const ViewPkptPage = ({ params }: PageProps) => {
         </div>
         {/* notif */}
         {/* <NotofikasiEdit data={dummyDummyNOtifikasi}/> */}
-        <div className='order-1 md:order-2'>
-        <DailyActivity />
+        <div className="order-1 md:order-2">
+          <DailyActivity />
         </div>
       </section>
 

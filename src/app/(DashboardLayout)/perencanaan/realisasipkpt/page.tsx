@@ -1,6 +1,8 @@
 // 'use client';
+import { CardComponents } from '@/app/components/Global/Card';
 import CollapseComponents from '@/app/components/Global/Collapse';
 import MapDataPkpt from '@/app/components/realisasi/datapkpt';
+import TableRealisasi from '@/app/components/realisasi/tablerealisasi';
 import React from 'react';
 
 const RealisasiPKPTPage = () => {
@@ -13,6 +15,10 @@ const RealisasiPKPTPage = () => {
       <CollapseComponents title="Input Data Realisasi">
         <MapDataPkpt />
       </CollapseComponents>
+
+      <CardComponents>
+        <TableRealisasi/>
+      </CardComponents>
     </>
   );
 };
