@@ -54,25 +54,31 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         url: '/perencanaan/realisasipkpt',
       },
+    ],
+  },
+  {
+    heading: 'Pelaksanaan',
+    children: [
       {
-        name: 'Shadow',
+        name: 'Surat Tugas',
         icon: 'solar:airbuds-case-charge-outline',
         id: uniqueId(),
         url: '/ui/shadow',
       },
-    ],
-  },
-  {
-    heading: 'AUTH',
-    children: [
       {
-        name: 'Login',
+        name: 'Pelaksanaan',
         icon: 'solar:login-2-linear',
         id: uniqueId(),
         url: '/auth/login',
       },
       {
-        name: 'Register',
+        name: 'Kendali Mutu',
+        icon: 'solar:shield-user-outline',
+        id: uniqueId(),
+        url: '/auth/register',
+      },
+      {
+        name: 'Progress Pengawasan',
         icon: 'solar:shield-user-outline',
         id: uniqueId(),
         url: '/auth/register',
@@ -80,16 +86,16 @@ const SidebarContent: MenuItem[] = [
     ],
   },
   {
-    heading: 'EXTRA',
+    heading: 'Tahap Pelaporan',
     children: [
       {
-        name: 'Icons',
+        name: 'Pelaporan',
         icon: 'solar:smile-circle-outline',
         id: uniqueId(),
         url: '/icons/solar',
       },
       {
-        name: 'Sample Page',
+        name: 'Tindak Lanjut',
         icon: 'solar:notes-minimalistic-outline',
         id: uniqueId(),
         url: '/sample-page',
