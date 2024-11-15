@@ -7,19 +7,17 @@ import React from 'react';
 
 const RealisasiPKPTPage = () => {
   return (
-    <>
-      <div className="mb-4">
-        <h3>Data Realisasi PKPT</h3>
-      </div>
+    <div className="space-y-3">
+      <h3>Data Realisasi PKPT</h3>
 
       <CollapseComponents title="Input Data Realisasi">
         <MapDataPkpt />
       </CollapseComponents>
 
       <CardComponents>
-        <TableRealisasi/>
+        <TableRealisasi />
       </CardComponents>
-    </>
+    </div>
   );
 };
 
