@@ -7,6 +7,7 @@ import { ButtonType } from '../../Global/Button';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
 import { title } from 'process';
+import { FirestoreService } from '@/services/firestore.service';
 
 interface PKPTFormData {
   JenisPengawasan: string;
@@ -34,6 +35,8 @@ const InputPKPT = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<PKPTFormData>({
     defaultValues: {
@@ -63,19 +66,37 @@ const InputPKPT = () => {
     { value: 'LHR', title: 'LHR' },
   ];
 
-  const { teamMembers, addTeamMember, removeTeamMember } = useTeamStore();
+  const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } = useTeamStore();
   const [newMember, setNewMember] = React.useState('');
 
+  const firestoreService = new FirestoreService();
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
-      // Here you would add your Firebase logic
-      console.log('Form data:', data);
-      console.log('Team members:', teamMembers);
+      // Prepare data to be sent to Firestore
+      const pkptData = {
+        ...data,
+        teamMembers: teamMembers,
+        createdAt: new Date(),
+        status: 'draft'
+      };
 
-      // Reset form after successful submission
-      reset();
+      const result = await firestoreService.addData('pkpt', pkptData);
+      
+      if (result.success) {
+        console.log('PKPT berhasil disimpan:', result);
+        // Reset form
+        reset();
+        // Reset team members
+        resetTeamMembers();
+        // Optional: Show success message to user
+        alert('Data PKPT berhasil disimpan');
+      } else {
+        throw new Error(result.message);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
+      // Optional: Show error message to user
+      alert('Gagal menyimpan data PKPT');
     }
   };
 
@@ -86,6 +107,28 @@ const InputPKPT = () => {
       setNewMember('');
     }
   };
+
+  // Watch semua field yang akan mempengaruhi jumlah
+  const penanggungJawab = watch('PenanggungJawab');
+  const wakilPenanggungJawab = watch('WakilPenanggungJawab');
+  const supervisor = watch('Supervisor');
+  const ketuaTim = watch('KetuaTIM');
+  const aTim = watch('ATim');
+
+  // Effect untuk menghitung jumlah otomatis
+  React.useEffect(() => {
+    let total = 0;
+    
+    // Hitung jumlah berdasarkan nilai yang diinput
+    if (penanggungJawab) total += Number(penanggungJawab) || 0;
+    if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
+    if (supervisor) total += Number(supervisor) || 0;
+    if (ketuaTim) total += Number(ketuaTim) || 0;
+    if (aTim) total += Number(aTim) || 0;
+    
+    // Set nilai jumlah
+    setValue('Jumlah', total);
+  }, [penanggungJawab, wakilPenanggungJawab, supervisor, ketuaTim, aTim, setValue]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -171,32 +214,24 @@ const InputPKPT = () => {
           <InputFieldComponent
             label="Penanggung Jawab"
             identiti="penganggungJawab"
-            type="text"
+            type="number"
             name="PenanggungJawab"
-            placeholder="Tentukan penanggung jawab"
+            placeholder="Masukkan jumlah penanggung jawab"
             register={register('PenanggungJawab', {
               required: 'Penanggung Jawab wajib diisi',
-              minLength: { value: 1, message: 'Minimal 1 karakter' },
-              // pattern: {
-              //   value: /^[a-zA-Z\s]*$/,
-              //   message: 'Hanya boleh berisi huruf dan spasi',
-              // },
+              min: { value: 0, message: 'Tidak boleh negatif' },
             })}
             error={errors.PenanggungJawab}
           />
           <InputFieldComponent
             label="Wakil Penanggung Jawab"
             identiti="wPenanggungJawab"
-            type="text"
+            type="number"
             name="WakilPenanggungJawab"
-            placeholder="Tentukan wakil penanggung jawab"
+            placeholder="Masukkan jumlah wakil penanggung jawab"
             register={register('WakilPenanggungJawab', {
               required: 'Wakil Penanggung Jawab wajib diisi',
-              minLength: { value: 1, message: 'Minimal 1 karakter' },
-              // pattern: {
-              //   value: /^[a-zA-Z\s]*$/,
-              //   message: 'Hanya boleh berisi huruf dan spasi',
-              // },
+              min: { value: 0, message: 'Tidak boleh negatif' },
             })}
             error={errors.WakilPenanggungJawab}
           />
@@ -253,15 +288,10 @@ const InputPKPT = () => {
             identiti="Jumlah"
             type="number"
             name="Jumlah"
-            placeholder="Jumlah TIM"
-            register={register('Jumlah', {
-              required: 'Jumlah wajib diisi',
-              min: { value: 1, message: 'Minimal 1 orang' },
-              validate: (value) =>
-                Number.isInteger(Number(value)) ||
-                'Jumlah harus berupa bilangan bulat',
-            })}
+            placeholder="Total Jumlah"
+            register={register('Jumlah')}
             error={errors.Jumlah}
+            disabled={true}
           />
           <div className="col-span-2">
             <div className="flex flex-col space-y-2">
@@ -394,8 +424,8 @@ const InputPKPT = () => {
         </section>
       </CardComponents>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <ButtonType Text="Ulangi" type="reset" />
+      <section className="flex">
+        {/* <ButtonType Text="Ulangi" type="reset" /> */}
         <ButtonType Text="Simpan Data" type="submit" />
       </section>
     </form>
