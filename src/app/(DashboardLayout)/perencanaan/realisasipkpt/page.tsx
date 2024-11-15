@@ -14,9 +14,11 @@ const RealisasiPKPTPage = () => {
         <MapDataPkpt />
       </CollapseComponents>
 
-      <CardComponents>
+      <div className="grid w-full gap-3">
+        <CardComponents>
         <TableRealisasi />
-      </CardComponents>
+        </CardComponents>
+      </div>
     </div>
   );
 };
