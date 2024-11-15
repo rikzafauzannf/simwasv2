@@ -49,7 +49,7 @@ const MobileSidebar = () => {
                 ))}
               </Sidebar.ItemGroup>
             </Sidebar.Items>
-            <Upgrade />
+            {/* <Upgrade /> */}
           </SimpleBar>
         </Sidebar>
       </div>
