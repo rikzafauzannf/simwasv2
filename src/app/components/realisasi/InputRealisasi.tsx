@@ -69,7 +69,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
               placeholder="Tentukan Program Audit"
               type="text"
               register={register('PAudit', {
-                required: 'Program Audit wajib diisi'
+                required: 'Program Audit wajib diisi',
               })}
               error={errors.PAudit}
             />
@@ -82,7 +82,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             type="number"
             register={register('JSuratTugas', {
               required: 'Jumlah Surat Tugas wajib diisi',
-              min: { value: 1, message: 'Minimal 1 surat tugas' }
+              min: { value: 1, message: 'Minimal 1 surat tugas' },
             })}
             error={errors.JSuratTugas}
           />
@@ -93,7 +93,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             placeholder="Tentukan Bulan"
             type="text"
             register={register('Bulan', {
-              required: 'Bulan wajib diisi'
+              required: 'Bulan wajib diisi',
             })}
             error={errors.Bulan}
           />
@@ -104,7 +104,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             placeholder="Tentukan Nomor/Tanggal SP"
             type="text"
             register={register('NTglSp', {
-              required: 'Nomor/Tanggal SP wajib diisi'
+              required: 'Nomor/Tanggal SP wajib diisi',
             })}
             error={errors.NTglSp}
           />
@@ -115,7 +115,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             placeholder="Tentukan waktu penugasan"
             type="time"
             register={register('WPenugasan', {
-              required: 'Waktu penugasan wajib diisi'
+              required: 'Waktu penugasan wajib diisi',
             })}
             error={errors.WPenugasan}
           />
@@ -132,7 +132,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             placeholder="Tentukan Tim Pemeriksa"
             type="text"
             register={register('TPemeriksa', {
-              required: 'Tim Pemeriksa wajib diisi'
+              required: 'Tim Pemeriksa wajib diisi',
             })}
             error={errors.TPemeriksa}
           />
@@ -143,7 +143,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             placeholder="Tentukan Pengendali Teknis"
             type="text"
             register={register('PTeknis', {
-              required: 'Pengendali Teknis wajib diisi'
+              required: 'Pengendali Teknis wajib diisi',
             })}
             error={errors.PTeknis}
           />
@@ -154,7 +154,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             placeholder="Tentukan Ketua TIM"
             type="text"
             register={register('KTim', {
-              required: 'Ketua TIM wajib diisi'
+              required: 'Ketua TIM wajib diisi',
             })}
             error={errors.KTim}
           />
@@ -165,7 +165,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             placeholder="Tentukan Anggota TIM"
             type="text"
             register={register('ATim', {
-              required: 'Anggota TIM wajib diisi'
+              required: 'Anggota TIM wajib diisi',
             })}
             error={errors.ATim}
           />
@@ -183,7 +183,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             type="number"
             register={register('JObjekPengawasan', {
               required: 'Jumlah Objek Pengawasan wajib diisi',
-              min: { value: 1, message: 'Minimal 1 objek' }
+              min: { value: 1, message: 'Minimal 1 objek' },
             })}
             error={errors.JObjekPengawasan}
           />
@@ -195,7 +195,7 @@ const InputRealisasi: React.FC<Props> = ({ id }) => {
             type="number"
             register={register('JLaporan', {
               required: 'Jumlah Laporan wajib diisi',
-              min: { value: 1, message: 'Minimal 1 laporan' }
+              min: { value: 1, message: 'Minimal 1 laporan' },
             })}
             error={errors.JLaporan}
           />

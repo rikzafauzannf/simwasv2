@@ -66,22 +66,41 @@ const InputNonPKPT = () => {
     { value: 'LHR', title: 'LHR' },
   ];
 
-  const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } = useTeamStore();
+  const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
+    useTeamStore();
   const [newMember, setNewMember] = React.useState('');
 
   const firestoreService = new FirestoreService();
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
       // Prepare data to be sent to Firestore
-      const pkptData = {
-        ...data,
-        teamMembers: teamMembers,
+      const nonpkptData = {
+        // ...data,
+        area_pengawasan: data.AreaPengawasan,
+        jenis_pengawasan: data.JenisPengawasan,
+        ruang_lingkup: data.RuangLingkup,
+        tujuan_sasaran: data.TujuanSasaran,
+        rencana_penugasan: data.RencanaPenugasan,
+        rencana_penerbitan: data.RencanaPenerbitan,
+        penanggung_jawab: data.PenanggungJawab,
+        wakil_penanggung_jawab: data.WakilPenanggungJawab,
+        anggota_tim: data.ATim,
+        jumlah: data.Jumlah,
+        tim: teamMembers,
+        anggaran: data.Anggaran,
+        jumlah_laporan: `${data.JumlahLaporan} - ${data.JenisLaporan}`,
+        sarana_prasarana: data.SaranaDanPrasarana,
+        tingkat_risiko: data.TingkatRisiko,
+        keterangan: data.Keterangan,
+        // data identiti
+        id_user:1,
         createdAt: new Date(),
-        status: 'draft'
+        status: 'draft',
+        active:'true',
       };
 
-      const result = await firestoreService.addData('nonpkpt', pkptData);
-      
+      const result = await firestoreService.addData('non_pkpt', nonpkptData);
+
       if (result.success) {
         console.log('PKPT berhasil disimpan:', result);
         // Reset form
@@ -118,23 +137,30 @@ const InputNonPKPT = () => {
   // Effect untuk menghitung jumlah otomatis
   React.useEffect(() => {
     let total = 0;
-    
+
     // Hitung jumlah berdasarkan nilai yang diinput
     if (penanggungJawab) total += Number(penanggungJawab) || 0;
     if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
     if (supervisor) total += Number(supervisor) || 0;
     if (ketuaTim) total += Number(ketuaTim) || 0;
     if (aTim) total += Number(aTim) || 0;
-    
+
     // Set nilai jumlah
     setValue('Jumlah', total);
-  }, [penanggungJawab, wakilPenanggungJawab, supervisor, ketuaTim, aTim, setValue]);
+  }, [
+    penanggungJawab,
+    wakilPenanggungJawab,
+    supervisor,
+    ketuaTim,
+    aTim,
+    setValue,
+  ]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Data PKPT */}
       <CardComponents>
-        <h3>Data PKPT</h3>
+        <h3>Data NonPKPT</h3>
         <section className="grid md:grid-cols-2 w-full gap-3">
           <InputFieldComponent
             label="Area Pengawasan"
@@ -238,12 +264,12 @@ const InputNonPKPT = () => {
           <InputFieldComponent
             label="Pengendali Teknis/Supervisor"
             identiti="pengendaliTeknis"
-            type="text"
+            type="number"
             name="Supervisor"
             placeholder="Tentukan pengendali teknis"
             register={register('Supervisor', {
               required: 'Supervisor wajib diisi',
-              minLength: { value: 1, message: 'Minimal 1 karakter' },
+              min: { value: 0, message: 'Tidak boleh negatif' },
               // pattern: {
               //   value: /^[a-zA-Z\s]*$/,
               //   message: 'Hanya boleh berisi huruf dan spasi',
@@ -254,12 +280,12 @@ const InputNonPKPT = () => {
           <InputFieldComponent
             label="Ketua TIM"
             identiti="ketuaTim"
-            type="text"
+            type="number"          
             name="KetuaTIM"
             placeholder="Tentukan ketua tim"
             register={register('KetuaTIM', {
               required: 'Ketua TIM wajib diisi',
-              minLength: { value: 1, message: 'Minimal 1 karakter' },
+              min: { value: 0, message: 'Tidak boleh negatif' },
               // pattern: {
               //   value: /^[a-zA-Z\s]*$/,
               //   message: 'Hanya boleh berisi huruf dan spasi',
@@ -270,12 +296,12 @@ const InputNonPKPT = () => {
           <InputFieldComponent
             label="AnggotaTIM"
             identiti="ATim"
-            type="text"
+            type="number"
             name="ATim"
             placeholder="Masukan Anggota Tim"
             register={register('ATim', {
               required: 'Anggota TIM wajib diisi',
-              minLength: { value: 1, message: 'Minimal 1 karakter' },
+              min: { value: 0, message: 'Tidak boleh negatif' },
               // pattern: {
               //   value: /^[a-zA-Z\s]*$/,
               //   message: 'Hanya boleh berisi huruf dan spasi',
@@ -296,7 +322,7 @@ const InputNonPKPT = () => {
           <div className="col-span-2">
             <div className="flex flex-col space-y-2">
               <label htmlFor="Tim" className="text-slate-800">
-                TIM
+                TIM [{teamMembers.length}]
               </label>
               <div className="flex gap-2">
                 <input
@@ -323,7 +349,7 @@ const InputNonPKPT = () => {
                   key={member.id}
                   className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
                 >
-                  <span>{member.name}</span>
+                  <span className='text-slate-800'>{member.name}</span>
                   <button
                     onClick={() => removeTeamMember(member.id)}
                     type="button"

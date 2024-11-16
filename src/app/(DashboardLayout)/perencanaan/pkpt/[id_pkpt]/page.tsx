@@ -13,7 +13,6 @@ interface PageProps {
   };
 }
 
-
 const ViewPkptPage = ({ params }: PageProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const id_pkpt = params.id_pkpt;
@@ -37,7 +36,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
     JumlahLaporan: 3,
     SaranaDanPrasarana: 5,
     TingkatRisiko: 'Rendah',
-    Keterangan: 'Keterangan tambahan'
+    Keterangan: 'Keterangan tambahan',
   };
 
   const { register, handleSubmit } = useForm({
@@ -82,14 +81,14 @@ const ViewPkptPage = ({ params }: PageProps) => {
             Hapus
           </button>
           {isEditing ? (
-            <button 
+            <button
               onClick={handleSubmit(onSubmit)}
               className="py-1 px-2 bg-green-500 text-white rounded-md shadow-md"
             >
               Simpan
             </button>
           ) : (
-            <button 
+            <button
               onClick={() => setIsEditing(true)}
               className="py-1 px-2 bg-blue-500 text-white rounded-md shadow-md"
             >

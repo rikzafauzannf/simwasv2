@@ -27,7 +27,7 @@ const ViewDataRealisasiPage = ({ params }: PageProps) => {
     KTim: 'da',
     ATim: 'dsa',
     JObjekPengawasan: 0,
-    JLaporan: 0
+    JLaporan: 0,
   };
 
   const { register, handleSubmit } = useForm({
@@ -49,14 +49,14 @@ const ViewDataRealisasiPage = ({ params }: PageProps) => {
             Hapus
           </button>
           {isEditing ? (
-            <button 
+            <button
               onClick={handleSubmit(onSubmit)}
               className="py-1 px-2 bg-green-500 text-white rounded-md shadow-md"
             >
               Simpan
             </button>
           ) : (
-            <button 
+            <button
               onClick={() => setIsEditing(true)}
               className="py-1 px-2 bg-blue-500 text-white rounded-md shadow-md"
             >

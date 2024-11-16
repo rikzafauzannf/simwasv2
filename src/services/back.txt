@@ -1,0 +1,36 @@
+// Contoh penggunaan
+const firestoreService = new FirestoreService();
+
+// Menambah data
+const addData = async () => {
+  const data = {
+    nama: 'John Doe',
+    umur: 25,
+    email: 'john@example.com'
+  };
+  
+  const result = await firestoreService.addData('users', data);
+  console.log(result);
+};
+
+// Mengambil semua data
+const getData = async () => {
+  const result = await firestoreService.getAllData('users');
+  console.log(result.data);
+};
+
+// Update data
+const updateData = async () => {
+  const data = {
+    umur: 26
+  };
+  
+  const result = await firestoreService.updateData('users', 'document_id', data);
+  console.log(result);
+};
+
+// Hapus data
+const deleteData = async () => {
+  const result = await firestoreService.deleteData('users', 'document_id');
+  console.log(result);
+};
