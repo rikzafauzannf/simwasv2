@@ -84,6 +84,8 @@ const InputPKPT = () => {
         rencana_penerbitan: data.RencanaPenerbitan,
         penanggung_jawab: data.PenanggungJawab,
         wakil_penanggung_jawab: data.WakilPenanggungJawab,
+        supervisor: data.Supervisor,
+        ketua_tim: data.KetuaTIM,
         anggota_tim: data.ATim,
         jumlah: data.Jumlah,
         tim: teamMembers,

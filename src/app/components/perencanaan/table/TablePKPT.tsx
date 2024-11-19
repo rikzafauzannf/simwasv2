@@ -1,214 +1,175 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
+import { DataPKPT } from '@/middleware/interface/perencanaanPKPT';
+import { usePKPTStore } from '@/middleware/Store/usePKPTStore';
 
-interface PKPTData {
-  id?: number;
-  Status: string;
-  JenisPengawasan: string;
-  AreaPengawasan: string;
-  RuangLingkup: string;
-  Tujuan: string;
-  RencanaPenugasan: string;
-  RencanaPenerbitan: string;
-  PenanggungJawab: string;
-  WakilPenanggungJawab: string;
-  PengendaliTeknis: string;
-  KetuaTIM: string;
-  TIM: string;
-  Jumlah: number;
-  Anggaran: number;
-  JumlahLaporan: string;
-  Saran: string;
-  TingkatRisiko: string;
-  Keterangan: string;
-}
 const TablePKPT = () => {
+  const { pkptData, fetchPKPTData } = usePKPTStore();
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<PKPTData[]>([]);
+  const [filteredData, setFilteredData] = useState<DataPKPT[]>(pkptData || []);
+
+  useEffect(() => {
+    fetchPKPTData();
+  }, [fetchPKPTData]);
+
+  useEffect(() => {
+    setFilteredData(pkptData);
+  }, [pkptData]);
+
+  console.log("data PKPT :",pkptData)
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+    const filtered = (pkptData || []).filter(
+      (item) =>
+        (item.jenis_pengawasan || '').toLowerCase().includes(value.toLowerCase()) ||
+        (item.ruang_lingkup || '').toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredData(filtered);
+  };
 
   const columns = [
     {
       name: 'Actions',
-      cell: (row: PKPTData) => (
+      cell: (row: DataPKPT) => (
         <div className="flex gap-2">
-          <Link
-            // onClick={() => handleView(row)}
-            href={'/perencanaan/pkpt/1'}
-            className="p-2 text-blue-500 hover:text-blue-700"
-          >
+          <Link href={`/perencanaan/pkpt/${row.id}`} className="p-2 text-blue-500 hover:text-blue-700">
             <FaEye />
           </Link>
-          <Link
-            href={'/perencanaan/realisasipkpt/inputrealisasi/1'}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-          >
+          <Link href={'/perencanaan/realisasipkpt/inputrealisasi/1'} className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black">
             realisasi
           </Link>
-          {/* <button
-            onClick={() => handleEdit(row)}
-            className="p-2 text-yellow-500 hover:text-yellow-700"
-          >
-            <FaEdit />
-          </button>
-          <button
-             onClick={() => {
-               setSelectedRow(row);
-               setShowDeleteDialog(true);
-             }}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button> */}
         </div>
       ),
     },
     {
       name: 'Status',
-      selector: (row: PKPTData) => row.Status,
+      selector: (row: DataPKPT) => row.status || 'N/A',
       sortable: true,
     },
     {
       name: 'Jenis Pengawasan',
-      selector: (row: PKPTData) => row.JenisPengawasan,
+      selector: (row: DataPKPT) => row.jenis_pengawasan || 'N/A',
       sortable: true,
     },
     {
       name: 'Area Pengawasan',
-      selector: (row: PKPTData) => row.AreaPengawasan,
+      selector: (row: DataPKPT) => row.area_pengawasan || 'N/A',
       sortable: true,
     },
     {
       name: 'Ruang Lingkup',
-      selector: (row: PKPTData) => row.RuangLingkup,
+      selector: (row: DataPKPT) => row.ruang_lingkup || 'N/A',
       sortable: true,
     },
     {
       name: 'Tujuan / Sasaran',
-      selector: (row: PKPTData) => row.Tujuan,
+      selector: (row: DataPKPT) => row.tujuan_sasaran || 'N/A',
       sortable: true,
     },
     {
       name: 'Rencana Penugasan',
-      selector: (row: PKPTData) => row.RencanaPenugasan,
+      selector: (row: DataPKPT) => row.rencana_penugasan || 'N/A',
       sortable: true,
     },
     {
       name: 'Rencana Penerbitan',
-      selector: (row: PKPTData) => row.RencanaPenerbitan,
+      selector: (row: DataPKPT) => row.rencana_penerbitan || 'N/A',
       sortable: true,
     },
     {
       name: 'Penanggung Jawab',
-      selector: (row: PKPTData) => row.PenanggungJawab,
+      selector: (row: DataPKPT) => row.penanggung_jawab || 'N/A',
       sortable: true,
     },
     {
       name: 'Wakil Penanggung Jawab',
-      selector: (row: PKPTData) => row.WakilPenanggungJawab,
+      selector: (row: DataPKPT) => row.wakil_penanggung_jawab || 'N/A',
       sortable: true,
     },
     {
       name: 'Pengendali Teknis / Supervisor',
-      selector: (row: PKPTData) => row.PengendaliTeknis,
+      selector: (row: DataPKPT) => row.supervisor || 'N/A',
       sortable: true,
     },
     {
       name: 'Ketua TIM',
-      selector: (row: PKPTData) => row.KetuaTIM,
+      selector: (row: DataPKPT) => row.ketua_tim || 'N/A',
       sortable: true,
     },
     {
-      name: 'TIM',
-      selector: (row: PKPTData) => row.TIM,
+      name: 'Anggota TIM',
+      selector: (row: DataPKPT) => row.anggota_tim || 'N/A',
       sortable: true,
     },
     {
       name: 'Jumlah',
-      selector: (row: PKPTData) => row.Jumlah,
+      selector: (row: DataPKPT) => row.jumlah || 'N/A',
+      sortable: true,
+    },
+    {
+      name: 'TIM',
+      selector: (row: DataPKPT) => row.tim || 'N/A',
+      sortable: true,
+    },        
+    {
+      name: 'Anggaran',
+      selector: (row: DataPKPT) => row.anggaran || 'N/A',
       sortable: true,
     },
     {
       name: 'Jumlah Laporan',
-      selector: (row: PKPTData) => row.JumlahLaporan,
-      sortable: true,
-    },
-    {
-      name: 'Anggaran',
-      selector: (row: PKPTData) => row.Anggaran,
+      selector: (row: DataPKPT) => row.jumlah_laporan || 'N/A',
       sortable: true,
     },
     {
       name: 'Saran dan Prasarana',
-      selector: (row: PKPTData) => row.Saran,
+      selector: (row: DataPKPT) => row.sarana_prasarana || 'N/A',
+      sortable: true,
+    },
+    {
+      name: 'Tingkat Risiko',
+      selector: (row: DataPKPT) => row.tingkat_risiko || 'N/A',
       sortable: true,
     },
     {
       name: 'Keterangan',
-      selector: (row: PKPTData) => row.Keterangan,
+      selector: (row: DataPKPT) => row.keterangan || 'N/A',
       sortable: true,
     },
   ];
 
-  const data: PKPTData[] = [
-    {
-      id: 1,
-      Status: 'PKPT',
-      JenisPengawasan: 'string',
-      AreaPengawasan: 'string',
-      RuangLingkup: 'string',
-      Tujuan: 'string',
-      RencanaPenugasan: 'string',
-      RencanaPenerbitan: 'string',
-      PenanggungJawab: 'string',
-      WakilPenanggungJawab: 'string',
-      PengendaliTeknis: 'string',
-      KetuaTIM: 'string',
-      TIM: 'string',
-      Jumlah: 12,
-      Anggaran: 12,
-      JumlahLaporan: 'string',
-      Saran: 'string',
-      TingkatRisiko: 'string',
-      Keterangan: 'string',
-    },
-    {
-      id: 2,
-      Status: 'Non-PKPT',
-      JenisPengawasan: 'string',
-      AreaPengawasan: 'string',
-      RuangLingkup: 'string',
-      Tujuan: 'string',
-      RencanaPenugasan: 'string',
-      RencanaPenerbitan: 'string',
-      PenanggungJawab: 'string',
-      WakilPenanggungJawab: 'string',
-      PengendaliTeknis: 'string',
-      KetuaTIM: 'string',
-      TIM: 'string',
-      Jumlah: 12,
-      Anggaran: 12,
-      JumlahLaporan: 'string',
-      Saran: 'string',
-      TingkatRisiko: 'string',
-      Keterangan: 'string',
-    },
-  ];
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearch(value);
-    const filtered = data.filter(
-      (item) =>
-        item.JenisPengawasan.toLowerCase().includes(value.toLowerCase()) ||
-        item.KetuaTIM.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredData(filtered);
-  };
+  const data: DataPKPT[] = (pkptData || []).map((item: DataPKPT) => ({
+    id: item.id,
+    area_pengawasan: item.area_pengawasan,
+    jenis_pengawasan: item.jenis_pengawasan,
+    ruang_lingkup: item.ruang_lingkup,
+    tujuan_sasaran: item.tujuan_sasaran,
+    rencana_penugasan: item.rencana_penugasan,
+    rencana_penerbitan: item.rencana_penerbitan,
+    penanggung_jawab: item.penanggung_jawab,
+    wakil_penanggung_jawab: item.wakil_penanggung_jawab,
+    supervisor: item.supervisor,
+    ketua_tim: item.ketua_tim,
+    anggota_tim: item.anggota_tim,
+    jumlah: item.jumlah,
+    tim: item.tim,
+    anggaran: item.anggaran,
+    jumlah_laporan: item.jumlah_laporan,
+    sarana_prasarana: item.sarana_prasarana,
+    tingkat_risiko: item.tingkat_risiko,
+    keterangan: item.keterangan,
+    id_user: item.id_user,
+    createdAt: item.createdAt,
+    status: item.status,
+    active: item.active,
+  }));
 
   const exportToCSV = () => {
     const headers = columns
@@ -221,7 +182,7 @@ const TablePKPT = () => {
         return columns
           .filter((col) => col.name !== 'Actions')
           .map((col) => {
-            const selector = col.selector as (row: PKPTData) => string | number;
+            const selector = col.selector as (row: DataPKPT) => string | number;
             return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
           })
           .join(',');
@@ -245,7 +206,7 @@ const TablePKPT = () => {
         return columns
           .filter((col) => col.name !== 'Actions')
           .map((col) => {
-            const selector = col.selector as (row: PKPTData) => string | number;
+            const selector = col.selector as (row: DataPKPT) => string | number;
             return selector(row);
           })
           .join('\t');
@@ -290,7 +251,7 @@ const TablePKPT = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : data}
+          data={filteredData}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"
@@ -300,4 +261,5 @@ const TablePKPT = () => {
     </>
   );
 };
+
 export default TablePKPT;
