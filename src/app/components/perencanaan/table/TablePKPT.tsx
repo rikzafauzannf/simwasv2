@@ -44,10 +44,10 @@ const TablePKPT = () => {
             <FaEye />
           </Link>
           <Link
-            href={'/perencanaan/realisasipkpt/inputrealisasi/1'}
+            href={'/perencanaan/pkpt/actions/1'}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
-            realisasi
+            Act
           </Link>
           {/* <button
             onClick={() => handleEdit(row)}

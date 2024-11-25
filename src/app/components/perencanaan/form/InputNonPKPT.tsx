@@ -93,10 +93,10 @@ const InputNonPKPT = () => {
         tingkat_risiko: data.TingkatRisiko,
         keterangan: data.Keterangan,
         // data identiti
-        id_user:1,
+        id_user: 1,
         createdAt: new Date(),
         status: 'draft',
-        active:'true',
+        active: 'true',
       };
 
       const result = await firestoreService.addData('non_pkpt', nonpkptData);
@@ -280,7 +280,7 @@ const InputNonPKPT = () => {
           <InputFieldComponent
             label="Ketua TIM"
             identiti="ketuaTim"
-            type="number"          
+            type="number"
             name="KetuaTIM"
             placeholder="Tentukan ketua tim"
             register={register('KetuaTIM', {
@@ -349,7 +349,7 @@ const InputNonPKPT = () => {
                   key={member.id}
                   className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
                 >
-                  <span className='text-slate-800'>{member.name}</span>
+                  <span className="text-slate-800">{member.name}</span>
                   <button
                     onClick={() => removeTeamMember(member.id)}
                     type="button"
