@@ -75,35 +75,31 @@ const DetailPengawasan = () => {
         <p>Hari Penugasan</p>
         <section className="flex justify-start items-start gap-3">
           <div className="w-1/5">
-            <small>status data</small>
-            <h2 className="text-2xl">PKP</h2>
+            <small>Jumlah</small>
+            <h2 className="text-2xl font-extrabold">300</h2>
           </div>
           <div className="flex-1">
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <small>Jenis Pengawasan</small>
-                <h3>test</h3>
+                <small>Penanggung Jawab</small>
+                <h3>25</h3>
               </div>
               <div>
-                <small>Area Pengawasan</small>
-                <h3>test</h3>
+                <small>Wakil Penanggung Jawab</small>
+                <h3>34</h3>
               </div>
               <div>
-                <small>Ruang Lingkup</small>
-                <h3>test</h3>
+                <small>Dalnis/Supervisor</small>
+                <h3>10</h3>
               </div>
               <div>
-                <small>Tujuan / Sasaran</small>
-                <h3>test</h3>
+                <small>Ketua Tim</small>
+                <h3>98</h3>
               </div>
               <div>
-                <small>Rencana Mulai</small>
-                <h3>test</h3>
-              </div>
-              <div>
-                <small>Rencana Penerbitan</small>
-                <h3>test</h3>
-              </div>
+                <small>Anggota Tim</small>
+                <h3>25</h3>
+              </div>            
             </div>
           </div>
         </section>

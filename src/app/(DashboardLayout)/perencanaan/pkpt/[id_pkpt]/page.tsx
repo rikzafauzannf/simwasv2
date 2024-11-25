@@ -21,7 +21,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
       component: <DetailPengawasan />,
     },
     {
-      label: 'Surat Tugas',
+      label: 'Rekap Surat Tugas',
       component: <InputSuratTugas />,
     },
     {

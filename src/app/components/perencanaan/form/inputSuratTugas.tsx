@@ -11,7 +11,7 @@ const InputSuratTugas = () => {
   ];
   return (
     <form className="space-y-3">
-      <h3 className="text-xl">Penginputan SUrat Tugas</h3>
+      <h3 className="text-xl">Penginputan Rekap Surat Tugas</h3>
       <section className="grid grid-cols-2 gap-3">
         <InputFieldComponent
           label="Bulan"
