@@ -109,20 +109,23 @@ const DetailPengawasan = () => {
         </section>
       </CardComponents>
       {/* data minor */}
-      <section className='grid grid-cols-2 gap-3'>
+      <section className="grid grid-cols-2 gap-3">
         <CardComponents>
-            <p>Jumlah Laporan</p>
-            <h3 className='text-xl'>1 LHP</h3>
-        </CardComponents>        
-        <CardComponents>
-            <p>Keterangan</p>
-            <h3 className='text-xl'>Gabungan</h3>
+          <p>Jumlah Laporan</p>
+          <h3 className="text-xl">1 LHP</h3>
         </CardComponents>
-        <div className='col-span-2'>
         <CardComponents>
+          <p>Keterangan</p>
+          <h3 className="text-xl">Gabungan</h3>
+        </CardComponents>
+        <div className="col-span-2">
+          <CardComponents>
             <p>Sarana & Prasarana</p>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa non asperiores nisi voluptates aperiam magnam.</p>
-        </CardComponents>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa non
+              asperiores nisi voluptates aperiam magnam.
+            </p>
+          </CardComponents>
         </div>
       </section>
     </div>

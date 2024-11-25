@@ -2,6 +2,7 @@
 
 import DailyActivity from '@/app/components/dashboard/DailyActivity';
 import { CardComponents } from '@/app/components/Global/Card';
+import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
 import DetailPengawasan from '@/app/components/perencanaan/view/detailPengawasan';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
@@ -21,7 +22,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
     },
     {
       label: 'Surat Tugas',
-      component: <DailyActivity />,
+      component: <InputSuratTugas />,
     },
     {
       label: 'Kendali Mutu',

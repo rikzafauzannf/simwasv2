@@ -68,8 +68,8 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         {...register}
         disabled={disabled}
-        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black 
-          ${disabled ? 'bg-gray-100' : 'bg-slate-200/25'} 
+        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600  
+          ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'} 
           ${error ? 'border-red-500' : ''}`}
       />
       {error && <span className="text-red-500 text-sm">{error.message}</span>}
@@ -130,7 +130,7 @@ export const SelectInputField: React.FC<SelectFieldProps> = ({
       <select
         id={identiti}
         {...register}
-        className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
+        className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-white/50 flex-1 "
       >
         <option value="" disabled selected>
           {placeholder}
