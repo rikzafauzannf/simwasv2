@@ -47,6 +47,10 @@ interface SelectFieldProps extends InputFieldProps {
   options: DataProps[];
 }
 
+interface TextAreaFieldProps extends InputFieldProps {
+  rows?: number;
+}
+
 export const InputFieldComponent: React.FC<InputFieldProps> = ({
   label,
   identiti,
@@ -144,6 +148,35 @@ export const SelectInputField: React.FC<SelectFieldProps> = ({
       {error && (
         <span className="text-red-500 font-semibold">{error.message}</span>
       )}
+    </div>
+  );
+};
+
+export const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
+  label,
+  identiti,
+  placeholder,
+  register,
+  error,
+  disabled = false,
+  rows = 4,
+}) => {
+  return (
+    <div className="flex flex-col space-y-2">
+      <label htmlFor={identiti} className="text-slate-800">
+        {label}
+      </label>
+      <textarea
+        id={identiti}
+        placeholder={placeholder}
+        {...register}
+        disabled={disabled}
+        rows={rows}
+        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600  
+          ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'} 
+          ${error ? 'border-red-500' : ''}`}
+      />
+      {error && <span className="text-red-500 text-sm">{error.message}</span>}
     </div>
   );
 };

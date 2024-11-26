@@ -99,7 +99,7 @@ const DetailPengawasan = () => {
               <div>
                 <small>Anggota Tim</small>
                 <h3>25</h3>
-              </div>            
+              </div>
             </div>
           </div>
         </section>
