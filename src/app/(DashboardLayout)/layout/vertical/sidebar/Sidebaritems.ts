@@ -80,7 +80,7 @@ const SidebarContent: MenuItem[] = [
         name: 'Surat Tugas',
         icon: 'solar:airbuds-case-charge-outline',
         id: uniqueId(),
-        url: '/ui/shadow',
+        url: '/perencanaan/surattugas',
       },
       {
         name: 'Pelaksanaan',

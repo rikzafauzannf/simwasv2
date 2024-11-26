@@ -172,7 +172,7 @@ export const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
         {...register}
         disabled={disabled}
         rows={rows}
-        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600  
+        className={`border border-b-2 rounded-[8px] shadow-md border-slate-600  
           ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'} 
           ${error ? 'border-red-500' : ''}`}
       />

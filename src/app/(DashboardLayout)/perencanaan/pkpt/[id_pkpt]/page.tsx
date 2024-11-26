@@ -2,6 +2,7 @@
 
 import DailyActivity from '@/app/components/dashboard/DailyActivity';
 import { CardComponents } from '@/app/components/Global/Card';
+import InputKendaliMutu from '@/app/components/pelaksanaan/form/inputKendaliMutu';
 import LembarHasilPengawasan from '@/app/components/pelaksanaan/form/lembarHasilPengawasan';
 import NotaHasilPengawasan from '@/app/components/pelaksanaan/form/notaHasilPengawasan';
 import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
@@ -28,7 +29,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
     },
     {
       label: 'Kendali Mutu',
-      component: <DailyActivity />,
+      component: <InputKendaliMutu />,
     },
     {
       label: 'NHP',

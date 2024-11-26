@@ -87,7 +87,7 @@ const NotaHasilPengawasan = () => {
           </div>
         </div>
       </CardComponents>
-      <ButtonType Text='+ Submit Data NHP' type='submit'/>
+      <ButtonType Text="+ Submit Data NHP" type="submit" />
     </form>
   );
 };

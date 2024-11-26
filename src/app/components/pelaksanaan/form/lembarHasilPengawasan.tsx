@@ -87,7 +87,7 @@ const LembarHasilPengawasan = () => {
           </div>
         </div>
       </CardComponents>
-      <ButtonType Text='+ Submit Data LHP' type='submit'/>
+      <ButtonType Text="+ Submit Data LHP" type="submit" />
     </form>
   );
 };
