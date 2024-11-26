@@ -5,6 +5,7 @@ import {
   SelectInputField,
   TextAreaFieldComponent,
 } from '../../Global/Input';
+import { ButtonType } from '../../Global/Button';
 
 const InputSuratTugas = () => {
   const [uploadOption, setUploadOption] = useState('file');
@@ -143,12 +144,12 @@ const InputSuratTugas = () => {
           /> */}
         <TextAreaFieldComponent
           rows={5}
-          label="Jenis Audit"
-          identiti="jenisAudit"
-          name="jenisAudit"
-          placeholder="Tentukan Jenis Audit"
+          label="Keterangan"
+          identiti="keterangan"
+          name="keterangan"
+          placeholder="Masukan Keterangan ST"
           type="text"
-          register={'jenisAudit'}
+          register={'keterangan'}
         />
         <div className="space-y-2">
           <label htmlFor="" className="text-slate-800">
@@ -203,6 +204,7 @@ const InputSuratTugas = () => {
           {/* </section> */}
         </div>
       </section>
+      <ButtonType Text='+ Buat Rekap Surat Tugas' type='submit'/>
     </form>
   );
 };
