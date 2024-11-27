@@ -81,18 +81,18 @@ const SidebarContent: MenuItem[] = [
         icon: 'solar:airbuds-case-charge-outline',
         id: uniqueId(),
         url: '/perencanaan/surattugas',
+      },      
+      {
+        name: 'Kendali Mutu',
+        icon: 'solar:shield-user-outline',
+        id: uniqueId(),
+        url: '/auth/register',
       },
       {
         name: 'Pelaksanaan',
         icon: 'solar:login-2-linear',
         id: uniqueId(),
         url: '/auth/login',
-      },
-      {
-        name: 'Kendali Mutu',
-        icon: 'solar:shield-user-outline',
-        id: uniqueId(),
-        url: '/auth/register',
       },
       {
         name: 'Progress Pengawasan',

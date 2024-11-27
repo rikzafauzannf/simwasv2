@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import { CardComponents } from '../Global/Card';
 import { ButtonLinkComponent } from '../Global/Button';
 
-const MapDataPkpt = () => {
+interface Props {
+  todo:string;
+}
+
+const MapDataPkpt:React.FC<Props> = ({todo}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -144,7 +148,7 @@ const MapDataPkpt = () => {
             <hr className="mb-3" />
             <ButtonLinkComponent
               Text="Input Realisasi"
-              linkTo="/perencanaan/realisasipkpt/inputrealisasi/1"
+              linkTo={`/${todo}/1`}
             />
           </CardComponents>
         ))}

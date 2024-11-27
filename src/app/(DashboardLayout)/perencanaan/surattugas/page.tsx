@@ -9,7 +9,7 @@ const SuratTugasPage = () => {
     <div className="space-y-3">
       <h3>Surat Tugas</h3>
       <CollapseComponents title="+ Buat Rekap Surat Tugas">
-        <MapDataPkpt />
+        <MapDataPkpt todo='perencanaan/surattugas/form' />
       </CollapseComponents>
       <div className="grid w-full gap-3">
         <CardComponents>

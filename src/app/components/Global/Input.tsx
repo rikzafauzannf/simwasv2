@@ -1,30 +1,9 @@
 'use client';
 
+import React from 'react';
 import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
-} from '@headlessui/react';
-import React, { useState } from 'react';
-import {
-  useForm,
-  SubmitHandler,
   FieldError,
-  UseFormRegister,
 } from 'react-hook-form';
-
-// interface Props {
-//   label: string;
-//   identiti: string;
-//   name: string;
-//   type: string;
-//   placeholder: string;
-// }
-
-// interface PropSelect {
-//   data: DataProps[];
-// }
 
 // global type
 interface InputFieldProps {
@@ -80,43 +59,6 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
     </div>
   );
 };
-
-// select type
-// export const SelectField: React.FC<PropSelect> = ({ data }) => {
-//   const [selecteddata, setSelecteddata] = useState<DataProps | null>(data[0]);
-//   const [query, setQuery] = useState('');
-
-//   const filteredData =
-//     query === ''
-//       ? data
-//       : data.filter((item) => {
-//           return item.name.toLowerCase().includes(query.toLowerCase());
-//         });
-//   return (
-//     <Combobox
-//       value={selecteddata}
-//       onChange={setSelecteddata}
-//       onClose={() => setQuery('')}
-//     >
-//       <ComboboxInput
-//         aria-label="Assignee"
-//         displayValue={(selected: DataProps | null) => selected?.name || ''}
-//         onChange={(event) => setQuery(event.target.value)}
-//       />
-//       <ComboboxOptions anchor="bottom" className="border empty:invisible">
-//         {filteredData.map((items) => (
-//           <ComboboxOption
-//             key={items.id}
-//             value={items}
-//             className="data-[focus]:bg-blue-100"
-//           >
-//             {items.name}
-//           </ComboboxOption>
-//         ))}
-//       </ComboboxOptions>
-//     </Combobox>
-//   );
-// };
 
 export const SelectInputField: React.FC<SelectFieldProps> = ({
   label,
