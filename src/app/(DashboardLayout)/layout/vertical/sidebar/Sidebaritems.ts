@@ -66,22 +66,16 @@ const SidebarContent: MenuItem[] = [
         url: '/perencanaan/pkpt',
       },
       {
-        name: 'Realisasi PKPT',
-        icon: 'solar:folder-check-broken',
+        name: 'Surat Tugas',
+        icon: 'solar:airbuds-case-charge-outline',
         id: uniqueId(),
-        url: '/perencanaan/realisasipkpt',
+        url: '/perencanaan/surattugas',
       },
     ],
   },
   {
     heading: 'Pelaksanaan',
     children: [
-      {
-        name: 'Surat Tugas',
-        icon: 'solar:airbuds-case-charge-outline',
-        id: uniqueId(),
-        url: '/perencanaan/surattugas',
-      },      
       {
         name: 'Kendali Mutu',
         icon: 'solar:shield-user-outline',
@@ -99,6 +93,12 @@ const SidebarContent: MenuItem[] = [
         icon: 'solar:shield-user-outline',
         id: uniqueId(),
         url: '/auth/register',
+      },
+      {
+        name: 'Realisasi PKPT',
+        icon: 'solar:folder-check-broken',
+        id: uniqueId(),
+        url: '/perencanaan/realisasipkpt',
       },
     ],
   },

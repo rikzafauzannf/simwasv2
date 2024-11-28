@@ -5,28 +5,8 @@ import DataTable from 'react-data-table-component';
 import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
+import { PKPTData } from '@/interface/interfacePKPT';
 
-interface PKPTData {
-  id?: number;
-  Status: string;
-  JenisPengawasan: string;
-  AreaPengawasan: string;
-  RuangLingkup: string;
-  Tujuan: string;
-  RencanaPenugasan: string;
-  RencanaPenerbitan: string;
-  PenanggungJawab: string;
-  WakilPenanggungJawab: string;
-  PengendaliTeknis: string;
-  KetuaTIM: string;
-  TIM: string;
-  Jumlah: number;
-  Anggaran: number;
-  JumlahLaporan: string;
-  Saran: string;
-  TingkatRisiko: string;
-  Keterangan: string;
-}
 const TablePKPT = () => {
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<PKPTData[]>([]);
@@ -38,13 +18,13 @@ const TablePKPT = () => {
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={'/perencanaan/pkpt/1'}
+            href={`/perencanaan/pkpt/${row.id}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
           </Link>
           <Link
-            href={'/perencanaan/pkpt/actions/1'}
+            href={`/perencanaan/pkpt/actions/${row.id}`}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act

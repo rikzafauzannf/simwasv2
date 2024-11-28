@@ -5,50 +5,30 @@ import DataTable from 'react-data-table-component';
 import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
+import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 
-interface PKPTData {
-  id?: number;
-  Status: string;
-  JenisPengawasan: string;
-  AreaPengawasan: string;
-  RuangLingkup: string;
-  Tujuan: string;
-  RencanaPenugasan: string;
-  RencanaPenerbitan: string;
-  PenanggungJawab: string;
-  WakilPenanggungJawab: string;
-  PengendaliTeknis: string;
-  KetuaTIM: string;
-  TIM: string;
-  Jumlah: number;
-  Anggaran: number;
-  JumlahLaporan: string;
-  Saran: string;
-  TingkatRisiko: string;
-  Keterangan: string;
-}
 const TableSuratTugas = () => {
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<PKPTData[]>([]);
+  const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
 
   const columns = [
     {
       name: 'Actions',
-      cell: (row: PKPTData) => (
+      cell: (row: SuratTugasData) => (
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={'/perencanaan/pkpt/1'}
+            href={`/perencanaan/surattugas/${row.id}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
           </Link>
-          <Link
+          {/* <Link
             href={'/perencanaan/pkpt/actions/1'}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act
-          </Link>
+          </Link> */}
           {/* <button
             onClick={() => handleEdit(row)}
             className="p-2 text-yellow-500 hover:text-yellow-700"
@@ -68,135 +48,101 @@ const TableSuratTugas = () => {
       ),
     },
     {
-      name: 'Status',
-      selector: (row: PKPTData) => row.Status,
+      name: 'Bulan',
+      selector: (row: SuratTugasData) => row.bulan,
       sortable: true,
     },
     {
-      name: 'Jenis Pengawasan',
-      selector: (row: PKPTData) => row.JenisPengawasan,
+      name: 'No/Tgl.Sp',
+      selector: (row: SuratTugasData) => row.noTglSp,
       sortable: true,
     },
     {
-      name: 'Area Pengawasan',
-      selector: (row: PKPTData) => row.AreaPengawasan,
+      name: 'Program Audit',
+      selector: (row: SuratTugasData) => row.programAudit,
       sortable: true,
     },
     {
-      name: 'Ruang Lingkup',
-      selector: (row: PKPTData) => row.RuangLingkup,
+      name: 'Tim Pemeriksa',
+      selector: (row: SuratTugasData) => row.timPemeriksa,
       sortable: true,
     },
     {
-      name: 'Tujuan / Sasaran',
-      selector: (row: PKPTData) => row.Tujuan,
+      name: 'Irban',
+      selector: (row: SuratTugasData) => row.irban,
       sortable: true,
     },
     {
-      name: 'Rencana Penugasan',
-      selector: (row: PKPTData) => row.RencanaPenugasan,
+      name: 'Pengendali Teknis',
+      selector: (row: SuratTugasData) => row.pengendaliTeknis,
       sortable: true,
     },
     {
-      name: 'Rencana Penerbitan',
-      selector: (row: PKPTData) => row.RencanaPenerbitan,
+      name: 'Ketua Tim',
+      selector: (row: SuratTugasData) => row.ketuaTim,
       sortable: true,
     },
     {
-      name: 'Penanggung Jawab',
-      selector: (row: PKPTData) => row.PenanggungJawab,
+      name: 'Tim',
+      selector: (row: SuratTugasData) => row.Tim,
       sortable: true,
     },
     {
-      name: 'Wakil Penanggung Jawab',
-      selector: (row: PKPTData) => row.WakilPenanggungJawab,
-      sortable: true,
-    },
-    {
-      name: 'Pengendali Teknis / Supervisor',
-      selector: (row: PKPTData) => row.PengendaliTeknis,
-      sortable: true,
-    },
-    {
-      name: 'Ketua TIM',
-      selector: (row: PKPTData) => row.KetuaTIM,
-      sortable: true,
-    },
-    {
-      name: 'TIM',
-      selector: (row: PKPTData) => row.TIM,
-      sortable: true,
-    },
-    {
-      name: 'Jumlah',
-      selector: (row: PKPTData) => row.Jumlah,
+      name: 'Jumlah Obejek',
+      selector: (row: SuratTugasData) => row.jumlahObjek,
       sortable: true,
     },
     {
       name: 'Jumlah Laporan',
-      selector: (row: PKPTData) => row.JumlahLaporan,
+      selector: (row: SuratTugasData) => row.jumlahLaporan,
       sortable: true,
     },
     {
-      name: 'Anggaran',
-      selector: (row: PKPTData) => row.Anggaran,
+      name: 'No.Tgl.LHP/LHE/LHR',
+      selector: (row: SuratTugasData) => row.noTglLhp,
       sortable: true,
     },
     {
-      name: 'Saran dan Prasarana',
-      selector: (row: PKPTData) => row.Saran,
+      name: 'Jenis Audit',
+      selector: (row: SuratTugasData) => row.jenisAudit,
       sortable: true,
     },
     {
       name: 'Keterangan',
-      selector: (row: PKPTData) => row.Keterangan,
+      selector: (row: SuratTugasData) => row.keterangan,
+      sortable: true,
+    },
+    {
+      name: 'Link ST',
+      selector: (row: SuratTugasData) => row.linkSt,
+      sortable: true,
+    },
+    {
+      name: 'File ST',
+      selector: (row: SuratTugasData) => row.fileSt,
       sortable: true,
     },
   ];
 
-  const data: PKPTData[] = [
+  const data: SuratTugasData[] = [
     {
-      id: 1,
-      Status: 'PKPT',
-      JenisPengawasan: 'string',
-      AreaPengawasan: 'string',
-      RuangLingkup: 'string',
-      Tujuan: 'string',
-      RencanaPenugasan: 'string',
-      RencanaPenerbitan: 'string',
-      PenanggungJawab: 'string',
-      WakilPenanggungJawab: 'string',
-      PengendaliTeknis: 'string',
-      KetuaTIM: 'string',
-      TIM: 'string',
-      Jumlah: 12,
-      Anggaran: 12,
-      JumlahLaporan: 'string',
-      Saran: 'string',
-      TingkatRisiko: 'string',
-      Keterangan: 'string',
-    },
-    {
-      id: 2,
-      Status: 'Non-PKPT',
-      JenisPengawasan: 'string',
-      AreaPengawasan: 'string',
-      RuangLingkup: 'string',
-      Tujuan: 'string',
-      RencanaPenugasan: 'string',
-      RencanaPenerbitan: 'string',
-      PenanggungJawab: 'string',
-      WakilPenanggungJawab: 'string',
-      PengendaliTeknis: 'string',
-      KetuaTIM: 'string',
-      TIM: 'string',
-      Jumlah: 12,
-      Anggaran: 12,
-      JumlahLaporan: 'string',
-      Saran: 'string',
-      TingkatRisiko: 'string',
-      Keterangan: 'string',
-    },
+      id:1,
+    bulan:"string",
+    noTglSp:"string",
+    programAudit:"string",
+    timPemeriksa:"string",
+    irban:"string",
+    pengendaliTeknis:"string",
+    ketuaTim:"string",
+    Tim:"string",
+    jumlahObjek:12,
+    jumlahLaporan:20,
+    noTglLhp:"string",
+    jenisAudit:"string",
+    keterangan:"string",
+    fileSt:"string",
+    linkSt:"string",
+    }
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -204,8 +150,8 @@ const TableSuratTugas = () => {
     setSearch(value);
     const filtered = data.filter(
       (item) =>
-        item.JenisPengawasan.toLowerCase().includes(value.toLowerCase()) ||
-        item.KetuaTIM.toLowerCase().includes(value.toLowerCase())
+        item.noTglSp.toLowerCase().includes(value.toLowerCase()) ||
+        item.programAudit.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -221,7 +167,7 @@ const TableSuratTugas = () => {
         return columns
           .filter((col) => col.name !== 'Actions')
           .map((col) => {
-            const selector = col.selector as (row: PKPTData) => string | number;
+            const selector = col.selector as (row: SuratTugasData) => string | number;
             return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
           })
           .join(',');
@@ -245,7 +191,7 @@ const TableSuratTugas = () => {
         return columns
           .filter((col) => col.name !== 'Actions')
           .map((col) => {
-            const selector = col.selector as (row: PKPTData) => string | number;
+            const selector = col.selector as (row: SuratTugasData) => string | number;
             return selector(row);
           })
           .join('\t');

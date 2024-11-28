@@ -7,6 +7,8 @@ import {
 } from '../../Global/Input';
 import { ButtonType } from '../../Global/Button';
 import { CardComponents } from '../../Global/Card';
+import { useTeamStore } from '@/middleware/Store/useTeamStore';
+import { FaTrash } from 'react-icons/fa';
 
 const InputSuratTugas = () => {
   const [uploadOption, setUploadOption] = useState('file');
@@ -15,6 +17,18 @@ const InputSuratTugas = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setUploadOption(event.target.value);
+  };
+
+  const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
+    useTeamStore();
+  const [newMember, setNewMember] = React.useState('');
+
+  const handleAddMember = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newMember.trim()) {
+      addTeamMember(newMember.trim());
+      setNewMember('');
+    }
   };
 
   const optionsKegiatan = [
@@ -93,14 +107,53 @@ const InputSuratTugas = () => {
                 register={'ketuaTIM'}
               />
               <div className="col-span-2">
-                <InputFieldComponent
+                {/* <InputFieldComponent
                   label="Anggota Tim"
                   identiti="anggotaTim"
                   name="anggotaTim"
                   placeholder="Masukan Anggota Tim"
                   type="text"
                   register={'anggotaTim'}
-                />
+                /> */}
+                <div className="flex flex-col space-y-2">
+                  <label htmlFor="Tim" className="text-slate-800">
+                    TIM [{teamMembers.length}]
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newMember}
+                      onChange={(e) => setNewMember(e.target.value)}
+                      placeholder="Masukkan nama anggota tim"
+                      className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
+                    />
+                    <button
+                      onClick={handleAddMember}
+                      type="button"
+                      className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary"
+                    >
+                      Tambah
+                    </button>
+                  </div>
+                </div>
+                {/* Display Team Members */}
+                <div className="mt-4 space-y-2">
+                  {teamMembers.map((member) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
+                    >
+                      <span className="text-slate-800">{member.name}</span>
+                      <button
+                        onClick={() => removeTeamMember(member.id)}
+                        type="button"
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
             <h3>Audit</h3>
@@ -129,23 +182,23 @@ const InputSuratTugas = () => {
                 type="text"
                 register={'noTglLh'}
               />
-              <InputFieldComponent
+              {/* <InputFieldComponent
                 label="Jenis Audit"
                 identiti="jenisAudit"
                 name="jenisAudit"
                 placeholder="Tentukan Jenis Audit"
                 type="text"
                 register={'jenisAudit'}
+              /> */}
+              <SelectInputField
+                label="Jenis Audit"
+                identiti="jenisAudit"
+                name="jenisAudit"
+                options={optionsKegiatan}
+                placeholder="Tentukan Jenis Audit"
+                register={'jenisAudit'}
+                type="select"
               />
-              {/* <SelectInputField
-            label="Jenis Audit"
-            identiti="jenisAudit"
-            name="jenisAudit"
-            options={optionsKegiatan}
-            placeholder="Tentukan Jenis Audit"
-            register={'jenisAudit'}
-            type="select"
-          /> */}
               <TextAreaFieldComponent
                 rows={5}
                 label="Keterangan"

@@ -1,8 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 import { CardComponents } from '../../Global/Card';
-import { InputFieldComponent, SelectInputField, TextAreaFieldComponent } from '../../Global/Input';
+import {
+  InputFieldComponent,
+  SelectInputField,
+  TextAreaFieldComponent,
+} from '../../Global/Input';
 import { ButtonType } from '../../Global/Button';
+import LaporanMingguanComponent from '../laporanMingguan';
 
 const InputKendaliMutu = () => {
   const [KendaliMutu, setKendaliMutu] = useState(false);
@@ -15,22 +20,7 @@ const InputKendaliMutu = () => {
     },
   ];
 
-  const dummyLaporanMingguan = [
-    {
-      jam: '01.00',
-      tanggal: '15/09/2024',
-      username: 'ucok',
-      laporan:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa, delectus?',
-    },
-    {
-      jam: '11.00',
-      tanggal: '19/09/2024',
-      username: 'Jhon Doe',
-      laporan:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa, delectus?',
-    },
-  ];
+  
 
   const handleKendaliMutu: React.MouseEventHandler<HTMLButtonElement> = () => {
     setKendaliMutu(true);
@@ -151,59 +141,50 @@ const InputKendaliMutu = () => {
             </section>
             <hr />
             <InputFieldComponent
-                label="Masukan Link Google Drive (Public)"
-                identiti="linkGDrive"
-                name="linkGDrive"
-                placeholder="Masukan Link GDrive"
-                type="link"
-                register={'linkGDrive'}
-              />
+              label="Masukan Link Google Drive (Public)"
+              identiti="linkGDrive"
+              name="linkGDrive"
+              placeholder="Masukan Link GDrive"
+              type="link"
+              register={'linkGDrive'}
+            />
             <TextAreaFieldComponent
-                rows={4}
-                label="Keterangan"
-                identiti="keterangan"
-                name="keterangan"
-                placeholder="Masukan Keterangan ST"
-                type="text"
-                register={'keterangan'}
-              />
-              <ButtonType Text='+ Buat Kendali Mutu' type='submit'/>
+              rows={4}
+              label="Keterangan"
+              identiti="keterangan"
+              name="keterangan"
+              placeholder="Masukan Keterangan ST"
+              type="text"
+              register={'keterangan'}
+            />
+            <ButtonType Text="+ Buat Kendali Mutu" type="submit" />
           </form>
         </CardComponents>
       ) : (
         ''
       )}
-      {LaporanMingguan ? <CardComponents>
-        <form className='space-y-3'>
-        <TextAreaFieldComponent
-                rows={4}
-                label="Laporan Mingguan / Harian"
-                identiti="laporan"
-                name="laporan"
-                placeholder="Ketikan Laporan disini."
-                type="text"
-                register={'laporan'}
-              />
-              <ButtonType Text='+ Buat Laporan Mingguan' type='submit'/>
-        </form>
-      </CardComponents> : ''}
+      {LaporanMingguan ? (
+        <CardComponents>
+          <form className="space-y-3">
+            <TextAreaFieldComponent
+              rows={4}
+              label="Laporan Mingguan / Harian"
+              identiti="laporan"
+              name="laporan"
+              placeholder="Ketikan Laporan disini."
+              type="text"
+              register={'laporan'}
+            />
+            <ButtonType Text="+ Buat Laporan Mingguan" type="submit" />
+          </form>
+        </CardComponents>
+      ) : (
+        ''
+      )}
       <CardComponents>
         <h3>Rekap Hasil Kendali Mutu</h3>
       </CardComponents>
-      <CardComponents>
-        <h3>Rekap Laporan Mingguan</h3>
-        <section className="grid w-full gap-3">
-          {dummyLaporanMingguan.map((item, index) => (
-            <div key={index} className="space-y-2">
-              <p>
-                {item.jam} , {item.tanggal} - <strong>{item.username}</strong>{' '}
-              </p>
-              <p className="text-slate-800">{item.laporan}</p>
-              <hr />
-            </div>
-          ))}
-        </section>
-      </CardComponents>
+      <LaporanMingguanComponent/>
     </div>
   );
 };

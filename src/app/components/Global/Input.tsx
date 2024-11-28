@@ -1,9 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  FieldError,
-} from 'react-hook-form';
+import { FieldError } from 'react-hook-form';
 
 // global type
 interface InputFieldProps {
