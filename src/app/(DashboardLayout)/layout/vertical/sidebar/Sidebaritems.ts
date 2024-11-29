@@ -80,7 +80,7 @@ const SidebarContent: MenuItem[] = [
         name: 'Kendali Mutu',
         icon: 'solar:shield-user-outline',
         id: uniqueId(),
-        url: '/auth/register',
+        url: '/pelaksanaan/kendalimutu',
       },
       {
         name: 'Pelaksanaan',

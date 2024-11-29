@@ -21,7 +21,7 @@ const ViewSuratTugas = ({ params }: PageProps) => {
         src={pdfUrl}
         className="w-full h-[500px] rounded-sm shadow-md"
       ></iframe>
-      <LaporanMingguanComponent/>
+      <LaporanMingguanComponent />
     </div>
   );
 };

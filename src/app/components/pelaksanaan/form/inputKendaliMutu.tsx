@@ -8,6 +8,7 @@ import {
 } from '../../Global/Input';
 import { ButtonType } from '../../Global/Button';
 import LaporanMingguanComponent from '../laporanMingguan';
+import TableKendaliMutu from '../table/tableKendaliMutu';
 
 const InputKendaliMutu = () => {
   const [KendaliMutu, setKendaliMutu] = useState(false);
@@ -19,8 +20,6 @@ const InputKendaliMutu = () => {
       title: 'ST.... - No.TGL/SP',
     },
   ];
-
-  
 
   const handleKendaliMutu: React.MouseEventHandler<HTMLButtonElement> = () => {
     setKendaliMutu(true);
@@ -65,7 +64,7 @@ const InputKendaliMutu = () => {
       {KendaliMutu ? (
         <CardComponents>
           <form className="space-y-3">
-            <section className="grid grid-cols-3 gap-3">
+            <section className="grid grid-cols-3 gap-3">            
               <label className="text-slate-800">
                 <input
                   type="checkbox"
@@ -92,16 +91,7 @@ const InputKendaliMutu = () => {
                   className="shadow-md me-2"
                 />
                 Notulensi Kesepakatan
-              </label>
-              <label className="text-slate-800">
-                <input
-                  type="checkbox"
-                  name="notulensiKesepakatan"
-                  value="ada"
-                  className="shadow-md me-2"
-                />
-                Notulensi Kesepakatan
-              </label>
+              </label>              
               <label className="text-slate-800">
                 <input
                   type="checkbox"
@@ -181,10 +171,12 @@ const InputKendaliMutu = () => {
       ) : (
         ''
       )}
-      <CardComponents>
-        <h3>Rekap Hasil Kendali Mutu</h3>
-      </CardComponents>
-      <LaporanMingguanComponent/>
+      <div className="grid w-full gap-3">
+        <CardComponents>
+          <TableKendaliMutu />
+        </CardComponents>
+      </div>
+      <LaporanMingguanComponent />
     </div>
   );
 };

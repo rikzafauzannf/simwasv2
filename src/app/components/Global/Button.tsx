@@ -29,7 +29,7 @@ export const ButtonLinkComponent: React.FC<PropsLink> = ({ linkTo, Text }) => {
   return (
     <>
       <Link
-        className="px-6 py-2 text-white bg-primary hover:bg-lightprimary rounded-md shadow-md transition-all ease-in-out"
+        className="px-6 py-2 text-white bg-primary hover:bg-lightprimary rounded-md shadow-md transition-all ease-in-out w-full"
         href={linkTo}
       >
         {Text}

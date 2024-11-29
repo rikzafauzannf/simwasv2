@@ -126,23 +126,23 @@ const TableSuratTugas = () => {
 
   const data: SuratTugasData[] = [
     {
-      id:1,
-    bulan:"string",
-    noTglSp:"string",
-    programAudit:"string",
-    timPemeriksa:"string",
-    irban:"string",
-    pengendaliTeknis:"string",
-    ketuaTim:"string",
-    Tim:"string",
-    jumlahObjek:12,
-    jumlahLaporan:20,
-    noTglLhp:"string",
-    jenisAudit:"string",
-    keterangan:"string",
-    fileSt:"string",
-    linkSt:"string",
-    }
+      id: 1,
+      bulan: 'string',
+      noTglSp: 'string',
+      programAudit: 'string',
+      timPemeriksa: 'string',
+      irban: 'string',
+      pengendaliTeknis: 'string',
+      ketuaTim: 'string',
+      Tim: 'string',
+      jumlahObjek: 12,
+      jumlahLaporan: 20,
+      noTglLhp: 'string',
+      jenisAudit: 'string',
+      keterangan: 'string',
+      fileSt: 'string',
+      linkSt: 'string',
+    },
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,7 +167,9 @@ const TableSuratTugas = () => {
         return columns
           .filter((col) => col.name !== 'Actions')
           .map((col) => {
-            const selector = col.selector as (row: SuratTugasData) => string | number;
+            const selector = col.selector as (
+              row: SuratTugasData
+            ) => string | number;
             return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
           })
           .join(',');
@@ -177,7 +179,7 @@ const TableSuratTugas = () => {
     const blob = new Blob([`${headers}\n${csvData}`], {
       type: 'text/csv;charset=utf-8',
     });
-    saveAs(blob, 'pkpt_data.csv');
+    saveAs(blob, 'surat_tugas_data.csv');
   };
 
   const exportToExcel = () => {
@@ -191,7 +193,9 @@ const TableSuratTugas = () => {
         return columns
           .filter((col) => col.name !== 'Actions')
           .map((col) => {
-            const selector = col.selector as (row: SuratTugasData) => string | number;
+            const selector = col.selector as (
+              row: SuratTugasData
+            ) => string | number;
             return selector(row);
           })
           .join('\t');
@@ -201,7 +205,7 @@ const TableSuratTugas = () => {
     const blob = new Blob([`${headers}\n${excelData}`], {
       type: 'application/vnd.ms-excel;charset=utf-8',
     });
-    saveAs(blob, 'pkpt_data.xls');
+    saveAs(blob, 'surat_tugas_data.xls');
   };
 
   return (
