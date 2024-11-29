@@ -7,15 +7,8 @@ import React from 'react';
 const KendaliMutuPage = () => {
   return (
     <div className="space-y-3">
-      <h3 className="text-xl">Kendali Mutu</h3>
-      <CollapseComponents title="+ Input Kendali Mutu">
-        <MapDataST/>
-      </CollapseComponents>
-      <div className="grid w-full gap-3">
-        <CardComponents>
-          <TableKendaliMutu />
-        </CardComponents>
-      </div>
+      <h3 className="text-xl">Kendali Mutu</h3>    
+        <MapDataST/>      
     </div>
   );
 };

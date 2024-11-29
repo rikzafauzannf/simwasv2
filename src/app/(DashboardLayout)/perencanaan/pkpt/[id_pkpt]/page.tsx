@@ -11,7 +11,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
 interface PageProps {
   params: {
-    id_pkpt: number;
+    id_pkpt: string;
   };
 }
 
@@ -21,7 +21,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
   const tabs_list = [
     {
       label: 'Detail PKPT',
-      component: <DetailPengawasan />,
+      component: <DetailPengawasan id_pkpt={id_pkpt} />,
     },
     {
       label: 'Rekap Surat Tugas',

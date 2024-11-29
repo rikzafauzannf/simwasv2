@@ -9,7 +9,7 @@ import { NotofikasiEdit } from '@/app/components/Global/Notif';
 // Cara 1: Menggunakan props params
 interface PageProps {
   params: {
-    id_pkpt: number;
+    id_pkpt: string;
   };
 }
 

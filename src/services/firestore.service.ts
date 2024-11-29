@@ -42,6 +42,7 @@ export class FirestoreService {
       return {
         success: true,
         data: data,
+        message: 'Data berhasil diambil'
       };
     } catch (error) {
       return {
