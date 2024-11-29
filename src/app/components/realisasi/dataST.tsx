@@ -139,20 +139,20 @@ const MapDataST= () => {
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  const handleReportClick = (id: number) => {
-    console.log('Button clicked for ID:', id);
-    Swal.fire({
-      title: 'Buat Laporan Mingguan',
-      html: `<div id="report-form"></div>`,
-      showCancelButton: true,
-      confirmButtonText: 'Kirim',
-      preConfirm: () => {
-        const form = document.getElementById('report-form') as HTMLDivElement;
-        const reportForm = <ReportForm id={id} />;
-        ReactDOM.render(reportForm, form);
-      },
-    });
-  };
+  // const handleReportClick = (id: number) => {
+  //   console.log('Button clicked for ID:', id);
+  //   Swal.fire({
+  //     title: 'Buat Laporan Mingguan',
+  //     html: `<div id="report-form"></div>`,
+  //     showCancelButton: true,
+  //     confirmButtonText: 'Kirim',
+  //     preConfirm: () => {
+  //       const form = document.getElementById('report-form') as HTMLDivElement;
+  //       const reportForm = <ReportForm id={id} />;
+  //       ReactDOM.render(reportForm, form);
+  //     },
+  //   });
+  // };
 
   return (
     <>
