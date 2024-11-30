@@ -15,81 +15,82 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
 
   const dataDummy = [
     {
-      id:1,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 1,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:2,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 2,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:1,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 1,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:2,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 2,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:1,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 1,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:2,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 2,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:1,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 1,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:2,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 2,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:1,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 1,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:2,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 2,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:1,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 1,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:2,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 2,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:1,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 1,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
     {
-      id:2,
-      program_audit:"Program Audit/Kegiatan",
-      no_tglsp:"No/Tgl.Sp"
+      id: 2,
+      program_audit: 'Program Audit/Kegiatan',
+      no_tglsp: 'No/Tgl.Sp',
     },
   ];
 
   // Search filter
-  const filteredData = dataDummy.filter((item) =>
-    item.program_audit.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.no_tglsp.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = dataDummy.filter(
+    (item) =>
+      item.program_audit.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.no_tglsp.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Button, Checkbox, Label, TextInput } from 'flowbite-react';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
@@ -21,7 +21,10 @@ const AuthLogin = () => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       setFocusIndex(index - 1);
     }
@@ -63,52 +66,54 @@ const AuthLogin = () => {
         </div>
         {showOtp && (
           <>
-          <div className="mb-4">
-            <div className="mb-2 block">
-              <Label htmlFor="OTP" value="OTP" />
+            <div className="mb-4">
+              <div className="mb-2 block">
+                <Label htmlFor="OTP" value="OTP" />
+              </div>
+              <div className="flex space-x-2">
+                {otp.map((digit, index) => (
+                  <TextInput
+                    key={index}
+                    id={`otp-input-${index}`}
+                    type="text"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    className="form-control form-rounded-xl w-12 text-center"
+                    autoFocus={index === focusIndex}
+                  />
+                ))}
+              </div>
+              {error && <p className="text-red-500">{error}</p>}
             </div>
-            <div className="flex space-x-2">
-              {otp.map((digit, index) => (
-                <TextInput
-                  key={index}
-                  id={`otp-input-${index}`}
-                  type="text"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOtpChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="form-control form-rounded-xl w-12 text-center"
-                  autoFocus={index === focusIndex}
-                />
-              ))}
+            <div className="flex justify-between my-5">
+              <div className="flex items-center gap-2">
+                <Checkbox id="accept" className="checkbox" />
+                <Label
+                  htmlFor="accept"
+                  className="opacity-90 font-normal cursor-pointer"
+                >
+                  Remeber this Device
+                </Label>
+              </div>
+              <Link
+                href={'/dashboard'}
+                className="text-primary text-sm font-medium"
+              >
+                Kirim Kembali OTP?
+              </Link>
             </div>
-            {error && <p className="text-red-500">{error}</p>}
-          </div>
-          <div className="flex justify-between my-5">
-          <div className="flex items-center gap-2">
-            <Checkbox id="accept" className="checkbox" />
-            <Label
-              htmlFor="accept"
-              className="opacity-90 font-normal cursor-pointer"
+            <Button
+              color={'primary'}
+              href="/dashboard"
+              as={Link}
+              className="w-full bg-primary text-white rounded-xl"
             >
-              Remeber this Device
-            </Label>
-          </div>
-          <Link href={'/dashboard'} className="text-primary text-sm font-medium">
-          Kirim Kembali OTP?
-          </Link>
-        </div>
-        <Button
-          color={'primary'}
-          href="/dashboard"
-          as={Link}
-          className="w-full bg-primary text-white rounded-xl"
-        >
-          Login
-        </Button>
-        </>
+              Login
+            </Button>
+          </>
         )}
-        
       </form>
     </>
   );

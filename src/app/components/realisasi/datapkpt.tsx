@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { CardComponents } from '../Global/Card';
 import { ButtonLinkComponent } from '../Global/Button';
+import Link from 'next/link';
 
 interface Props {
   todo: string;
@@ -14,81 +15,82 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
 
   const dataDummy = [
     {
-      id:1,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 1,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:2,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 2,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:1,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 1,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:2,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 2,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:1,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 1,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:2,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 2,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:1,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 1,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:2,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 2,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:1,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 1,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:2,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 2,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:1,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 1,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:2,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 2,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:1,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
+      id: 1,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id:2,
-      area_pengawasan:"Area Pengawasan",
-      jenis_pengawasan:"Jenis Pengawasan"
-    },    
+      id: 2,
+      area_pengawasan: 'Area Pengawasan',
+      jenis_pengawasan: 'Jenis Pengawasan',
+    },
   ];
 
   // Search filter
-  const filteredData = dataDummy.filter((item) =>
-    item.jenis_pengawasan.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.area_pengawasan.toLowerCase().includes(searchTerm.toLowerCase()) 
+  const filteredData = dataDummy.filter(
+    (item) =>
+      item.jenis_pengawasan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.area_pengawasan.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic
@@ -110,13 +112,23 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
       <section className="grid md:grid-cols-4 gap-3">
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
-            <h1>#{item.area_pengawasan}</h1>
+            <h1># {item.area_pengawasan}</h1>
             <p>{item.jenis_pengawasan}</p>
             <hr className="mb-3" />
-            <ButtonLinkComponent
-              Text="Buat ST"
-              linkTo={`/dashboard/${todo}/${item.id}`}
-            />
+            <div className="flex flex-col gap-2">
+              <Link
+                href={`/dashboard/${todo}/${item.id}`}
+                className="py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50"
+              >
+                BuatST
+              </Link>
+              {/* <button
+              onClick={() => handleReportClick(item.tim)}
+              className='py-1 px-3 w-full bg-green-600 text-white rounded-md text-center font-semibold'
+            >
+              Buat Laporan Mingguan
+            </button> */}
+            </div>
           </CardComponents>
         ))}
       </section>
