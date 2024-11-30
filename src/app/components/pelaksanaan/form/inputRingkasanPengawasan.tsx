@@ -11,7 +11,7 @@ const InputRingkasanPengawasan = () => {
   ];
   return (
     <div className="space-y-3">
-      <h3 className="text-xl">Input Temuan Hasil.</h3>
+      <h3 className="text-xl">Input Temuan Hasil</h3>
       <CardComponents>
         <form className="space-y-3">
           <h3>Form Ringkasan Temuan</h3>
