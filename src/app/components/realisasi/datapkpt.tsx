@@ -14,114 +14,81 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
 
   const dataDummy = [
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:1,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:2,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:1,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:2,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:1,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:2,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:1,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:2,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:1,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:2,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:1,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:2,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
+      id:1,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
     },
     {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
-    {
-      jenis_pengawasan: 'internal',
-      tim: 1,
-    },
+      id:2,
+      area_pengawasan:"Area Pengawasan",
+      jenis_pengawasan:"Jenis Pengawasan"
+    },    
   ];
 
   // Search filter
   const filteredData = dataDummy.filter((item) =>
-    item.jenis_pengawasan.toLowerCase().includes(searchTerm.toLowerCase())
+    item.jenis_pengawasan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.area_pengawasan.toLowerCase().includes(searchTerm.toLowerCase()) 
   );
 
   // Pagination logic
@@ -134,7 +101,7 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Cari jenis pengawasan..."
+          placeholder="Cari jenis pengawasan / area..."
           className="w-full p-2 border rounded-md mt-2"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -143,12 +110,12 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
       <section className="grid md:grid-cols-4 gap-3">
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
-            <h1>{item.jenis_pengawasan}</h1>
-            <p>{item.tim}</p>
+            <h1>#{item.area_pengawasan}</h1>
+            <p>{item.jenis_pengawasan}</p>
             <hr className="mb-3" />
             <ButtonLinkComponent
               Text="Buat ST"
-              linkTo={`/dashboard/${todo}/1`}
+              linkTo={`/dashboard/${todo}/${item.id}`}
             />
           </CardComponents>
         ))}
