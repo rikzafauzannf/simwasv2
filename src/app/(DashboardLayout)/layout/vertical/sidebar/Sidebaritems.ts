@@ -37,13 +37,7 @@ const SidebarContent: MenuItem[] = [
     heading: 'Referensi',
     children: [
       {
-        name: 'Jenis Pengawasan',
-        icon: 'solar:widget-add-line-duotone',
-        id: uniqueId(),
-        url: '/',
-      },
-      {
-        name: 'Kelompok Temuan',
+        name: 'Buat Data Referensi',
         icon: 'solar:widget-add-line-duotone',
         id: uniqueId(),
         url: '/',

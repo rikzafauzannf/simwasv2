@@ -40,9 +40,12 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
   if (error) return <div>Error: {error.message}</div>;
   return (
     <div className="space-y-3">
+      <div>
+      <p className='font-semibold'>{'>>'}{DataPKPT[0].status}</p>
       <h1 className="text-2xl font-semibold">
         # {DataPKPT[0].area_pengawasan}
       </h1>
+      </div>
       <p>Ruang Lingkup:</p>
       <section className="grid grid-cols-4 gap-3">
         <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">

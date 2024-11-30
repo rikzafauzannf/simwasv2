@@ -77,7 +77,7 @@ const InputPKPT = () => {
         // data identiti
         id_user: 1,
         createdAt: new Date(),
-        status: 'draft',
+        status: 'pkpt',
         active: 'true',
       };
 

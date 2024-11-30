@@ -8,27 +8,7 @@ import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
 import { title } from 'process';
 import { FirestoreService } from '@/services/firestore.service';
-
-interface PKPTFormData {
-  JenisPengawasan: string;
-  AreaPengawasan: string;
-  RuangLingkup: string;
-  TujuanSasaran: string;
-  RencanaPenugasan: string;
-  RencanaPenerbitan: string;
-  PenanggungJawab: string;
-  WakilPenanggungJawab: string;
-  Supervisor: string;
-  KetuaTIM: string;
-  ATim: string;
-  Jumlah: number;
-  Anggaran?: number;
-  JumlahLaporan: number;
-  SaranaDanPrasarana?: number;
-  TingkatRisiko: string;
-  Keterangan?: string;
-  JenisLaporan: string;
-}
+import { PKPTFormData } from '@/interface/interfacePKPT';
 
 const InputNonPKPT = () => {
   const {
@@ -46,11 +26,11 @@ const InputNonPKPT = () => {
       TujuanSasaran: '',
       RencanaPenugasan: '',
       RencanaPenerbitan: '',
-      PenanggungJawab: '',
-      WakilPenanggungJawab: '',
-      Supervisor: '',
-      KetuaTIM: '',
-      ATim: '',
+      PenanggungJawab: 0,
+      WakilPenanggungJawab: 0,
+      Supervisor: 0,
+      KetuaTIM: 0,
+      ATim: 0,
       Jumlah: 0,
       JumlahLaporan: 0,
       TingkatRisiko: '',
@@ -74,7 +54,7 @@ const InputNonPKPT = () => {
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
       // Prepare data to be sent to Firestore
-      const nonpkptData = {
+      const pkptData = {
         // ...data,
         area_pengawasan: data.AreaPengawasan,
         jenis_pengawasan: data.JenisPengawasan,
@@ -84,6 +64,8 @@ const InputNonPKPT = () => {
         rencana_penerbitan: data.RencanaPenerbitan,
         penanggung_jawab: data.PenanggungJawab,
         wakil_penanggung_jawab: data.WakilPenanggungJawab,
+        pengendali_teknis: data.Supervisor,
+        ketua_tim: data.KetuaTIM,
         anggota_tim: data.ATim,
         jumlah: data.Jumlah,
         tim: teamMembers,
@@ -95,20 +77,20 @@ const InputNonPKPT = () => {
         // data identiti
         id_user: 1,
         createdAt: new Date(),
-        status: 'draft',
+        status: 'non-pkpt',
         active: 'true',
       };
 
-      const result = await firestoreService.addData('non_pkpt', nonpkptData);
+      const result = await firestoreService.addData('pkpt', pkptData);
 
       if (result.success) {
-        console.log('PKPT berhasil disimpan:', result);
+        console.log('NonPKPT berhasil disimpan:', result);
         // Reset form
         reset();
         // Reset team members
         resetTeamMembers();
         // Optional: Show success message to user
-        alert('Data PKPT berhasil disimpan');
+        alert('Data Non-PKPT berhasil disimpan');
       } else {
         throw new Error(result.message);
       }
@@ -160,7 +142,7 @@ const InputNonPKPT = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Data PKPT */}
       <CardComponents>
-        <h3>Data NonPKPT</h3>
+        <h3>Data Non-PKPT</h3>
         <section className="grid md:grid-cols-2 w-full gap-3">
           <InputFieldComponent
             label="Area Pengawasan"
