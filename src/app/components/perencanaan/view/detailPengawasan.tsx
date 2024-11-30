@@ -4,11 +4,11 @@ import { CardComponents } from '../../Global/Card';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { FirestoreService } from '@/services/firestore.service';
 
-interface Props{
-  id_pkpt:string
+interface Props {
+  id_pkpt: string;
 }
 
-const DetailPengawasan = ({id_pkpt}:Props) => {
+const DetailPengawasan = ({ id_pkpt }: Props) => {
   const [DataPKPT, setDataPKPT] = useState<PKPTDataBase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -18,7 +18,7 @@ const DetailPengawasan = ({id_pkpt}:Props) => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await firestoreService.getDataById('pkpt',id_pkpt);
+        const response = await firestoreService.getDataById('pkpt', id_pkpt);
         if (response.success && response.data) {
           const datapkpt = response.data as PKPTDataBase;
           setDataPKPT([datapkpt]);
@@ -40,11 +40,13 @@ const DetailPengawasan = ({id_pkpt}:Props) => {
   if (error) return <div>Error: {error.message}</div>;
   return (
     <div className="space-y-3">
-      <h1 className="text-2xl font-semibold"># {DataPKPT[0].area_pengawasan}</h1>
+      <h1 className="text-2xl font-semibold">
+        # {DataPKPT[0].area_pengawasan}
+      </h1>
       <p>Ruang Lingkup:</p>
       <section className="grid grid-cols-4 gap-3">
         <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
-        {DataPKPT[0].ruang_lingkup}
+          {DataPKPT[0].ruang_lingkup}
         </div>
         {/* <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
           kominfo
@@ -69,7 +71,9 @@ const DetailPengawasan = ({id_pkpt}:Props) => {
         </CardComponents>
         <CardComponents>
           <p className="text-sm">Anggaran</p>
-          <h3 className="text-xl">Rp. {DataPKPT[0].anggaran.toLocaleString('id-ID')}</h3>
+          <h3 className="text-xl">
+            Rp. {DataPKPT[0].anggaran.toLocaleString('id-ID')}
+          </h3>
         </CardComponents>
       </section>
       {/* section jadwal penugasan */}
@@ -91,15 +95,16 @@ const DetailPengawasan = ({id_pkpt}:Props) => {
       <section className="grid grid-cols-2 gap-3">
         <CardComponents>
           <p className="font-medium">Tujuan/Sasaran</p>
-          <p className='text-slate-950'>
-          {DataPKPT[0].tujuan_sasaran}
-          </p>
+          <p className="text-slate-950">{DataPKPT[0].tujuan_sasaran}</p>
         </CardComponents>
         <CardComponents>
           <p className="font-medium">Tim</p>
           <div className="flex flex-col gap-2">
             {DataPKPT[0].tim.map((item, index) => (
-              <div key={index} className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950">
+              <div
+                key={index}
+                className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950"
+              >
                 {item.name}
               </div>
             ))}
@@ -153,9 +158,7 @@ const DetailPengawasan = ({id_pkpt}:Props) => {
         <div className="col-span-2">
           <CardComponents>
             <p>Sarana & Prasarana</p>
-            <p className='text-slate-950'>
-            {DataPKPT[0].sarana_prasarana}
-            </p>
+            <p className="text-slate-950">{DataPKPT[0].sarana_prasarana}</p>
           </CardComponents>
         </div>
       </section>

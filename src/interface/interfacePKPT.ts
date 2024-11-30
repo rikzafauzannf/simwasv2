@@ -21,28 +21,28 @@ export type PKPTData = {
   Saran: string;
   TingkatRisiko: string;
   Keterangan: string;
-}
+};
 
 type TimData = {
   id: string;
   name: string;
-}
+};
 
 export type PKPTDataBase = {
-  id:string;
+  id: string;
   active: boolean;
   anggaran: number;
   anggota_tim: number;
   area_pengawasan: string;
   createdAt: Date;
-  pengendali_teknis: string;
-  ketua_tim: string;
+  pengendali_teknis: number;
+  ketua_tim: number;
   id_user: number;
   jenis_pengawasan: string;
   jumlah: number;
   jumlah_laporan: string;
   keterangan: string;
-  penanggung_jawab: string;
+  penanggung_jawab: number;
   rencana_penerbitan: string;
   rencana_penugasan: string;
   ruang_lingkup: string;
@@ -51,5 +51,26 @@ export type PKPTDataBase = {
   tim: TimData[];
   tingkat_risiko: string;
   tujuan_sasaran: string;
-  wakil_penanggung_jawab: string;
+  wakil_penanggung_jawab: number;
+};
+
+export interface PKPTFormData {
+  JenisPengawasan: string;
+  AreaPengawasan: string;
+  RuangLingkup: string;
+  TujuanSasaran: string;
+  RencanaPenugasan: string;
+  RencanaPenerbitan: string;
+  PenanggungJawab: number;
+  WakilPenanggungJawab: number;
+  Supervisor: number;
+  KetuaTIM: number;
+  ATim: number;
+  Jumlah: number;
+  Anggaran?: number;
+  JumlahLaporan: number;
+  SaranaDanPrasarana?: number;
+  TingkatRisiko: string;
+  Keterangan?: string;
+  JenisLaporan: string;
 }

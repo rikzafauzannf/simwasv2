@@ -64,7 +64,7 @@ const InputKendaliMutu = () => {
       {KendaliMutu ? (
         <CardComponents>
           <form className="space-y-3">
-            <section className="grid grid-cols-3 gap-3">            
+            <section className="grid grid-cols-3 gap-3">
               <label className="text-slate-800">
                 <input
                   type="checkbox"
@@ -91,7 +91,7 @@ const InputKendaliMutu = () => {
                   className="shadow-md me-2"
                 />
                 Notulensi Kesepakatan
-              </label>              
+              </label>
               <label className="text-slate-800">
                 <input
                   type="checkbox"

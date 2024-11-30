@@ -27,7 +27,10 @@ const ReportForm: React.FC<{ id: number }> = ({ id }) => {
         placeholder="Tulis laporan mingguan..."
         className="w-full p-2 border rounded-md"
       />
-      <button type="submit" className="py-2 px-4 bg-green-600 text-white rounded-md">
+      <button
+        type="submit"
+        className="py-2 px-4 bg-green-600 text-white rounded-md"
+      >
         Simpan Laporan
       </button>
     </form>

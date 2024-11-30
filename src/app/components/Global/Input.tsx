@@ -22,6 +22,7 @@ interface DataProps {
 
 interface SelectFieldProps extends InputFieldProps {
   options: DataProps[];
+  disabled?: boolean;
 }
 
 interface TextAreaFieldProps extends InputFieldProps {
@@ -65,6 +66,7 @@ export const SelectInputField: React.FC<SelectFieldProps> = ({
   register,
   error,
   placeholder,
+  disabled = false,
 }) => {
   return (
     <div className="flex flex-col space-y-2">
@@ -74,9 +76,11 @@ export const SelectInputField: React.FC<SelectFieldProps> = ({
       <select
         id={identiti}
         {...register}
-        className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-white/50 flex-1 "
+        disabled={disabled}
+        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 flex-1
+          ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}`}
       >
-        <option value="" disabled selected>
+        <option value="" disabled>
           {placeholder}
         </option>
         {options.map((option) => (

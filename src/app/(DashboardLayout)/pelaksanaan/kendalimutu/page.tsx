@@ -7,8 +7,8 @@ import React from 'react';
 const KendaliMutuPage = () => {
   return (
     <div className="space-y-3">
-      <h3 className="text-xl">Kendali Mutu</h3>    
-        <MapDataST/>      
+      <h3 className="text-xl">Kendali Mutu</h3>
+      <MapDataST />
     </div>
   );
 };

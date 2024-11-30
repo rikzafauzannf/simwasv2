@@ -91,22 +91,22 @@ const TableKendaliMutu = () => {
       name: 'Keterangan',
       selector: (row: KendaliMutuData) => row.keterangan,
       sortable: true,
-    },    
+    },
   ];
 
   const data: KendaliMutuData[] = [
     {
-        id:1,
-    kertasKerja:'string',
-    kartuPenugasan:'string',
-    programKerja:'string',
-    notulensiKesepakatan:'string',
-    dokumentasiPemeriksaan:'string',
-    riviuSupervisor:'string',
-    ceklisPenyelesaian:'string',
-    linkDrive:'string',
-    keterangan:'string',
-    }
+      id: 1,
+      kertasKerja: 'string',
+      kartuPenugasan: 'string',
+      programKerja: 'string',
+      notulensiKesepakatan: 'string',
+      dokumentasiPemeriksaan: 'string',
+      riviuSupervisor: 'string',
+      ceklisPenyelesaian: 'string',
+      linkDrive: 'string',
+      keterangan: 'string',
+    },
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

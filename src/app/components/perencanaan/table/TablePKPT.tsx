@@ -117,7 +117,7 @@ const TablePKPT: React.FC = () => {
       name: 'TIM',
       selector: (row) => {
         if (!row.tim || !Array.isArray(row.tim)) return '';
-        return row.tim.map(member => member.name).join(', ');
+        return row.tim.map((member) => member.name).join(', ');
       },
       sortable: true,
     },
@@ -156,7 +156,7 @@ const TablePKPT: React.FC = () => {
       const filtered = DataPKPT.filter(
         (item) =>
           item.jenis_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
-          item.ketua_tim.toLowerCase().includes(value.toLowerCase())
+          item.area_pengawasan.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredData(filtered);
     }
@@ -174,7 +174,9 @@ const TablePKPT: React.FC = () => {
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
-          const selector = (col.selector as unknown) as (row: PKPTDataBase) => string | number;
+          const selector = col.selector as unknown as (
+            row: PKPTDataBase
+          ) => string | number;
           return `"${selector(row)}"`;
         })
         .join(',')
@@ -198,7 +200,9 @@ const TablePKPT: React.FC = () => {
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
-          const selector = (col.selector as unknown) as (row: PKPTDataBase) => string | number;
+          const selector = col.selector as unknown as (
+            row: PKPTDataBase
+          ) => string | number;
           return selector(row);
         })
         .join('\t')
@@ -236,7 +240,7 @@ const TablePKPT: React.FC = () => {
         <input
           id="search"
           type="text"
-          placeholder="Search..."
+          placeholder="Cari Jenis / Area Pengawasan ..."
           value={search}
           onChange={handleSearch}
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"

@@ -7,8 +7,7 @@ import ReportForm from '../pelaksanaan/form/ReportForm';
 import Swal from 'sweetalert2';
 import ReactDOM from 'react-dom';
 
-
-const MapDataST= () => {
+const MapDataST = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -172,7 +171,12 @@ const MapDataST= () => {
             <p>{item.tim}</p>
             <hr className="mb-3" />
             <div className="flex flex-col gap-2">
-              <Link href={`/pelaksanaan/kendalimutu/form/1`} className='py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50'>Buat Kendali Mutu / Laporan</Link>
+              <Link
+                href={`/pelaksanaan/kendalimutu/form/1`}
+                className="py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50"
+              >
+                Buat Kendali Mutu / Laporan
+              </Link>
               {/* <button
                 onClick={() => handleReportClick(item.tim)}
                 className='py-1 px-3 w-full bg-green-600 text-white rounded-md text-center font-semibold'

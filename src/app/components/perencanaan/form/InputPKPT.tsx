@@ -8,27 +8,7 @@ import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
 import { title } from 'process';
 import { FirestoreService } from '@/services/firestore.service';
-
-interface PKPTFormData {
-  JenisPengawasan: string;
-  AreaPengawasan: string;
-  RuangLingkup: string;
-  TujuanSasaran: string;
-  RencanaPenugasan: string;
-  RencanaPenerbitan: string;
-  PenanggungJawab: string;
-  WakilPenanggungJawab: string;
-  Supervisor: string;
-  KetuaTIM: string;
-  ATim: string;
-  Jumlah: number;
-  Anggaran?: number;
-  JumlahLaporan: number;
-  SaranaDanPrasarana?: number;
-  TingkatRisiko: string;
-  Keterangan?: string;
-  JenisLaporan: string;
-}
+import { PKPTFormData } from '@/interface/interfacePKPT';
 
 const InputPKPT = () => {
   const {
@@ -46,11 +26,11 @@ const InputPKPT = () => {
       TujuanSasaran: '',
       RencanaPenugasan: '',
       RencanaPenerbitan: '',
-      PenanggungJawab: '',
-      WakilPenanggungJawab: '',
-      Supervisor: '',
-      KetuaTIM: '',
-      ATim: '',
+      PenanggungJawab: 0,
+      WakilPenanggungJawab: 0,
+      Supervisor: 0,
+      KetuaTIM: 0,
+      ATim: 0,
       Jumlah: 0,
       JumlahLaporan: 0,
       TingkatRisiko: '',
@@ -84,7 +64,7 @@ const InputPKPT = () => {
         rencana_penerbitan: data.RencanaPenerbitan,
         penanggung_jawab: data.PenanggungJawab,
         wakil_penanggung_jawab: data.WakilPenanggungJawab,
-        pengendali_teknis:data.Supervisor,
+        pengendali_teknis: data.Supervisor,
         ketua_tim: data.KetuaTIM,
         anggota_tim: data.ATim,
         jumlah: data.Jumlah,
