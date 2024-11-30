@@ -8,27 +8,7 @@ import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
 import { title } from 'process';
 import { FirestoreService } from '@/services/firestore.service';
-
-interface PKPTFormData {
-  JenisPengawasan: string;
-  AreaPengawasan: string;
-  RuangLingkup: string;
-  TujuanSasaran: string;
-  RencanaPenugasan: string;
-  RencanaPenerbitan: string;
-  PenanggungJawab: string;
-  WakilPenanggungJawab: string;
-  Supervisor: string;
-  KetuaTIM: string;
-  ATim: string;
-  Jumlah: number;
-  Anggaran?: number;
-  JumlahLaporan: number;
-  SaranaDanPrasarana?: number;
-  TingkatRisiko: string;
-  Keterangan?: string;
-  JenisLaporan: string;
-}
+import { PKPTFormData } from '@/interface/interfacePKPT';
 
 const InputPKPT = () => {
   const {
@@ -46,11 +26,11 @@ const InputPKPT = () => {
       TujuanSasaran: '',
       RencanaPenugasan: '',
       RencanaPenerbitan: '',
-      PenanggungJawab: '',
-      WakilPenanggungJawab: '',
-      Supervisor: '',
-      KetuaTIM: '',
-      ATim: '',
+      PenanggungJawab: 0,
+      WakilPenanggungJawab: 0,
+      Supervisor: 0,
+      KetuaTIM: 0,
+      ATim: 0,
       Jumlah: 0,
       JumlahLaporan: 0,
       TingkatRisiko: '',
@@ -84,7 +64,7 @@ const InputPKPT = () => {
         rencana_penerbitan: data.RencanaPenerbitan,
         penanggung_jawab: data.PenanggungJawab,
         wakil_penanggung_jawab: data.WakilPenanggungJawab,
-        supervisor: data.Supervisor,
+        pengendali_teknis: data.Supervisor,
         ketua_tim: data.KetuaTIM,
         anggota_tim: data.ATim,
         jumlah: data.Jumlah,
@@ -95,10 +75,10 @@ const InputPKPT = () => {
         tingkat_risiko: data.TingkatRisiko,
         keterangan: data.Keterangan,
         // data identiti
-        id_user:1,
+        id_user: 1,
         createdAt: new Date(),
-        status: 'draft',
-        active:'true',
+        status: 'pkpt',
+        active: 'true',
       };
 
       const result = await firestoreService.addData('pkpt', pkptData);
@@ -282,7 +262,7 @@ const InputPKPT = () => {
           <InputFieldComponent
             label="Ketua TIM"
             identiti="ketuaTim"
-            type="number"          
+            type="number"
             name="KetuaTIM"
             placeholder="Tentukan ketua tim"
             register={register('KetuaTIM', {
@@ -351,7 +331,7 @@ const InputPKPT = () => {
                   key={member.id}
                   className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
                 >
-                  <span className='text-slate-800'>{member.name}</span>
+                  <span className="text-slate-800">{member.name}</span>
                   <button
                     onClick={() => removeTeamMember(member.id)}
                     type="button"

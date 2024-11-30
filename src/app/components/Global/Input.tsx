@@ -1,30 +1,7 @@
 'use client';
 
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
-} from '@headlessui/react';
-import React, { useState } from 'react';
-import {
-  useForm,
-  SubmitHandler,
-  FieldError,
-  UseFormRegister,
-} from 'react-hook-form';
-
-// interface Props {
-//   label: string;
-//   identiti: string;
-//   name: string;
-//   type: string;
-//   placeholder: string;
-// }
-
-// interface PropSelect {
-//   data: DataProps[];
-// }
+import React from 'react';
+import { FieldError } from 'react-hook-form';
 
 // global type
 interface InputFieldProps {
@@ -45,6 +22,11 @@ interface DataProps {
 
 interface SelectFieldProps extends InputFieldProps {
   options: DataProps[];
+  disabled?: boolean;
+}
+
+interface TextAreaFieldProps extends InputFieldProps {
+  rows?: number;
 }
 
 export const InputFieldComponent: React.FC<InputFieldProps> = ({
@@ -68,51 +50,14 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         {...register}
         disabled={disabled}
-        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black 
-          ${disabled ? 'bg-gray-100' : 'bg-slate-200/25'} 
+        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600  
+          ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'} 
           ${error ? 'border-red-500' : ''}`}
       />
       {error && <span className="text-red-500 text-sm">{error.message}</span>}
     </div>
   );
 };
-
-// select type
-// export const SelectField: React.FC<PropSelect> = ({ data }) => {
-//   const [selecteddata, setSelecteddata] = useState<DataProps | null>(data[0]);
-//   const [query, setQuery] = useState('');
-
-//   const filteredData =
-//     query === ''
-//       ? data
-//       : data.filter((item) => {
-//           return item.name.toLowerCase().includes(query.toLowerCase());
-//         });
-//   return (
-//     <Combobox
-//       value={selecteddata}
-//       onChange={setSelecteddata}
-//       onClose={() => setQuery('')}
-//     >
-//       <ComboboxInput
-//         aria-label="Assignee"
-//         displayValue={(selected: DataProps | null) => selected?.name || ''}
-//         onChange={(event) => setQuery(event.target.value)}
-//       />
-//       <ComboboxOptions anchor="bottom" className="border empty:invisible">
-//         {filteredData.map((items) => (
-//           <ComboboxOption
-//             key={items.id}
-//             value={items}
-//             className="data-[focus]:bg-blue-100"
-//           >
-//             {items.name}
-//           </ComboboxOption>
-//         ))}
-//       </ComboboxOptions>
-//     </Combobox>
-//   );
-// };
 
 export const SelectInputField: React.FC<SelectFieldProps> = ({
   label,
@@ -121,6 +66,7 @@ export const SelectInputField: React.FC<SelectFieldProps> = ({
   register,
   error,
   placeholder,
+  disabled = false,
 }) => {
   return (
     <div className="flex flex-col space-y-2">
@@ -130,9 +76,11 @@ export const SelectInputField: React.FC<SelectFieldProps> = ({
       <select
         id={identiti}
         {...register}
-        className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
+        disabled={disabled}
+        className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 flex-1
+          ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}`}
       >
-        <option value="" disabled selected>
+        <option value="" disabled>
           {placeholder}
         </option>
         {options.map((option) => (
@@ -144,6 +92,35 @@ export const SelectInputField: React.FC<SelectFieldProps> = ({
       {error && (
         <span className="text-red-500 font-semibold">{error.message}</span>
       )}
+    </div>
+  );
+};
+
+export const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
+  label,
+  identiti,
+  placeholder,
+  register,
+  error,
+  disabled = false,
+  rows = 4,
+}) => {
+  return (
+    <div className="flex flex-col space-y-2">
+      <label htmlFor={identiti} className="text-slate-800">
+        {label}
+      </label>
+      <textarea
+        id={identiti}
+        placeholder={placeholder}
+        {...register}
+        disabled={disabled}
+        rows={rows}
+        className={`border border-b-2 rounded-[8px] shadow-md border-slate-600  
+          ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'} 
+          ${error ? 'border-red-500' : ''}`}
+      />
+      {error && <span className="text-red-500 text-sm">{error.message}</span>}
     </div>
   );
 };

@@ -37,39 +37,27 @@ const SidebarContent: MenuItem[] = [
     heading: 'Referensi',
     children: [
       {
-        name: 'Jenis Pengawasan',
-        icon: 'solar:widget-add-line-duotone',
-        id: uniqueId(),
-        url: '/',
-      },
-      {
-        name: 'Kelompok Temuan',
-        icon: 'solar:widget-add-line-duotone',
+        name: 'Buat Data Referensi',
+        icon: 'solar:add-circle-broken',
         id: uniqueId(),
         url: '/',
       },
     ],
   },
   {
-    heading: 'Tahap Perencanaan',
+    heading: 'Perencanaan',
     children: [
-      {
-        name: 'Perencanaan',
-        icon: 'solar:circle-bottom-up-broken',
-        id: uniqueId(),
-        url: '/perencanaan',
-      },
+      // {
+      //   name: 'Perencanaan',
+      //   icon: 'solar:circle-bottom-up-broken',
+      //   id: uniqueId(),
+      //   url: '/perencanaan',
+      // },
       {
         name: 'PKPT',
         icon: 'solar:folder-broken',
         id: uniqueId(),
         url: '/perencanaan/pkpt',
-      },
-      {
-        name: 'Realisasi PKPT',
-        icon: 'solar:folder-check-broken',
-        id: uniqueId(),
-        url: '/perencanaan/realisasipkpt',
       },
     ],
   },
@@ -80,47 +68,64 @@ const SidebarContent: MenuItem[] = [
         name: 'Surat Tugas',
         icon: 'solar:airbuds-case-charge-outline',
         id: uniqueId(),
-        url: '/ui/shadow',
-      },
-      {
-        name: 'Pelaksanaan',
-        icon: 'solar:login-2-linear',
-        id: uniqueId(),
-        url: '/auth/login',
+        url: '/perencanaan/surattugas',
       },
       {
         name: 'Kendali Mutu',
         icon: 'solar:shield-user-outline',
         id: uniqueId(),
-        url: '/auth/register',
+        url: '/pelaksanaan/kendalimutu',
       },
       {
-        name: 'Progress Pengawasan',
+        name: 'Nota Hasil Pengawasan',
         icon: 'solar:shield-user-outline',
         id: uniqueId(),
-        url: '/auth/register',
+        url: '/pelaksanaan/notahasil',
       },
     ],
   },
   {
-    heading: 'Tahap Pelaporan',
+    heading: 'Pelaporan',
     children: [
       {
-        name: 'Pelaporan',
+        name: 'Lembar Hasil Pengawasan',
         icon: 'solar:smile-circle-outline',
         id: uniqueId(),
-        url: '/icons/solar',
+        url: '/pelaporan/lembarhasil',
       },
       {
-        name: 'Tindak Lanjut',
+        name: 'Ringkasan Pengawasan',
         icon: 'solar:notes-minimalistic-outline',
         id: uniqueId(),
-        url: '/sample-page',
+        url: '/pelaporan/ringkasanpengawasan',
       },
     ],
   },
   {
-    heading: 'Manage',
+    heading: 'Tindak Lanjut',
+    children: [
+      {
+        name: 'TLHP',
+        icon: 'solar:folder-check-broken',
+        id: uniqueId(),
+        url: '/perencanaan/realisasipkpt',
+      },
+      {
+        name: 'BAKTL',
+        icon: 'solar:folder-check-broken',
+        id: uniqueId(),
+        url: '/perencanaan/realisasipkpt',
+      },
+      {
+        name: 'Realisasi PKPT',
+        icon: 'solar:folder-check-broken',
+        id: uniqueId(),
+        url: '/perencanaan/realisasipkpt',
+      },
+    ],
+  },
+  {
+    heading: 'manage',
     children: [
       {
         name: 'User Account',

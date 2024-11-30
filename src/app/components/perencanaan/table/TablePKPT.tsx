@@ -1,223 +1,221 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { FaEye } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import DataTable, { TableColumn } from 'react-data-table-component';
+import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
-import { DataPKPT } from '@/middleware/interface/perencanaanPKPT';
-import { usePKPTStore } from '@/middleware/Store/usePKPTStore';
+import { PKPTDataBase } from '@/interface/interfacePKPT';
+import { FirestoreService } from '@/services/firestore.service';
 
-const TablePKPT = () => {
-  const { pkptData, fetchPKPTData } = usePKPTStore();
+const TablePKPT: React.FC = () => {
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<DataPKPT[]>(pkptData || []);
+  const [filteredData, setFilteredData] = useState<PKPTDataBase[]>([]);
+  const [DataPKPT, setDataPKPT] = useState<PKPTDataBase[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  const firestoreService = new FirestoreService();
 
   useEffect(() => {
-    fetchPKPTData();
-  }, [fetchPKPTData]);
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await firestoreService.getAllData('pkpt');
+        if (response.success && response.data) {
+          const datapkpt = response.data as PKPTDataBase[];
+          setDataPKPT(datapkpt);
+          setError(null);
+        } else {
+          setError(new Error(response.message));
+        }
+      } catch (err) {
+        setError(err as Error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    setFilteredData(pkptData);
-  }, [pkptData]);
+    fetchData();
+  }, []);
 
-  console.log("data PKPT :",pkptData)
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearch(value);
-    const filtered = (pkptData || []).filter(
-      (item) =>
-        (item.jenis_pengawasan || '').toLowerCase().includes(value.toLowerCase()) ||
-        (item.ruang_lingkup || '').toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredData(filtered);
-  };
-
-  const columns = [
+  const columns: TableColumn<PKPTDataBase>[] = [
     {
       name: 'Actions',
-      cell: (row: DataPKPT) => (
+      cell: (row: PKPTDataBase) => (
         <div className="flex gap-2">
-          <Link href={`/perencanaan/pkpt/${row.id}`} className="p-2 text-blue-500 hover:text-blue-700">
+          <Link
+            href={`/perencanaan/pkpt/${row.id}`}
+            className="p-2 text-blue-500 hover:text-blue-700"
+          >
             <FaEye />
           </Link>
-          <Link href={'/perencanaan/realisasipkpt/inputrealisasi/1'} className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black">
-            realisasi
+          <Link
+            href={`/perencanaan/pkpt/actions/${row.id}`}
+            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+          >
+            Act
           </Link>
         </div>
       ),
     },
     {
       name: 'Status',
-      selector: (row: DataPKPT) => row.status || 'N/A',
+      selector: (row) => row.status,
       sortable: true,
     },
     {
       name: 'Jenis Pengawasan',
-      selector: (row: DataPKPT) => row.jenis_pengawasan || 'N/A',
+      selector: (row) => row.jenis_pengawasan,
       sortable: true,
     },
     {
       name: 'Area Pengawasan',
-      selector: (row: DataPKPT) => row.area_pengawasan || 'N/A',
+      selector: (row) => row.area_pengawasan,
       sortable: true,
     },
     {
       name: 'Ruang Lingkup',
-      selector: (row: DataPKPT) => row.ruang_lingkup || 'N/A',
+      selector: (row) => row.ruang_lingkup,
       sortable: true,
     },
     {
       name: 'Tujuan / Sasaran',
-      selector: (row: DataPKPT) => row.tujuan_sasaran || 'N/A',
+      selector: (row) => row.tujuan_sasaran,
       sortable: true,
     },
     {
       name: 'Rencana Penugasan',
-      selector: (row: DataPKPT) => row.rencana_penugasan || 'N/A',
+      selector: (row) => row.rencana_penugasan,
       sortable: true,
     },
     {
       name: 'Rencana Penerbitan',
-      selector: (row: DataPKPT) => row.rencana_penerbitan || 'N/A',
+      selector: (row) => row.rencana_penerbitan,
       sortable: true,
     },
     {
       name: 'Penanggung Jawab',
-      selector: (row: DataPKPT) => row.penanggung_jawab || 'N/A',
+      selector: (row) => row.penanggung_jawab,
       sortable: true,
     },
     {
       name: 'Wakil Penanggung Jawab',
-      selector: (row: DataPKPT) => row.wakil_penanggung_jawab || 'N/A',
+      selector: (row) => row.wakil_penanggung_jawab,
       sortable: true,
     },
     {
       name: 'Pengendali Teknis / Supervisor',
-      selector: (row: DataPKPT) => row.supervisor || 'N/A',
+      selector: (row) => row.pengendali_teknis,
       sortable: true,
     },
     {
       name: 'Ketua TIM',
-      selector: (row: DataPKPT) => row.ketua_tim || 'N/A',
-      sortable: true,
-    },
-    {
-      name: 'Anggota TIM',
-      selector: (row: DataPKPT) => row.anggota_tim || 'N/A',
-      sortable: true,
-    },
-    {
-      name: 'Jumlah',
-      selector: (row: DataPKPT) => row.jumlah || 'N/A',
+      selector: (row) => row.ketua_tim,
       sortable: true,
     },
     {
       name: 'TIM',
-      selector: (row: DataPKPT) => row.tim || 'N/A',
+      selector: (row) => {
+        if (!row.tim || !Array.isArray(row.tim)) return '';
+        return row.tim.map((member) => member.name).join(', ');
+      },
       sortable: true,
-    },        
+    },
     {
-      name: 'Anggaran',
-      selector: (row: DataPKPT) => row.anggaran || 'N/A',
+      name: 'Jumlah',
+      selector: (row) => row.jumlah,
       sortable: true,
     },
     {
       name: 'Jumlah Laporan',
-      selector: (row: DataPKPT) => row.jumlah_laporan || 'N/A',
+      selector: (row) => row.jumlah_laporan,
       sortable: true,
     },
     {
-      name: 'Saran dan Prasarana',
-      selector: (row: DataPKPT) => row.sarana_prasarana || 'N/A',
+      name: 'Anggaran',
+      selector: (row) => row.anggaran,
       sortable: true,
     },
     {
-      name: 'Tingkat Risiko',
-      selector: (row: DataPKPT) => row.tingkat_risiko || 'N/A',
+      name: 'Sarana dan Prasarana',
+      selector: (row) => row.sarana_prasarana,
       sortable: true,
     },
     {
       name: 'Keterangan',
-      selector: (row: DataPKPT) => row.keterangan || 'N/A',
+      selector: (row) => row.keterangan,
       sortable: true,
     },
   ];
 
-  const data: DataPKPT[] = (pkptData || []).map((item: DataPKPT) => ({
-    id: item.id,
-    area_pengawasan: item.area_pengawasan,
-    jenis_pengawasan: item.jenis_pengawasan,
-    ruang_lingkup: item.ruang_lingkup,
-    tujuan_sasaran: item.tujuan_sasaran,
-    rencana_penugasan: item.rencana_penugasan,
-    rencana_penerbitan: item.rencana_penerbitan,
-    penanggung_jawab: item.penanggung_jawab,
-    wakil_penanggung_jawab: item.wakil_penanggung_jawab,
-    supervisor: item.supervisor,
-    ketua_tim: item.ketua_tim,
-    anggota_tim: item.anggota_tim,
-    jumlah: item.jumlah,
-    tim: item.tim,
-    anggaran: item.anggaran,
-    jumlah_laporan: item.jumlah_laporan,
-    sarana_prasarana: item.sarana_prasarana,
-    tingkat_risiko: item.tingkat_risiko,
-    keterangan: item.keterangan,
-    id_user: item.id_user,
-    createdAt: item.createdAt,
-    status: item.status,
-    active: item.active,
-  }));
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    if (DataPKPT) {
+      const filtered = DataPKPT.filter(
+        (item) =>
+          item.jenis_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
+          item.area_pengawasan.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }
+  };
 
   const exportToCSV = () => {
+    if (!DataPKPT) return;
+
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join(',');
 
-    const csvData = data
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (row: DataPKPT) => string | number;
-            return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
-          })
-          .join(',');
-      })
-      .join('\n');
+    const csvData = DataPKPT.map((row) =>
+      columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as unknown as (
+            row: PKPTDataBase
+          ) => string | number;
+          return `"${selector(row)}"`;
+        })
+        .join(',')
+    );
 
-    const blob = new Blob([`${headers}\n${csvData}`], {
+    const blob = new Blob([`${headers}\n${csvData.join('\n')}`], {
       type: 'text/csv;charset=utf-8',
     });
     saveAs(blob, 'pkpt_data.csv');
   };
 
   const exportToExcel = () => {
+    if (!DataPKPT) return;
+
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = data
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (row: DataPKPT) => string | number;
-            return selector(row);
-          })
-          .join('\t');
-      })
-      .join('\n');
+    const excelData = DataPKPT.map((row) =>
+      columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as unknown as (
+            row: PKPTDataBase
+          ) => string | number;
+          return selector(row);
+        })
+        .join('\t')
+    );
 
-    const blob = new Blob([`${headers}\n${excelData}`], {
+    const blob = new Blob([`${headers}\n${excelData.join('\n')}`], {
       type: 'application/vnd.ms-excel;charset=utf-8',
     });
     saveAs(blob, 'pkpt_data.xls');
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <>
@@ -242,7 +240,7 @@ const TablePKPT = () => {
         <input
           id="search"
           type="text"
-          placeholder="Search..."
+          placeholder="Cari Jenis / Area Pengawasan ..."
           value={search}
           onChange={handleSearch}
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
@@ -251,7 +249,7 @@ const TablePKPT = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={filteredData}
+          data={search ? filteredData : DataPKPT}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"

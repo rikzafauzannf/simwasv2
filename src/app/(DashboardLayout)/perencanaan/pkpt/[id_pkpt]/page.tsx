@@ -1,300 +1,91 @@
-'use client';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+// 'use client';
+
 import DailyActivity from '@/app/components/dashboard/DailyActivity';
 import { CardComponents } from '@/app/components/Global/Card';
-import { InputFieldComponent } from '@/app/components/Global/Input';
-import { NotofikasiEdit } from '@/app/components/Global/Notif';
+import InputKendaliMutu from '@/app/components/pelaksanaan/form/inputKendaliMutu';
+import LembarHasilPengawasan from '@/app/components/pelaksanaan/form/lembarHasilPengawasan';
+import NotaHasilPengawasan from '@/app/components/pelaksanaan/form/notaHasilPengawasan';
+import KendaliMutu from '@/app/components/pelaksanaan/view/KendaliMutu';
+import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
+import TableSuratTugas from '@/app/components/perencanaan/table/TableSuratTugas';
+import DetailPengawasan from '@/app/components/perencanaan/view/detailPengawasan';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
-// Cara 1: Menggunakan props params
 interface PageProps {
   params: {
-    id_pkpt: number;
+    id_pkpt: string;
   };
 }
 
 const ViewPkptPage = ({ params }: PageProps) => {
-  const [isEditing, setIsEditing] = useState(false);
   const id_pkpt = params.id_pkpt;
 
-  // Dummy data - replace with your actual data fetching logic
-  const defaultValues = {
-    JenisPengawasan: 'Pengawasan Internal',
-    AreaPengawasan: 'Area 1',
-    RuangLingkup: 'Lingkup A',
-    TujuanSasaran: 'Tujuan 1',
-    RencanaPenugasan: '2024-03-20',
-    RencanaPenerbitan: '2024-04-20',
-    PenanggungJawab: 'John Doe',
-    WakilPenanggungJawab: 'Jane Doe',
-    Supervisor: 'Super Visor',
-    KetuaTIM: 'Team Lead',
-    ATim: 'Member 1',
-    Jumlah: 5,
-    Tim: 'Tim A',
-    Anggaran: 1000000,
-    JumlahLaporan: 3,
-    SaranaDanPrasarana: 5,
-    TingkatRisiko: 'Rendah',
-    Keterangan: 'Keterangan tambahan',
-  };
-
-  const { register, handleSubmit } = useForm({
-    defaultValues,
-  });
-
-  const onSubmit = (data: any) => {
-    console.log('Updated data:', data);
-    setIsEditing(false);
-    // Add your update logic here
-  };
-
-  const dummyDummyNOtifikasi = [
+  const tabs_list = [
     {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
+      label: 'Detail PKPT',
+      component: <DetailPengawasan id_pkpt={id_pkpt} />,
     },
     {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
+      label: 'Rekap Surat Tugas',
+      component: (
+        <div className="grid w-full gap-3">
+          <h3 className="text-xl">Data Rekap Surat Tugas</h3>
+          <CardComponents>
+            <TableSuratTugas />
+          </CardComponents>
+        </div>
+      ),
     },
     {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
+      label: 'Kendali Mutu',
+      component: <KendaliMutu />,
     },
     {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
+      label: 'NHP',
+      component: <NotaHasilPengawasan />,
     },
     {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
+      label: 'LHP',
+      component: <LembarHasilPengawasan />,
     },
   ];
 
   return (
-    <div className="space-y-3">
-      <section className="flex justify-between items-center">
-        <h3>Lihat PKPT ({id_pkpt})</h3>
-        <div className="space-x-3">
-          <button className="py-1 px-2 bg-red-500 text-white rounded-md shadow-md">
-            Hapus
-          </button>
-          {isEditing ? (
-            <button
-              onClick={handleSubmit(onSubmit)}
-              className="py-1 px-2 bg-green-500 text-white rounded-md shadow-md"
-            >
-              Simpan
-            </button>
-          ) : (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="py-1 px-2 bg-blue-500 text-white rounded-md shadow-md"
-            >
-              Edit
-            </button>
-          )}
-        </div>
-      </section>
+    <section className="md:grid grid-cols-4 w-full gap-3">
+      <div className="col-span-3">
+        <TabGroup>
+          <TabList className={'flex gap-3 mb-4'}>
+            {tabs_list.map((item, index) => (
+              <Tab
+                className={
+                  'data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md'
+                }
+                key={index}
+              >
+                {item.label}
+              </Tab>
+            ))}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className="md:grid grid-cols-3 gap-3">
-          <div className="col-span-2 space-y-3 order-2 md:order-1">
-            <CardComponents>
-              <section className="grid md:grid-cols-2 w-full gap-3">
-                <InputFieldComponent
-                  label="Jenis Pengawasan"
-                  identiti="jpengawasan"
-                  type="text"
-                  name="JenisPengawasan"
-                  placeholder="Masukan Kategori Jenis Pengawasan"
-                  register={register('JenisPengawasan')}
-                  disabled={!isEditing}
-                />
-                <InputFieldComponent
-                  label="Area Pengawasan"
-                  identiti="area"
-                  type="text"
-                  name="AreaPengawasan"
-                  placeholder="Masukan Area Pengawasan"
-                  register={register('AreaPengawasan')}
-                  disabled={!isEditing}
-                />
-                <InputFieldComponent
-                  label="Ruang Lingkup"
-                  identiti="rLingkup"
-                  type="text"
-                  name="RuangLingkup"
-                  placeholder="Masukan Ruang Lingkup Pengawasan"
-                  register={register('RuangLingkup')}
-                  disabled={!isEditing}
-                />
-                <InputFieldComponent
-                  label="Tujuan / Sasaran"
-                  identiti="tSasaran"
-                  type="text"
-                  name="TujuanSasaran"
-                  placeholder="Masukan Tujuan / Sasaran pengawasan"
-                  register={register('TujuanSasaran')}
-                  disabled={!isEditing}
-                />
-              </section>
-            </CardComponents>
+            {/* <Tab className={"data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md"}>Tab 2</Tab>
+            <Tab className={"data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md"}>Tab 3</Tab> */}
+          </TabList>
+          <TabPanels>
+            {tabs_list.map((item, index) => (
+              <TabPanel key={index}>{item.component}</TabPanel>
+            ))}
 
-            <CardComponents>
-              <h3>Jadwal Pengawasan</h3>
-              <section className="grid md:grid-cols-2 gap-3">
-                <InputFieldComponent
-                  label="Rencana Penugasan"
-                  identiti="rPenugasan"
-                  type="date"
-                  name="RencanaPenugasan"
-                  placeholder="Tentukan rencana penugasan"
-                  register={register('RencanaPenugasan')}
-                  disabled={!isEditing}
-                />
-                <InputFieldComponent
-                  label="Rencana Penerbitan"
-                  identiti="rPenerbitan"
-                  type="date"
-                  name="RencanaPenerbitan"
-                  placeholder="Tentukan rencana Penerbitan"
-                  register={register('RencanaPenerbitan')}
-                  disabled={!isEditing}
-                />
-              </section>
-            </CardComponents>
-          </div>
-          <div className="order-1 md:order-2">
-            <DailyActivity />
-          </div>
-        </section>
-
-        <CardComponents>
-          <h3>Hari Penugasan</h3>
-          <section className="grid md:grid-cols-2 gap-3">
-            <InputFieldComponent
-              label="Penanggung Jawab"
-              identiti="penganggungJawab"
-              type="text"
-              name="PenanggungJawab"
-              placeholder="Tentukan penanggung jawab"
-              register={register('PenanggungJawab')}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="Wakil Penanggung Jawab"
-              identiti="wPenanggungJawab"
-              type="text"
-              name="WakilPenanggungJawab"
-              placeholder="Tentukan wakil penanggung jawab"
-              register={register('WakilPenanggungJawab')}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="Pengendali Teknis/Supervisor"
-              identiti="pengendaliTeknis"
-              type="text"
-              name="Supervisor"
-              placeholder="Tentukan pengendali teknis"
-              register={register('Supervisor')}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="Ketua TIM"
-              identiti="ketuaTim"
-              type="text"
-              name="KetuaTIM"
-              placeholder="Tentukan ketua tim"
-              register={register('KetuaTIM')}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="AnggotaTIM"
-              identiti="ATim"
-              type="text"
-              name="ATim"
-              placeholder="Masukan Anggota Tim"
-              register={register('ATim')}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="Jumlah"
-              identiti="Jumlah"
-              type="number"
-              name="Jumlah"
-              placeholder="Jumlah TIM"
-              register={register('Jumlah')}
-              disabled={!isEditing}
-            />
-            <div className="col-span-2">
-              <InputFieldComponent
-                label="TIM"
-                identiti="Tim"
-                type="text"
-                name="Tim"
-                placeholder="Tentukan TIM"
-                register={register('Tim')}
-                disabled={!isEditing}
-              />
-            </div>
-          </section>
-        </CardComponents>
-
-        <CardComponents>
-          <section className="md:grid md:grid-cols-2 gap-3">
-            <InputFieldComponent
-              label="Anggaran (Opsional)"
-              identiti="Anggaran"
-              type="number"
-              name="Anggaran"
-              placeholder="Masukan total anggaran"
-              register={register('Anggaran')}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="Jumlah Laporan"
-              identiti="jLaporan"
-              type="number"
-              name="JumlahLaporan"
-              placeholder="Masukan jumlah laporan"
-              register={register('JumlahLaporan')}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="Saran dan Prasarana (Opsional)"
-              identiti="sPrasarana"
-              type="number"
-              name="SaranaDanPrasarana"
-              placeholder="Masukan Sarana dan Prasarana"
-              register={register('SaranaDanPrasarana')}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="Tingkat Risiko"
-              identiti="tRisiko"
-              type="text"
-              name="TingkatRisiko"
-              placeholder="Tentukan tingkat risiko"
-              register={register('TingkatRisiko')}
-              disabled={!isEditing}
-            />
-            <div className="md:col-span-2">
-              <InputFieldComponent
-                label="Keterangan (Opsional)"
-                identiti="keterangan"
-                type="text"
-                name="Keterangan"
-                placeholder="Masukan keterangan jika diperlukan"
-                register={register('Keterangan')}
-                disabled={!isEditing}
-              />
-            </div>
-          </section>
-        </CardComponents>
-      </form>
-    </div>
+            {/* <TabPanel>Content 2</TabPanel>
+            <TabPanel>Content 3</TabPanel> */}
+          </TabPanels>
+        </TabGroup>
+        {/* <CardComponents>
+          <h1>test</h1>
+        </CardComponents> */}
+      </div>
+      <div>
+        <DailyActivity />
+      </div>
+    </section>
   );
 };
 
