@@ -311,79 +311,73 @@ const ActionsPkptPage = ({ params }: PageProps) => {
         </div>
       </section>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className="md:grid grid-cols-3 gap-3">
-          <div className="col-span-2 space-y-3 order-2 md:order-1">
-            <CardComponents>
-              <section className="grid md:grid-cols-2 w-full gap-3">
-                <SelectInputField
-                  label="Jenis Pengawasan"
-                  identiti="select-field-pengawasan"
-                  options={optionsJenisLaporan}
-                  register={register('JenisPengawasan')}
-                  placeholder="Pilih Jenis Pengawasan"
-                  disabled={!isEditing}
-                  type="select"
-                  name="JenisPengawasan"
-                />
-                <InputFieldComponent
-                  label="Area Pengawasan"
-                  identiti="area"
-                  type="text"
-                  name="AreaPengawasan"
-                  placeholder="Masukan Area Pengawasan"
-                  register={register('AreaPengawasan')}
-                  disabled={!isEditing}
-                />
-                <InputFieldComponent
-                  label="Ruang Lingkup"
-                  identiti="rLingkup"
-                  type="text"
-                  name="RuangLingkup"
-                  placeholder="Masukan Ruang Lingkup Pengawasan"
-                  register={register('RuangLingkup')}
-                  disabled={!isEditing}
-                />
-                <InputFieldComponent
-                  label="Tujuan / Sasaran"
-                  identiti="tSasaran"
-                  type="text"
-                  name="TujuanSasaran"
-                  placeholder="Masukan Tujuan / Sasaran pengawasan"
-                  register={register('TujuanSasaran')}
-                  disabled={!isEditing}
-                />
-              </section>
-            </CardComponents>
+      <form onSubmit={handleSubmit(onSubmit)} className='space-y-3'>
+        
+          <CardComponents>
+            <section className="grid md:grid-cols-2 w-full gap-3">
+              <SelectInputField
+                label="Jenis Pengawasan"
+                identiti="select-field-pengawasan"
+                options={optionsJenisLaporan}
+                register={register('JenisPengawasan')}
+                placeholder="Pilih Jenis Pengawasan"
+                disabled={!isEditing}
+                type="select"
+                name="JenisPengawasan"
+              />
+              <InputFieldComponent
+                label="Area Pengawasan"
+                identiti="area"
+                type="text"
+                name="AreaPengawasan"
+                placeholder="Masukan Area Pengawasan"
+                register={register('AreaPengawasan')}
+                disabled={!isEditing}
+              />
+              <InputFieldComponent
+                label="Ruang Lingkup"
+                identiti="rLingkup"
+                type="text"
+                name="RuangLingkup"
+                placeholder="Masukan Ruang Lingkup Pengawasan"
+                register={register('RuangLingkup')}
+                disabled={!isEditing}
+              />
+              <InputFieldComponent
+                label="Tujuan / Sasaran"
+                identiti="tSasaran"
+                type="text"
+                name="TujuanSasaran"
+                placeholder="Masukan Tujuan / Sasaran pengawasan"
+                register={register('TujuanSasaran')}
+                disabled={!isEditing}
+              />
+            </section>
+          </CardComponents>
 
-            <CardComponents>
-              <h3>Jadwal Pengawasan</h3>
-              <section className="grid md:grid-cols-2 gap-3">
-                <InputFieldComponent
-                  label="Rencana Penugasan"
-                  identiti="rPenugasan"
-                  type="date"
-                  name="RencanaPenugasan"
-                  placeholder="Tentukan rencana penugasan"
-                  register={register('RencanaPenugasan')}
-                  disabled={!isEditing}
-                />
-                <InputFieldComponent
-                  label="Rencana Penerbitan"
-                  identiti="rPenerbitan"
-                  type="date"
-                  name="RencanaPenerbitan"
-                  placeholder="Tentukan rencana Penerbitan"
-                  register={register('RencanaPenerbitan')}
-                  disabled={!isEditing}
-                />
-              </section>
-            </CardComponents>
-          </div>
-          <div className="order-1 md:order-2">
-            <DailyActivity />
-          </div>
-        </section>
+          <CardComponents>
+            <h3>Jadwal Pengawasan</h3>
+            <section className="grid md:grid-cols-2 gap-3">
+              <InputFieldComponent
+                label="Rencana Penugasan"
+                identiti="rPenugasan"
+                type="date"
+                name="RencanaPenugasan"
+                placeholder="Tentukan rencana penugasan"
+                register={register('RencanaPenugasan')}
+                disabled={!isEditing}
+              />
+              <InputFieldComponent
+                label="Rencana Penerbitan"
+                identiti="rPenerbitan"
+                type="date"
+                name="RencanaPenerbitan"
+                placeholder="Tentukan rencana Penerbitan"
+                register={register('RencanaPenerbitan')}
+                disabled={!isEditing}
+              />
+            </section>
+          </CardComponents>
 
         <CardComponents>
           <h3>Hari Penugasan</h3>
