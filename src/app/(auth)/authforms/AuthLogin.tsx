@@ -100,7 +100,7 @@ const AuthLogin = () => {
         </div>
         <Button
           color={'primary'}
-          href="/"
+          href="/dashboard"
           as={Link}
           className="w-full bg-primary text-white rounded-xl"
         >
