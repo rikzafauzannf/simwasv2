@@ -1,3 +1,4 @@
+'use client'
 import { Button, Checkbox, Label, TextInput } from 'flowbite-react';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
