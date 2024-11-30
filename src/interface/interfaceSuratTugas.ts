@@ -16,4 +16,3 @@ export interface SuratTugasData {
   fileSt: string;
   linkSt: string;
 }
-

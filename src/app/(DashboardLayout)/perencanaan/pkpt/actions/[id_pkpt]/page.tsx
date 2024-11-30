@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import DailyActivity from '@/app/components/dashboard/DailyActivity';
 import { CardComponents } from '@/app/components/Global/Card';
-import { InputFieldComponent, SelectInputField } from '@/app/components/Global/Input';
+import {
+  InputFieldComponent,
+  SelectInputField,
+} from '@/app/components/Global/Input';
 import { NotofikasiEdit } from '@/app/components/Global/Notif';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
@@ -21,12 +24,13 @@ const ActionsPkptPage = ({ params }: PageProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const id_pkpt = params.id_pkpt;
   const [newMember, setNewMember] = useState('');
-  const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } = useTeamStore();
+  const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
+    useTeamStore();
   const [DataPKPT, setDataPKPT] = useState<PKPTDataBase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const firestoreService = new FirestoreService();
-  
+
   // Initialize useForm with empty default values
   const { register, handleSubmit, reset, watch, setValue } = useForm();
 
@@ -59,7 +63,14 @@ const ActionsPkptPage = ({ params }: PageProps) => {
 
     // Set the total value
     setValue('Jumlah', total);
-  }, [penanggungJawab, wakilPenanggungJawab, supervisor, ketuaTim, aTim, setValue]);
+  }, [
+    penanggungJawab,
+    wakilPenanggungJawab,
+    supervisor,
+    ketuaTim,
+    aTim,
+    setValue,
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,10 +80,11 @@ const ActionsPkptPage = ({ params }: PageProps) => {
         if (response.success && response.data) {
           const datapkpt = response.data as PKPTDataBase;
           setDataPKPT([datapkpt]);
-          
+
           // Parse jumlah_laporan to separate number and type
-          const [jumlahLaporan, jenisLaporan] = datapkpt.jumlah_laporan.split(' - ');
-          
+          const [jumlahLaporan, jenisLaporan] =
+            datapkpt.jumlah_laporan.split(' - ');
+
           // Reset form with modified values
           reset({
             JenisPengawasan: datapkpt.jenis_pengawasan,
@@ -98,10 +110,10 @@ const ActionsPkptPage = ({ params }: PageProps) => {
 
           // Initialize team members
           resetTeamMembers();
-          datapkpt.tim?.forEach(member => {
+          datapkpt.tim?.forEach((member) => {
             addTeamMember(member.name);
           });
-          
+
           setError(null);
         } else {
           setError(new Error(response.message));
@@ -149,7 +161,11 @@ const ActionsPkptPage = ({ params }: PageProps) => {
       };
 
       // Update the document in Firestore
-      const result = await firestoreService.updateData('pkpt', id_pkpt, updatedData);
+      const result = await firestoreService.updateData(
+        'pkpt',
+        id_pkpt,
+        updatedData
+      );
 
       if (result.success) {
         setIsEditing(false);
@@ -271,7 +287,7 @@ const ActionsPkptPage = ({ params }: PageProps) => {
       <section className="flex justify-between items-center">
         <h3>Lihat PKPT ({id_pkpt})</h3>
         <div className="space-x-3">
-          <button 
+          <button
             onClick={handleDelete}
             className="py-1 px-2 bg-red-500 text-white rounded-md shadow-md hover:bg-red-600"
           >
