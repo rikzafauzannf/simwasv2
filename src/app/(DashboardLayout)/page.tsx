@@ -1,52 +1,46 @@
 import React from 'react';
-import SalesProfit from '../components/dashboard/RevenueForecast';
-import NewCustomers from '../components/dashboard/NewCustomers';
-import TotalIncome from '../components/dashboard/TotalIncome';
-import ProductRevenue from '../components/dashboard/ProductRevenue';
-import DailyActivity from '../components/dashboard/DailyActivity';
-import BlogCards from '../components/dashboard/BlogCards';
-import Link from 'next/link';
+import { CardComponents } from '../components/Global/Card';
+// import SalesProfit from '../components/dashboard/RevenueForecast';
+// import NewCustomers from '../components/dashboard/NewCustomers';
+// import TotalIncome from '../components/dashboard/TotalIncome';
+// import ProductRevenue from '../components/dashboard/ProductRevenue';
+// import DailyActivity from '../components/dashboard/DailyActivity';
+// import BlogCards from '../components/dashboard/BlogCards';
+// import Link from 'next/link';
 
 const page = () => {
   return (
-    <>
-      <div className="grid grid-cols-12 gap-30">
-        <div className="lg:col-span-8 col-span-12">
-          <SalesProfit />
+    <div className='space-y-3'>
+      {/* top */}
+      <section className='grid grid-cols-3 gap-3'>
+        <div className='col-span-2'>
+          <CardComponents>card data</CardComponents>
         </div>
-        <div className="lg:col-span-4 col-span-12">
-          <div className="grid grid-cols-12 h-full items-stretch">
-            <div className="col-span-12 mb-30">
-              <NewCustomers />
-            </div>
-            <div className="col-span-12">
-              <TotalIncome />
-            </div>
-          </div>
+        <CardComponents>Card indikator resiko</CardComponents>
+      </section>
+      {/* data chart */}
+      <CardComponents>
+        Chart Total Pengawasan
+      </CardComponents>
+      <section className='grid grid-cols-3 gap-3'>
+        <CardComponents>
+          chart pie total ruang lingkup
+        </CardComponents>
+        <div className='col-span-2'>
+          <CardComponents>
+            jenis pengawasan chart
+          </CardComponents>
         </div>
-        <div className="lg:col-span-8 col-span-12">
-          <ProductRevenue />
+        <div className='col-span-2'>
+          <CardComponents>
+            Chart Anggaran Per Bulan
+          </CardComponents>
         </div>
-        <div className="lg:col-span-4 col-span-12">
-          <DailyActivity />
-        </div>
-        <div className="col-span-12">
-          <BlogCards />
-        </div>
-        <div className="col-span-12 text-center">
-          <p className="text-base">
-            Design and Developed by{' '}
-            <Link
-              href="#"
-              target="_blank"
-              className="pl-1 text-primary underline decoration-primary"
-            >
-              Tim IT
-            </Link>
-          </p>
-        </div>
-      </div>
-    </>
+        <CardComponents>
+          Jumlah Laporan Chart
+        </CardComponents>
+      </section>
+    </div>
   );
 };
 
