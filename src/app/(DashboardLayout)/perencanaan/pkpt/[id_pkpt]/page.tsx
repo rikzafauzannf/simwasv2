@@ -5,6 +5,7 @@ import { CardComponents } from '@/app/components/Global/Card';
 import InputKendaliMutu from '@/app/components/pelaksanaan/form/inputKendaliMutu';
 import LembarHasilPengawasan from '@/app/components/pelaksanaan/form/lembarHasilPengawasan';
 import NotaHasilPengawasan from '@/app/components/pelaksanaan/form/notaHasilPengawasan';
+import KendaliMutu from '@/app/components/pelaksanaan/view/KendaliMutu';
 import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
 import DetailPengawasan from '@/app/components/perencanaan/view/detailPengawasan';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
@@ -29,7 +30,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
     },
     {
       label: 'Kendali Mutu',
-      component: <InputKendaliMutu />,
+      component: <KendaliMutu/>,
     },
     {
       label: 'NHP',

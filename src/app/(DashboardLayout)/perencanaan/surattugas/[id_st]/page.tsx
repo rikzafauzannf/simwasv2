@@ -1,6 +1,7 @@
 'use client';
 import LaporanMingguanComponent from '@/app/components/pelaksanaan/laporanMingguan';
 import React from 'react';
+import { Document, Page } from '@react-pdf/renderer';
 
 interface PageProps {
   params: {
@@ -17,10 +18,7 @@ const ViewSuratTugas = ({ params }: PageProps) => {
   return (
     <div className="space-y-3">
       <h3 className="text-xl"># Detail Surat Tugas {id}</h3>
-      <iframe
-        src={pdfUrl}
-        className="w-full h-[500px] rounded-sm shadow-md"
-      ></iframe>
+      <iframe src={pdfUrl} style={{ width: '100%', height: '500px' }} />
       <LaporanMingguanComponent />
     </div>
   );

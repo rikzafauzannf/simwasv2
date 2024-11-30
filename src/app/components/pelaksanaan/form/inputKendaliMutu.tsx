@@ -34,7 +34,7 @@ const InputKendaliMutu = () => {
   return (
     <div className="space-y-3">
       <h3 className="text-xl">Kendali Mutu</h3>
-      <CardComponents>
+      {/* <CardComponents>
         <SelectInputField
           label="Pilih Surat Tugas"
           identiti="pilihSuratTugas"
@@ -45,7 +45,7 @@ const InputKendaliMutu = () => {
           type="select"
           name="pilihSuratTugas"
         />
-      </CardComponents>
+      </CardComponents> */}
       <section className="flex justify-start gap-3">
         <button
           className={`py-2 px-4 ${KendaliMutu ? 'bg-[#D9D9D9] text-slate-800' : 'bg-[#14AE5C] text-white'}  rounded-md shadow-md  font-semibold transition-all ease-in-out`}
