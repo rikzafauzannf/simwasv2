@@ -93,7 +93,7 @@ const AuthLogin = () => {
               Remeber this Device
             </Label>
           </div>
-          <Link href={'/'} className="text-primary text-sm font-medium">
+          <Link href={'/dashboard'} className="text-primary text-sm font-medium">
           Kirim Kembali OTP?
           </Link>
         </div>
