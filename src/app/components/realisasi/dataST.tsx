@@ -1,13 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import { CardComponents } from '../Global/Card';
-import { ButtonLinkComponent } from '../Global/Button';
 import Link from 'next/link';
-import ReportForm from '../pelaksanaan/form/ReportForm';
-import Swal from 'sweetalert2';
-import ReactDOM from 'react-dom';
 
-const MapDataST = () => {
+interface PropsComponent {
+  title: string;
+  todo: string;
+}
+
+const MapDataST = ({ title, todo }: PropsComponent) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -138,21 +139,6 @@ const MapDataST = () => {
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  // const handleReportClick = (id: number) => {
-  //   console.log('Button clicked for ID:', id);
-  //   Swal.fire({
-  //     title: 'Buat Laporan Mingguan',
-  //     html: `<div id="report-form"></div>`,
-  //     showCancelButton: true,
-  //     confirmButtonText: 'Kirim',
-  //     preConfirm: () => {
-  //       const form = document.getElementById('report-form') as HTMLDivElement;
-  //       const reportForm = <ReportForm id={id} />;
-  //       ReactDOM.render(reportForm, form);
-  //     },
-  //   });
-  // };
-
   return (
     <>
       <div className="mb-4">
@@ -172,10 +158,10 @@ const MapDataST = () => {
             <hr className="mb-3" />
             <div className="flex flex-col gap-2">
               <Link
-                href={`/pelaksanaan/kendalimutu/form/1`}
+                href={`/${todo}/1`}
                 className="py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50"
               >
-                Buat Kendali Mutu / Laporan
+                {title}
               </Link>
               {/* <button
                 onClick={() => handleReportClick(item.tim)}

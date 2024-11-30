@@ -38,7 +38,7 @@ const SidebarContent: MenuItem[] = [
     children: [
       {
         name: 'Buat Data Referensi',
-        icon: 'solar:widget-add-line-duotone',
+        icon: 'solar:add-circle-broken',
         id: uniqueId(),
         url: '/',
       },
@@ -58,7 +58,7 @@ const SidebarContent: MenuItem[] = [
         icon: 'solar:folder-broken',
         id: uniqueId(),
         url: '/perencanaan/pkpt',
-      },      
+      },
     ],
   },
   {
@@ -78,10 +78,10 @@ const SidebarContent: MenuItem[] = [
       },
       {
         name: 'Nota Hasil Pengawasan',
-        icon: 'solar:login-2-linear',
+        icon: 'solar:shield-user-outline',
         id: uniqueId(),
-        url: '/auth/login',
-      },      
+        url: '/pelaksanaan/notahasil',
+      },
     ],
   },
   {
@@ -91,13 +91,13 @@ const SidebarContent: MenuItem[] = [
         name: 'Lembar Hasil Pengawasan',
         icon: 'solar:smile-circle-outline',
         id: uniqueId(),
-        url: '/icons/solar',
+        url: '/pelaporan/lembarhasil',
       },
       {
         name: 'Ringkasan Pengawasan',
         icon: 'solar:notes-minimalistic-outline',
         id: uniqueId(),
-        url: '/sample-page',
+        url: '/pelaporan/ringkasanpengawasan',
       },
     ],
   },

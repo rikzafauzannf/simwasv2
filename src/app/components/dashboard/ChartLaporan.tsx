@@ -49,7 +49,7 @@ const Chartlaporan = () => {
 
   return (
     <div className="w-full">
-      <h3 className="font-semibold mb-4">jumlah Laporan</h3>      
+      <h3 className="font-semibold mb-4">jumlah Laporan</h3>
       <Chart options={options} series={series} type="bar" height={280} />
     </div>
   );
