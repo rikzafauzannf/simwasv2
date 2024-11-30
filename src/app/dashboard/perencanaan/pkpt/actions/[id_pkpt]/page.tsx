@@ -190,7 +190,7 @@ const ActionsPkptPage = ({ params }: PageProps) => {
         if (result.success) {
           alert('PKPT berhasil dihapus');
           // Redirect to PKPT list page
-          window.location.href = '/perencanaan/pkpt';
+          window.location.href = '/dashboard/perencanaan/pkpt';
         } else {
           throw new Error(result.message);
         }
