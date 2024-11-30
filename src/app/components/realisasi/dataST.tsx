@@ -158,7 +158,7 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
             <hr className="mb-3" />
             <div className="flex flex-col gap-2">
               <Link
-                href={`/${todo}/1`}
+                href={`/dashboard${todo}/1`}
                 className="py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50"
               >
                 {title}

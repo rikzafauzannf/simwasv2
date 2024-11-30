@@ -78,7 +78,7 @@ const InputRingkasanPengawasan = () => {
                 register={'rekomendasiSaran'}
               />
             </div>
-            <div className='col-span-3'>
+            <div className="col-span-3">
               <InputFieldComponent
                 label="Nilai Rekomendasi Rp."
                 identiti="nilaiRekomendasi"
@@ -89,7 +89,7 @@ const InputRingkasanPengawasan = () => {
               />
             </div>
           </section>
-          <ButtonType Text='+ Buat Ringkasan Pengawasan' type='submit'/>
+          <ButtonType Text="+ Buat Ringkasan Pengawasan" type="submit" />
         </form>
       </CardComponents>
     </div>

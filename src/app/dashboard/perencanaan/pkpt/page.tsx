@@ -12,7 +12,7 @@ const PkptPage = () => {
       <div>
         <ButtonLinkComponent
           Text="Input PKPT"
-          linkTo="/perencanaan/pkpt/inputpkpt"
+          linkTo="/dashboard/perencanaan/pkpt/inputpkpt"
         />
       </div>
       <div className="grid w-full gap-3">

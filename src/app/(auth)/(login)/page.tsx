@@ -1,5 +1,5 @@
 'use client';
-import FullLogo from '@/app/(DashboardLayout)/layout/shared/logo/FullLogo';
+import FullLogo from '../../dashboard/layout/shared/logo/FullLogo';
 import React from 'react';
 import Link from 'next/link';
 import AuthLogin from '../authforms/AuthLogin';
@@ -22,10 +22,10 @@ const BoxedLogin = () => {
               <FullLogo />
             </div>
             <p className="text-sm text-center text-dark my-3">
-              Sign In on MatDash
+              Login Menggunakan NIP
             </p>
             <AuthLogin />
-            <div className="flex gap-2 text-base text-ld font-medium mt-6 items-center justify-center">
+            {/* <div className="flex gap-2 text-base text-ld font-medium mt-6 items-center justify-center">
               <p>New to Matdash?</p>
               <Link
                 href="/auth/register"
@@ -33,7 +33,7 @@ const BoxedLogin = () => {
               >
                 Create an account
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

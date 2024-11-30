@@ -146,7 +146,10 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
             <h1>{item.jenis_pengawasan}</h1>
             <p>{item.tim}</p>
             <hr className="mb-3" />
-            <ButtonLinkComponent Text="Buat ST" linkTo={`/${todo}/1`} />
+            <ButtonLinkComponent
+              Text="Buat ST"
+              linkTo={`/dashboard/${todo}/1`}
+            />
           </CardComponents>
         ))}
       </section>

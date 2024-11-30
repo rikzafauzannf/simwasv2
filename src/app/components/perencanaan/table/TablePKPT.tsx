@@ -44,13 +44,13 @@ const TablePKPT: React.FC = () => {
       cell: (row: PKPTDataBase) => (
         <div className="flex gap-2">
           <Link
-            href={`/perencanaan/pkpt/${row.id}`}
+            href={`/dashboard/perencanaan/pkpt/${row.id}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
           </Link>
           <Link
-            href={`/perencanaan/pkpt/actions/${row.id}`}
+            href={`/dashboard/perencanaan/pkpt/actions/${row.id}`}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act

@@ -18,7 +18,7 @@ const TableSuratTugas = () => {
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={`/perencanaan/surattugas/${row.id}`}
+            href={`/dashboard/perencanaan/surattugas/${row.id}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
