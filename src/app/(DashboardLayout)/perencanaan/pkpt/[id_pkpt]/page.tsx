@@ -7,6 +7,7 @@ import LembarHasilPengawasan from '@/app/components/pelaksanaan/form/lembarHasil
 import NotaHasilPengawasan from '@/app/components/pelaksanaan/form/notaHasilPengawasan';
 import KendaliMutu from '@/app/components/pelaksanaan/view/KendaliMutu';
 import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
+import TableSuratTugas from '@/app/components/perencanaan/table/TableSuratTugas';
 import DetailPengawasan from '@/app/components/perencanaan/view/detailPengawasan';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
@@ -26,11 +27,18 @@ const ViewPkptPage = ({ params }: PageProps) => {
     },
     {
       label: 'Rekap Surat Tugas',
-      component: <InputSuratTugas />,
+      component: (
+        <div className="grid w-full gap-3">
+          <h3 className="text-xl">Data Rekap Surat Tugas</h3>
+          <CardComponents>
+            <TableSuratTugas />
+          </CardComponents>
+        </div>
+      ),
     },
     {
       label: 'Kendali Mutu',
-      component: <KendaliMutu/>,
+      component: <KendaliMutu />,
     },
     {
       label: 'NHP',

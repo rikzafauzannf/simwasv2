@@ -8,7 +8,10 @@ const KendaliMutuPage = () => {
   return (
     <div className="space-y-3">
       <h3 className="text-xl">Kendali Mutu</h3>
-      <MapDataST />
+      <MapDataST
+        title="Buat Kendalimutu / laporan"
+        todo="pelaksanaan/kendalimutu/form"
+      />
     </div>
   );
 };

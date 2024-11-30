@@ -50,7 +50,7 @@ const page = () => {
           <Chartlaporan />
         </CardComponents>
       </section>
-      <RevenueForecast/>
+      <RevenueForecast />
     </div>
   );
 };
