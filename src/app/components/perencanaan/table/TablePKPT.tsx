@@ -1,42 +1,17 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
-import { FirestoreService } from '@/services/firestore.service';
+import { useFetch } from '@/hooks/useFetch';
 
 const TablePKPT: React.FC = () => {
+  const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<PKPTDataBase[]>([]);
-  const [DataPKPT, setDataPKPT] = useState<PKPTDataBase[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const firestoreService = new FirestoreService();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await firestoreService.getAllData('pkpt');
-        if (response.success && response.data) {
-          const datapkpt = response.data as PKPTDataBase[];
-          setDataPKPT(datapkpt);
-          setError(null);
-        } else {
-          setError(new Error(response.message));
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const columns: TableColumn<PKPTDataBase>[] = [
     {

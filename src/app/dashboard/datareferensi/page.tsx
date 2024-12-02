@@ -28,10 +28,10 @@ const DataReferensiPage = () => {
     <div className='space-y-3'>
       <h3 className='text-xl'>Persiapkan Data Referensi</h3>
       <hr />
-      <TabGroup className="flex flex-row gap-10">
-        <TabList className="grid gap-3">
+      <TabGroup className="flex flex-col md:flex-row gap-10">
+        <TabList className="grid grid-flow-col md:grid-flow-row gap-3">
           {ReferensiComponents.map((item,index)=>(
-          <Tab key={index} className="py-2 px-10 data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold rounded-md shadow-md">
+          <Tab key={index} className="py-2 px-8 data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold rounded-md shadow-md">
             {item.title}
           </Tab>
           ))}
