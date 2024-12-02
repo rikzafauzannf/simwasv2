@@ -306,7 +306,7 @@ const InputPKPT = () => {
               <label htmlFor="Tim" className="text-slate-800">
                 TIM [{teamMembers.length}]
               </label>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full justify-start flex-grow">
                 <input
                   type="text"
                   value={newMember}
@@ -325,7 +325,7 @@ const InputPKPT = () => {
             </div>
 
             {/* Display Team Members */}
-            <div className="mt-4 space-y-2">
+            <div className="mt-4 space-y-2 w-full">
               {teamMembers.map((member) => (
                 <div
                   key={member.id}
@@ -348,7 +348,7 @@ const InputPKPT = () => {
 
       {/* Optional data */}
       <CardComponents>
-        <section className="md:grid md:grid-cols-2 gap-3">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <InputFieldComponent
             label="Anggaran (Opsional)"
             identiti="Anggaran"
@@ -364,7 +364,7 @@ const InputPKPT = () => {
             })}
             error={errors.Anggaran}
           />
-          <div className="flex justify-start items-baseline gap-3">
+          <div className="flex justify-start items-baseline gap-3 w-full">
             <div className="flex-1">
               <InputFieldComponent
                 label="Jumlah Laporan"

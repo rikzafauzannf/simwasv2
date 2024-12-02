@@ -20,8 +20,8 @@ const page = () => {
   return (
     <div className="space-y-3">
       {/* top */}
-      <section className="grid grid-cols-3 gap-3">
-        <div className="col-span-2">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-3 w-full">
+        <div className="lg:col-span-2">
           <CardAkumulasiDataALL />
         </div>
         <CardComponents>
@@ -32,16 +32,16 @@ const page = () => {
       <CardComponents>
         <ChartPengawasan />
       </CardComponents>
-      <section className="grid grid-cols-3 gap-3">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-3 w-full">
         <CardComponents>
           <ChartRuangLingkup />
         </CardComponents>
-        <div className="col-span-2">
+        <div className="lg:col-span-2">
           <CardComponents>
             <ChartJenisPengawasan />
           </CardComponents>
         </div>
-        <div className="col-span-2">
+        <div className="lg:col-span-2">
           <CardComponents>
             <ChartAnggaran />
           </CardComponents>
