@@ -1,10 +1,8 @@
-'use client'
-import React from 'react'
+'use client';
+import React from 'react';
 
 const AreaPengawasan = () => {
-  return (
-    <div>AreaPengawasan</div>
-  )
-}
+  return <div>AreaPengawasan</div>;
+};
 
-export default AreaPengawasan
+export default AreaPengawasan;

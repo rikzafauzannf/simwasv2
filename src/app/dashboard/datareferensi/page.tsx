@@ -11,23 +11,23 @@ const DataReferensiPage = () => {
   const ReferensiComponents = [
     {
       title: 'Jenis Pengawasan',
-      component: <JenisPengawasan/>,
+      component: <JenisPengawasan />,
     },
-    {
-      title: 'Area Pengawasan',
-      component: <AreaPengawasan/>,
-    },
+    // {
+    //   title: 'Area Pengawasan',
+    //   component: <AreaPengawasan />,
+    // },
     {
       title: 'Ruang Lingkup',
-      component: <RuangLingkup/>,
+      component: <RuangLingkup />,
     },
     {
       title: 'Tingkat Resiko',
-      component: <TingkatResiko/>,
+      component: <TingkatResiko />,
     },
     {
       title: 'Kode Temuan',
-      component: <KodeTemuan/>,
+      component: <KodeTemuan />,
     },
   ];
   return (
@@ -41,7 +41,7 @@ const DataReferensiPage = () => {
               {ReferensiComponents.map((item, index) => (
                 <Tab
                   key={index}
-                  className="py-2 px-8 data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold rounded-md shadow-md lg:w-full"
+                  className="py-2 px-8 data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold rounded-md shadow-md lg:w-full border-none"
                 >
                   {item.title}
                 </Tab>
@@ -49,7 +49,7 @@ const DataReferensiPage = () => {
             </TabList>
           </CardComponents>
         </div>
-        <TabPanels>
+        <TabPanels className="flex-1">
           {ReferensiComponents.map((item, index) => (
             <TabPanel key={index}>{item.component}</TabPanel>
           ))}

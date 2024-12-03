@@ -51,8 +51,8 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         {...register}
         disabled={disabled}
-        // className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600  
-        //   ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'} 
+        // className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600
+        //   ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}
         //   ${error ? 'border-red-500' : ''}`}
         className="form-control form-rounded-xl flex-1"
       />

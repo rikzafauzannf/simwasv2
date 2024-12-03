@@ -1,10 +1,8 @@
-'use client'
-import React from 'react'
+'use client';
+import React from 'react';
 
 const KodeTemuan = () => {
-  return (
-    <div>KodeTemuan</div>
-  )
-}
+  return <div>KodeTemuan</div>;
+};
 
-export default KodeTemuan
+export default KodeTemuan;

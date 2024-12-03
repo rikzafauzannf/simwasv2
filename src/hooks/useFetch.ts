@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { FirestoreService } from '@/services/firestore.service';
 
 const firestoreService = new FirestoreService();
@@ -8,26 +8,26 @@ export const useFetch = <T>(collection: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await firestoreService.getAllData(collection);
-        if (response.success && response.data) {
-          setData(response.data as T[]);
-          setError(null);
-        } else {
-          setError(new Error(response.message));
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setIsLoading(false);
+  const fetchData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await firestoreService.getAllData(collection);
+      if (response.success && response.data) {
+        setData(response.data as T[]);
+        setError(null);
+      } else {
+        setError(new Error(response.message));
       }
-    };
-
-    fetchData();
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setIsLoading(false);
+    }
   }, [collection]);
 
-  return { data, isLoading, error };
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return { data, isLoading, error, refetch: fetchData };
 };
