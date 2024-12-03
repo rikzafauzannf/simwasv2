@@ -30,4 +30,4 @@ export const useFetchAll = <T>(collection: string) => {
   }, [collection]);
 
   return { data, isLoading, error };
-}; 
+};

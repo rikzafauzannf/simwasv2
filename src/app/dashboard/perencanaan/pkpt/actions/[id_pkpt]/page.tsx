@@ -10,8 +10,9 @@ import {
 import { NotofikasiEdit } from '@/app/components/Global/Notif';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
-import { FirestoreService } from '@/services/firestore.service';
+import { useFetchById } from '@/hooks/useFetchById';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
+import { FirestoreService } from '@/services/firestore.service';
 
 // Cara 1: Menggunakan props params
 interface PageProps {
@@ -20,16 +21,19 @@ interface PageProps {
   };
 }
 
+const firestoreService = new FirestoreService();
+
 const ActionsPkptPage = ({ params }: PageProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const id_pkpt = params.id_pkpt;
   const [newMember, setNewMember] = useState('');
   const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
     useTeamStore();
-  const [DataPKPT, setDataPKPT] = useState<PKPTDataBase[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const firestoreService = new FirestoreService();
+  const {
+    data: DataPKPT,
+    isLoading,
+    error,
+  } = useFetchById<PKPTDataBase>('pkpt', id_pkpt);
 
   // Initialize useForm with empty default values
   const { register, handleSubmit, reset, watch, setValue } = useForm();
@@ -73,60 +77,41 @@ const ActionsPkptPage = ({ params }: PageProps) => {
   ]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await firestoreService.getDataById('pkpt', id_pkpt);
-        if (response.success && response.data) {
-          const datapkpt = response.data as PKPTDataBase;
-          setDataPKPT([datapkpt]);
+    if (DataPKPT) {
+      // Parse jumlah_laporan to separate number and type
+      const [jumlahLaporan, jenisLaporan] =
+        DataPKPT.jumlah_laporan.split(' - ');
 
-          // Parse jumlah_laporan to separate number and type
-          const [jumlahLaporan, jenisLaporan] =
-            datapkpt.jumlah_laporan.split(' - ');
+      // Reset form with modified values
+      reset({
+        JenisPengawasan: DataPKPT.jenis_pengawasan,
+        AreaPengawasan: DataPKPT.area_pengawasan,
+        RuangLingkup: DataPKPT.ruang_lingkup,
+        TujuanSasaran: DataPKPT.tujuan_sasaran,
+        RencanaPenugasan: DataPKPT.rencana_penugasan,
+        RencanaPenerbitan: DataPKPT.rencana_penerbitan,
+        PenanggungJawab: DataPKPT.penanggung_jawab,
+        WakilPenanggungJawab: DataPKPT.wakil_penanggung_jawab,
+        Supervisor: DataPKPT.pengendali_teknis,
+        KetuaTIM: DataPKPT.ketua_tim,
+        ATim: DataPKPT.anggota_tim,
+        Jumlah: DataPKPT.jumlah,
+        Tim: DataPKPT.tim,
+        Anggaran: DataPKPT.anggaran,
+        JumlahLaporan: jumlahLaporan,
+        JenisLaporan: jenisLaporan,
+        SaranaDanPrasarana: DataPKPT.sarana_prasarana || '',
+        TingkatRisiko: DataPKPT.tingkat_risiko,
+        Keterangan: DataPKPT.keterangan,
+      });
 
-          // Reset form with modified values
-          reset({
-            JenisPengawasan: datapkpt.jenis_pengawasan,
-            AreaPengawasan: datapkpt.area_pengawasan,
-            RuangLingkup: datapkpt.ruang_lingkup,
-            TujuanSasaran: datapkpt.tujuan_sasaran,
-            RencanaPenugasan: datapkpt.rencana_penugasan,
-            RencanaPenerbitan: datapkpt.rencana_penerbitan,
-            PenanggungJawab: datapkpt.penanggung_jawab,
-            WakilPenanggungJawab: datapkpt.wakil_penanggung_jawab,
-            Supervisor: datapkpt.pengendali_teknis,
-            KetuaTIM: datapkpt.ketua_tim,
-            ATim: datapkpt.anggota_tim,
-            Jumlah: datapkpt.jumlah,
-            Tim: datapkpt.tim,
-            Anggaran: datapkpt.anggaran,
-            JumlahLaporan: jumlahLaporan,
-            JenisLaporan: jenisLaporan,
-            SaranaDanPrasarana: datapkpt.sarana_prasarana || '',
-            TingkatRisiko: datapkpt.tingkat_risiko,
-            Keterangan: datapkpt.keterangan,
-          });
-
-          // Initialize team members
-          resetTeamMembers();
-          datapkpt.tim?.forEach((member) => {
-            addTeamMember(member.name);
-          });
-
-          setError(null);
-        } else {
-          setError(new Error(response.message));
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [reset, resetTeamMembers, addTeamMember]);
+      // Initialize team members
+      resetTeamMembers();
+      DataPKPT.tim?.forEach((member) => {
+        addTeamMember(member.name);
+      });
+    }
+  }, [DataPKPT, reset, resetTeamMembers, addTeamMember]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -154,10 +139,10 @@ const ActionsPkptPage = ({ params }: PageProps) => {
         tingkat_risiko: data.TingkatRisiko,
         keterangan: data.Keterangan || null,
         // Maintain existing metadata
-        id_user: DataPKPT[0].id_user,
-        createdAt: DataPKPT[0].createdAt,
-        status: DataPKPT[0].status,
-        active: DataPKPT[0].active,
+        id_user: DataPKPT ? DataPKPT.id_user : 'noSet',
+        createdAt: DataPKPT ? DataPKPT.createdAt : 'noSet',
+        status: DataPKPT ? DataPKPT.status : 'noSet',
+        active: DataPKPT ? DataPKPT.active : 'noSet',
       };
 
       // Update the document in Firestore
@@ -200,29 +185,6 @@ const ActionsPkptPage = ({ params }: PageProps) => {
       }
     }
   };
-
-  const dummyDummyNOtifikasi = [
-    {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
-    },
-    {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
-    },
-    {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
-    },
-    {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
-    },
-    {
-      username: 'reza',
-      date: '12-11-2024 - 14.50 wib',
-    },
-  ];
 
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();

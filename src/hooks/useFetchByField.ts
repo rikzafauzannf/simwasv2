@@ -18,7 +18,12 @@ export const useFetchByField = <T>(
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await firestoreService.getDataByField(collection, fieldName, operator, value);
+        const response = await firestoreService.getDataByField(
+          collection,
+          fieldName,
+          operator,
+          value
+        );
         if (response.success && response.data) {
           setData(response.data as T[]);
           setError(null);
@@ -36,4 +41,4 @@ export const useFetchByField = <T>(
   }, [collection, fieldName, operator, value]);
 
   return { data, isLoading, error };
-}; 
+};

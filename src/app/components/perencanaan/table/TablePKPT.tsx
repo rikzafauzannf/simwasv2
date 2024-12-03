@@ -131,7 +131,8 @@ const TablePKPT: React.FC = () => {
       const filtered = DataPKPT.filter(
         (item) =>
           item.jenis_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
-          item.area_pengawasan.toLowerCase().includes(value.toLowerCase())
+          item.area_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
+          item.status.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredData(filtered);
     }
@@ -215,7 +216,7 @@ const TablePKPT: React.FC = () => {
         <input
           id="search"
           type="text"
-          placeholder="Cari Jenis / Area Pengawasan ..."
+          placeholder="Cari Status / Jenis / Area Pengawasan ..."
           value={search}
           onChange={handleSearch}
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"

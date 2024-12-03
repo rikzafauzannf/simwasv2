@@ -30,4 +30,4 @@ export const useFetchById = <T>(collection: string, docId: string) => {
   }, [collection, docId]);
 
   return { data, isLoading, error };
-}; 
+};

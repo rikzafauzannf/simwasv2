@@ -30,4 +30,4 @@ export const useFetch = <T>(collection: string) => {
   }, [collection]);
 
   return { data, isLoading, error };
-}; 
+};
