@@ -152,7 +152,11 @@ const RevenueForecast = () => {
   return (
     <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
       <div className="flex justify-between items-center">
-        <h5 className="card-title">Anggaran Awal - Rekomendasi Anggaran</h5>
+        <h5 className="card-title">
+          {' '}
+          <img src="images/logos/dark-logo.svg" alt="" />
+          Anggaran Awal - Rekomendasi Anggaran
+        </h5>
         <Select
           id="periods"
           className="select-md"

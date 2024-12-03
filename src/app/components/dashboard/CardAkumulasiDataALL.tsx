@@ -8,8 +8,16 @@ const CardAkumulasiDataALL = () => {
       <div className="md:col-span-2">
         <AkumulasiDataPKPT />
       </div>
-      <CardAccumulate Header="Jumlah NHP" Count={2} />
-      <CardAccumulate Header="Jumlah LHP" Count={2} />
+      <CardAccumulate
+        Header="Jumlah NHP"
+        Count={2}
+        imgurl="/images/logos/dark-logo.svg"
+      />
+      <CardAccumulate
+        Header="Jumlah LHP"
+        Count={2}
+        imgurl="/images/logos/light-logo.svg"
+      />
     </section>
   );
 };

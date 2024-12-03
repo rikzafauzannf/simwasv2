@@ -108,7 +108,10 @@ const ChartRuangLingkup = () => {
 
   return (
     <div className="w-full">
-      <h4 className="font-semibold mb-4">Ruang Lingkup</h4>
+      <div className="flex">
+        <img src="/images/logos/dark-logo.svg" alt="" />
+        <h3 className="font-bold text-xl text-neutral-700">Ruang Lingkup</h3>
+      </div>
       <Chart
         options={options}
         series={series}

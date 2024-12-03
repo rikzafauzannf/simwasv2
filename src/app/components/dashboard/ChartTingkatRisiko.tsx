@@ -57,7 +57,10 @@ const ChartTingkatRisiko = () => {
 
   return (
     <div className="w-full">
-      <h4 className="font-semibold mb-4">Tingkat Risiko</h4>
+      <div className="flex">
+        <img src="/images/logos/dark-logo.svg" alt="" />
+        <h3 className="font-bold text-xl text-neutral-700">Tingkat Risiko</h3>
+      </div>
       <Chart
         options={options}
         series={series}

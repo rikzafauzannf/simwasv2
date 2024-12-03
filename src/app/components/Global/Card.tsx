@@ -1,10 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 interface Props {
   Header: string;
   Count: number;
+  imgurl?: string;
 }
 interface PropsComponent {
   children: React.ReactNode;
@@ -37,12 +39,20 @@ export const CardHeaderContent: React.FC<PropsHeading> = ({
   );
 };
 
-export const CardAccumulate: React.FC<Props> = ({ Header, Count }) => {
+export const CardAccumulate: React.FC<Props> = ({ Header, Count, imgurl }) => {
   return (
-    <div className="w-full rounded-md shadow-md p-6 bg-white space-y-2">
-      <h3>{Header}</h3>
-      <hr />
-      <h2 className="text-center text-3xl">{Count}</h2>
-    </div>
+    <>
+      <div className="w-full rounded-md shadow-md p-6 bg-white space-y-2">
+        <div className="flex gap-3">
+          <img src={imgurl} className="w-[100px]" />
+          <div className="p-4">
+            <h2 className="text-left text-4xl font-black text-teal-500">
+              {Count}
+            </h2>
+            <h3 className="text-neutral-500">{Header}</h3>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
