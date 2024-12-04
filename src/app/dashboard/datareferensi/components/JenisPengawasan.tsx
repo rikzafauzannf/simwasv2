@@ -10,17 +10,29 @@ import { useFetch } from '@/hooks/useFetch';
 
 const firestoreService = new FirestoreService();
 const JenisPengawasan = () => {
-  const { data: DataJenisPengawasan, isLoading, error, refetch } = useFetch<JenisPengawasanDB>('jenis_pengawasan');
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    data: DataJenisPengawasan,
+    isLoading,
+    error,
+    refetch,
+  } = useFetch<JenisPengawasanDB>('jenis_pengawasan');
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       jenis_pengawasan: '',
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;  
+  if (error) return <div>Error: {error.message}</div>;
 
-  const onSubmit: SubmitHandler<{ jenis_pengawasan: string }> = async (data) => {
+  const onSubmit: SubmitHandler<{ jenis_pengawasan: string }> = async (
+    data
+  ) => {
     try {
       const result = await firestoreService.addData('jenis_pengawasan', {
         jenis_pengawasan: data.jenis_pengawasan,
@@ -42,9 +54,14 @@ const JenisPengawasan = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus jenis pengawasan ini?')) {
+    if (
+      window.confirm('Apakah Anda yakin ingin menghapus jenis pengawasan ini?')
+    ) {
       try {
-        const result = await firestoreService.deleteData('jenis_pengawasan', id);
+        const result = await firestoreService.deleteData(
+          'jenis_pengawasan',
+          id
+        );
         if (result.success) {
           alert('Jenis Pengawasan berhasil dihapus');
           refetch(); // Refetch data to update the list
@@ -77,13 +94,16 @@ const JenisPengawasan = () => {
           <ButtonType Text="+ Simpan Jenis Pengawasan" type="submit" />
         </form>
       </CardComponents>
-      <section className='grid grid-cols-2 gap-3'>
+      <section className="grid grid-cols-2 gap-3">
         {DataJenisPengawasan.map((item) => (
           <CardComponents key={item.id}>
-            <h3 className='text-xl font-bold'>
+            <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_pengawasan}
             </h3>
-            <button onClick={() => handleDelete(item.id)} className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold">
+            <button
+              onClick={() => handleDelete(item.id)}
+              className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
+            >
               Hapus
             </button>
           </CardComponents>
