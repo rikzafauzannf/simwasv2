@@ -49,7 +49,10 @@ const Chartlaporan = () => {
 
   return (
     <div className="w-full">
-      <h3 className="font-semibold mb-4">jumlah Laporan</h3>
+      <div className="flex gap-2 items-center">
+        <img src="/images/products/laporan_bg.svg" alt="" />
+        <h3 className="font-bold text-xl text-neutral-700">Jenis Pengawasan</h3>
+      </div>
       <Chart options={options} series={series} type="bar" height={280} />
     </div>
   );

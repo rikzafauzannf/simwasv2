@@ -63,7 +63,12 @@ const ChartPengawasan = () => {
 
   return (
     <div className="w-full">
-      <h4 className="font-semibold mb-4">Total Pengawasan per Bulan</h4>
+      <div className="flex gap-2 items-center">
+        <img src="/images/products/total_pengawasan_bg.svg" alt="" />
+        <h3 className="font-bold text-xl text-neutral-700">
+          Total Pengawasan per Bulan
+        </h3>
+      </div>
       <Chart options={options} series={series} type="area" height={350} />
     </div>
   );

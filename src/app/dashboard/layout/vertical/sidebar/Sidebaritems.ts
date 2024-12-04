@@ -27,7 +27,7 @@ const SidebarContent: MenuItem[] = [
     children: [
       {
         name: 'Dashboard',
-        icon: 'solar:widget-add-line-duotone',
+        icon: 'solar:home-smile-angle-line-duotone',
         id: uniqueId(),
         url: '/dashboard',
       },
@@ -38,7 +38,7 @@ const SidebarContent: MenuItem[] = [
     children: [
       {
         name: 'Buat Data Referensi',
-        icon: 'solar:add-circle-broken',
+        icon: 'solar:shield-plus-line-duotone',
         id: uniqueId(),
         url: '/dashboard/datareferensi',
       },
@@ -55,7 +55,7 @@ const SidebarContent: MenuItem[] = [
       // },
       {
         name: 'PKPT',
-        icon: 'solar:folder-broken',
+        icon: 'solar:book-minimalistic-line-duotone',
         id: uniqueId(),
         url: '/dashboard/perencanaan/pkpt',
       },
@@ -66,19 +66,19 @@ const SidebarContent: MenuItem[] = [
     children: [
       {
         name: 'Surat Tugas',
-        icon: 'solar:airbuds-case-charge-outline',
+        icon: 'solar:file-send-line-duotone',
         id: uniqueId(),
         url: '/dashboard/perencanaan/surattugas',
       },
       {
         name: 'Kendali Mutu',
-        icon: 'solar:shield-user-outline',
+        icon: 'solar:checklist-minimalistic-line-duotone',
         id: uniqueId(),
         url: '/dashboard/pelaksanaan/kendalimutu',
       },
       {
-        name: 'Nota Hasil Pengawasan',
-        icon: 'solar:shield-user-outline',
+        name: 'Nota Hasil',
+        icon: 'solar:move-to-folder-line-duotone',
         id: uniqueId(),
         url: '/dashboard/pelaksanaan/notahasil',
       },
@@ -88,14 +88,14 @@ const SidebarContent: MenuItem[] = [
     heading: 'Pelaporan',
     children: [
       {
-        name: 'Lembar Hasil Pengawasan',
-        icon: 'solar:smile-circle-outline',
+        name: 'Lembar Hasil',
+        icon: 'solar:folder-check-line-duotone',
         id: uniqueId(),
         url: '/dashboard/pelaporan/lembarhasil',
       },
       {
-        name: 'Ringkasan Pengawasan',
-        icon: 'solar:notes-minimalistic-outline',
+        name: 'Hasil Temuan',
+        icon: 'solar:presentation-graph-line-duotone',
         id: uniqueId(),
         url: '/dashboard/pelaporan/ringkasanpengawasan',
       },
@@ -104,37 +104,37 @@ const SidebarContent: MenuItem[] = [
   {
     heading: 'Tindak Lanjut',
     children: [
-      {
-        name: 'TLHP',
-        icon: 'solar:folder-check-broken',
-        id: uniqueId(),
-        url: '/dashboard/perencanaan/realisasipkpt',
-      },
-      {
-        name: 'BAKTL',
-        icon: 'solar:folder-check-broken',
-        id: uniqueId(),
-        url: '/dashboard/perencanaan/realisasipkpt',
-      },
+      // {
+      //   name: 'TLHP',
+      //   icon: 'solar:folder-check-broken',
+      //   id: uniqueId(),
+      //   url: '/dashboard/perencanaan/realisasipkpt',
+      // },
+      // {
+      //   name: 'BAKTL',
+      //   icon: 'solar:folder-check-broken',
+      //   id: uniqueId(),
+      //   url: '/dashboard/perencanaan/realisasipkpt',
+      // },
       {
         name: 'Realisasi PKPT',
-        icon: 'solar:folder-check-broken',
+        icon: 'solar:book-bookmark-line-duotone',
         id: uniqueId(),
         url: '/dashboard/perencanaan/realisasipkpt',
       },
     ],
   },
-  {
-    heading: 'manage',
-    children: [
-      {
-        name: 'User Account',
-        icon: 'solar:smile-circle-outline',
-        id: uniqueId(),
-        url: '/dashboard/usermanage',
-      },
-    ],
-  },
+  // {
+  //   heading: 'manage',
+  //   children: [
+  //     {
+  //       name: 'User Account',
+  //       icon: 'solar:smile-circle-outline',
+  //       id: uniqueId(),
+  //       url: '/dashboard/usermanage',
+  //     },
+  //   ],
+  // },
 ];
 
 export default SidebarContent;
