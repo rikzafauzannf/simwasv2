@@ -56,8 +56,11 @@ const ChartJenisPengawasan = () => {
   ];
 
   return (
-    <div className="w-full">
-      <h4 className="font-semibold mb-4">Jenis Pengawasan</h4>
+    <div className="w-full items-center">
+      <div className="flex gap-2 items-center">
+        <img src="/images/products/jenis_pengawasn_bg.svg" alt="" />
+        <h3 className="font-bold text-xl text-neutral-700">Jenis Pengawasan</h3>
+      </div>
       <Chart options={options} series={series} type="bar" height={250} />
     </div>
   );

@@ -152,9 +152,9 @@ const RevenueForecast = () => {
   return (
     <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
       <div className="flex justify-between items-center">
-        <h5 className="card-title">
+        <h5 className="card-title flex gap-2 items-center text-xl1">
           {' '}
-          <img src="images/logos/dark-logo.svg" alt="" />
+          <img src="images/products/comparasi_bg.svg" alt="" />
           Anggaran Awal - Rekomendasi Anggaran
         </h5>
         <Select

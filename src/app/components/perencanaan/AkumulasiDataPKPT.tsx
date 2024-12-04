@@ -38,16 +38,16 @@ const AkumulasiDataPKPT = () => {
   const data_pkpt = DataPKPT.filter((item) => item.status === 'pkpt');
   const data_nonpkpt = DataPKPT.filter((item) => item.status === 'non-pkpt');
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 w-full gap-3">
+    <section className="grid grid-cols-1 md:grid-cols-2 w-full gap-10">
       <CardAccumulate
         Header="Jumlah PKPT"
         Count={data_pkpt.length}
-        imgurl="/images/backgrounds/upgrade.svg"
+        imgurl="images/products/pkpt-bg.svg"
       />
       <CardAccumulate
         Header="Jumlah Non-PKPT"
         Count={data_nonpkpt.length}
-        imgurl="/images/backgrounds/upgrade.png"
+        imgurl="images/products/nonpkpt-bg.svg"
       />
     </section>
   );

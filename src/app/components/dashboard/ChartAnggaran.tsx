@@ -62,7 +62,12 @@ const ChartAnggaran = () => {
 
   return (
     <div className="w-full">
-      <h3 className="font-semibold mb-4">Anggaran</h3>
+      <div className="flex gap-2 items-center">
+        <img src="/images/products/anggaran_bg.svg" alt="" />
+        <h3 className="font-bold text-xl text-neutral-700">
+          Anggaran Per bulan
+        </h3>
+      </div>
       <h4 className="text-slate-900">
         {' '}
         <span className="text-xl font-bold">RP. 12.000.000.000</span>{' '}

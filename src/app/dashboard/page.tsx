@@ -18,9 +18,9 @@ import RevenueForecast from '../components/dashboard/RevenueForecast';
 
 const page = () => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-8">
       {/* top */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-3 w-full">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
         <div className="lg:col-span-2">
           <CardAkumulasiDataALL />
         </div>
@@ -32,7 +32,7 @@ const page = () => {
       <CardComponents>
         <ChartPengawasan />
       </CardComponents>
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-3 w-full">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
         <CardComponents>
           <ChartRuangLingkup />
         </CardComponents>

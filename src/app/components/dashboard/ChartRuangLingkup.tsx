@@ -108,8 +108,8 @@ const ChartRuangLingkup = () => {
 
   return (
     <div className="w-full">
-      <div className="flex">
-        <img src="/images/logos/dark-logo.svg" alt="" />
+      <div className="flex gap-2 items-center">
+        <img src="/images/products/ruang_lingkup_bg.svg" alt="" />
         <h3 className="font-bold text-xl text-neutral-700">Ruang Lingkup</h3>
       </div>
       <Chart
