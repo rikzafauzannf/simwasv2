@@ -109,7 +109,7 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <section className="grid md:grid-cols-4 gap-3">
+      <section className="grid md:grid-cols-4 gap-8">
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
             <h1># {item.area_pengawasan}</h1>
@@ -118,16 +118,16 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
             <div className="flex flex-col gap-2">
               <Link
                 href={`/dashboard/${todo}/${item.id}`}
-                className="py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50"
+                className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
               >
-                BuatST
+                Buat ST
               </Link>
               {/* <button
-              onClick={() => handleReportClick(item.tim)}
-              className='py-1 px-3 w-full bg-green-600 text-white rounded-md text-center font-semibold'
-            >
-              Buat Laporan Mingguan
-            </button> */}
+                onClick={() => handleReportClick(item.tim)}
+                className="py-1 px-3 w-full bg-green-600 text-white rounded-md text-center font-semibold"
+              >
+                Buat Laporan Mingguan
+              </button> */}
             </div>
           </CardComponents>
         ))}
