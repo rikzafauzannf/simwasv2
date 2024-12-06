@@ -7,8 +7,10 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { FirestoreService } from '@/services/firestore.service';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
+import { AxiosService } from '@/services/axiosInstance.service';
 
 const firestoreService = new FirestoreService();
+const axiosService = new AxiosService()
 const JenisPengawasan = () => {
   const {
     data: DataJenisPengawasan,
@@ -34,16 +36,18 @@ const JenisPengawasan = () => {
     data
   ) => {
     try {
-      const result = await firestoreService.addData('jenis_pengawasan', {
+      console.log('Data yang dikirim:', data);
+      const result = await axiosService.addData("/jenis_pengawasan", {
         jenis_pengawasan: data.jenis_pengawasan,
-        createdAt: new Date(),
       });
+
+      console.log('Respons dari server:', result);
 
       if (result.success) {
         console.log('Jenis Pengawasan berhasil disimpan:', result);
-        reset(); // Reset form after successful submission
+        reset();
         alert('Data Jenis Pengawasan berhasil disimpan');
-        refetch(); // Refetch data to update the list
+        refetch();
       } else {
         throw new Error(result.message);
       }
@@ -64,7 +68,7 @@ const JenisPengawasan = () => {
         );
         if (result.success) {
           alert('Jenis Pengawasan berhasil dihapus');
-          refetch(); // Refetch data to update the list
+          refetch();
         } else {
           throw new Error(result.message);
         }
