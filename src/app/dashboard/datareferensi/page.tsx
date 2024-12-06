@@ -6,12 +6,17 @@ import AreaPengawasan from './components/AreaPengawasan';
 import RuangLingkup from './components/RuangLingkup';
 import TingkatResiko from './components/TingkatResiko';
 import KodeTemuan from './components/KodeTemuan';
+import JenisLaporan from './components/JenisLaporan';
 
 const DataReferensiPage = () => {
   const ReferensiComponents = [
     {
       title: 'Jenis Pengawasan',
       component: <JenisPengawasan />,
+    },
+    {
+      title: 'Jenis Laporan',
+      component: <JenisLaporan />,
     },
     // {
     //   title: 'Area Pengawasan',

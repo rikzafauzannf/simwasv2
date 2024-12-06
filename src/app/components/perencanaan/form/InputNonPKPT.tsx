@@ -9,8 +9,37 @@ import { FaTrash } from 'react-icons/fa';
 import { title } from 'process';
 import { FirestoreService } from '@/services/firestore.service';
 import { PKPTFormData } from '@/interface/interfacePKPT';
+import { JenisLaporanDB, JenisPengawasanDB, TingkatResikoDB } from '@/interface/interfaceReferensi';
+import { useFetch } from '@/hooks/useFetch';
 
 const InputNonPKPT = () => {
+  const {
+    data: DataJenisLaporan,
+  } = useFetch<JenisLaporanDB>('jenis_laporan');
+
+  const {
+    data: DataPengawasan,
+  } = useFetch<JenisPengawasanDB>('jenis_pengawasan');
+
+  const {
+    data: DataTingkatRisiko,
+  } = useFetch<TingkatResikoDB>('tingkat_resiko');
+
+  const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
+    value: item.id,
+    title: item.jenis_laporan,
+  }));
+
+  const optionsJenisPengawasan = DataPengawasan.map((item) => ({
+    value: item.id,
+    title: item.jenis_pengawasan,
+  }));
+
+  const optionsTingkatRisiko = DataTingkatRisiko.map((item) => ({
+    value: item.id,
+    title: item.tingkat_resiko,
+  }));
+
   const {
     register,
     handleSubmit,
@@ -38,13 +67,6 @@ const InputNonPKPT = () => {
     },
     mode: 'onBlur',
   });
-  const optionsJenisLaporan = [
-    { value: 'LHP', title: 'LHP' },
-    { value: 'LHA', title: 'LHA' },
-    { value: 'LHM', title: 'LHM' },
-    { value: 'LHE', title: 'LHE' },
-    { value: 'LHR', title: 'LHR' },
-  ];
 
   const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
     useTeamStore();
@@ -158,7 +180,7 @@ const InputNonPKPT = () => {
           <SelectInputField
             label="Jenis Pengawasan"
             identiti="select-field-pengawasan"
-            options={optionsJenisLaporan}
+            options={optionsJenisPengawasan}
             register={register('JenisPengawasan')}
             placeholder="Pilih Jenis Pengawasan"
             error={errors.JenisPengawasan}
@@ -306,7 +328,7 @@ const InputNonPKPT = () => {
               <label htmlFor="Tim" className="text-slate-800">
                 TIM [{teamMembers.length}]
               </label>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full justify-start flex-grow">
                 <input
                   type="text"
                   value={newMember}
@@ -325,7 +347,7 @@ const InputNonPKPT = () => {
             </div>
 
             {/* Display Team Members */}
-            <div className="mt-4 space-y-2">
+            <div className="mt-4 space-y-2 w-full">
               {teamMembers.map((member) => (
                 <div
                   key={member.id}
@@ -348,7 +370,7 @@ const InputNonPKPT = () => {
 
       {/* Optional data */}
       <CardComponents>
-        <section className="md:grid md:grid-cols-2 gap-3">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <InputFieldComponent
             label="Anggaran (Opsional)"
             identiti="Anggaran"
@@ -364,7 +386,7 @@ const InputNonPKPT = () => {
             })}
             error={errors.Anggaran}
           />
-          <div className="flex justify-start items-baseline gap-3">
+          <div className="flex justify-start items-baseline gap-3 w-full">
             <div className="flex-1">
               <InputFieldComponent
                 label="Jumlah Laporan"
@@ -402,7 +424,7 @@ const InputNonPKPT = () => {
             register={register('SaranaDanPrasarana')}
             error={errors.SaranaDanPrasarana}
           />
-          <InputFieldComponent
+          {/* <InputFieldComponent
             label="Tingkat Risiko"
             identiti="tRisiko"
             type="text"
@@ -417,7 +439,17 @@ const InputNonPKPT = () => {
               },
             })}
             error={errors.TingkatRisiko}
-          />
+          /> */}
+          <SelectInputField
+              label="Tingkat Risiko"
+              identiti="tRisiko"
+              options={optionsTingkatRisiko}
+              register={register('TingkatRisiko')}
+              placeholder="Pilih Tingkat Risiko"
+              error={errors.TingkatRisiko}
+              type="select"
+              name="TingkatRisiko"
+            />
           <div className="md:col-span-2">
             <InputFieldComponent
               label="Keterangan (Opsional)"

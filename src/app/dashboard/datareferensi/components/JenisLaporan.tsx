@@ -5,19 +5,17 @@ import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { FirestoreService } from '@/services/firestore.service';
+import { JenisLaporanDB } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
-import { TingkatResikoDB } from '@/interface/interfaceReferensi';
-import { AxiosService } from '@/services/axiosInstance.service';
 
 const firestoreService = new FirestoreService();
-const axiosSecvice = new AxiosService();
-const TingkatResiko = () => {
+const JenisLaporan = () => {
   const {
-    data: DataTingkatResiko,
+    data: DataJenisLaporan,
     isLoading,
     error,
     refetch,
-  } = useFetch<TingkatResikoDB>('tingkat_resiko');
+  } = useFetch<JenisLaporanDB>('jenis_laporan');
   const {
     register,
     handleSubmit,
@@ -25,81 +23,103 @@ const TingkatResiko = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      tingkat_resiko: '',
+      jenis_laporan: '',
+      keterangan:'',
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const onSubmit: SubmitHandler<{ tingkat_resiko: string }> = async (data) => {
+  const onSubmit: SubmitHandler<{ jenis_laporan: string, keterangan:string }> = async (
+    data
+  ) => {
     try {
-      const result = await axiosSecvice.addData('/tingkat_resiko', {
-        tingkat_resiko: data.tingkat_resiko,
-        // createdAt: new Date(),
+      const result = await firestoreService.addData('jenis_laporan', {
+        jenis_laporan: data.jenis_laporan,
+        keterangan:data.keterangan,
+        createdAt: new Date(),
       });
 
       if (result.success) {
-        console.log('Ruang Lingkup berhasil disimpan:', result);
+        console.log('Jenis Laporan berhasil disimpan:', result);
         reset(); // Reset form after successful submission
-        alert('Data Ruang Lingkup berhasil disimpan');
+        alert('Data Jenis Laporan berhasil disimpan');
         refetch(); // Refetch data to update the list
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Gagal menyimpan data Jenis Pengawasan');
+      alert('Gagal menyimpan data Jenis Laporan');
     }
   };
 
   const handleDelete = async (id: string) => {
     if (
-      window.confirm('Apakah Anda yakin ingin menghapus ruang lingkup ini?')
+      window.confirm('Apakah Anda yakin ingin menghapus jenis laporan ini?')
     ) {
       try {
         const result = await firestoreService.deleteData(
-          'jenis_pengawasan',
+          'jenis_laporan',
           id
         );
         if (result.success) {
-          alert('Ruang Lingkup berhasil dihapus');
+          alert('Jenis Laporan berhasil dihapus');
           refetch(); // Refetch data to update the list
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
-        console.error('Error deleting ruang lingkup:', error);
-        alert('Gagal menghapus ruang lingkup');
+        console.error('Error deleting jenis laporan:', error);
+        alert('Gagal menghapus jenis laporan');
       }
     }
   };
 
   return (
     <div className="space-y-3">
-      <h3 className="text-xl"># Tingkat Resiko</h3>
+      <h3 className="text-xl"># Jenis Laporan</h3>
       <CardComponents>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 gap-3 w-full">
           <InputFieldComponent
-            label="Tingkat Resiko"
-            identiti="tingkat_resiko"
-            name="tingkat_resiko"
-            placeholder="Tuliskan Tingkat Resiko"
+            label="Jenis laporan"
+            identiti="jenis_laporan"
+            name="jenis_laporan"
+            placeholder="Tuliskan Jenis Laporan"
             type="text"
-            register={register('tingkat_resiko', {
-              required: 'Tingkat Resiko wajib diisi',
+            register={register('jenis_laporan', {
+              required: 'Jenis laporan wajib diisi',
             })}
-            error={errors.tingkat_resiko}
+            error={errors.jenis_laporan}
           />
-          <ButtonType Text="+ Simpan Tingkat Resiko" type="submit" />
+
+          <div className='col-span-2'>
+          <InputFieldComponent
+            label="Keterangan"
+            identiti="keterangan"
+            name="keterangan"
+            placeholder="Tuliskan Keterangan"
+            type="text"
+            register={register('keterangan', {
+              required: 'Keterangan wajib diisi',
+            })}
+            error={errors.keterangan}
+          />
+          </div>
+
+          <div className='col-span-3'>
+          <ButtonType Text="+ Simpan Jenis Laporan" type="submit" />
+          </div>
         </form>
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
-        {DataTingkatResiko.map((item) => (
+        {DataJenisLaporan.map((item) => (
           <CardComponents key={item.id}>
             <h3 className="text-xl font-bold">
-              {'>>'} {item.tingkat_resiko}
+              {'>>'} {item.jenis_laporan}
             </h3>
+            <p>{item.keterangan}</p>
             <button
               onClick={() => handleDelete(item.id)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
@@ -113,4 +133,4 @@ const TingkatResiko = () => {
   );
 };
 
-export default TingkatResiko;
+export default JenisLaporan;

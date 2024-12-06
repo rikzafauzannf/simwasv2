@@ -10,15 +10,25 @@ import { RuangLingkupDB } from '@/interface/interfaceReferensi';
 
 const firestoreService = new FirestoreService();
 const RuangLingkup = () => {
-  const { data: DataRuangLingkup, isLoading, error, refetch } = useFetch<RuangLingkupDB>('ruang_lingkup');
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    data: DataRuangLingkup,
+    isLoading,
+    error,
+    refetch,
+  } = useFetch<RuangLingkupDB>('ruang_lingkup');
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       ruang_lingkup: '',
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;  
+  if (error) return <div>Error: {error.message}</div>;
 
   const onSubmit: SubmitHandler<{ ruang_lingkup: string }> = async (data) => {
     try {
@@ -42,7 +52,9 @@ const RuangLingkup = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus ruang lingkup ini?')) {
+    if (
+      window.confirm('Apakah Anda yakin ingin menghapus ruang lingkup ini?')
+    ) {
       try {
         const result = await firestoreService.deleteData('ruang_lingkup', id);
         if (result.success) {
@@ -77,13 +89,16 @@ const RuangLingkup = () => {
           <ButtonType Text="+ Simpan Ruang Lingkup" type="submit" />
         </form>
       </CardComponents>
-      <section className='grid grid-cols-2 gap-3'>
+      <section className="grid grid-cols-2 gap-3">
         {DataRuangLingkup.map((item) => (
           <CardComponents key={item.id}>
-            <h3 className='text-xl font-bold'>
+            <h3 className="text-xl font-bold">
               {'>>'} {item.ruang_lingkup}
             </h3>
-            <button onClick={() => handleDelete(item.id)} className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold">
+            <button
+              onClick={() => handleDelete(item.id)}
+              className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
+            >
               Hapus
             </button>
           </CardComponents>
