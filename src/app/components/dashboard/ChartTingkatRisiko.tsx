@@ -58,15 +58,17 @@ const ChartTingkatRisiko = () => {
   return (
     <div className="w-full">
       <div className="flex gap-2 items-center">
-        <img src="/images/products/tingkat_resiko_bg.svg" alt="" />
-        <h3 className="font-bold text-xl text-neutral-700">Tingkat Risiko</h3>
+        <img
+          src="/images/products/tingkat_resiko_bg.svg"
+          className="w-8 md:w-10"
+        />
+        <h3 className="font-bold text-sm md:text-lg text-neutral-700">
+          Tingkat Risiko
+        </h3>
       </div>
-      <Chart
-        options={options}
-        series={series}
-        type="donut"
-        // height={200}
-      />
+      <div className=" justify-items-center w-ful">
+        <Chart options={options} series={series} type="donut" height={250} />
+      </div>
     </div>
   );
 };

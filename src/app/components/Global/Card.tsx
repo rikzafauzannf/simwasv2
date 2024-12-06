@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -43,13 +44,13 @@ export const CardAccumulate: React.FC<Props> = ({ Header, Count, imgurl }) => {
   return (
     <>
       <div className="w-full rounded-md shadow-md p-6 bg-white space-y-2">
-        <div className="flex gap-3">
-          <img src={imgurl} className="w-[100px]" />
+        <div className="flex">
+          {imgurl && <img src={imgurl} className="w-8 md:w-10" />}
           <div className="p-4">
-            <h2 className="text-left text-4xl font-black text-teal-500">
+            <h2 className="text-left md:text-4xl text-2xl font-black text-teal-500">
               {Count}
             </h2>
-            <h3 className="text-neutral-500">{Header}</h3>
+            <h3 className="text-neutral-500 text-sm md:text-base">{Header}</h3>
           </div>
         </div>
       </div>

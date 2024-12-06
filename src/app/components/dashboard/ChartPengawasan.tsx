@@ -64,8 +64,11 @@ const ChartPengawasan = () => {
   return (
     <div className="w-full">
       <div className="flex gap-2 items-center">
-        <img src="/images/products/total_pengawasan_bg.svg" alt="" />
-        <h3 className="font-bold text-xl text-neutral-700">
+        <img
+          src="/images/products/total_pengawasan_bg.svg"
+          className="w-8 md:w-10"
+        />
+        <h3 className="font-bold text-sm md:text-lg text-neutral-700">
           Total Pengawasan per Bulan
         </h3>
       </div>

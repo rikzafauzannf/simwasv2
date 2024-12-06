@@ -16,71 +16,79 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
   const dataDummy = [
     {
       id: 1,
-      area_pengawasan: 'Area Pengawasan',
-      jenis_pengawasan: 'Jenis Pengawasan',
+      area_pengawasan:
+        'Audit Kinerja Program Pembinaan Keluarga Berencana (KB)',
+      jenis_pengawasan: 'Audit Kinerja',
     },
     {
       id: 2,
+      area_pengawasan:
+        'Pemeriksaan atas Penyelenggaraan Urusan Pemerintahan Bidang KUMKM',
+      jenis_pengawasan: 'Audit Ketaatan',
+    },
+    {
+      id: 3,
+      area_pengawasan:
+        'Audit Ketaatan Program Pemberdayaan Masyarakat Desa dan Kelurahan ',
+      jenis_pengawasan: 'Audit Ketaatan',
+    },
+    {
+      id: 4,
+      area_pengawasan:
+        'Pemberian Keterangan Ahli pada Proses Penyelidikan / Penyidikan / Persidangan Tindak Pidana Korupsi',
+      jenis_pengawasan: 'Audit Dengan Tujuan Tertentu',
+    },
+    {
+      id: 5,
+      area_pengawasan:
+        'Reviu atas Sisa Dana DAK Non Fisik  Bantuan Operasional Kesehatan (BOK) Pada Dinas Kesehatan',
+      jenis_pengawasan: 'Reviu',
+    },
+    {
+      id: 6,
+      area_pengawasan:
+        'Reviu Laporan Realisasi DAK Fisik Tahun Sebelumnya pada Perangkat Daerah Inspektur Pembantu III',
+      jenis_pengawasan: 'Reviu',
+    },
+    {
+      id: 7,
+      area_pengawasan:
+        'Penilaian Pembangunan Zona Integritas pada DPMPTSP, Bapenda, Disdukcapil, dan UPTD Puskesmas Urug',
+      jenis_pengawasan: 'Assurance - Penilaian / Evaluasi',
+    },
+    {
+      id: 8,
+      area_pengawasan:
+        'Monitoring, Evaluasi dan Verifikasi Penyelesaian Kerugian Negara / Daerah Hasil Pemeriksaan BPK / Eksternal Lainnya Triwulan II',
+      jenis_pengawasan: 'Assurance - Evaluasi',
+    },
+    {
+      id: 9,
       area_pengawasan: 'Area Pengawasan',
       jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id: 1,
+      id: 10,
       area_pengawasan: 'Area Pengawasan',
       jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id: 2,
+      id: 11,
       area_pengawasan: 'Area Pengawasan',
       jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id: 1,
+      id: 12,
       area_pengawasan: 'Area Pengawasan',
       jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id: 2,
+      id: 13,
       area_pengawasan: 'Area Pengawasan',
       jenis_pengawasan: 'Jenis Pengawasan',
     },
     {
-      id: 1,
-      area_pengawasan: 'Area Pengawasan',
-      jenis_pengawasan: 'Jenis Pengawasan',
-    },
-    {
-      id: 2,
-      area_pengawasan: 'Area Pengawasan',
-      jenis_pengawasan: 'Jenis Pengawasan',
-    },
-    {
-      id: 1,
-      area_pengawasan: 'Area Pengawasan',
-      jenis_pengawasan: 'Jenis Pengawasan',
-    },
-    {
-      id: 2,
-      area_pengawasan: 'Area Pengawasan',
-      jenis_pengawasan: 'Jenis Pengawasan',
-    },
-    {
-      id: 1,
-      area_pengawasan: 'Area Pengawasan',
-      jenis_pengawasan: 'Jenis Pengawasan',
-    },
-    {
-      id: 2,
-      area_pengawasan: 'Area Pengawasan',
-      jenis_pengawasan: 'Jenis Pengawasan',
-    },
-    {
-      id: 1,
-      area_pengawasan: 'Area Pengawasan',
-      jenis_pengawasan: 'Jenis Pengawasan',
-    },
-    {
-      id: 2,
+      id: 14,
       area_pengawasan: 'Area Pengawasan',
       jenis_pengawasan: 'Jenis Pengawasan',
     },

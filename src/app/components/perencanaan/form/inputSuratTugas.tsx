@@ -37,6 +37,7 @@ const InputSuratTugas = () => {
       title: 'Title',
     },
   ];
+
   return (
     <>
       <h3 className="text-xl mb-3">Penginputan Rekap Surat Tugas</h3>

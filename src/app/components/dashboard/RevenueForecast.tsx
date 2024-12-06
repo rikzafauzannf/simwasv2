@@ -150,12 +150,12 @@ const RevenueForecast = () => {
   };
 
   return (
-    <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
-      <div className="flex justify-between items-center">
-        <h5 className="card-title flex gap-2 items-center text-xl1">
+    <div className="rounded-xl shadow-md bg-white p-6 relative w-full break-words">
+      <div className=" md:flex justify-between items-center">
+        <h5 className="flex gap-2 items-center text-sm md:text-lg">
           {' '}
-          <img src="images/products/comparasi_bg.svg" alt="" />
-          Anggaran Awal - Rekomendasi Anggaran
+          <img src="images/products/comparasi_bg.svg" className="md:w-10 w-8" />
+          Anggaran Awal - Rekomendasi
         </h5>
         <Select
           id="periods"
@@ -164,8 +164,8 @@ const RevenueForecast = () => {
           onChange={handleSelectChange}
           required
         >
-          <option value="This Week">This Week</option>
-          <option value="April 2024">April 2024</option>
+          <option value="Tahun 2023">Tahun 2023</option>
+          <option value="Tahun 2024">Tahun 2024</option>
           <option value="May 2024">May 2024</option>
           <option value="June 2024">June 2024</option>
         </Select>
