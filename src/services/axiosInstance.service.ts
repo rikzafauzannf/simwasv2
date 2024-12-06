@@ -7,7 +7,7 @@ export class AxiosService {
       const response = await axiosInstance.get(endpoint);
       return {
         success: true,
-        data: response.data,
+        data: response,
         message: 'Data berhasil diambil',
       };
     } catch (error) {
@@ -25,7 +25,7 @@ export class AxiosService {
       const response = await axiosInstance.post(endpoint, data);
       return {
         success: true,
-        data: response.data,
+        data: response,
         message: 'Data berhasil ditambahkan',
       };
     } catch (error) {
@@ -43,7 +43,7 @@ export class AxiosService {
       const response = await axiosInstance.put(endpoint, data);
       return {
         success: true,
-        data: response.data,
+        data: response,
         message: 'Data berhasil diupdate',
       };
     } catch (error) {
@@ -61,7 +61,7 @@ export class AxiosService {
       const response = await axiosInstance.delete(endpoint);
       return {
         success: true,
-        data: response.data,
+        data: response,
         message: 'Data berhasil dihapus',
       };
     } catch (error) {
@@ -79,7 +79,7 @@ export class AxiosService {
       const response = await axiosInstance.get(endpoint);
       return {
         success: true,
-        data: response.data,
+        data: response,
         message: 'Data berhasil diambil',
       };
     } catch (error) {
