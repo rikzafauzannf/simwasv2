@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { FirestoreService } from '@/services/firestore.service';
 
 const firestoreService = new FirestoreService();
-
 export const useFetch = <T>(collection: string) => {
   const [data, setData] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(true);

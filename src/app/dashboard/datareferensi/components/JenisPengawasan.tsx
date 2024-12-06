@@ -7,15 +7,18 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { FirestoreService } from '@/services/firestore.service';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
+import { AxiosService } from '@/services/axiosInstance.service';
+import { useFetchAll } from '@/hooks/useFetchAll';
 
-const firestoreService = new FirestoreService();
+
+const axiosService = new AxiosService();
 const JenisPengawasan = () => {
   const {
     data: DataJenisPengawasan,
     isLoading,
     error,
     refetch,
-  } = useFetch<JenisPengawasanDB>('jenis_pengawasan');
+  } = useFetchAll<JenisPengawasanDB>('/jenis_pengawasan');
   const {
     register,
     handleSubmit,
@@ -29,21 +32,24 @@ const JenisPengawasan = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+  if (!DataJenisPengawasan || DataJenisPengawasan.length === 0) return <div>No data available</div>;
 
   const onSubmit: SubmitHandler<{ jenis_pengawasan: string }> = async (
     data
   ) => {
     try {
-      const result = await firestoreService.addData('jenis_pengawasan', {
+      console.log('Data yang dikirim:', data);
+      const result = await axiosService.addData("/jenis_pengawasan", {
         jenis_pengawasan: data.jenis_pengawasan,
-        createdAt: new Date(),
       });
+
+      console.log('Respons dari server:', result);
 
       if (result.success) {
         console.log('Jenis Pengawasan berhasil disimpan:', result);
-        reset(); // Reset form after successful submission
+        reset();
         alert('Data Jenis Pengawasan berhasil disimpan');
-        refetch(); // Refetch data to update the list
+        refetch();
       } else {
         throw new Error(result.message);
       }
@@ -53,18 +59,15 @@ const JenisPengawasan = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (
       window.confirm('Apakah Anda yakin ingin menghapus jenis pengawasan ini?')
     ) {
       try {
-        const result = await firestoreService.deleteData(
-          'jenis_pengawasan',
-          id
-        );
+        const result = await axiosService.deleteData(`/jenis_pengawasan/${id}`);
         if (result.success) {
           alert('Jenis Pengawasan berhasil dihapus');
-          refetch(); // Refetch data to update the list
+          refetch();
         } else {
           throw new Error(result.message);
         }

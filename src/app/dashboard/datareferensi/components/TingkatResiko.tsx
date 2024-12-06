@@ -7,8 +7,10 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { FirestoreService } from '@/services/firestore.service';
 import { useFetch } from '@/hooks/useFetch';
 import { TingkatResikoDB } from '@/interface/interfaceReferensi';
+import { AxiosService } from '@/services/axiosInstance.service';
 
 const firestoreService = new FirestoreService();
+const axiosSecvice = new AxiosService();
 const TingkatResiko = () => {
   const {
     data: DataTingkatResiko,
@@ -32,9 +34,9 @@ const TingkatResiko = () => {
 
   const onSubmit: SubmitHandler<{ tingkat_resiko: string }> = async (data) => {
     try {
-      const result = await firestoreService.addData('tingkat_resiko', {
+      const result = await axiosSecvice.addData('/tingkat_resiko', {
         tingkat_resiko: data.tingkat_resiko,
-        createdAt: new Date(),
+        // createdAt: new Date(),
       });
 
       if (result.success) {

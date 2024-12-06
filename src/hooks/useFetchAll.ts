@@ -1,8 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
-import { FirestoreService } from '@/services/firestore.service';
+import { AxiosService } from '@/services/axiosInstance.service';
 
-const firestoreService = new FirestoreService();
-
+const axiosService = new AxiosService();
 export const useFetchAll = <T>(collection: string) => {
   const [data, setData] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -11,9 +10,10 @@ export const useFetchAll = <T>(collection: string) => {
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await firestoreService.getAllData(collection);
+      const response = await axiosService.getAllData(collection);
+      console.log(response);
       if (response.success && response.data) {
-        setData(response.data as T[]);
+        setData(response.data.data as T[]);
         setError(null);
       } else {
         setError(new Error(response.message));

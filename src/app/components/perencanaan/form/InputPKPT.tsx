@@ -31,7 +31,7 @@ const InputPKPT = () => {
   }));
 
   const optionsJenisPengawasan = DataPengawasan.map((item) => ({
-    value: item.id,
+    value: String(item.id),
     title: item.jenis_pengawasan,
   }));
 
