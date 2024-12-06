@@ -1,5 +1,5 @@
 export type JenisPengawasanDB = {
-  id: string;
+  id: number;
   jenis_pengawasan: string;
 };
 
