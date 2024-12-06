@@ -32,6 +32,7 @@ const JenisPengawasan = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+  if (!DataJenisPengawasan || DataJenisPengawasan.length === 0) return <div>No data available</div>;
 
   const onSubmit: SubmitHandler<{ jenis_pengawasan: string }> = async (
     data

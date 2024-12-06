@@ -11,8 +11,9 @@ export const useFetchAll = <T>(collection: string) => {
     try {
       setIsLoading(true);
       const response = await axiosService.getAllData(collection);
+      console.log(response);
       if (response.success && response.data) {
-        setData(response.data as T[]);
+        setData(response.data.data as T[]);
         setError(null);
       } else {
         setError(new Error(response.message));
