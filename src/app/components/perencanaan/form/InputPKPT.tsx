@@ -26,7 +26,7 @@ const InputPKPT = () => {
   } = useFetch<TingkatResikoDB>('tingkat_resiko');
 
   const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
-    value: item.id,
+    value: String(item.id),
     title: item.jenis_laporan,
   }));
 
