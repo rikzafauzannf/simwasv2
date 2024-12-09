@@ -2,12 +2,31 @@
 import { Button, Checkbox, Label, TextInput } from 'flowbite-react';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
+import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
+import Swal from 'sweetalert2';
 
 const AuthLogin = () => {
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [error, setError] = useState<string>('');
   const [focusIndex, setFocusIndex] = useState<number>(0);
   const [showOtp, setShowOtp] = useState<boolean>(false);
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const { NIP } = data;
+    if (!showOtp) {
+        setShowOtp(true);
+        return;
+    }
+
+    const isValidOtp = otp.join('') === '123456';
+    if (isValidOtp) {
+        await Swal.fire('Success', 'OTP is valid, redirecting...', 'success');
+        window.location.href = '/dashboard';
+    } else {
+        Swal.fire('Error', 'Invalid OTP, please try again.', 'error');
+    }
+  };
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length <= 1 && /^[0-9]*$/.test(value)) {
@@ -30,12 +49,6 @@ const AuthLogin = () => {
     }
   };
 
-  const handleSend = () => {
-    // Trigger OTP logic here
-    // Assuming the OTP is correct, show the OTP input
-    setShowOtp(true);
-  };
-
   useEffect(() => {
     const inputElement = document.getElementById(`otp-input-${focusIndex}`);
     if (inputElement) inputElement.focus();
@@ -43,7 +56,7 @@ const AuthLogin = () => {
 
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <div className="mb-2 block">
             <Label htmlFor="NIP" value="NIP" />
@@ -54,10 +67,15 @@ const AuthLogin = () => {
               type="number"
               sizing="md"
               className="form-control form-rounded-xl flex-1"
+              disabled={showOtp}
+              {...register('NIP', { required: 'NIP is required' })}
             />
+            {/* {errors.NIP && <p className="text-red-500">{(errors.NIP as FieldError).message}</p>} */}
+            {errors.NIP && <p className="text-red-500">NIP tidak terdaftar</p>}
+
             <Button
-              onClick={handleSend}
-              className="ml-2 text-slate-800 bg-slate-400 rounded-md shadow-md"
+              type="submit"
+              className="ml-2 text-slate-800 bg-slate-400 font-bold rounded-md shadow-md"
               disabled={showOtp}
             >
               Send
@@ -106,8 +124,7 @@ const AuthLogin = () => {
             </div>
             <Button
               color={'primary'}
-              href="/dashboard"
-              as={Link}
+              onClick={handleSubmit(onSubmit)}
               className="w-full bg-primary text-white rounded-xl"
             >
               Login
