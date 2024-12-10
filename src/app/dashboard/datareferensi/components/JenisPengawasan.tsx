@@ -10,7 +10,6 @@ import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchAll } from '@/hooks/useFetchAll';
 
-
 const axiosService = new AxiosService();
 const JenisPengawasan = () => {
   const {
@@ -32,14 +31,15 @@ const JenisPengawasan = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!DataJenisPengawasan || DataJenisPengawasan.length === 0) return <div>No data available</div>;
+  if (!DataJenisPengawasan || DataJenisPengawasan.length === 0)
+    return <div>No data available</div>;
 
   const onSubmit: SubmitHandler<{ jenis_pengawasan: string }> = async (
     data
   ) => {
     try {
       console.log('Data yang dikirim:', data);
-      const result = await axiosService.addData("/jenis_pengawasan", {
+      const result = await axiosService.addData('/jenis_pengawasan', {
         jenis_pengawasan: data.jenis_pengawasan,
       });
 

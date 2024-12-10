@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { AxiosService } from '@/services/axiosInstance.service';
 
-const axiosService = new AxiosService()
+const axiosService = new AxiosService();
 
 export const useFetch = <T>(collection: string) => {
   const [data, setData] = useState<T[]>([]);

@@ -3,7 +3,7 @@ import { FirestoreService } from '@/services/firestore.service';
 import { AxiosService } from '@/services/axiosInstance.service';
 
 const firestoreService = new FirestoreService();
-const axiosService = new AxiosService()
+const axiosService = new AxiosService();
 
 export const useFetchById = <T>(collection: string, docId: string) => {
   const [data, setData] = useState<T | null>(null);
