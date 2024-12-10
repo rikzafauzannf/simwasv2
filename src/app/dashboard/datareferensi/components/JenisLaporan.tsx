@@ -65,7 +65,7 @@ const JenisLaporan = () => {
     ) {
       try {
         const result = await axiosService.deleteData(
-          'jenis_laporan'// Convert id to string as required by the service
+          'jenis_laporan' // Convert id to string as required by the service
         );
         if (result.success) {
           alert('Jenis Laporan berhasil dihapus');
@@ -84,10 +84,7 @@ const JenisLaporan = () => {
     <div className="space-y-3">
       <h3 className="text-xl"># Jenis Laporan</h3>
       <CardComponents>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid gap-3 w-full"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3 w-full">
           <InputFieldComponent
             label="Jenis laporan"
             identiti="jenis_laporan"
@@ -115,7 +112,7 @@ const JenisLaporan = () => {
           </div> */}
 
           {/* <div className="col-span-3"> */}
-            <ButtonType Text="+ Simpan Jenis Laporan" type="submit" />
+          <ButtonType Text="+ Simpan Jenis Laporan" type="submit" />
           {/* </div> */}
         </form>
       </CardComponents>

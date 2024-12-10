@@ -10,12 +10,26 @@ import {
 import { ButtonType } from '../../Global/Button';
 import LaporanMingguanComponent from '../laporanMingguan';
 import TableKendaliMutu from '../table/tableKendaliMutu';
+import { AxiosService } from '@/services/axiosInstance.service';
 
-const InputKendaliMutu = () => {
+interface PropsID {
+  id_st: string;
+  id_pkpt: number;
+}
+
+const axiosService = new AxiosService()
+
+const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
+
   const [KendaliMutu, setKendaliMutu] = useState(false);
   const [LaporanMingguan, setLaporanMingguan] = useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       kartuPenugasan: false,
       programKerja: false,
@@ -30,13 +44,6 @@ const InputKendaliMutu = () => {
     },
   });
 
-  const optionsSuratTugas = [
-    {
-      value: 'St1',
-      title: 'ST.... - No.TGL/SP',
-    },
-  ];
-
   const handleKendaliMutu: React.MouseEventHandler<HTMLButtonElement> = () => {
     setKendaliMutu(true);
     setLaporanMingguan(false);
@@ -49,19 +56,42 @@ const InputKendaliMutu = () => {
   };
 
   const onSubmitKendaliMutu: SubmitHandler<any> = async (data) => {
-    const selectedCheckboxes = Object.keys(data)
-      .filter(key => key !== 'linkGDrive' && key !== 'keterangan' && data[key]);
+    const selectedCheckboxes = Object.keys(data).filter(
+      (key) => key !== 'linkGDrive' && key !== 'keterangan' && data[key]
+    );
 
     console.log('Data Kendali Mutu:', {
       ...data,
       selectedCheckboxes,
+      id_st_data: id_st,
+      id_pkpt_data: id_pkpt,
     });
     reset();
   };
 
-  const onSubmitLaporanMingguan: SubmitHandler<any> = async (data) => {
-    console.log('Data Laporan Mingguan:', data);
-    reset();
+  const onSubmitLaporanMingguan: SubmitHandler<any> = async (data) => {    
+    try {
+      console.log('Data Laporan Mingguan:', data);
+      const result = await axiosService.addData('/laporan_mingguan', {
+        laporan_mingguan: data.laporan,
+        id_no: id_st,
+        id_pkpt: id_pkpt,
+      });
+
+      console.log('Respons dari server:', result);
+
+      if (result.success) {
+        console.log('Laporan Mingguan berhasil disimpan:', result);
+        reset();
+        alert('Data Laporan Mingguan berhasil disimpan');        
+      } else {
+        throw new Error(result.message);
+        // refetch();
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Gagal menyimpan data Laporan Mingguan');
+    }
   };
 
   return (
@@ -96,7 +126,10 @@ const InputKendaliMutu = () => {
       {/* section show from button */}
       {KendaliMutu ? (
         <CardComponents>
-          <form onSubmit={handleSubmit(onSubmitKendaliMutu)} className="space-y-3">
+          <form
+            onSubmit={handleSubmit(onSubmitKendaliMutu)}
+            className="space-y-3"
+          >
             <section className="grid grid-cols-3 gap-3">
               <label className="text-slate-800">
                 <input
@@ -183,7 +216,10 @@ const InputKendaliMutu = () => {
       )}
       {LaporanMingguan ? (
         <CardComponents>
-          <form onSubmit={handleSubmit(onSubmitLaporanMingguan)} className="space-y-3">
+          <form
+            onSubmit={handleSubmit(onSubmitLaporanMingguan)}
+            className="space-y-3"
+          >
             <TextAreaFieldComponent
               rows={4}
               label="Laporan Mingguan / Harian"
@@ -199,7 +235,7 @@ const InputKendaliMutu = () => {
         </CardComponents>
       ) : (
         ''
-      )}      
+      )}
     </div>
   );
 };

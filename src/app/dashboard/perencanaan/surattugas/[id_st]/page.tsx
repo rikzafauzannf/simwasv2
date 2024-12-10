@@ -19,7 +19,7 @@ const ViewSuratTugas = ({ params }: PageProps) => {
     <div className="space-y-3">
       <h3 className="text-xl"># Detail Surat Tugas {id}</h3>
       <iframe src={pdfUrl} style={{ width: '100%', height: '500px' }} />
-      <LaporanMingguanComponent />
+      <LaporanMingguanComponent id_pkpt={1} id_st='TG123456'/>
     </div>
   );
 };

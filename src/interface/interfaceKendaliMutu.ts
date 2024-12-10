@@ -11,7 +11,11 @@ export interface KendaliMutuData {
   keterangan: string;
 }
 
-export interface LaporanMingguan {
-  id?: number;
-  keterangan: string;
+export type LaporanMingguan ={
+  id:number;
+  id_pkpt:number;
+  id_no:string;
+  laporan_mingguan:string;
 }
+
+
