@@ -44,8 +44,9 @@ export const CardAccumulate: React.FC<Props> = ({ Header, Count, imgurl }) => {
   return (
     <>
       <div className="w-full rounded-md shadow-md p-6 bg-white space-y-2">
-        <div className="flex">
-          {imgurl && <img src={imgurl} className="w-8 md:w-10" />}
+        <div className="flex items-center">
+          {imgurl && <Image src={imgurl} alt='img-icons' width={40} height={40} className="w-14 md:w-20 h-14 md:h-20"/>}
+          
           <div className="p-4">
             <h2 className="text-left md:text-4xl text-2xl font-black text-teal-500">
               {Count}

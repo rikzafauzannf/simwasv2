@@ -47,6 +47,8 @@
     "postcss": "8",
     "prettier": "^3.3.3",
     "tailwindcss": "3.4.4",
-    "typescript": "5"
+    "typescript": "latest",
+    "checkly": "latest",
+    "ts-node": "latest"
   }
 }

@@ -11,16 +11,17 @@ interface PageProps {
 }
 
 const FormKendaliMutuPage = ({ params }: PageProps) => {
-  const id = params.id_st;
+  const id_st = 'TG123456';
+  const id_pkpt = 1;
   return (
     <div className="space-y-3">
-      <InputKendaliMutu />
+      <InputKendaliMutu id_st={id_st} id_pkpt={id_pkpt} />
       <div className="grid w-full gap-3">
         <CardComponents>
           <TableKendaliMutu />
         </CardComponents>
       </div>
-      <LaporanMingguanComponent />
+      <LaporanMingguanComponent id_st={id_st} id_pkpt={id_pkpt} />
     </div>
   );
 };
