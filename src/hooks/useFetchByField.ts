@@ -23,7 +23,7 @@ export const useFetchByField = <T>(
         operator,
         value
       );
-      if (response.success && response.data) {
+      if (response.success && Array.isArray(response.data)) {
         setData(response.data as T[]);
         setError(null);
       } else {

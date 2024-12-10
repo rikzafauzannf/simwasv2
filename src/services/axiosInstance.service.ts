@@ -1,4 +1,4 @@
-import axiosInstance from "@/middleware/db/axios";
+import axiosInstance from '@/middleware/db/axios';
 
 export class AxiosService {
   // Mengambil semua data dari endpoint
@@ -79,7 +79,7 @@ export class AxiosService {
       const response = await axiosInstance.get(endpoint);
       return {
         success: true,
-        data: response,
+        data: response.data,
         message: 'Data berhasil diambil',
       };
     } catch (error) {

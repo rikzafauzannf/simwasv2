@@ -1,16 +1,16 @@
 export type JenisPengawasanDB = {
-  id: string;
+  id: number;
   jenis_pengawasan: string;
 };
 
 export type JenisLaporanDB = {
-  id:string;
-  jenis_laporan:string;
-  keterangan:string;
-}
+  id: number;
+  jenis_laporan: string;
+  // keterangan:string;
+};
 
 export type RuangLingkupDB = {
-  id: string;
+  id: number;
   ruang_lingkup: string;
 };
 

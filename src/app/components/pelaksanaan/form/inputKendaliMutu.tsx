@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { CardComponents } from '../../Global/Card';
 import {
   InputFieldComponent,
@@ -13,6 +14,21 @@ import TableKendaliMutu from '../table/tableKendaliMutu';
 const InputKendaliMutu = () => {
   const [KendaliMutu, setKendaliMutu] = useState(false);
   const [LaporanMingguan, setLaporanMingguan] = useState(false);
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    defaultValues: {
+      kartuPenugasan: false,
+      programKerja: false,
+      notulensiKesepakatan: false,
+      kertasKerja: false,
+      dokumentasiPemeriksaan: false,
+      reviuSupervisi: false,
+      ceklisPenyelesaian: false,
+      linkGDrive: '',
+      keterangan: '',
+      laporan: '',
+    },
+  });
 
   const optionsSuratTugas = [
     {
@@ -31,6 +47,23 @@ const InputKendaliMutu = () => {
     setKendaliMutu(false);
     setLaporanMingguan(true);
   };
+
+  const onSubmitKendaliMutu: SubmitHandler<any> = async (data) => {
+    const selectedCheckboxes = Object.keys(data)
+      .filter(key => key !== 'linkGDrive' && key !== 'keterangan' && data[key]);
+
+    console.log('Data Kendali Mutu:', {
+      ...data,
+      selectedCheckboxes,
+    });
+    reset();
+  };
+
+  const onSubmitLaporanMingguan: SubmitHandler<any> = async (data) => {
+    console.log('Data Laporan Mingguan:', data);
+    reset();
+  };
+
   return (
     <div className="space-y-3">
       <h3 className="text-xl">Kendali Mutu</h3>
@@ -63,13 +96,12 @@ const InputKendaliMutu = () => {
       {/* section show from button */}
       {KendaliMutu ? (
         <CardComponents>
-          <form className="space-y-3">
+          <form onSubmit={handleSubmit(onSubmitKendaliMutu)} className="space-y-3">
             <section className="grid grid-cols-3 gap-3">
               <label className="text-slate-800">
                 <input
                   type="checkbox"
-                  name="kartuPenugasan"
-                  value="ada"
+                  {...register('kartuPenugasan')}
                   className="shadow-md me-2"
                 />
                 Kartu Penugasan
@@ -77,8 +109,7 @@ const InputKendaliMutu = () => {
               <label className="text-slate-800">
                 <input
                   type="checkbox"
-                  name="programKerja"
-                  value="ada"
+                  {...register('programKerja')}
                   className="shadow-md me-2"
                 />
                 Program Kerja Pengawasan
@@ -86,8 +117,7 @@ const InputKendaliMutu = () => {
               <label className="text-slate-800">
                 <input
                   type="checkbox"
-                  name="notulensiKesepakatan"
-                  value="ada"
+                  {...register('notulensiKesepakatan')}
                   className="shadow-md me-2"
                 />
                 Notulensi Kesepakatan
@@ -95,8 +125,7 @@ const InputKendaliMutu = () => {
               <label className="text-slate-800">
                 <input
                   type="checkbox"
-                  name="kertasKerja"
-                  value="ada"
+                  {...register('kertasKerja')}
                   className="shadow-md me-2"
                 />
                 Kertas Kerja Pengawasan
@@ -104,8 +133,7 @@ const InputKendaliMutu = () => {
               <label className="text-slate-800">
                 <input
                   type="checkbox"
-                  name="dokumentasiPemeriksaan"
-                  value="ada"
+                  {...register('dokumentasiPemeriksaan')}
                   className="shadow-md me-2"
                 />
                 Dokumentasi Pemeriksaan
@@ -113,8 +141,7 @@ const InputKendaliMutu = () => {
               <label className="text-slate-800">
                 <input
                   type="checkbox"
-                  name="reviuSupervisi"
-                  value="ada"
+                  {...register('reviuSupervisi')}
                   className="shadow-md me-2"
                 />
                 Reviu Supervisi
@@ -122,8 +149,7 @@ const InputKendaliMutu = () => {
               <label className="text-slate-800">
                 <input
                   type="checkbox"
-                  name="ceklisPenyelesaian"
-                  value="ada"
+                  {...register('ceklisPenyelesaian')}
                   className="shadow-md me-2"
                 />
                 Ceklis Penyelesaian
@@ -136,7 +162,8 @@ const InputKendaliMutu = () => {
               name="linkGDrive"
               placeholder="Masukan Link GDrive"
               type="link"
-              register={'linkGDrive'}
+              register={register('linkGDrive')}
+              error={errors.linkGDrive}
             />
             <TextAreaFieldComponent
               rows={4}
@@ -145,7 +172,8 @@ const InputKendaliMutu = () => {
               name="keterangan"
               placeholder="Masukan Keterangan ST"
               type="text"
-              register={'keterangan'}
+              register={register('keterangan')}
+              error={errors.keterangan}
             />
             <ButtonType Text="+ Buat Kendali Mutu" type="submit" />
           </form>
@@ -155,7 +183,7 @@ const InputKendaliMutu = () => {
       )}
       {LaporanMingguan ? (
         <CardComponents>
-          <form className="space-y-3">
+          <form onSubmit={handleSubmit(onSubmitLaporanMingguan)} className="space-y-3">
             <TextAreaFieldComponent
               rows={4}
               label="Laporan Mingguan / Harian"
@@ -163,20 +191,15 @@ const InputKendaliMutu = () => {
               name="laporan"
               placeholder="Ketikan Laporan disini."
               type="text"
-              register={'laporan'}
+              register={register('laporan')}
+              error={errors.laporan}
             />
             <ButtonType Text="+ Buat Laporan Mingguan" type="submit" />
           </form>
         </CardComponents>
       ) : (
         ''
-      )}
-      <div className="grid w-full gap-3">
-        <CardComponents>
-          <TableKendaliMutu />
-        </CardComponents>
-      </div>
-      <LaporanMingguanComponent />
+      )}      
     </div>
   );
 };

@@ -7,15 +7,18 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { FirestoreService } from '@/services/firestore.service';
 import { JenisLaporanDB } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
+import { AxiosService } from '@/services/axiosInstance.service';
+import { useFetchAll } from '@/hooks/useFetchAll';
 
-const firestoreService = new FirestoreService();
+const axiosService = new AxiosService();
+
 const JenisLaporan = () => {
   const {
     data: DataJenisLaporan,
     isLoading,
     error,
     refetch,
-  } = useFetch<JenisLaporanDB>('jenis_laporan');
+  } = useFetchAll<JenisLaporanDB>('/jenis_laporan');
   const {
     register,
     handleSubmit,
@@ -24,21 +27,22 @@ const JenisLaporan = () => {
   } = useForm({
     defaultValues: {
       jenis_laporan: '',
-      keterangan:'',
+      // keterangan: '',
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const onSubmit: SubmitHandler<{ jenis_laporan: string, keterangan:string }> = async (
-    data
-  ) => {
+  const onSubmit: SubmitHandler<{
+    jenis_laporan: string;
+    // keterangan: string;
+  }> = async (data) => {
     try {
-      const result = await firestoreService.addData('jenis_laporan', {
+      const result = await axiosService.addData('jenis_laporan', {
         jenis_laporan: data.jenis_laporan,
-        keterangan:data.keterangan,
-        createdAt: new Date(),
+        // keterangan: data.keterangan,
+        // createdAt: new Date(),
       });
 
       if (result.success) {
@@ -55,14 +59,13 @@ const JenisLaporan = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (
       window.confirm('Apakah Anda yakin ingin menghapus jenis laporan ini?')
     ) {
       try {
-        const result = await firestoreService.deleteData(
-          'jenis_laporan',
-          id
+        const result = await axiosService.deleteData(
+          'jenis_laporan'// Convert id to string as required by the service
         );
         if (result.success) {
           alert('Jenis Laporan berhasil dihapus');
@@ -81,7 +84,10 @@ const JenisLaporan = () => {
     <div className="space-y-3">
       <h3 className="text-xl"># Jenis Laporan</h3>
       <CardComponents>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 gap-3 w-full">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid gap-3 w-full"
+        >
           <InputFieldComponent
             label="Jenis laporan"
             identiti="jenis_laporan"
@@ -94,23 +100,23 @@ const JenisLaporan = () => {
             error={errors.jenis_laporan}
           />
 
-          <div className='col-span-2'>
-          <InputFieldComponent
-            label="Keterangan"
-            identiti="keterangan"
-            name="keterangan"
-            placeholder="Tuliskan Keterangan"
-            type="text"
-            register={register('keterangan', {
-              required: 'Keterangan wajib diisi',
-            })}
-            error={errors.keterangan}
-          />
-          </div>
+          {/* <div className="col-span-2">
+            <InputFieldComponent
+              label="Keterangan"
+              identiti="keterangan"
+              name="keterangan"
+              placeholder="Tuliskan Keterangan"
+              type="text"
+              register={register('keterangan', {
+                required: 'Keterangan wajib diisi',
+              })}
+              error={errors.keterangan}
+            />
+          </div> */}
 
-          <div className='col-span-3'>
-          <ButtonType Text="+ Simpan Jenis Laporan" type="submit" />
-          </div>
+          {/* <div className="col-span-3"> */}
+            <ButtonType Text="+ Simpan Jenis Laporan" type="submit" />
+          {/* </div> */}
         </form>
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
@@ -119,7 +125,7 @@ const JenisLaporan = () => {
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_laporan}
             </h3>
-            <p>{item.keterangan}</p>
+            {/* <p>{item.keterangan}</p> */}
             <button
               onClick={() => handleDelete(item.id)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
