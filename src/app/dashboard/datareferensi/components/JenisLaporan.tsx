@@ -7,15 +7,19 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { FirestoreService } from '@/services/firestore.service';
 import { JenisLaporanDB } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
+import { AxiosService } from '@/services/axiosInstance.service';
+import { useFetchAll } from '@/hooks/useFetchAll';
 
 const firestoreService = new FirestoreService();
+const axiosService = new AxiosService()
+
 const JenisLaporan = () => {
   const {
     data: DataJenisLaporan,
     isLoading,
     error,
     refetch,
-  } = useFetch<JenisLaporanDB>('jenis_laporan');
+  } = useFetchAll<JenisLaporanDB>('/jenis_laporan');
   const {
     register,
     handleSubmit,
@@ -55,14 +59,14 @@ const JenisLaporan = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (
       window.confirm('Apakah Anda yakin ingin menghapus jenis laporan ini?')
     ) {
       try {
         const result = await firestoreService.deleteData(
           'jenis_laporan',
-          id
+          id.toString() // Convert id to string as required by the service
         );
         if (result.success) {
           alert('Jenis Laporan berhasil dihapus');
@@ -119,7 +123,7 @@ const JenisLaporan = () => {
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_laporan}
             </h3>
-            <p>{item.keterangan}</p>
+            {/* <p>{item.keterangan}</p> */}
             <button
               onClick={() => handleDelete(item.id)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"

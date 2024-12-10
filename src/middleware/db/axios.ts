@@ -11,6 +11,7 @@ const axiosInstance: AxiosInstance = axios.create({
     timeout: 10000, // Waktu tunggu dalam milidetik
     headers: {
         'Content-Type': 'application/json',
+        // 'Authorization': `Bearer ${process.env.NEXT_SECRET_API_TOKEN}`,
     },
 });
 

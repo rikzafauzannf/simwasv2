@@ -79,7 +79,7 @@ export class AxiosService {
       const response = await axiosInstance.get(endpoint);
       return {
         success: true,
-        data: response,
+        data: response.data,
         message: 'Data berhasil diambil',
       };
     } catch (error) {
