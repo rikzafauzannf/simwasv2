@@ -1,0 +1,51 @@
+{
+  "app/components/dashboard/ChartAnggaran.tsx -> react-apexcharts": {
+    "id": 81369,
+    "files": [
+      "static/chunks/3975359d.25bb5d1b35adcc9e.js",
+      "static/chunks/1369.cb01344f1352a17c.js"
+    ]
+  },
+  "app/components/dashboard/ChartJenisPengawasan.tsx -> react-apexcharts": {
+    "id": 81369,
+    "files": [
+      "static/chunks/3975359d.25bb5d1b35adcc9e.js",
+      "static/chunks/1369.cb01344f1352a17c.js"
+    ]
+  },
+  "app/components/dashboard/ChartLaporan.tsx -> react-apexcharts": {
+    "id": 81369,
+    "files": [
+      "static/chunks/3975359d.25bb5d1b35adcc9e.js",
+      "static/chunks/1369.cb01344f1352a17c.js"
+    ]
+  },
+  "app/components/dashboard/ChartPengawasan.tsx -> react-apexcharts": {
+    "id": 81369,
+    "files": [
+      "static/chunks/3975359d.25bb5d1b35adcc9e.js",
+      "static/chunks/1369.cb01344f1352a17c.js"
+    ]
+  },
+  "app/components/dashboard/ChartRuangLingkup.tsx -> react-apexcharts": {
+    "id": 81369,
+    "files": [
+      "static/chunks/3975359d.25bb5d1b35adcc9e.js",
+      "static/chunks/1369.cb01344f1352a17c.js"
+    ]
+  },
+  "app/components/dashboard/ChartTingkatRisiko.tsx -> react-apexcharts": {
+    "id": 81369,
+    "files": [
+      "static/chunks/3975359d.25bb5d1b35adcc9e.js",
+      "static/chunks/1369.cb01344f1352a17c.js"
+    ]
+  },
+  "app/components/dashboard/RevenueForecast.tsx -> react-apexcharts": {
+    "id": 81369,
+    "files": [
+      "static/chunks/3975359d.25bb5d1b35adcc9e.js",
+      "static/chunks/1369.cb01344f1352a17c.js"
+    ]
+  }
+}
