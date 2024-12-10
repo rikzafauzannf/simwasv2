@@ -12,7 +12,7 @@ const KendaliMutu = () => {
           <TableKendaliMutu />
         </CardComponents>
       </div>
-      <LaporanMingguanComponent />
+      <LaporanMingguanComponent id_pkpt={1} id_st="TG123456" />
     </div>
   );
 };
