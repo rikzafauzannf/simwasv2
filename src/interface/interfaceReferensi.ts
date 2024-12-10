@@ -4,10 +4,10 @@ export type JenisPengawasanDB = {
 };
 
 export type JenisLaporanDB = {
-  id:number;
-  jenis_laporan:string;
+  id: number;
+  jenis_laporan: string;
   // keterangan:string;
-}
+};
 
 export type RuangLingkupDB = {
   id: number;

@@ -6,7 +6,13 @@ import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
 const AuthLogin = () => {
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [error, setError] = useState<string>('');
   const [focusIndex, setFocusIndex] = useState<number>(0);
@@ -15,16 +21,16 @@ const AuthLogin = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const { NIP } = data;
     if (!showOtp) {
-        setShowOtp(true);
-        return;
+      setShowOtp(true);
+      return;
     }
 
     const isValidOtp = otp.join('') === '123456';
     if (isValidOtp) {
-        await Swal.fire('Success', 'OTP is valid, redirecting...', 'success');
-        window.location.href = '/dashboard';
+      await Swal.fire('Success', 'OTP is valid, redirecting...', 'success');
+      window.location.href = '/dashboard';
     } else {
-        Swal.fire('Error', 'Invalid OTP, please try again.', 'error');
+      Swal.fire('Error', 'Invalid OTP, please try again.', 'error');
     }
   };
 

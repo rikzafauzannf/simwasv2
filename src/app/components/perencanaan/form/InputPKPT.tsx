@@ -9,21 +9,21 @@ import { FaTrash } from 'react-icons/fa';
 import { title } from 'process';
 import { FirestoreService } from '@/services/firestore.service';
 import { PKPTFormData } from '@/interface/interfacePKPT';
-import { JenisLaporanDB, JenisPengawasanDB, TingkatResikoDB } from '@/interface/interfaceReferensi';
+import {
+  JenisLaporanDB,
+  JenisPengawasanDB,
+  TingkatResikoDB,
+} from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
 
 const InputPKPT = () => {
-  const {
-    data: DataJenisLaporan,
-  } = useFetch<JenisLaporanDB>('jenis_laporan');
+  const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
 
-  const {
-    data: DataPengawasan,
-  } = useFetch<JenisPengawasanDB>('jenis_pengawasan');
+  const { data: DataPengawasan } =
+    useFetch<JenisPengawasanDB>('jenis_pengawasan');
 
-  const {
-    data: DataTingkatRisiko,
-  } = useFetch<TingkatResikoDB>('tingkat_resiko');
+  const { data: DataTingkatRisiko } =
+    useFetch<TingkatResikoDB>('tingkat_resiko');
 
   const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
     value: String(item.id),
@@ -39,7 +39,7 @@ const InputPKPT = () => {
     value: item.id,
     title: item.tingkat_resiko,
   }));
-  
+
   const {
     register,
     handleSubmit,
@@ -66,7 +66,7 @@ const InputPKPT = () => {
       JenisLaporan: '',
     },
     mode: 'onBlur',
-  });  
+  });
 
   const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
     useTeamStore();
@@ -441,15 +441,15 @@ const InputPKPT = () => {
             error={errors.TingkatRisiko}
           /> */}
           <SelectInputField
-              label="Tingkat Risiko"
-              identiti="tRisiko"
-              options={optionsTingkatRisiko}
-              register={register('TingkatRisiko')}
-              placeholder="Pilih Tingkat Risiko"
-              error={errors.TingkatRisiko}
-              type="select"
-              name="TingkatRisiko"
-            />
+            label="Tingkat Risiko"
+            identiti="tRisiko"
+            options={optionsTingkatRisiko}
+            register={register('TingkatRisiko')}
+            placeholder="Pilih Tingkat Risiko"
+            error={errors.TingkatRisiko}
+            type="select"
+            name="TingkatRisiko"
+          />
           <div className="md:col-span-2">
             <InputFieldComponent
               label="Keterangan (Opsional)"

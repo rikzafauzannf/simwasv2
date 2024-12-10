@@ -10,7 +10,6 @@ import { RuangLingkupDB } from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchAll } from '@/hooks/useFetchAll';
 
-const firestoreService = new FirestoreService();
 const axiosService = new AxiosService();
 
 const RuangLingkup = () => {
@@ -36,7 +35,7 @@ const RuangLingkup = () => {
 
   const onSubmit: SubmitHandler<{ ruang_lingkup: string }> = async (data) => {
     try {
-      const result = await firestoreService.addData('ruang_lingkup', {
+      const result = await axiosService.addData('/ruang_lingkup', {
         ruang_lingkup: data.ruang_lingkup,
         // createdAt: new Date(),
       });
@@ -60,7 +59,7 @@ const RuangLingkup = () => {
       window.confirm('Apakah Anda yakin ingin menghapus ruang lingkup ini?')
     ) {
       try {
-        const result = await axiosService.deleteData(`/rusn`);
+        const result = await axiosService.deleteData(`/ruang_lingkup/${id}`);
         if (result.success) {
           alert('Ruang Lingkup berhasil dihapus');
           refetch(); // Refetch data to update the list

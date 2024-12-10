@@ -1,4 +1,4 @@
-import axiosInstance from "@/middleware/db/axios";
+import axiosInstance from '@/middleware/db/axios';
 
 export class AxiosService {
   // Mengambil semua data dari endpoint

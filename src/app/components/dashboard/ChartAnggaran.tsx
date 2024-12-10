@@ -63,8 +63,8 @@ const ChartAnggaran = () => {
   return (
     <div className="w-full">
       <div className="flex gap-2 items-center">
-        <img src="/images/products/anggaran_bg.svg" alt="" />
-        <h3 className="font-bold text-xl text-neutral-700">
+        <img src="/images/products/anggaran_bg.svg" className="w-8 md:w-10" />
+        <h3 className="font-bold text-neutral-700 text-sm md:text-lg">
           Anggaran Per bulan
         </h3>
       </div>
