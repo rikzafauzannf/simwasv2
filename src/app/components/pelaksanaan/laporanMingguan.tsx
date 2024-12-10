@@ -1,15 +1,15 @@
-"use client"
+'use client';
 import React from 'react';
 import { CardComponents } from '../Global/Card';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { LaporanMingguan } from '@/interface/interfaceKendaliMutu';
 
 interface PropsID {
-  id_st : string;
-  id_pkpt : number
+  id_st: string;
+  id_pkpt: number;
 }
 
-const LaporanMingguanComponent = ({id_st,id_pkpt}:PropsID) => {
+const LaporanMingguanComponent = ({ id_st, id_pkpt }: PropsID) => {
   const dummyLaporanMingguan = [
     {
       jam: '01.00',
@@ -34,9 +34,11 @@ const LaporanMingguanComponent = ({id_st,id_pkpt}:PropsID) => {
     refetch,
   } = useFetchAll<LaporanMingguan>('/laporan_mingguan');
 
-  const dataLaporanMaps = DataLaporanMingguan.filter(data => data.id_pkpt === id_pkpt && data.id_no === id_st)
-  
-  console.log("data Laporan Maps: ",dataLaporanMaps)
+  const dataLaporanMaps = DataLaporanMingguan.filter(
+    (data) => data.id_pkpt === id_pkpt && data.id_no === id_st
+  );
+
+  console.log('data Laporan Maps: ', dataLaporanMaps);
 
   return (
     <CardComponents>
@@ -50,7 +52,6 @@ const LaporanMingguanComponent = ({id_st,id_pkpt}:PropsID) => {
             <p>
               {/* {item.jam} , {item.tanggal} - <strong>{item.username}</strong>{' '} */}
               jam , tgl - <strong>tracking username</strong>
-
             </p>
             <p className="text-slate-800">{item.laporan_mingguan}</p>
             <hr />

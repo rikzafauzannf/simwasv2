@@ -11,7 +11,7 @@ interface PageProps {
 }
 
 const FormKendaliMutuPage = ({ params }: PageProps) => {
-  const id_st = "TG123456";
+  const id_st = 'TG123456';
   const id_pkpt = 1;
   return (
     <div className="space-y-3">

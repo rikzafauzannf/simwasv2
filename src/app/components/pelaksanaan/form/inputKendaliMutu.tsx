@@ -11,18 +11,21 @@ import { ButtonType } from '../../Global/Button';
 import LaporanMingguanComponent from '../laporanMingguan';
 import TableKendaliMutu from '../table/tableKendaliMutu';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { FormKendaliMutu } from '@/interface/interfaceKendaliMutu';
 
 interface PropsID {
   id_st: string;
   id_pkpt: number;
 }
 
-const axiosService = new AxiosService()
+const axiosService = new AxiosService();
 
 const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
-
   const [KendaliMutu, setKendaliMutu] = useState(false);
   const [LaporanMingguan, setLaporanMingguan] = useState(false);
+
+  console.log("id_pkpt data: ",id_pkpt)
+  console.log("id_st data: ",id_st)
 
   const {
     register,
@@ -39,7 +42,6 @@ const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
       reviuSupervisi: false,
       ceklisPenyelesaian: false,
       linkGDrive: '',
-      keterangan: '',
       laporan: '',
     },
   });
@@ -55,21 +57,51 @@ const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
     setLaporanMingguan(true);
   };
 
-  const onSubmitKendaliMutu: SubmitHandler<any> = async (data) => {
-    const selectedCheckboxes = Object.keys(data).filter(
-      (key) => key !== 'linkGDrive' && key !== 'keterangan' && data[key]
-    );
+  const onSubmitKendaliMutu: SubmitHandler<FormKendaliMutu> = async (data) => {
+    // const selectedCheckboxes = Object.keys(data).filter(
+    //   (key) => key !== 'linkGDrive' && key !== 'keterangan' && data[key]
+    // );
 
     console.log('Data Kendali Mutu:', {
       ...data,
-      selectedCheckboxes,
+      // selectedCheckboxes,
       id_st_data: id_st,
       id_pkpt_data: id_pkpt,
     });
-    reset();
+    try {
+      console.log('Data Laporan Mingguan:', data);
+      const result = await axiosService.addData('/kendali_mutu', {
+       kartu_penugasan: String(data.kartuPenugasan),
+       kertas_kerja_pengawasan: String(data.kertasKerja),
+       ceklis_penyelesaian: String(data.ceklisPenyelesaian),
+       program_kerja_pengawasan: String(data.programKerja),
+       dokumentasi_pemeriksaan: String(data.dokumentasiPemeriksaan),
+       notulensi_kesepakatan: String(data.notulensiKesepakatan),
+       reviu_supervisi: String(data.reviuSupervisi),
+       link_google_drive: data.linkGDrive,
+       id_no_tg: id_st,
+        id_pkpt: id_pkpt,
+      });
+
+      console.log('Respons dari server:', result);
+
+      if (result.success) {
+        console.log('Kendali Mutu berhasil disimpan:', result);
+        reset();
+        alert('Data Kendali Mutu berhasil disimpan');
+      } else {
+        throw new Error(result.message);
+        // refetch();
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Gagal menyimpan data Kendali Mutu');
+    }    
   };
 
-  const onSubmitLaporanMingguan: SubmitHandler<any> = async (data) => {    
+  const onSubmitLaporanMingguan: SubmitHandler<FormKendaliMutu> = async (
+    data
+  ) => {
     try {
       console.log('Data Laporan Mingguan:', data);
       const result = await axiosService.addData('/laporan_mingguan', {
@@ -83,7 +115,7 @@ const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
       if (result.success) {
         console.log('Laporan Mingguan berhasil disimpan:', result);
         reset();
-        alert('Data Laporan Mingguan berhasil disimpan');        
+        alert('Data Laporan Mingguan berhasil disimpan');
       } else {
         throw new Error(result.message);
         // refetch();
@@ -197,16 +229,6 @@ const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
               type="link"
               register={register('linkGDrive')}
               error={errors.linkGDrive}
-            />
-            <TextAreaFieldComponent
-              rows={4}
-              label="Keterangan"
-              identiti="keterangan"
-              name="keterangan"
-              placeholder="Masukan Keterangan ST"
-              type="text"
-              register={register('keterangan')}
-              error={errors.keterangan}
             />
             <ButtonType Text="+ Buat Kendali Mutu" type="submit" />
           </form>
