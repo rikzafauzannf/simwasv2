@@ -33,7 +33,7 @@ const InputSuratTugas = () => {
 
   const optionsKegiatan = [
     {
-      value: 'test',
+      value: 1,
       title: 'Title',
     },
   ];

@@ -24,14 +24,17 @@ const KodeTemuan = () => {
   } = useForm({
     defaultValues: {
       kode_temuan: '',
-      keterangan:''
+      keterangan: '',
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const onSubmit: SubmitHandler<{ kode_temuan: string,keterangan:string }> = async (data) => {
+  const onSubmit: SubmitHandler<{
+    kode_temuan: string;
+    keterangan: string;
+  }> = async (data) => {
     try {
       const result = await axiosSecvice.addData('/kode_temuan', {
         kode_temuan: data.kode_temuan,
@@ -40,9 +43,9 @@ const KodeTemuan = () => {
       });
 
       if (result.success) {
-        console.log('Ruang Lingkup berhasil disimpan:', result);
+        console.log('Kode Temuan berhasil disimpan:', result);
         reset(); // Reset form after successful submission
-        alert('Data Ruang Lingkup berhasil disimpan');
+        alert('Data Kode Temuan berhasil disimpan');
         refetch(); // Refetch data to update the list
       } else {
         throw new Error(result.message);
@@ -54,20 +57,18 @@ const KodeTemuan = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (
-      window.confirm('Apakah Anda yakin ingin menghapus ruang lingkup ini?')
-    ) {
+    if (window.confirm('Apakah Anda yakin ingin menghapus Kode Temuan ini?')) {
       try {
         const result = await axiosSecvice.deleteData(`/kode_temuan/${id}`);
         if (result.success) {
-          alert('Ruang Lingkup berhasil dihapus');
+          alert('Kode Temuan berhasil dihapus');
           refetch(); // Refetch data to update the list
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
-        console.error('Error deleting ruang lingkup:', error);
-        alert('Gagal menghapus ruang lingkup');
+        console.error('Error deleting Kode Temuan:', error);
+        alert('Gagal menghapus Kode Temuan');
       }
     }
   };
@@ -77,7 +78,7 @@ const KodeTemuan = () => {
       <h3 className="text-xl"># Kode Temuan</h3>
       <CardComponents>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3">
-          <section className='grid md:grid-cols-3 gap-3 w-full'>
+          <section className="grid md:grid-cols-3 gap-3 w-full">
             <InputFieldComponent
               label="Kode Temuan"
               identiti="kode_temuan"
@@ -88,22 +89,22 @@ const KodeTemuan = () => {
                 required: 'Kode Temuan wajib diisi',
               })}
               error={errors.kode_temuan}
-            />            
-            <div className='md:col-span-2'>
-            <InputFieldComponent
-              label="Keterangan"
-              identiti="keterangan"
-              name="keterangan"
-              placeholder="Tuliskan Keterangan"
-              type="text"
-              register={register('keterangan', {
-                required: 'Keterangan wajib diisi',
-              })}
-              error={errors.keterangan}
             />
+            <div className="md:col-span-2">
+              <InputFieldComponent
+                label="Keterangan"
+                identiti="keterangan"
+                name="keterangan"
+                placeholder="Tuliskan Keterangan"
+                type="text"
+                register={register('keterangan', {
+                  required: 'Keterangan wajib diisi',
+                })}
+                error={errors.keterangan}
+              />
             </div>
           </section>
-          
+
           <ButtonType Text="+ Simpan Kode Temuan" type="submit" />
         </form>
       </CardComponents>

@@ -124,17 +124,17 @@ const SidebarContent: MenuItem[] = [
       },
     ],
   },
-  // {
-  //   heading: 'manage',
-  //   children: [
-  //     {
-  //       name: 'User Account',
-  //       icon: 'solar:smile-circle-outline',
-  //       id: uniqueId(),
-  //       url: '/dashboard/usermanage',
-  //     },
-  //   ],
-  // },
+  {
+    heading: 'manage',
+    children: [
+      {
+        name: 'User Account',
+        icon: 'solar:smile-circle-outline',
+        id: uniqueId(),
+        url: '/dashboard/usermanage',
+      },
+    ],
+  },
 ];
 
 export default SidebarContent;

@@ -55,9 +55,9 @@ export type PKPTDataBase = {
 };
 
 export interface PKPTFormData {
-  JenisPengawasan: string;
+  JenisPengawasan: number;
   AreaPengawasan: string;
-  RuangLingkup: string;
+  RuangLingkup: number;
   TujuanSasaran: string;
   RencanaPenugasan: string;
   RencanaPenerbitan: string;
@@ -70,7 +70,7 @@ export interface PKPTFormData {
   Anggaran?: number;
   JumlahLaporan: number;
   SaranaDanPrasarana?: number;
-  TingkatRisiko: string;
+  TingkatRisiko: number;
   Keterangan?: string;
   JenisLaporan: string;
 }

@@ -20,7 +20,7 @@ export type TingkatResikoDB = {
 };
 
 export type KodeTemuanDB = {
-  id:number;
-  kode_temuan:string;
-  keterangan:string;
-}
+  id: number;
+  kode_temuan: string;
+  keterangan: string;
+};
