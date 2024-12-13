@@ -24,8 +24,8 @@ const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
   const [KendaliMutu, setKendaliMutu] = useState(false);
   const [LaporanMingguan, setLaporanMingguan] = useState(false);
 
-  console.log("id_pkpt data: ",id_pkpt)
-  console.log("id_st data: ",id_st)
+  console.log('id_pkpt data: ', id_pkpt);
+  console.log('id_st data: ', id_st);
 
   const {
     register,
@@ -71,15 +71,15 @@ const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
     try {
       console.log('Data Laporan Mingguan:', data);
       const result = await axiosService.addData('/kendali_mutu', {
-       kartu_penugasan: String(data.kartuPenugasan),
-       kertas_kerja_pengawasan: String(data.kertasKerja),
-       ceklis_penyelesaian: String(data.ceklisPenyelesaian),
-       program_kerja_pengawasan: String(data.programKerja),
-       dokumentasi_pemeriksaan: String(data.dokumentasiPemeriksaan),
-       notulensi_kesepakatan: String(data.notulensiKesepakatan),
-       reviu_supervisi: String(data.reviuSupervisi),
-       link_google_drive: data.linkGDrive,
-       id_no_tg: id_st,
+        kartu_penugasan: String(data.kartuPenugasan),
+        kertas_kerja_pengawasan: String(data.kertasKerja),
+        ceklis_penyelesaian: String(data.ceklisPenyelesaian),
+        program_kerja_pengawasan: String(data.programKerja),
+        dokumentasi_pemeriksaan: String(data.dokumentasiPemeriksaan),
+        notulensi_kesepakatan: String(data.notulensiKesepakatan),
+        reviu_supervisi: String(data.reviuSupervisi),
+        link_google_drive: data.linkGDrive,
+        id_no_tg: id_st,
         id_pkpt: id_pkpt,
       });
 
@@ -96,7 +96,7 @@ const InputKendaliMutu = ({ id_st, id_pkpt }: PropsID) => {
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Gagal menyimpan data Kendali Mutu');
-    }    
+    }
   };
 
   const onSubmitLaporanMingguan: SubmitHandler<FormKendaliMutu> = async (

@@ -64,9 +64,7 @@ const JenisLaporan = () => {
       window.confirm('Apakah Anda yakin ingin menghapus jenis laporan ini?')
     ) {
       try {
-        const result = await axiosService.deleteData(
-          'jenis_laporan' // Convert id to string as required by the service
-        );
+        const result = await axiosService.deleteData(`/jenis_laporan/${id}`);
         if (result.success) {
           alert('Jenis Laporan berhasil dihapus');
           refetch(); // Refetch data to update the list

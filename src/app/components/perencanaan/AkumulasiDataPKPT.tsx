@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { CardAccumulate } from '../Global/Card';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { FirestoreService } from '@/services/firestore.service';
-import imgPKPT from '/public/images/products/pkpt-bg.svg'
-import imgNonPKPT from '/public/images/products/nonpkpt-bg.svg'
+import imgPKPT from '/public/images/products/pkpt-bg.svg';
+import imgNonPKPT from '/public/images/products/nonpkpt-bg.svg';
 const AkumulasiDataPKPT = () => {
   const [DataPKPT, setDataPKPT] = useState<PKPTDataBase[]>([]);
   const [isLoading, setIsLoading] = useState(true);

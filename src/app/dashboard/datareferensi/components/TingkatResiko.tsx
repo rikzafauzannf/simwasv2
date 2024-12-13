@@ -4,12 +4,10 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { FirestoreService } from '@/services/firestore.service';
 import { useFetch } from '@/hooks/useFetch';
 import { TingkatResikoDB } from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 
-const firestoreService = new FirestoreService();
 const axiosSecvice = new AxiosService();
 const TingkatResiko = () => {
   const {
@@ -58,10 +56,7 @@ const TingkatResiko = () => {
       window.confirm('Apakah Anda yakin ingin menghapus ruang lingkup ini?')
     ) {
       try {
-        const result = await firestoreService.deleteData(
-          'jenis_pengawasan',
-          id
-        );
+        const result = await axiosSecvice.deleteData(`/tingkat_resiko/${id}`);
         if (result.success) {
           alert('Ruang Lingkup berhasil dihapus');
           refetch(); // Refetch data to update the list
