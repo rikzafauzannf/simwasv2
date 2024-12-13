@@ -7,17 +7,60 @@ import {
 import { CardComponents } from '../../Global/Card';
 
 import { ButtonType } from '../../Global/Button';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormLHP } from '@/interface/interfaceHasilPengawasan';
+import { AxiosService } from '@/services/axiosInstance.service';
 
-const LembarHasilPengawasan = () => {
-  const [uploadOption, setUploadOption] = useState('file');
+interface PropsID {
+  id_pkpt: number;
+  id_no: string;
+}
+
+const axiosService = new AxiosService()
+const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
+  const [uploadOption, setUploadOption] = useState('link');
 
   const handleUploadOptionChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setUploadOption(event.target.value);
   };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormLHP>({
+    defaultValues: {
+      keterangan_lhp:'',
+      link_lhp:''
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormLHP> = async (data) => {
+    try {
+      const result = await axiosService.addData('lhp', {
+        ...data,
+        id_pkpt,
+        id_no,
+      });
+
+      if (result.success) {
+        console.log('Laporan Hasil Pengawasan berhasil disimpan:', result);
+        reset(); // Reset form after successful submission
+        alert('Data Laporan Hasil Pengawasan berhasil disimpan');
+        // refetch(); // Refetch data to update the list
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Gagal menyimpan data Laporan Hasil Pengawasan');
+    }
+  };
   return (
-    <form className="space-y-3">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <h3 className="text-xl">Upload LHP (Lembar Hasil Pengawasan)</h3>
       <CardComponents>
         <div className="space-y-3">
@@ -34,21 +77,21 @@ const LembarHasilPengawasan = () => {
                 <input
                   type="radio"
                   name="uploadOption"
-                  value="file"
-                  checked={uploadOption === 'file'}
-                  onChange={handleUploadOptionChange}
-                />
-                Unggah File
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="uploadOption"
                   value="link"
                   checked={uploadOption === 'link'}
                   onChange={handleUploadOptionChange}
                 />
                 Masukkan Link
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="uploadOption"
+                  value="file"
+                  checked={uploadOption === 'file'}
+                  onChange={handleUploadOptionChange}
+                />
+                Unggah File
               </label>
             </div>
             {/* <section className="flex gap-2 w-full"> */}
@@ -70,7 +113,10 @@ const LembarHasilPengawasan = () => {
                 name="linkStSuresman"
                 placeholder="Masukan Link Suresman ST"
                 type="link"
-                register={'linkStSuresman'}
+                register={register('link_lhp',{
+                  required:"Masukan Link Laporan Hasil Pengawasan"
+                })}
+                error={errors.link_lhp}
               />
             )}
             {/* </section> */}
@@ -82,7 +128,10 @@ const LembarHasilPengawasan = () => {
               name="keterangan"
               placeholder="Masukan Keterangan ST"
               type="text"
-              register={'keterangan'}
+              register={register('keterangan_lhp',{
+                required:"Masukan Keterangan terkait Laporan HasilPengawasan"
+              })}
+              error={errors.keterangan_lhp}
             />
           </div>
         </div>

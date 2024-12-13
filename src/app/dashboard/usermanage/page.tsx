@@ -115,38 +115,38 @@ const UserManage = () => {
               name="role"
             />
             <InputFieldComponent
-                label="NIP"
-                identiti="nip"
-                name="nip"
-                placeholder="Tuliskan nip"
-                type="number"
-                register={register('nip', {
-                  required: 'nip wajib diisi',
-                })}
-                error={errors.nip}
-              />
-              <InputFieldComponent
-                label="Jabatan"
-                identiti="jabatan"
-                name="jabatan"
-                placeholder="Tuliskan jabatan"
-                type="text"
-                register={register('jabatan', {
-                  required: 'jabatan wajib diisi',
-                })}
-                error={errors.jabatan}
-              />
-              <InputFieldComponent
-                label="Nomor Whatsapp"
-                identiti="nomor_wa"
-                name="nomor_wa"
-                placeholder="Tuliskan Nomor Whatsapp"
-                type="text"
-                register={register('nomor_wa', {
-                  required: 'Nomor Whatsapp wajib diisi',
-                })}
-                error={errors.nomor_wa}
-              />
+              label="NIP"
+              identiti="nip"
+              name="nip"
+              placeholder="Tuliskan nip"
+              type="number"
+              register={register('nip', {
+                required: 'nip wajib diisi',
+              })}
+              error={errors.nip}
+            />
+            <InputFieldComponent
+              label="Jabatan"
+              identiti="jabatan"
+              name="jabatan"
+              placeholder="Tuliskan jabatan"
+              type="text"
+              register={register('jabatan', {
+                required: 'jabatan wajib diisi',
+              })}
+              error={errors.jabatan}
+            />
+            <InputFieldComponent
+              label="Nomor Whatsapp"
+              identiti="nomor_wa"
+              name="nomor_wa"
+              placeholder="Tuliskan Nomor Whatsapp"
+              type="text"
+              register={register('nomor_wa', {
+                required: 'Nomor Whatsapp wajib diisi',
+              })}
+              error={errors.nomor_wa}
+            />
           </section>
 
           <ButtonType Text="+ Simpan User" type="submit" />
@@ -154,17 +154,33 @@ const UserManage = () => {
       </CardComponents>
       <section className="grid md:grid-cols-2 gap-3">
         {DataPengguna.map((item) => (
-          <CardComponents key={item.id}>                        
+          <CardComponents key={item.id}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.nama}
             </h3>
-            <p className='font-medium flex gap-3 items-center'><Icon icon="solar:shield-check-broken" width="24" height="24" />{item.role}</p>
-            <div className='grid grid-cols-3 gap-3 w-full'>
-              <p className='font-medium flex gap-3 items-center'><Icon icon="solar:card-2-broken" width="24" height="24" />{item.nip}</p>
-              <p className='font-medium flex gap-3 items-center'><Icon icon="solar:user-id-broken" width="24" height="24" />{item.jabatan}</p>
-              <p className='font-medium flex gap-3 items-center'><Icon icon="solar:phone-calling-broken" width="24" height="24" />{item.nomor_wa}</p>
+            <p className="font-medium flex gap-3 items-center">
+              <Icon icon="solar:shield-check-broken" width="24" height="24" />
+              {item.role}
+            </p>
+            <div className="grid grid-cols-3 gap-3 w-full">
+              <p className="font-medium flex gap-3 items-center">
+                <Icon icon="solar:card-2-broken" width="24" height="24" />
+                {item.nip}
+              </p>
+              <p className="font-medium flex gap-3 items-center">
+                <Icon icon="solar:user-id-broken" width="24" height="24" />
+                {item.jabatan}
+              </p>
+              <p className="font-medium flex gap-3 items-center">
+                <Icon
+                  icon="solar:phone-calling-broken"
+                  width="24"
+                  height="24"
+                />
+                {item.nomor_wa}
+              </p>
             </div>
-            
+
             <button
               onClick={() => handleDelete(item.id)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"

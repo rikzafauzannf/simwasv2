@@ -5,19 +5,62 @@ import {
   TextAreaFieldComponent,
 } from '../../Global/Input';
 import { CardComponents } from '../../Global/Card';
-import { Input } from '@headlessui/react';
 import { ButtonType } from '../../Global/Button';
+import { FormNHP } from '@/interface/interfaceHasilPengawasan';
+import { AxiosService } from '@/services/axiosInstance.service';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-const NotaHasilPengawasan = () => {
-  const [uploadOption, setUploadOption] = useState('file');
+interface PropsID {
+  id_pkpt: number;
+  id_no: string;
+}
+
+const axiosService = new AxiosService();
+const NotaHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
+  const [uploadOption, setUploadOption] = useState('link');
 
   const handleUploadOptionChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setUploadOption(event.target.value);
   };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormNHP>({
+    defaultValues: {
+      keterangan_nhp: '',
+      tanggal_lhp: '',
+      link_nhp:''
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormNHP> = async (data) => {
+    try {
+      const result = await axiosService.addData('nhp', {
+        ...data,
+        id_pkpt,
+        id_no,
+      });
+
+      if (result.success) {
+        console.log('Nota Hasil Pengawasan berhasil disimpan:', result);
+        reset(); // Reset form after successful submission
+        alert('Data Nota Hasil Pengawasan berhasil disimpan');
+        // refetch(); // Refetch data to update the list
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Gagal menyimpan data Nota Hasil Pengawasan');
+    }
+  };
   return (
-    <form className="space-y-3">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <h3 className="text-xl">Upload NHP (Nota Hasil Pengawasan)</h3>
       <CardComponents>
         <div className="space-y-3">
@@ -34,45 +77,61 @@ const NotaHasilPengawasan = () => {
                 <input
                   type="radio"
                   name="uploadOption"
-                  value="file"
-                  checked={uploadOption === 'file'}
-                  onChange={handleUploadOptionChange}
-                />
-                Unggah File
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="uploadOption"
                   value="link"
                   checked={uploadOption === 'link'}
                   onChange={handleUploadOptionChange}
                 />
                 Masukkan Link
               </label>
+              <label>
+                <input
+                  type="radio"
+                  name="uploadOption"
+                  value="file"
+                  checked={uploadOption === 'file'}
+                  onChange={handleUploadOptionChange}
+                />
+                Unggah File
+              </label>
             </div>
             {/* <section className="flex gap-2 w-full"> */}
-            {uploadOption === 'file' ? (
-              // <input type="file" name="fileUpload" />
+            <div className="grid grid-cols-2 gap-3">
+              {uploadOption === 'file' ? (
+                // <input type="file" name="fileUpload" />
+                <InputFieldComponent
+                  label="Upload File"
+                  identiti="uploadFile"
+                  name="uploadFile"
+                  placeholder="Upload File ST"
+                  type="file"
+                  register={'uploadFile'}
+                />
+              ) : (
+                // <input type="text" name="linkInput" placeholder="Masukkan Link" />
+                <InputFieldComponent
+                  label="Masukan Link Suresman"
+                  identiti="linkStSuresman"
+                  name="linkStSuresman"
+                  placeholder="Masukan Link Suresman ST"
+                  type="link"
+                  register={register('link_nhp', {
+                    required: 'harap masukan link NHP',
+                  })}
+                  error={errors.link_nhp}
+                />
+              )}
               <InputFieldComponent
-                label="Upload File"
-                identiti="uploadFile"
-                name="uploadFile"
-                placeholder="Upload File ST"
-                type="file"
-                register={'uploadFile'}
+                label="Tanggal LHP"
+                identiti="tanggal_lhp"
+                name="tanggal_lhp"
+                placeholder="Masukan tanggal lhp"
+                type="date"
+                register={register('tanggal_lhp', {
+                  required: 'masukan tanggal_lhp',
+                })}
+                error={errors.tanggal_lhp}
               />
-            ) : (
-              // <input type="text" name="linkInput" placeholder="Masukkan Link" />
-              <InputFieldComponent
-                label="Masukan Link Suresman"
-                identiti="linkStSuresman"
-                name="linkStSuresman"
-                placeholder="Masukan Link Suresman ST"
-                type="link"
-                register={'linkStSuresman'}
-              />
-            )}
+            </div>
             {/* </section> */}
             {/* <hr className='my-4 border-4'/> */}
             <TextAreaFieldComponent
@@ -82,7 +141,10 @@ const NotaHasilPengawasan = () => {
               name="keterangan"
               placeholder="Masukan Keterangan ST"
               type="text"
-              register={'keterangan'}
+              register={register('keterangan_nhp', {
+                required: 'Pastikan anda menyertakan keterangan untuk nhp',
+              })}
+              error={errors.keterangan_nhp}
             />
           </div>
         </div>
