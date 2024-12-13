@@ -12,9 +12,13 @@ import { PKPTFormData } from '@/interface/interfacePKPT';
 import {
   JenisLaporanDB,
   JenisPengawasanDB,
+  RuangLingkupDB,
   TingkatResikoDB,
 } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
+import { AxiosService } from '@/services/axiosInstance.service';
+
+const axiosSecvice = new AxiosService();
 
 const InputPKPT = () => {
   const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
@@ -24,6 +28,7 @@ const InputPKPT = () => {
 
   const { data: DataTingkatRisiko } =
     useFetch<TingkatResikoDB>('tingkat_resiko');
+  const { data: DataRuangLingkup } = useFetch<RuangLingkupDB>('ruang_lingkup');
 
   const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
     value: String(item.id),
@@ -36,8 +41,13 @@ const InputPKPT = () => {
   }));
 
   const optionsTingkatRisiko = DataTingkatRisiko.map((item) => ({
-    value: item.id,
+    value: String(item.id),
     title: item.tingkat_resiko,
+  }));
+
+  const optionsRuangLingkup = DataRuangLingkup.map((item) => ({
+    value: String(item.id),
+    title: item.ruang_lingkup,
   }));
 
   const {
@@ -49,9 +59,9 @@ const InputPKPT = () => {
     formState: { errors },
   } = useForm<PKPTFormData>({
     defaultValues: {
-      JenisPengawasan: '',
+      JenisPengawasan: 0,
       AreaPengawasan: '',
-      RuangLingkup: '',
+      RuangLingkup: 0,
       TujuanSasaran: '',
       RencanaPenugasan: '',
       RencanaPenerbitan: '',
@@ -62,7 +72,7 @@ const InputPKPT = () => {
       ATim: 0,
       Jumlah: 0,
       JumlahLaporan: 0,
-      TingkatRisiko: '',
+      TingkatRisiko: 0,
       JenisLaporan: '',
     },
     mode: 'onBlur',
@@ -72,54 +82,51 @@ const InputPKPT = () => {
     useTeamStore();
   const [newMember, setNewMember] = React.useState('');
 
-  const firestoreService = new FirestoreService();
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
-      // Prepare data to be sent to Firestore
       const pkptData = {
         // ...data,
-        area_pengawasan: data.AreaPengawasan,
-        jenis_pengawasan: data.JenisPengawasan,
-        ruang_lingkup: data.RuangLingkup,
+        // area_pengawasan: data.AreaPengawasan,
+        id_area_pengawasan: Number(data.AreaPengawasan),
+        id_jenis_pengawasan: Number(data.JenisPengawasan),
+        id_ruang_lingkup: data.RuangLingkup,
         tujuan_sasaran: data.TujuanSasaran,
-        rencana_penugasan: data.RencanaPenugasan,
-        rencana_penerbitan: data.RencanaPenerbitan,
+        rencana_mulai: data.RencanaPenugasan,
+        rencana_penerbitan_laporan: data.RencanaPenerbitan,
         penanggung_jawab: data.PenanggungJawab,
-        wakil_penanggung_jawab: data.WakilPenanggungJawab,
-        pengendali_teknis: data.Supervisor,
-        ketua_tim: data.KetuaTIM,
-        anggota_tim: data.ATim,
+        wk_penanggung_jawab: data.WakilPenanggungJawab,
+        spv: data.Supervisor,
+        kt_tim: data.KetuaTIM,
+        hp_tim: data.ATim,
         jumlah: data.Jumlah,
         tim: teamMembers,
         anggaran: data.Anggaran,
         jumlah_laporan: `${data.JumlahLaporan} - ${data.JenisLaporan}`,
-        sarana_prasarana: data.SaranaDanPrasarana,
-        tingkat_risiko: data.TingkatRisiko,
+        sasaran_prasarana: data.SaranaDanPrasarana,
+        tingkat_resiko: data.TingkatRisiko,
         keterangan: data.Keterangan,
         // data identiti
-        id_user: 1,
-        createdAt: new Date(),
-        status: 'pkpt',
-        active: 'true',
+        // id_user: 1,
+        // createdAt: new Date(),
+        // status: 'pkpt',
+        // active: 'true',
       };
+      console.log('Data yang dikirim:', pkptData);
+      const result = await axiosSecvice.addData('/pkpt', pkptData);
 
-      const result = await firestoreService.addData('pkpt', pkptData);
+      console.log('Respons dari server:', result);
 
       if (result.success) {
-        console.log('PKPT berhasil disimpan:', result);
-        // Reset form
+        console.log('Jenis Pengawasan berhasil disimpan:', result);
         reset();
-        // Reset team members
+        alert('Data Jenis Pengawasan berhasil disimpan');
         resetTeamMembers();
-        // Optional: Show success message to user
-        alert('Data PKPT berhasil disimpan');
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Optional: Show error message to user
-      alert('Gagal menyimpan data PKPT');
+      alert('Gagal menyimpan data Jenis Pengawasan');
     }
   };
 
@@ -187,7 +194,17 @@ const InputPKPT = () => {
             type="select"
             name="JenisPengawasan"
           />
-          <InputFieldComponent
+          <SelectInputField
+            label="Ruang Lingkup"
+            identiti="select-field-pengawasan"
+            options={optionsRuangLingkup}
+            register={register('RuangLingkup')}
+            placeholder="Pilih Ruang Lingkup"
+            error={errors.RuangLingkup}
+            type="select"
+            name="RuangLingkup"
+          />
+          {/* <InputFieldComponent
             label="Ruang Lingkup"
             identiti="rLingkup"
             type="text"
@@ -195,7 +212,7 @@ const InputPKPT = () => {
             placeholder="Masukan Ruang Lingkup Pengawasan"
             register={register('RuangLingkup')}
             error={errors.RuangLingkup}
-          />
+          /> */}
           <InputFieldComponent
             label="Tujuan / Sasaran"
             identiti="tSasaran"
