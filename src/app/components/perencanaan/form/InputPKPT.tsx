@@ -403,34 +403,34 @@ const InputPKPT = () => {
             })}
             error={errors.Anggaran}
           />
-          <div className="flex justify-start items-baseline gap-3 w-full">
-            <div className="flex-1">
-              <InputFieldComponent
-                label="Jumlah Laporan"
-                identiti="jLaporan"
-                type="number"
-                name="JumlahLaporan"
-                placeholder="Masukan jumlah laporan"
-                register={register('JumlahLaporan', {
-                  required: 'Jumlah Laporan wajib diisi',
-                  min: { value: 1, message: 'Minimal 1 laporan' },
-                  validate: (value) =>
-                    Number.isInteger(Number(value)) ||
-                    'Jumlah laporan harus berupa bilangan bulat',
-                })}
-                error={errors.JumlahLaporan}
+          <div className="grid grid-cols-3 gap-3">
+            <InputFieldComponent
+              label="Jumlah Laporan"
+              identiti="jLaporan"
+              type="number"
+              name="JumlahLaporan"
+              placeholder="Masukan jumlah laporan"
+              register={register('JumlahLaporan', {
+                required: 'Jumlah Laporan wajib diisi',
+                min: { value: 1, message: 'Minimal 1 laporan' },
+                validate: (value) =>
+                  Number.isInteger(Number(value)) ||
+                  'Jumlah laporan harus berupa bilangan bulat',
+              })}
+              error={errors.JumlahLaporan}
+            />
+            <div className="col-span-2">
+              <SelectInputField
+                label="Jenis Laporan"
+                identiti="select-field"
+                options={optionsJenisLaporan}
+                register={register('JenisLaporan')}
+                placeholder="Pilih Jenis Laporan"
+                error={errors.JenisLaporan}
+                type="select"
+                name="JenisLaporan"
               />
             </div>
-            <SelectInputField
-              label="Jenis Laporan"
-              identiti="select-field"
-              options={optionsJenisLaporan}
-              register={register('JenisLaporan')}
-              placeholder="Pilih Jenis Laporan"
-              error={errors.JenisLaporan}
-              type="select"
-              name="JenisLaporan"
-            />
           </div>
           <InputFieldComponent
             label="Sarana dan Prasarana (Opsional)"

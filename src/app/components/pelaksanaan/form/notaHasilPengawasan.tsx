@@ -34,7 +34,7 @@ const NotaHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
     defaultValues: {
       keterangan_nhp: '',
       tanggal_lhp: '',
-      link_nhp:''
+      link_nhp: '',
     },
   });
 
