@@ -1,238 +1,137 @@
 'use client';
 
-import React, { useState } from 'react';
-import DataTable, { TableColumn } from 'react-data-table-component';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
-import { saveAs } from 'file-saver';
-import Link from 'next/link';
-import { PKPTDataBase } from '@/interface/interfacePKPT';
-import { useFetch } from '@/hooks/useFetch';
+import React, { useMemo, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react';
+import {
+  ClientSideRowModelModule,
+  ColDef,
+  ColGroupDef,
+  ModuleRegistry,
+  ValidationModule,
+} from 'ag-grid-community';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-const TablePKPT: React.FC = () => {
-  const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
-  const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<PKPTDataBase[]>([]);
+// Register the required AG-Grid modules
+ModuleRegistry.registerModules([ClientSideRowModelModule, ValidationModule]);
 
-  const columns: TableColumn<PKPTDataBase>[] = [
-    {
-      name: 'Actions',
-      cell: (row: PKPTDataBase) => (
-        <div className="flex gap-2">
-          <Link
-            href={`/dashboard/perencanaan/pkpt/${row.id}`}
-            className="p-2 text-blue-500 hover:text-blue-700"
-          >
-            <FaEye />
-          </Link>
-          <Link
-            href={`/dashboard/perencanaan/pkpt/actions/${row.id}`}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-          >
-            Act
-          </Link>
-        </div>
-      ),
-    },
-    {
-      name: 'Status',
-      selector: (row) => row.status,
-      sortable: true,
-    },
-    {
-      name: 'Jenis Pengawasan',
-      selector: (row) => row.jenis_pengawasan,
-      sortable: true,
-    },
-    {
-      name: 'Area Pengawasan',
-      selector: (row) => row.area_pengawasan,
-      sortable: true,
-    },
-    {
-      name: 'Ruang Lingkup',
-      selector: (row) => row.ruang_lingkup,
-      sortable: true,
-    },
-    {
-      name: 'Tujuan / Sasaran',
-      selector: (row) => row.tujuan_sasaran,
-      sortable: true,
-    },
-    {
-      name: 'Rencana Penugasan',
-      selector: (row) => row.rencana_penugasan,
-      sortable: true,
-    },
-    {
-      name: 'Rencana Penerbitan',
-      selector: (row) => row.rencana_penerbitan,
-      sortable: true,
-    },
-    {
-      name: 'Penanggung Jawab',
-      selector: (row) => row.penanggung_jawab,
-      sortable: true,
-    },
-    {
-      name: 'Wakil Penanggung Jawab',
-      selector: (row) => row.wakil_penanggung_jawab,
-      sortable: true,
-    },
-    {
-      name: 'Pengendali Teknis / Supervisor',
-      selector: (row) => row.pengendali_teknis,
-      sortable: true,
-    },
-    {
-      name: 'Ketua TIM',
-      selector: (row) => row.ketua_tim,
-      sortable: true,
-    },
-    {
-      name: 'TIM',
-      selector: (row) => {
-        if (!row.tim || !Array.isArray(row.tim)) return '';
-        return row.tim.map((member) => member.name).join(', ');
-      },
-      sortable: true,
-    },
-    {
-      name: 'Jumlah',
-      selector: (row) => row.jumlah,
-      sortable: true,
-    },
-    {
-      name: 'Jumlah Laporan',
-      selector: (row) => row.jumlah_laporan,
-      sortable: true,
-    },
-    {
-      name: 'Anggaran',
-      selector: (row) => row.anggaran,
-      sortable: true,
-    },
-    {
-      name: 'Sarana dan Prasarana',
-      selector: (row) => row.sarana_prasarana,
-      sortable: true,
-    },
-    {
-      name: 'Keterangan',
-      selector: (row) => row.keterangan,
-      sortable: true,
-    },
-  ];
+// Interface untuk data
+interface IPKPTData {
+  no: number;
+  area_pengawasan: string;
+  jenis_pengawasan: string;
+  tujuan_sasaran: string;
+  ruang_lingkup: string;
+  rencana_mulai: string;
+  rencana_penerbitan: string;
+  penanggung_jawab: string;
+  wakil_penanggung_jawab: string;
+  dalnis_supervisor: string;
+  ketua_tim: string;
+  anggota_tim: string;
+  jumlah_hari: number;
+  tim: string;
+  anggaran: string;
+  jumlah_laporan: number;
+  sarana_prasarana: string;
+  tingkat_resiko: string;
+  keterangan: string;
+}
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearch(value);
+const TablePKPT = () => {
+  const containerStyle = useMemo(() => ({ width: '100%', height: '100%',border:'none' }), []);
+  const gridStyle = useMemo(() => ({ height: '500px', width: '100%' }), []);
 
-    if (DataPKPT) {
-      const filtered = DataPKPT.filter(
-        (item) =>
-          item.jenis_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
-          item.area_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
-          item.status.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredData(filtered);
-    }
-  };
+  // Data Dummy
+  const [rowData] = useState<IPKPTData[]>([
+    {
+      no: 1,
+      area_pengawasan: 'Keuangan',
+      jenis_pengawasan: 'Internal',
+      tujuan_sasaran: 'Efisiensi Anggaran',
+      ruang_lingkup: 'Evaluasi Proyek',
+      rencana_mulai: '2024-01-10',
+      rencana_penerbitan: '2024-02-15',
+      penanggung_jawab: 'John Doe',
+      wakil_penanggung_jawab: 'Jane Smith',
+      dalnis_supervisor: 'Robert Wilson',
+      ketua_tim: 'Anna Taylor',
+      anggota_tim: 'Team A',
+      jumlah_hari: 30,
+      tim: 'Tim Keuangan',
+      anggaran: 'Rp 50,000,000',
+      jumlah_laporan: 1,
+      sarana_prasarana: 'Laptop, Printer',
+      tingkat_resiko: 'Tinggi',
+      keterangan: 'Urgensi Tinggi',
+    },
+    {
+      no: 2,
+      area_pengawasan: 'SDM',
+      jenis_pengawasan: 'Eksternal',
+      tujuan_sasaran: 'Peningkatan Kinerja',
+      ruang_lingkup: 'Audit Pelatihan',
+      rencana_mulai: '2024-03-01',
+      rencana_penerbitan: '2024-04-01',
+      penanggung_jawab: 'Emily Johnson',
+      wakil_penanggung_jawab: 'Mark Lee',
+      dalnis_supervisor: 'Susan Brown',
+      ketua_tim: 'David Green',
+      anggota_tim: 'Team B',
+      jumlah_hari: 20,
+      tim: 'Tim SDM',
+      anggaran: 'Rp 30,000,000',
+      jumlah_laporan: 1,
+      sarana_prasarana: 'Proyektor, Modul',
+      tingkat_resiko: 'Sedang',
+      keterangan: 'Prioritas Menengah',
+    },
+  ]);
 
-  const exportToCSV = () => {
-    if (!DataPKPT) return;
-
-    const headers = columns
-      .filter((col) => col.name !== 'Actions')
-      .map((col) => col.name)
-      .join(',');
-
-    const csvData = DataPKPT.map((row) =>
-      columns
-        .filter((col) => col.name !== 'Actions')
-        .map((col) => {
-          const selector = col.selector as unknown as (
-            row: PKPTDataBase
-          ) => string | number;
-          return `"${selector(row)}"`;
-        })
-        .join(',')
-    );
-
-    const blob = new Blob([`${headers}\n${csvData.join('\n')}`], {
-      type: 'text/csv;charset=utf-8',
-    });
-    saveAs(blob, 'pkpt_data.csv');
-  };
-
-  const exportToExcel = () => {
-    if (!DataPKPT) return;
-
-    const headers = columns
-      .filter((col) => col.name !== 'Actions')
-      .map((col) => col.name)
-      .join('\t');
-
-    const excelData = DataPKPT.map((row) =>
-      columns
-        .filter((col) => col.name !== 'Actions')
-        .map((col) => {
-          const selector = col.selector as unknown as (
-            row: PKPTDataBase
-          ) => string | number;
-          return selector(row);
-        })
-        .join('\t')
-    );
-
-    const blob = new Blob([`${headers}\n${excelData.join('\n')}`], {
-      type: 'application/vnd.ms-excel;charset=utf-8',
-    });
-    saveAs(blob, 'pkpt_data.xls');
-  };
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  // Definisi kolom
+  const [columnDefs] = useState<(ColDef | ColGroupDef)[]>([
+    { field: 'no', headerName: 'No', sortable: true, filter: 'agNumberColumnFilter', width: 70 },
+    { field: 'area_pengawasan', headerName: 'Area Pengawasan', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+    { field: 'jenis_pengawasan', headerName: 'Jenis Pengawasan', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+    { field: 'tujuan_sasaran', headerName: 'Tujuan Sasaran', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+    { field: 'ruang_lingkup', headerName: 'Ruang Lingkup', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+    {
+      headerName: 'Jadwal',
+      children: [
+        { field: 'rencana_mulai', headerName: 'Rencana Mulai', sortable: true, filter: 'agDateColumnFilter', autoHeight:true,},
+        { field: 'rencana_penerbitan', headerName: 'Rencana Penerbitan', sortable: true, filter: 'agDateColumnFilter', autoHeight:true,},
+      ],
+    },
+    {
+      headerName: 'Hari Penugasan',
+      children: [
+        { field: 'penanggung_jawab', headerName: 'Penanggung Jawab', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+        { field: 'wakil_penanggung_jawab', headerName: 'Wakil Penanggung Jawab', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+        { field: 'dalnis_supervisor', headerName: 'Dalnis/Supervisor', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+        { field: 'ketua_tim', headerName: 'Ketua TIM', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+        { field: 'anggota_tim', headerName: 'Anggota TIM', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+        { field: 'jumlah_hari', headerName: 'Jumlah Hari', sortable: true, filter: 'agNumberColumnFilter', autoHeight:true,},
+      ],
+    },
+    { field: 'tim', headerName: 'TIM', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+    { field: 'anggaran', headerName: 'Anggaran', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+    { field: 'jumlah_laporan', headerName: 'Jumlah Laporan', sortable: true, filter: 'agNumberColumnFilter', autoHeight:true,},
+    { field: 'sarana_prasarana', headerName: 'Sarana dan Prasarana', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+    { field: 'tingkat_resiko', headerName: 'Tingkat Resiko', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+    { field: 'keterangan', headerName: 'Keterangan', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
+  ]);
 
   return (
-    <>
-      <div className="mb-4 space-y-2">
-        <div className="flex justify-between items-center">
-          <h3>Data PKPT</h3>
-          <div className="space-x-2">
-            <button
-              onClick={exportToCSV}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              Export CSV
-            </button>
-            <button
-              onClick={exportToExcel}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Export Excel
-            </button>
-          </div>
-        </div>
-        <input
-          id="search"
-          type="text"
-          placeholder="Cari Status / Jenis / Area Pengawasan ..."
-          value={search}
-          onChange={handleSearch}
-          className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
+    <div style={containerStyle}>
+      <div className="ag-theme-alpine border-none" >
+        <AgGridReact<IPKPTData>
+          rowData={rowData}
+          columnDefs={columnDefs}
+          defaultColDef={{ sortable: true, filter: true, resizable: true }}
+          domLayout="autoHeight"
         />
       </div>
-      <div className="overflow-x-auto">
-        <DataTable
-          columns={columns}
-          data={search ? filteredData : DataPKPT}
-          pagination
-          fixedHeader
-          fixedHeaderScrollHeight="300px"
-          responsive
-        />
-      </div>
-    </>
+    </div>
   );
 };
 
