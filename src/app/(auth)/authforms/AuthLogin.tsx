@@ -94,8 +94,10 @@ const AuthLogin = () => {
               <div className="mb-2 block">
                 <Label htmlFor="OTP" value="OTP" />
               </div>
-              <div className="flex space-x-2">
+              <div className="flex justify-between space-x-2 items-center">
                 {otp.map((digit, index) => (
+                  <>
+                  {/* <p>-</p> */}
                   <TextInput
                     key={index}
                     id={`otp-input-${index}`}
@@ -107,6 +109,8 @@ const AuthLogin = () => {
                     className="form-control form-rounded-xl w-12 text-center"
                     autoFocus={index === focusIndex}
                   />
+                  <p>-</p>
+                  </>
                 ))}
               </div>
               {error && <p className="text-red-500">{error}</p>}
