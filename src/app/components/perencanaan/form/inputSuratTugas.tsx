@@ -26,7 +26,11 @@ const InputSuratTugas = () => {
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMember.trim()) {
-      addTeamMember(newMember.trim());
+      const newMemberObject = {
+        id: Date.now(),
+        name: newMember.trim(),
+      };
+      addTeamMember(newMemberObject);
       setNewMember('');
     }
   };

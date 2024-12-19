@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface TeamMember {
+export interface TeamMember {
   id: number;
   name: string;
 }
