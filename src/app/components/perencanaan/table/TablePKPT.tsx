@@ -11,6 +11,8 @@ import {
 } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 
 // Register the required AG-Grid modules
 ModuleRegistry.registerModules([ClientSideRowModelModule, ValidationModule]);
@@ -121,8 +123,20 @@ const TablePKPT = () => {
     { field: 'keterangan', headerName: 'Keterangan', sortable: true, filter: 'agTextColumnFilter', autoHeight:true,},
   ]);
 
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(rowData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Data PKPT');
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: '.xlsx' });
+    saveAs(data, 'data_pkpt.xlsx');
+  };
+
   return (
     <div style={containerStyle}>
+      <button onClick={exportToExcel} style={{ marginBottom: '10px', padding: '10px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px' }}>
+        Export to Excel
+      </button>
       <div className="ag-theme-alpine border-none" >
         <AgGridReact<IPKPTData>
           rowData={rowData}
