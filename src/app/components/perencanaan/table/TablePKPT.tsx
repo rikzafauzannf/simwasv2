@@ -9,7 +9,7 @@ import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { useFetch } from '@/hooks/useFetch';
 
 const TablePKPT: React.FC = () => {
-  const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
+  // const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<PKPTDataBase[]>([]);
 
@@ -123,6 +123,34 @@ const TablePKPT: React.FC = () => {
     },
   ];
 
+  const DataPKPT: PKPTDataBase[] = [
+    {
+      id: 1,
+      active: true,
+      anggaran: 1000,
+      anggota_tim: 5,
+      area_pengawasan: 'Area 1',
+      createdAt: new Date(),
+      pengendali_teknis: 20,
+      ketua_tim: 10,
+      id_user: 1,
+      jenis_pengawasan: 'Jenis Pengawasan 1',
+      jumlah: 10,
+      jumlah_laporan: '10',
+      keterangan: 'Keterangan PKPT',
+      penanggung_jawab: 10,
+      rencana_penerbitan: 'Rencana Penerbitan 1',
+      rencana_penugasan: 'Rencana Penugasan 1',
+      ruang_lingkup: 'Ruang Lingkup 1',
+      sarana_prasarana: 'Sarana Prasarana 1',
+      status: 'PKPT',
+      tim: [{ id: '1', name: 'Tim 1' }],
+      tingkat_risiko: 'Tinggi',
+      tujuan_sasaran: 'Tujuan Sasaran 1',
+      wakil_penanggung_jawab: 12,
+    },
+  ];
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
@@ -190,8 +218,8 @@ const TablePKPT: React.FC = () => {
     saveAs(blob, 'pkpt_data.xls');
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error.message}</div>;
 
   return (
     <>

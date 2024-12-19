@@ -13,6 +13,7 @@ import { FaTrash } from 'react-icons/fa';
 import { useFetchById } from '@/hooks/useFetchById';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { FirestoreService } from '@/services/firestore.service';
+import { TeamMember } from '@/middleware/Store/useTeamStore'; // Add this line
 
 // Cara 1: Menggunakan props params
 interface PageProps {
@@ -108,7 +109,11 @@ const ActionsPkptPage = ({ params }: PageProps) => {
       // Initialize team members
       resetTeamMembers();
       DataPKPT.tim?.forEach((member) => {
-        addTeamMember(member.name);
+        const newMember: TeamMember = {
+          id: Date.now(),
+          name: member.name,
+        };
+        addTeamMember(newMember);
       });
     }
   }, [DataPKPT, reset, resetTeamMembers, addTeamMember]);
@@ -189,7 +194,11 @@ const ActionsPkptPage = ({ params }: PageProps) => {
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMember.trim()) {
-      addTeamMember(newMember.trim());
+      const newMemberObject = {
+        id: Date.now(),
+        name: newMember.trim(),
+      };
+      addTeamMember(newMemberObject);
       setNewMember('');
     }
   };

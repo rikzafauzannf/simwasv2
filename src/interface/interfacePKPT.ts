@@ -29,7 +29,7 @@ type TimData = {
 };
 
 export type PKPTDataBase = {
-  id: string;
+  id: number;
   active: boolean;
   anggaran: number;
   anggota_tim: number;
