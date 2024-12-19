@@ -17,6 +17,7 @@ import {
 } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useScopeStore } from '@/middleware/Store/useScopeStore';
 
 const axiosSecvice = new AxiosService();
 
@@ -80,7 +81,24 @@ const InputPKPT = () => {
 
   const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
     useTeamStore();
-  const [newMember, setNewMember] = React.useState('');
+  const [newMemberId, setNewMemberId] = React.useState<number | string>('');
+
+  const potentialMembers = [
+    { id: 1, name: 'Member 1' },
+    { id: 2, name: 'Member 2' },
+    { id: 3, name: 'Member 3' },
+    // Add more members as needed
+  ];
+
+  const { scopes, addScope, removeScope } = useScopeStore();
+  const [newScopeId, setNewScopeId] = React.useState<number | string>('');
+
+  const potentialScopes = [
+    { id: 1, name: 'Scope 1' },
+    { id: 2, name: 'Scope 2' },
+    { id: 3, name: 'Scope 3' },
+    // Add more scopes as needed
+  ];
 
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
@@ -132,9 +150,23 @@ const InputPKPT = () => {
 
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMember.trim()) {
-      addTeamMember(newMember.trim());
-      setNewMember('');
+    if (newMemberId) {
+      const selectedMember = potentialMembers.find(member => member.id === Number(newMemberId));
+      if (selectedMember) {
+        addTeamMember({ id: selectedMember.id, name: selectedMember.name });
+        setNewMemberId('');
+      }
+    }
+  };
+
+  const handleAddScope = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newScopeId) {
+      const selectedScope = potentialScopes.find(scope => scope.id === Number(newScopeId));
+      if (selectedScope) {
+        addScope({ id: selectedScope.id, name: selectedScope.name });
+        setNewScopeId('');
+      }
     }
   };
 
@@ -194,16 +226,7 @@ const InputPKPT = () => {
             type="select"
             name="JenisPengawasan"
           />
-          <SelectInputField
-            label="Ruang Lingkup"
-            identiti="select-field-pengawasan"
-            options={optionsRuangLingkup}
-            register={register('RuangLingkup')}
-            placeholder="Pilih Ruang Lingkup"
-            error={errors.RuangLingkup}
-            type="select"
-            name="RuangLingkup"
-          />
+          
           {/* <InputFieldComponent
             label="Ruang Lingkup"
             identiti="rLingkup"
@@ -213,6 +236,7 @@ const InputPKPT = () => {
             register={register('RuangLingkup')}
             error={errors.RuangLingkup}
           /> */}
+          <div className='col-span-2'>
           <InputFieldComponent
             label="Tujuan / Sasaran"
             identiti="tSasaran"
@@ -222,6 +246,55 @@ const InputPKPT = () => {
             register={register('TujuanSasaran')}
             error={errors.TujuanSasaran}
           />
+          </div>
+          {/* Ruang Lingkup Section */}
+      <div className="col-span-2">
+        <div className="flex flex-col space-y-2">
+          <label htmlFor="RuangLingkup" className="text-slate-800">
+            Ruang Lingkup [{scopes.length}]
+          </label>
+          <div className="flex gap-2 w-full justify-start flex-grow">
+            <select
+              value={newScopeId}
+              onChange={(e) => setNewScopeId(e.target.value)}
+              className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
+            >
+              <option value="" disabled>Select a scope</option>
+              {potentialScopes.map(scope => (
+                <option key={scope.id} value={scope.id}>
+                  {scope.name}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={handleAddScope}
+              type="button"
+              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary"
+            >
+              Tambah
+            </button>
+          </div>
+        </div>
+
+        {/* Display Scopes */}
+        <div className="mt-4 space-y-2 w-full">
+          {scopes.map((scope, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
+            >
+              <span className="text-slate-800">{scope.name}</span>
+              <button
+                onClick={() => removeScope(index)}
+                type="button"
+                className="text-red-500 hover:text-red-700"
+              >
+                <FaTrash />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
         </section>
       </CardComponents>
 
@@ -346,13 +419,18 @@ const InputPKPT = () => {
                 TIM [{teamMembers.length}]
               </label>
               <div className="flex gap-2 w-full justify-start flex-grow">
-                <input
-                  type="text"
-                  value={newMember}
-                  onChange={(e) => setNewMember(e.target.value)}
-                  placeholder="Masukkan nama anggota tim"
+                <select
+                  value={newMemberId}
+                  onChange={(e) => setNewMemberId(e.target.value)}
                   className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
-                />
+                >
+                  <option value="" disabled>Select a team member</option>
+                  {potentialMembers.map(member => (
+                    <option key={member.id} value={member.id}>
+                      {member.name}
+                    </option>
+                  ))}
+                </select>
                 <button
                   onClick={handleAddMember}
                   type="button"
@@ -365,14 +443,14 @@ const InputPKPT = () => {
 
             {/* Display Team Members */}
             <div className="mt-4 space-y-2 w-full">
-              {teamMembers.map((member) => (
+              {teamMembers.map((member, index) => (
                 <div
-                  key={member.id}
+                  key={index}
                   className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
                 >
                   <span className="text-slate-800">{member.name}</span>
                   <button
-                    onClick={() => removeTeamMember(member.id)}
+                    onClick={() => removeTeamMember(index)}
                     type="button"
                     className="text-red-500 hover:text-red-700"
                   >
@@ -384,6 +462,8 @@ const InputPKPT = () => {
           </div>
         </section>
       </CardComponents>
+
+      
 
       {/* Optional data */}
       <CardComponents>

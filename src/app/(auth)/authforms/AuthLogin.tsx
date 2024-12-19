@@ -97,19 +97,19 @@ const AuthLogin = () => {
               <div className="flex justify-between space-x-2 items-center">
                 {otp.map((digit, index) => (
                   <>
-                  {/* <p>-</p> */}
-                  <TextInput
-                    key={index}
-                    id={`otp-input-${index}`}
-                    type="text"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    className="form-control form-rounded-xl w-12 text-center"
-                    autoFocus={index === focusIndex}
-                  />
-                  <p>-</p>
+                    {/* <p>-</p> */}
+                    <TextInput
+                      key={index}
+                      id={`otp-input-${index}`}
+                      type="text"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleOtpChange(index, e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e, index)}
+                      className="form-control form-rounded-xl w-12 text-center"
+                      autoFocus={index === focusIndex}
+                    />
+                    <p>-</p>
                   </>
                 ))}
               </div>
