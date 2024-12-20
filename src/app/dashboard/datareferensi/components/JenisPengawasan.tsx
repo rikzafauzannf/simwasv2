@@ -9,6 +9,7 @@ import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchAll } from '@/hooks/useFetchAll';
+import Swal from 'sweetalert2';
 
 const axiosService = new AxiosService();
 const JenisPengawasan = () => {
@@ -29,10 +30,11 @@ const JenisPengawasan = () => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!DataJenisPengawasan || DataJenisPengawasan.length === 0)
-    return <div>No data available</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error.message}</div>;
+
+  // if (!DataJenisPengawasan || DataJenisPengawasan.length === 0)
+  //   return <div>No data available</div>;
 
   const onSubmit: SubmitHandler<{ jenis_pengawasan: string }> = async (
     data
@@ -48,32 +50,55 @@ const JenisPengawasan = () => {
       if (result.success) {
         console.log('Jenis Pengawasan berhasil disimpan:', result);
         reset();
-        alert('Data Jenis Pengawasan berhasil disimpan');
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: 'Data Jenis Pengawasan berhasil disimpan',
+        });
         refetch();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Gagal menyimpan data Jenis Pengawasan');
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Gagal menyimpan data Jenis Pengawasan',
+      });
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (
-      window.confirm('Apakah Anda yakin ingin menghapus jenis pengawasan ini?')
-    ) {
+    const result = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Apakah Anda yakin ingin menghapus jenis pengawasan ini?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya',
+      cancelButtonText: 'Tidak',
+    });
+
+    if (result.isConfirmed) {
       try {
         const result = await axiosService.deleteData(`/jenis_pengawasan/${id}`);
         if (result.success) {
-          alert('Jenis Pengawasan berhasil dihapus');
+          Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'Jenis Pengawasan berhasil dihapus',
+          });
           refetch();
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
         console.error('Error deleting jenis pengawasan:', error);
-        alert('Gagal menghapus jenis pengawasan');
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Gagal menghapus jenis pengawasan',
+        });
       }
     }
   };
@@ -99,12 +124,12 @@ const JenisPengawasan = () => {
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
         {DataJenisPengawasan.map((item) => (
-          <CardComponents key={item.id}>
+          <CardComponents key={item.id_jenis_pengawasan}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_pengawasan}
             </h3>
             <button
-              onClick={() => handleDelete(item.id)}
+              onClick={() => handleDelete(item.id_jenis_pengawasan)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
             >
               Hapus

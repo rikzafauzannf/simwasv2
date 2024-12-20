@@ -17,7 +17,7 @@ const PkptPage = () => {
       <div className="grid w-full gap-3">
         <CardComponents>
           <TablePKPT />
-        </CardComponents>        
+        </CardComponents>
       </div>
     </div>
   );

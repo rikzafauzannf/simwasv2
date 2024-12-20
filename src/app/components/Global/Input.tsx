@@ -14,6 +14,7 @@ interface InputFieldProps {
   register: any;
   error?: FieldError;
   disabled?: boolean;
+  defaultValue?: string;
 }
 
 interface DataProps {
@@ -39,6 +40,7 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
   register,
   error,
   disabled = false,
+  defaultValue,
 }) => {
   return (
     <div className="flex flex-col space-y-2">
@@ -51,6 +53,7 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
         placeholder={placeholder}
         {...register}
         disabled={disabled}
+        defaultValue={defaultValue}
         // className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600
         //   ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}
         //   ${error ? 'border-red-500' : ''}`}

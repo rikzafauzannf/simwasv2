@@ -27,8 +27,8 @@ const TingkatResiko = () => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error.message}</div>;
 
   const onSubmit: SubmitHandler<{ tingkat_resiko: string }> = async (data) => {
     try {
@@ -91,12 +91,12 @@ const TingkatResiko = () => {
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
         {DataTingkatResiko.map((item) => (
-          <CardComponents key={item.id}>
+          <CardComponents key={item.id_tingkat_resiko}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.tingkat_resiko}
             </h3>
             <button
-              onClick={() => handleDelete(item.id)}
+              onClick={() => handleDelete(item.id_tingkat_resiko)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
             >
               Hapus
