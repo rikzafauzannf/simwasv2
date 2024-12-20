@@ -6,6 +6,7 @@ import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
+import { useFetch } from '@/hooks/useFetch';
 
 const TableSuratTugas = () => {
   const [search, setSearch] = useState('');
@@ -18,7 +19,7 @@ const TableSuratTugas = () => {
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={`/dashboard/perencanaan/surattugas/${row.id}`}
+            href={`/dashboard/perencanaan/surattugas/${row.id_jenis_laporan}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
@@ -54,57 +55,57 @@ const TableSuratTugas = () => {
     },
     {
       name: 'No/Tgl.Sp',
-      selector: (row: SuratTugasData) => row.noTglSp,
+      selector: (row: SuratTugasData) => row.no_tglsp,
       sortable: true,
     },
     {
       name: 'Program Audit',
-      selector: (row: SuratTugasData) => row.programAudit,
+      selector: (row: SuratTugasData) => row.program_audit,
       sortable: true,
     },
     {
       name: 'Tim Pemeriksa',
-      selector: (row: SuratTugasData) => row.timPemeriksa,
+      selector: (row: SuratTugasData) => row.tim_pemeriksa,
       sortable: true,
     },
     {
       name: 'Irban',
-      selector: (row: SuratTugasData) => row.irban,
+      selector: (row: SuratTugasData) => row.wk_penanggung_jawab,
       sortable: true,
     },
     {
       name: 'Pengendali Teknis',
-      selector: (row: SuratTugasData) => row.pengendaliTeknis,
+      selector: (row: SuratTugasData) => row.pengendali_teknis,
       sortable: true,
     },
     {
       name: 'Ketua Tim',
-      selector: (row: SuratTugasData) => row.ketuaTim,
+      selector: (row: SuratTugasData) => row.ketua_tim,
       sortable: true,
     },
     {
       name: 'Tim',
-      selector: (row: SuratTugasData) => row.Tim,
+      selector: (row: SuratTugasData) => row.anggota_tim,
       sortable: true,
     },
     {
       name: 'Jumlah Obejek',
-      selector: (row: SuratTugasData) => row.jumlahObjek,
+      selector: (row: SuratTugasData) => row.jumlah_objek,
       sortable: true,
     },
     {
       name: 'Jumlah Laporan',
-      selector: (row: SuratTugasData) => row.jumlahLaporan,
+      selector: (row: SuratTugasData) => row.jumlah_laporan,
       sortable: true,
     },
     {
       name: 'No.Tgl.LHP/LHE/LHR',
-      selector: (row: SuratTugasData) => row.noTglLhp,
+      selector: (row: SuratTugasData) => row.no_tgllh,
       sortable: true,
     },
     {
       name: 'Jenis Audit',
-      selector: (row: SuratTugasData) => row.jenisAudit,
+      selector: (row: SuratTugasData) => row.id_jenis_laporan,
       sortable: true,
     },
     {
@@ -114,44 +115,25 @@ const TableSuratTugas = () => {
     },
     {
       name: 'Link ST',
-      selector: (row: SuratTugasData) => row.linkSt,
+      selector: (row: SuratTugasData) => row.link_st,
       sortable: true,
     },
     {
       name: 'File ST',
-      selector: (row: SuratTugasData) => row.fileSt,
+      selector: (row: SuratTugasData) => row.link_st,
       sortable: true,
     },
   ];
-
-  const data: SuratTugasData[] = [
-    {
-      id: 1,
-      bulan: 'string',
-      noTglSp: 'string',
-      programAudit: 'string',
-      timPemeriksa: 'string',
-      irban: 'string',
-      pengendaliTeknis: 'string',
-      ketuaTim: 'string',
-      Tim: 'string',
-      jumlahObjek: 12,
-      jumlahLaporan: 20,
-      noTglLhp: 'string',
-      jenisAudit: 'string',
-      keterangan: 'string',
-      fileSt: 'string',
-      linkSt: 'string',
-    },
-  ];
+  const { data: DataSuratTugas } = useFetch<SuratTugasData>('surat_tugas');  
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
-    const filtered = data.filter(
+    const filtered = DataSuratTugas.filter(
       (item) =>
-        item.noTglSp.toLowerCase().includes(value.toLowerCase()) ||
-        item.programAudit.toLowerCase().includes(value.toLowerCase())
+        item.no_tglsp.toLowerCase().includes(value.toLowerCase()) ||
+        item.program_audit.toLowerCase().includes(value.toLowerCase()) ||
+        item.no_tgllh.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -162,7 +144,7 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join(',');
 
-    const csvData = data
+    const csvData = DataSuratTugas
       .map((row) => {
         return columns
           .filter((col) => col.name !== 'Actions')
@@ -188,7 +170,7 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = data
+    const excelData = DataSuratTugas
       .map((row) => {
         return columns
           .filter((col) => col.name !== 'Actions')
@@ -240,7 +222,7 @@ const TableSuratTugas = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : data}
+          data={search ? filteredData : DataSuratTugas}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"

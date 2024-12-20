@@ -1,18 +1,19 @@
 export interface FormUserManage {
-  nama: string;
+  username: string;
   nip: string;
-  nomor_wa: string;
+  no_whatsapp: string;
   jabatan: string;
-  role: string;
+  id_ruang_lingkup: string;
 }
 
 export type UserManageDB = {
-  id: number;
-  nama: string;
+  id_user: number;
+  username: string;
   nip: string;
-  nomor_wa: string;
+  no_whatsapp: string;
   jabatan: string;
-  role: string;
-  kode_otp: string;
+  id_ruang_lingkup: string;
+  created_at: string;
+  otp: string;
   exp_otp: string;
 };

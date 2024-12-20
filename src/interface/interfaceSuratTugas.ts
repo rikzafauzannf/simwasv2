@@ -1,18 +1,41 @@
-export interface SuratTugasData {
-  id?: number;
+export type SuratTugasData ={
+  id_st: number,
+  id_pkpt: number
   bulan: string;
-  noTglSp: string;
-  programAudit: string;
-  timPemeriksa: string;
-  irban: string;
-  pengendaliTeknis: string;
-  ketuaTim: string;
-  Tim: string;
-  jumlahObjek: number;
-  jumlahLaporan: number;
-  noTglLhp: string;
-  jenisAudit: string;
+  program_audit: string;
+  no_tglsp: string;
+  waktu_penugasan: string;
+  tim_pemeriksa: string;
+  wk_penanggung_jawab: string;
+  pengendali_teknis: string;
+  ketua_tim: string;
+  anggota_tim: string;
+  jumlah_objek: number;
+  jumlah_laporan: number;
+  no_tgllh: string;
+  id_jenis_laporan: number;
   keterangan: string;
-  fileSt: string;
-  linkSt: string;
+  link_st: string;
+  id_user: number;
+  created_at: string;
+}
+
+export interface FormSuratTugas {
+  id_pkpt: number
+  bulan: string;
+  program_audit: string;
+  no_tglsp: string;
+  waktu_penugasan: string;
+  tim_pemeriksa: string;
+  wk_penanggung_jawab: string;
+  pengendali_teknis: string;
+  ketua_tim: string;
+  anggota_tim: string;
+  jumlah_objek: number;
+  jumlah_laporan: number;
+  no_tgllh: string;
+  id_jenis_laporan: number;
+  keterangan: string;
+  link_st: string;
+  id_user: number;
 }

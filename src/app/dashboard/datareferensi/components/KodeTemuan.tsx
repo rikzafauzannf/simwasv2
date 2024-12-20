@@ -28,8 +28,8 @@ const KodeTemuan = () => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error.message}</div>;
 
   const onSubmit: SubmitHandler<{
     kode_temuan: string;

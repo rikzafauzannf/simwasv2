@@ -31,7 +31,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       <p>Ruang Lingkup:</p>
       <section className="grid grid-cols-4 gap-3">
         <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
-          {DataPKPT ? DataPKPT.ruang_lingkup : 'No data available'}
+          {DataPKPT ? DataPKPT.id_ruang_lingkup : 'No data available'}
         </div>
         {/* <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
           kominfo
@@ -49,13 +49,13 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         <CardComponents>
           <p className="text-sm">Jenis Pengawasan</p>
           <h3 className="text-xl">
-            {DataPKPT ? DataPKPT.jenis_pengawasan : 'No data available'}
+            {DataPKPT ? DataPKPT.id_jenis_pengawasan : 'No data available'}
           </h3>
         </CardComponents>
         <CardComponents>
           <p className="text-sm">Tingkat Resiko</p>
           <h3 className="text-xl">
-            {DataPKPT ? DataPKPT.tingkat_risiko : 'No data available'}
+            {DataPKPT ? DataPKPT.id_tingkat_resiko : 'No data available'}
           </h3>
         </CardComponents>
         <CardComponents>
@@ -76,13 +76,13 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
           <div>
             <p>Rencana Mulai Penugasan</p>
             <h3>
-              {DataPKPT ? DataPKPT.rencana_penugasan : 'No data available'}
+              {DataPKPT ? DataPKPT.rmp_pkpt : 'No data available'}
             </h3>
           </div>
           <div>
             <p>Rencana Penerbitan Laporan</p>
             <h3>
-              {DataPKPT ? DataPKPT.rencana_penerbitan : 'No data available'}
+              {DataPKPT ? DataPKPT.rpl_pkpt : 'No data available'}
             </h3>
           </div>
         </section>
@@ -98,7 +98,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         <CardComponents>
           <p className="font-medium">Tim</p>
           <div className="flex flex-col gap-2">
-            {DataPKPT
+            {/* {DataPKPT
               ? DataPKPT.tim.map((item, index) => (
                   <div
                     key={index}
@@ -107,7 +107,8 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
                     {item.name}
                   </div>
                 ))
-              : 'No data available'}
+              : 'No data available'} */}
+              {DataPKPT?.tim}
           </div>
         </CardComponents>
       </section>

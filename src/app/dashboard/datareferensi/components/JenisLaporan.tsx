@@ -27,21 +27,21 @@ const JenisLaporan = () => {
   } = useForm({
     defaultValues: {
       jenis_laporan: '',
-      // keterangan: '',
+      keterangan: '',
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error.message}</div>;
 
   const onSubmit: SubmitHandler<{
     jenis_laporan: string;
-    // keterangan: string;
+    keterangan: string;
   }> = async (data) => {
     try {
       const result = await axiosService.addData('jenis_laporan', {
         jenis_laporan: data.jenis_laporan,
-        // keterangan: data.keterangan,
+        keterangan: data.keterangan,
         // createdAt: new Date(),
       });
 
@@ -82,7 +82,10 @@ const JenisLaporan = () => {
     <div className="space-y-3">
       <h3 className="text-xl"># Jenis Laporan</h3>
       <CardComponents>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3 w-full">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-3 gap-3 w-full"
+        >
           <InputFieldComponent
             label="Jenis laporan"
             identiti="jenis_laporan"
@@ -95,7 +98,7 @@ const JenisLaporan = () => {
             error={errors.jenis_laporan}
           />
 
-          {/* <div className="col-span-2">
+          <div className="col-span-2">
             <InputFieldComponent
               label="Keterangan"
               identiti="keterangan"
@@ -107,22 +110,23 @@ const JenisLaporan = () => {
               })}
               error={errors.keterangan}
             />
-          </div> */}
+          </div>
 
-          {/* <div className="col-span-3"> */}
-          <ButtonType Text="+ Simpan Jenis Laporan" type="submit" />
-          {/* </div> */}
+          <div className="col-span-3">
+            <ButtonType Text="+ Simpan Jenis Laporan" type="submit" />
+          </div>
         </form>
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
         {DataJenisLaporan.map((item) => (
-          <CardComponents key={item.id}>
+          <CardComponents key={item.id_jenis_laporan}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_laporan}
             </h3>
+            <p>{item.keterangan}</p>
             {/* <p>{item.keterangan}</p> */}
             <button
-              onClick={() => handleDelete(item.id)}
+              onClick={() => handleDelete(item.id_jenis_laporan)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
             >
               Hapus
