@@ -16,7 +16,7 @@ interface PropsID {
   id_no: string;
 }
 
-const axiosService = new AxiosService()
+const axiosService = new AxiosService();
 const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
   const [uploadOption, setUploadOption] = useState('link');
 
@@ -33,8 +33,8 @@ const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
     formState: { errors },
   } = useForm<FormLHP>({
     defaultValues: {
-      keterangan_lhp:'',
-      link_lhp:''
+      keterangan_lhp: '',
+      link_lhp: '',
     },
   });
 
@@ -113,8 +113,8 @@ const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
                 name="linkStSuresman"
                 placeholder="Masukan Link Suresman ST"
                 type="link"
-                register={register('link_lhp',{
-                  required:"Masukan Link Laporan Hasil Pengawasan"
+                register={register('link_lhp', {
+                  required: 'Masukan Link Laporan Hasil Pengawasan',
                 })}
                 error={errors.link_lhp}
               />
@@ -128,8 +128,8 @@ const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
               name="keterangan"
               placeholder="Masukan Keterangan ST"
               type="text"
-              register={register('keterangan_lhp',{
-                required:"Masukan Keterangan terkait Laporan HasilPengawasan"
+              register={register('keterangan_lhp', {
+                required: 'Masukan Keterangan terkait Laporan HasilPengawasan',
               })}
               error={errors.keterangan_lhp}
             />

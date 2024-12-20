@@ -19,13 +19,13 @@ const TablePKPT: React.FC = () => {
       cell: (row: PKPTDataBase) => (
         <div className="flex gap-2">
           <Link
-            href={`/dashboard/perencanaan/pkpt/${row.id}`}
+            href={`/dashboard/perencanaan/pkpt/${row.id_pkpt}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
           </Link>
           <Link
-            href={`/dashboard/perencanaan/pkpt/actions/${row.id}`}
+            href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act
@@ -39,8 +39,13 @@ const TablePKPT: React.FC = () => {
       sortable: true,
     },
     {
+      name: 'Create At',
+      selector: (row) => row.created_at,
+      sortable: true,
+    },
+    {
       name: 'Jenis Pengawasan',
-      selector: (row) => row.jenis_pengawasan,
+      selector: (row) => row.id_jenis_laporan,
       sortable: true,
     },
     {
@@ -50,7 +55,7 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Ruang Lingkup',
-      selector: (row) => row.ruang_lingkup,
+      selector: (row) => row.id_ruang_lingkup,
       sortable: true,
     },
     {
@@ -60,12 +65,12 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Rencana Penugasan',
-      selector: (row) => row.rencana_penugasan,
+      selector: (row) => row.rmp_pkpt,
       sortable: true,
     },
     {
       name: 'Rencana Penerbitan',
-      selector: (row) => row.rencana_penerbitan,
+      selector: (row) => row.rpl_pkpt,
       sortable: true,
     },
     {
@@ -90,10 +95,11 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'TIM',
-      selector: (row) => {
-        if (!row.tim || !Array.isArray(row.tim)) return '';
-        return row.tim.map((member) => member.name).join(', ');
-      },
+      selector: (row) => row.tim,
+      // selector: (row) => {
+      //   if (!row.tim || !Array.isArray(row.tim)) return '';
+      //   return row.tim.map((member) => member.name).join(', ');
+      // },
       sortable: true,
     },
     {
@@ -123,14 +129,14 @@ const TablePKPT: React.FC = () => {
     },
   ];
 
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
 
     if (DataPKPT) {
       const filtered = DataPKPT.filter(
-        (item) =>
-          item.jenis_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
+        (item) =>          
           item.area_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
           item.status.toLowerCase().includes(value.toLowerCase())
       );
@@ -190,8 +196,8 @@ const TablePKPT: React.FC = () => {
     saveAs(blob, 'pkpt_data.xls');
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error.message}</div>;
 
   return (
     <>

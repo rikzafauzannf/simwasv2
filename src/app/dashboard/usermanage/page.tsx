@@ -9,11 +9,12 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
-import { KodeTemuanDB } from '@/interface/interfaceReferensi';
+import { KodeTemuanDB, RuangLingkupDB } from '@/interface/interfaceReferensi';
 import { FormUserManage, UserManageDB } from '@/interface/interfaceUserManage';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { useGetNameRuangLingkup } from '@/hooks/useGetName';
 
-const axiosSecvice = new AxiosService();
+const axiosService = new AxiosService();
 const UserManage = () => {
   const {
     data: DataPengguna,
@@ -21,6 +22,7 @@ const UserManage = () => {
     error,
     refetch,
   } = useFetch<UserManageDB>('/pengguna');
+  const { data: DataRuangLingkup } = useFetch<RuangLingkupDB>('ruang_lingkup');
   const {
     register,
     handleSubmit,
@@ -28,37 +30,41 @@ const UserManage = () => {
     formState: { errors },
   } = useForm<FormUserManage>({
     defaultValues: {
-      nama: '',
-      nip: '',
-      nomor_wa: '',
+      username: '',
       jabatan: '',
-      role: '',
+      nip: '',
+      no_whatsapp: '',
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  const {
+    getNameRuangLingkup,
+    isLoading: isLoadingRuangLingkup,
+    error: errorRuangLingkup,
+  } = useGetNameRuangLingkup();
 
-  const optionsRole = [
-    {
-      value: 'admin',
-      title: 'Admin',
-    },
-    {
-      value: 'irban',
-      title: 'Irban',
-    },
-  ];
+  if (isLoadingRuangLingkup) return <div>Loading...</div>;
+  if (errorRuangLingkup) return <div>Error: {errorRuangLingkup.message}</div>;
+
+  const optionsRole = DataRuangLingkup.map((item) => ({
+    value: String(item.id_ruang_lingkup),
+    title: item.ruang_lingkup,
+  }));
 
   const onSubmit: SubmitHandler<FormUserManage> = async (data) => {
     try {
-      const result = await axiosSecvice.addData('/pengguna', data);
-
+      const result = await axiosService.addData('/pengguna', {
+        username: data.username,
+        nip: data.nip,
+        no_whatsapp: data.no_whatsapp,
+        jabatan: data.jabatan,
+        id_ruang_lingkup: Number(data.id_ruang_lingkup),
+      });
       if (result.success) {
         console.log('User berhasil disimpan:', result);
-        reset(); // Reset form after successful submission
+        reset();
         alert('Data User berhasil disimpan');
-        refetch(); // Refetch data to update the list
+        refetch();
       } else {
         throw new Error(result.message);
       }
@@ -71,10 +77,10 @@ const UserManage = () => {
   const handleDelete = async (id: number) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus User ini?')) {
       try {
-        const result = await axiosSecvice.deleteData(`/pengguna/${id}`);
+        const result = await axiosService.deleteData(`/pengguna/${id}`);
         if (result.success) {
           alert('User berhasil dihapus');
-          refetch(); // Refetch data to update the list
+          refetch();
         } else {
           throw new Error(result.message);
         }
@@ -98,19 +104,19 @@ const UserManage = () => {
                 name="nama"
                 placeholder="Tuliskan nama"
                 type="text"
-                register={register('nama', {
+                register={register('username', {
                   required: 'nama wajib diisi',
                 })}
-                error={errors.nama}
+                error={errors.username}
               />
             </div>
             <SelectInputField
               label="Role"
               identiti="select-field-role"
               options={optionsRole}
-              register={register('role')}
+              register={register('id_ruang_lingkup')}
               placeholder="Pilih Role Anda"
-              error={errors.role}
+              error={errors.id_ruang_lingkup}
               type="select"
               name="role"
             />
@@ -142,25 +148,24 @@ const UserManage = () => {
               name="nomor_wa"
               placeholder="Tuliskan Nomor Whatsapp"
               type="text"
-              register={register('nomor_wa', {
+              register={register('no_whatsapp', {
                 required: 'Nomor Whatsapp wajib diisi',
               })}
-              error={errors.nomor_wa}
+              error={errors.no_whatsapp}
             />
           </section>
-
           <ButtonType Text="+ Simpan User" type="submit" />
         </form>
       </CardComponents>
       <section className="grid md:grid-cols-2 gap-3">
         {DataPengguna.map((item) => (
-          <CardComponents key={item.id}>
+          <CardComponents key={item.id_user}>
             <h3 className="text-xl font-bold">
-              {'>>'} {item.nama}
+              {'>>'} {item.username}
             </h3>
             <p className="font-medium flex gap-3 items-center">
               <Icon icon="solar:shield-check-broken" width="24" height="24" />
-              {item.role}
+              {getNameRuangLingkup(Number(item.id_ruang_lingkup))}
             </p>
             <div className="grid grid-cols-3 gap-3 w-full">
               <p className="font-medium flex gap-3 items-center">
@@ -177,12 +182,11 @@ const UserManage = () => {
                   width="24"
                   height="24"
                 />
-                {item.nomor_wa}
+                {item.no_whatsapp}
               </p>
             </div>
-
             <button
-              onClick={() => handleDelete(item.id)}
+              onClick={() => handleDelete(item.id_user)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
             >
               Hapus

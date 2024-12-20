@@ -8,7 +8,7 @@ import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
 import { title } from 'process';
 import { FirestoreService } from '@/services/firestore.service';
-import { PKPTFormData } from '@/interface/interfacePKPT';
+import { PKPTData, PKPTFormData } from '@/interface/interfacePKPT';
 import {
   JenisLaporanDB,
   JenisPengawasanDB,
@@ -17,6 +17,8 @@ import {
 } from '@/interface/interfaceReferensi';
 import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useScopeStore } from '@/middleware/Store/useScopeStore';
+import { UserManageDB } from '@/interface/interfaceUserManage';
 
 const axiosSecvice = new AxiosService();
 
@@ -28,25 +30,27 @@ const InputPKPT = () => {
 
   const { data: DataTingkatRisiko } =
     useFetch<TingkatResikoDB>('tingkat_resiko');
+
   const { data: DataRuangLingkup } = useFetch<RuangLingkupDB>('ruang_lingkup');
+  const { data: DataUser } = useFetch<UserManageDB>('pengguna');
 
   const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
-    value: String(item.id),
-    title: item.jenis_laporan,
+    value: String(item.id_jenis_laporan),
+    title: `${item.jenis_laporan} - ${item.keterangan}`,
   }));
 
   const optionsJenisPengawasan = DataPengawasan.map((item) => ({
-    value: String(item.id),
+    value: String(item.id_jenis_pengawasan),
     title: item.jenis_pengawasan,
   }));
 
   const optionsTingkatRisiko = DataTingkatRisiko.map((item) => ({
-    value: String(item.id),
+    value: String(item.id_tingkat_resiko),
     title: item.tingkat_resiko,
   }));
 
   const optionsRuangLingkup = DataRuangLingkup.map((item) => ({
-    value: String(item.id),
+    value: String(item.id_ruang_lingkup),
     title: item.ruang_lingkup,
   }));
 
@@ -59,57 +63,58 @@ const InputPKPT = () => {
     formState: { errors },
   } = useForm<PKPTFormData>({
     defaultValues: {
-      JenisPengawasan: 0,
-      AreaPengawasan: '',
-      RuangLingkup: 0,
-      TujuanSasaran: '',
-      RencanaPenugasan: '',
-      RencanaPenerbitan: '',
-      PenanggungJawab: 0,
-      WakilPenanggungJawab: 0,
-      Supervisor: 0,
-      KetuaTIM: 0,
-      ATim: 0,
-      Jumlah: 0,
-      JumlahLaporan: 0,
-      TingkatRisiko: 0,
-      JenisLaporan: '',
+      area_pengawasan: '',
+      keterangan: '',
+      tujuan_sasaran: '',
     },
     mode: 'onBlur',
   });
 
   const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
     useTeamStore();
-  const [newMember, setNewMember] = React.useState('');
+  const [newMemberId, setNewMemberId] = React.useState<number | string>('');
+
+  const potentialMembers = DataUser.map((item) => ({
+    id: item.id_user,
+    name: item.username,
+  }));
+
+  console.log('data dari team: ', teamMembers);
+
+  const { scopes, addScope, removeScope } = useScopeStore();
+  const [newScopeId, setNewScopeId] = React.useState<number | string>('');
+
+  const potentialScopes = DataRuangLingkup.map((item) => ({
+    id: item.id_ruang_lingkup,
+    name: item.ruang_lingkup,
+  }));
+
+  console.log('data dari scope: ', scopes);
 
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
       const pkptData = {
-        // ...data,
-        // area_pengawasan: data.AreaPengawasan,
-        id_area_pengawasan: Number(data.AreaPengawasan),
-        id_jenis_pengawasan: Number(data.JenisPengawasan),
-        id_ruang_lingkup: data.RuangLingkup,
-        tujuan_sasaran: data.TujuanSasaran,
-        rencana_mulai: data.RencanaPenugasan,
-        rencana_penerbitan_laporan: data.RencanaPenerbitan,
-        penanggung_jawab: data.PenanggungJawab,
-        wk_penanggung_jawab: data.WakilPenanggungJawab,
-        spv: data.Supervisor,
-        kt_tim: data.KetuaTIM,
-        hp_tim: data.ATim,
-        jumlah: data.Jumlah,
-        tim: teamMembers,
-        anggaran: data.Anggaran,
-        jumlah_laporan: `${data.JumlahLaporan} - ${data.JenisLaporan}`,
-        sasaran_prasarana: data.SaranaDanPrasarana,
-        tingkat_resiko: data.TingkatRisiko,
-        keterangan: data.Keterangan,
-        // data identiti
-        // id_user: 1,
-        // createdAt: new Date(),
-        // status: 'pkpt',
-        // active: 'true',
+        status: 'pkpt',
+        id_user: 2,
+        anggaran: String(data.anggaran),
+        anggota_tim: String(data.anggota_tim),
+        area_pengawasan: data.area_pengawasan,
+        id_jenis_laporan: Number(data.id_jenis_laporan),
+        id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
+        id_ruang_lingkup: Number(data.id_ruang_lingkup),
+        id_tingkat_resiko: Number(data.id_tingkat_resiko),
+        jumlah: data.jumlah,
+        jumlah_laporan: Number(data.jumlah_laporan),
+        keterangan: data.keterangan,
+        ketua_tim: String(data.ketua_tim),
+        penanggung_jawab: String(data.penanggung_jawab),
+        pengendali_teknis: String(data.pengendali_teknis),
+        rmp_pkpt: data.rmp_pkpt,
+        rpl_pkpt: data.rpl_pkpt,
+        sarana_prasarana: data.sarana_prasarana,
+        tim: teamMembers.map((item) => String(item.id)).join(','),
+        tujuan_sasaran: data.tujuan_sasaran,
+        wakil_penanggung_jawab: String(data.wakil_penanggung_jawab),
       };
       console.log('Data yang dikirim:', pkptData);
       const result = await axiosSecvice.addData('/pkpt', pkptData);
@@ -132,18 +137,36 @@ const InputPKPT = () => {
 
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMember.trim()) {
-      addTeamMember(newMember.trim());
-      setNewMember('');
+    if (newMemberId) {
+      const selectedMember = potentialMembers.find(
+        (member) => member.id === Number(newMemberId)
+      );
+      if (selectedMember) {
+        addTeamMember({ id: selectedMember.id, name: selectedMember.name });
+        setNewMemberId('');
+      }
+    }
+  };
+
+  const handleAddScope = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newScopeId) {
+      const selectedScope = potentialScopes.find(
+        (scope) => scope.id === Number(newScopeId)
+      );
+      if (selectedScope) {
+        addScope({ id: selectedScope.id, name: selectedScope.name });
+        setNewScopeId('');
+      }
     }
   };
 
   // Watch semua field yang akan mempengaruhi jumlah
-  const penanggungJawab = watch('PenanggungJawab');
-  const wakilPenanggungJawab = watch('WakilPenanggungJawab');
-  const supervisor = watch('Supervisor');
-  const ketuaTim = watch('KetuaTIM');
-  const aTim = watch('ATim');
+  const penanggungJawab = watch('penanggung_jawab');
+  const wakilPenanggungJawab = watch('wakil_penanggung_jawab');
+  const supervisor = watch('pengendali_teknis');
+  const ketuaTim = watch('ketua_tim');
+  const aTim = watch('anggota_tim');
 
   // Effect untuk menghitung jumlah otomatis
   React.useEffect(() => {
@@ -157,7 +180,7 @@ const InputPKPT = () => {
     if (aTim) total += Number(aTim) || 0;
 
     // Set nilai jumlah
-    setValue('Jumlah', total);
+    setValue('jumlah', total);
   }, [
     penanggungJawab,
     wakilPenanggungJawab,
@@ -179,49 +202,92 @@ const InputPKPT = () => {
             type="text"
             name="AreaPengawasan"
             placeholder="Masukan Area Pengawasan"
-            register={register('AreaPengawasan', {
+            register={register('area_pengawasan', {
               required: 'Area Pengawasan wajib diisi',
             })}
-            error={errors.AreaPengawasan}
+            error={errors.area_pengawasan}
           />
           <SelectInputField
             label="Jenis Pengawasan"
             identiti="select-field-pengawasan"
             options={optionsJenisPengawasan}
-            register={register('JenisPengawasan')}
+            register={register('id_jenis_pengawasan')}
             placeholder="Pilih Jenis Pengawasan"
-            error={errors.JenisPengawasan}
+            error={errors.id_jenis_pengawasan}
             type="select"
             name="JenisPengawasan"
           />
+
           <SelectInputField
             label="Ruang Lingkup"
-            identiti="select-field-pengawasan"
+            identiti="select-field-rlingkup"
             options={optionsRuangLingkup}
-            register={register('RuangLingkup')}
+            register={register('id_ruang_lingkup')}
             placeholder="Pilih Ruang Lingkup"
-            error={errors.RuangLingkup}
+            error={errors.id_ruang_lingkup}
             type="select"
-            name="RuangLingkup"
+            name="ruangLingkup"
           />
-          {/* <InputFieldComponent
-            label="Ruang Lingkup"
-            identiti="rLingkup"
-            type="text"
-            name="RuangLingkup"
-            placeholder="Masukan Ruang Lingkup Pengawasan"
-            register={register('RuangLingkup')}
-            error={errors.RuangLingkup}
-          /> */}
-          <InputFieldComponent
-            label="Tujuan / Sasaran"
-            identiti="tSasaran"
-            type="text"
-            name="TujuanSasaran"
-            placeholder="Masukan Tujuan / Sasaran pengawasan"
-            register={register('TujuanSasaran')}
-            error={errors.TujuanSasaran}
-          />
+
+          <div className="md:col-span-2">
+            <InputFieldComponent
+              label="Tujuan / Sasaran"
+              identiti="tSasaran"
+              type="text"
+              name="TujuanSasaran"
+              placeholder="Masukan Tujuan / Sasaran pengawasan"
+              register={register('tujuan_sasaran')}
+              error={errors.tujuan_sasaran}
+            />
+          </div>
+
+          {/* <div className="md:col-span-2">
+            <div className="flex flex-col space-y-2">
+              <label htmlFor="RuangLingkup" className="text-slate-800">
+                Ruang Lingkup [{scopes.length}]
+              </label>
+              <div className="flex gap-2 w-full justify-start flex-grow">
+                <select
+                  value={newScopeId}
+                  onChange={(e) => setNewScopeId(e.target.value)}
+                  className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
+                >
+                  <option value="" disabled>
+                    Select a scope
+                  </option>
+                  {potentialScopes.map((scope) => (
+                    <option key={scope.id} value={scope.id}>
+                      {scope.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={handleAddScope}
+                  type="button"
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary"
+                >
+                  Tambah
+                </button>
+              </div>
+            </div>            
+            <div className="mt-4 space-y-2 w-full">
+              {scopes.map((scope, index) => (
+                <div
+                  key={scope.id}
+                  className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
+                >
+                  <span className="text-slate-800">{scope.name}</span>
+                  <button
+                    onClick={() => removeScope(index)}
+                    type="button"
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div> */}
         </section>
       </CardComponents>
 
@@ -235,10 +301,10 @@ const InputPKPT = () => {
             type="date"
             name="RencanaPenugasan"
             placeholder="Tentukan rencana penugasan"
-            register={register('RencanaPenugasan', {
+            register={register('rmp_pkpt', {
               required: 'Rencana Penugasan wajib diisi',
             })}
-            error={errors.RencanaPenugasan}
+            error={errors.rmp_pkpt}
           />
           <InputFieldComponent
             label="Rencana Penerbitan"
@@ -246,10 +312,10 @@ const InputPKPT = () => {
             type="date"
             name="RencanaPenerbitan"
             placeholder="Tentukan rencana Penerbitan"
-            register={register('RencanaPenerbitan', {
+            register={register('rpl_pkpt', {
               required: 'Rencana Penerbitan wajib diisi',
             })}
-            error={errors.RencanaPenerbitan}
+            error={errors.rpl_pkpt}
           />
         </section>
       </CardComponents>
@@ -264,11 +330,11 @@ const InputPKPT = () => {
             type="number"
             name="PenanggungJawab"
             placeholder="Masukkan jumlah penanggung jawab"
-            register={register('PenanggungJawab', {
+            register={register('penanggung_jawab', {
               required: 'Penanggung Jawab wajib diisi',
               min: { value: 0, message: 'Tidak boleh negatif' },
             })}
-            error={errors.PenanggungJawab}
+            error={errors.penanggung_jawab}
           />
           <InputFieldComponent
             label="Wakil Penanggung Jawab"
@@ -276,11 +342,11 @@ const InputPKPT = () => {
             type="number"
             name="WakilPenanggungJawab"
             placeholder="Masukkan jumlah wakil penanggung jawab"
-            register={register('WakilPenanggungJawab', {
+            register={register('wakil_penanggung_jawab', {
               required: 'Wakil Penanggung Jawab wajib diisi',
               min: { value: 0, message: 'Tidak boleh negatif' },
             })}
-            error={errors.WakilPenanggungJawab}
+            error={errors.wakil_penanggung_jawab}
           />
           <InputFieldComponent
             label="Pengendali Teknis/Supervisor"
@@ -288,7 +354,7 @@ const InputPKPT = () => {
             type="number"
             name="Supervisor"
             placeholder="Tentukan pengendali teknis"
-            register={register('Supervisor', {
+            register={register('pengendali_teknis', {
               required: 'Supervisor wajib diisi',
               min: { value: 0, message: 'Tidak boleh negatif' },
               // pattern: {
@@ -296,7 +362,7 @@ const InputPKPT = () => {
               //   message: 'Hanya boleh berisi huruf dan spasi',
               // },
             })}
-            error={errors.Supervisor}
+            error={errors.pengendali_teknis}
           />
           <InputFieldComponent
             label="Ketua TIM"
@@ -304,7 +370,7 @@ const InputPKPT = () => {
             type="number"
             name="KetuaTIM"
             placeholder="Tentukan ketua tim"
-            register={register('KetuaTIM', {
+            register={register('ketua_tim', {
               required: 'Ketua TIM wajib diisi',
               min: { value: 0, message: 'Tidak boleh negatif' },
               // pattern: {
@@ -312,7 +378,7 @@ const InputPKPT = () => {
               //   message: 'Hanya boleh berisi huruf dan spasi',
               // },
             })}
-            error={errors.KetuaTIM}
+            error={errors.ketua_tim}
           />
           <InputFieldComponent
             label="AnggotaTIM"
@@ -320,7 +386,7 @@ const InputPKPT = () => {
             type="number"
             name="ATim"
             placeholder="Masukan Anggota Tim"
-            register={register('ATim', {
+            register={register('anggota_tim', {
               required: 'Anggota TIM wajib diisi',
               min: { value: 0, message: 'Tidak boleh negatif' },
               // pattern: {
@@ -328,7 +394,7 @@ const InputPKPT = () => {
               //   message: 'Hanya boleh berisi huruf dan spasi',
               // },
             })}
-            error={errors.ATim}
+            error={errors.anggota_tim}
           />
           <InputFieldComponent
             label="Jumlah"
@@ -336,23 +402,30 @@ const InputPKPT = () => {
             type="number"
             name="Jumlah"
             placeholder="Total Jumlah"
-            register={register('Jumlah')}
-            error={errors.Jumlah}
+            register={register('jumlah')}
+            error={errors.jumlah}
             disabled={true}
           />
-          <div className="col-span-2">
+          <div className="md:col-span-2">
             <div className="flex flex-col space-y-2">
               <label htmlFor="Tim" className="text-slate-800">
                 TIM [{teamMembers.length}]
               </label>
               <div className="flex gap-2 w-full justify-start flex-grow">
-                <input
-                  type="text"
-                  value={newMember}
-                  onChange={(e) => setNewMember(e.target.value)}
-                  placeholder="Masukkan nama anggota tim"
+                <select
+                  value={newMemberId}
+                  onChange={(e) => setNewMemberId(e.target.value)}
                   className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
-                />
+                >
+                  <option value="" disabled>
+                    Select a team member
+                  </option>
+                  {potentialMembers.map((member) => (
+                    <option key={member.id} value={member.id}>
+                      {member.name}
+                    </option>
+                  ))}
+                </select>
                 <button
                   onClick={handleAddMember}
                   type="button"
@@ -365,14 +438,14 @@ const InputPKPT = () => {
 
             {/* Display Team Members */}
             <div className="mt-4 space-y-2 w-full">
-              {teamMembers.map((member) => (
+              {teamMembers.map((member, index) => (
                 <div
                   key={member.id}
                   className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
                 >
                   <span className="text-slate-800">{member.name}</span>
                   <button
-                    onClick={() => removeTeamMember(member.id)}
+                    onClick={() => removeTeamMember(index)}
                     type="button"
                     className="text-red-500 hover:text-red-700"
                   >
@@ -394,43 +467,43 @@ const InputPKPT = () => {
             type="number"
             name="Anggaran"
             placeholder="Masukan total anggaran"
-            register={register('Anggaran', {
+            register={register('anggaran', {
               min: { value: 0, message: 'Anggaran tidak boleh negatif' },
               validate: (value) =>
                 !value ||
                 Number.isInteger(Number(value)) ||
                 'Anggaran harus berupa bilangan bulat',
             })}
-            error={errors.Anggaran}
+            error={errors.anggaran}
           />
-          <div className="flex justify-start items-baseline gap-3 w-full">
-            <div className="flex-1">
-              <InputFieldComponent
-                label="Jumlah Laporan"
-                identiti="jLaporan"
-                type="number"
-                name="JumlahLaporan"
-                placeholder="Masukan jumlah laporan"
-                register={register('JumlahLaporan', {
-                  required: 'Jumlah Laporan wajib diisi',
-                  min: { value: 1, message: 'Minimal 1 laporan' },
-                  validate: (value) =>
-                    Number.isInteger(Number(value)) ||
-                    'Jumlah laporan harus berupa bilangan bulat',
-                })}
-                error={errors.JumlahLaporan}
+          <div className="grid md:grid-cols-3 gap-3 w-full">
+            <InputFieldComponent
+              label="Jumlah Laporan"
+              identiti="jLaporan"
+              type="number"
+              name="JumlahLaporan"
+              placeholder="Masukan jumlah laporan"
+              register={register('jumlah_laporan', {
+                required: 'Jumlah Laporan wajib diisi',
+                min: { value: 1, message: 'Minimal 1 laporan' },
+                validate: (value) =>
+                  Number.isInteger(Number(value)) ||
+                  'Jumlah laporan harus berupa bilangan bulat',
+              })}
+              error={errors.jumlah_laporan}
+            />
+            <div className="md:col-span-2">
+              <SelectInputField
+                label="Jenis Laporan"
+                identiti="select-field"
+                options={optionsJenisLaporan}
+                register={register('id_jenis_laporan')}
+                placeholder="Pilih Jenis Laporan"
+                error={errors.id_jenis_laporan}
+                type="select"
+                name="JenisLaporan"
               />
             </div>
-            <SelectInputField
-              label="Jenis Laporan"
-              identiti="select-field"
-              options={optionsJenisLaporan}
-              register={register('JenisLaporan')}
-              placeholder="Pilih Jenis Laporan"
-              error={errors.JenisLaporan}
-              type="select"
-              name="JenisLaporan"
-            />
           </div>
           <InputFieldComponent
             label="Sarana dan Prasarana (Opsional)"
@@ -438,8 +511,8 @@ const InputPKPT = () => {
             type="text"
             name="SaranaDanPrasarana"
             placeholder="Masukan Sarana dan Prasarana"
-            register={register('SaranaDanPrasarana')}
-            error={errors.SaranaDanPrasarana}
+            register={register('sarana_prasarana')}
+            error={errors.sarana_prasarana}
           />
           {/* <InputFieldComponent
             label="Tingkat Risiko"
@@ -461,9 +534,9 @@ const InputPKPT = () => {
             label="Tingkat Risiko"
             identiti="tRisiko"
             options={optionsTingkatRisiko}
-            register={register('TingkatRisiko')}
+            register={register('id_tingkat_resiko')}
             placeholder="Pilih Tingkat Risiko"
-            error={errors.TingkatRisiko}
+            error={errors.id_tingkat_resiko}
             type="select"
             name="TingkatRisiko"
           />
@@ -474,8 +547,8 @@ const InputPKPT = () => {
               type="text"
               name="Keterangan"
               placeholder="Masukan keterangan jika diperlukan"
-              register={register('Keterangan')}
-              error={errors.Keterangan}
+              register={register('keterangan')}
+              error={errors.keterangan}
             />
           </div>
         </section>

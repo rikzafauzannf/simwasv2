@@ -13,6 +13,7 @@ import { FaTrash } from 'react-icons/fa';
 import { useFetchById } from '@/hooks/useFetchById';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { FirestoreService } from '@/services/firestore.service';
+import { TeamMember } from '@/middleware/Store/useTeamStore'; // Add this line
 
 // Cara 1: Menggunakan props params
 interface PageProps {
@@ -78,18 +79,16 @@ const ActionsPkptPage = ({ params }: PageProps) => {
 
   useEffect(() => {
     if (DataPKPT) {
-      // Parse jumlah_laporan to separate number and type
-      const [jumlahLaporan, jenisLaporan] =
-        DataPKPT.jumlah_laporan.split(' - ');
+      // Parse jumlah_laporan to separate number and type      
 
       // Reset form with modified values
       reset({
-        JenisPengawasan: DataPKPT.jenis_pengawasan,
+        JenisPengawasan: DataPKPT.id_jenis_pengawasan,
         AreaPengawasan: DataPKPT.area_pengawasan,
-        RuangLingkup: DataPKPT.ruang_lingkup,
+        RuangLingkup: DataPKPT.id_ruang_lingkup,
         TujuanSasaran: DataPKPT.tujuan_sasaran,
-        RencanaPenugasan: DataPKPT.rencana_penugasan,
-        RencanaPenerbitan: DataPKPT.rencana_penerbitan,
+        RencanaPenugasan: DataPKPT.rmp_pkpt,
+        RencanaPenerbitan: DataPKPT.rpl_pkpt,
         PenanggungJawab: DataPKPT.penanggung_jawab,
         WakilPenanggungJawab: DataPKPT.wakil_penanggung_jawab,
         Supervisor: DataPKPT.pengendali_teknis,
@@ -98,18 +97,22 @@ const ActionsPkptPage = ({ params }: PageProps) => {
         Jumlah: DataPKPT.jumlah,
         Tim: DataPKPT.tim,
         Anggaran: DataPKPT.anggaran,
-        JumlahLaporan: jumlahLaporan,
-        JenisLaporan: jenisLaporan,
+        // JumlahLaporan: jumlahla,
+        // JenisLaporan: jenisLaporan,
         SaranaDanPrasarana: DataPKPT.sarana_prasarana || '',
-        TingkatRisiko: DataPKPT.tingkat_risiko,
+        // TingkatRisiko: DataPKPT.tingkat_risiko,
         Keterangan: DataPKPT.keterangan,
       });
 
       // Initialize team members
       resetTeamMembers();
-      DataPKPT.tim?.forEach((member) => {
-        addTeamMember(member.name);
-      });
+      // DataPKPT.tim?.forEach((member) => {
+      //   const newMember: TeamMember = {
+      //     id: Date.now(),
+      //     name: member.name,
+      //   };
+      //   addTeamMember(newMember);
+      // });
     }
   }, [DataPKPT, reset, resetTeamMembers, addTeamMember]);
 
@@ -140,9 +143,8 @@ const ActionsPkptPage = ({ params }: PageProps) => {
         keterangan: data.Keterangan || null,
         // Maintain existing metadata
         id_user: DataPKPT ? DataPKPT.id_user : 'noSet',
-        createdAt: DataPKPT ? DataPKPT.createdAt : 'noSet',
+        // createdAt: DataPKPT ? DataPKPT.created_at : 'noSet',
         status: DataPKPT ? DataPKPT.status : 'noSet',
-        active: DataPKPT ? DataPKPT.active : 'noSet',
       };
 
       // Update the document in Firestore
@@ -189,7 +191,11 @@ const ActionsPkptPage = ({ params }: PageProps) => {
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (newMember.trim()) {
-      addTeamMember(newMember.trim());
+      const newMemberObject = {
+        id: Date.now(),
+        name: newMember.trim(),
+      };
+      addTeamMember(newMemberObject);
       setNewMember('');
     }
   };

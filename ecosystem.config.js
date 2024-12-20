@@ -8,7 +8,7 @@ module.exports = {
       instances: 'max', // Menggunakan semua core CPU
       exec_mode: 'cluster', // Mode cluster untuk meningkatkan performa
       env: {
-        NODE_ENV: 'production', // Set environment ke production
+        NODE_ENV: 'development', // Set environment ke production
       },
       watch: false, // Nonaktifkan watch jika tidak diperlukan
     },

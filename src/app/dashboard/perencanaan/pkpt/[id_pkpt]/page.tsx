@@ -43,14 +43,12 @@ const ViewPkptPage = ({ params }: PageProps) => {
     {
       label: 'NHP',
       // component: <NotaHasilPengawasan />,
-      component: "NHP",
-
+      component: 'NHP',
     },
     {
       label: 'LHP',
       // component: <LembarHasilPengawasan />,
-      component: "LHP",
-
+      component: 'LHP',
     },
   ];
 

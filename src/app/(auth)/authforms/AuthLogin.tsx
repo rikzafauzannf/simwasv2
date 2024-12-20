@@ -94,19 +94,23 @@ const AuthLogin = () => {
               <div className="mb-2 block">
                 <Label htmlFor="OTP" value="OTP" />
               </div>
-              <div className="flex space-x-2">
+              <div className="flex justify-between space-x-2 items-center">
                 {otp.map((digit, index) => (
-                  <TextInput
-                    key={index}
-                    id={`otp-input-${index}`}
-                    type="text"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    className="form-control form-rounded-xl w-12 text-center"
-                    autoFocus={index === focusIndex}
-                  />
+                  <>
+                    {/* <p>-</p> */}
+                    <TextInput
+                      key={index}
+                      id={`otp-input-${index}`}
+                      type="text"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleOtpChange(index, e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e, index)}
+                      className="form-control form-rounded-xl w-12 text-center"
+                      autoFocus={index === focusIndex}
+                    />
+                    <p>-</p>
+                  </>
                 ))}
               </div>
               {error && <p className="text-red-500">{error}</p>}

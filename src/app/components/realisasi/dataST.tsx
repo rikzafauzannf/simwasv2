@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { CardComponents } from '../Global/Card';
 import Link from 'next/link';
+import { useFetch } from '@/hooks/useFetch';
+import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 
 interface PropsComponent {
   title: string;
@@ -12,82 +14,11 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
-
-  const dataDummy = [
-    {
-      id: 1,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 2,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 1,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 2,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 1,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 2,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 1,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 2,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 1,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 2,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 1,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 2,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 1,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-    {
-      id: 2,
-      program_audit: 'Program Audit/Kegiatan',
-      no_tglsp: 'No/Tgl.Sp',
-    },
-  ];
+  const { data: DataST, isLoading, error } = useFetch<SuratTugasData>('surat_tugas');
+  
 
   // Search filter
-  const filteredData = dataDummy.filter(
+  const filteredData = DataST.filter(
     (item) =>
       item.program_audit.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.no_tglsp.toLowerCase().includes(searchTerm.toLowerCase())
@@ -113,12 +44,12 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
       <section className="grid md:grid-cols-4 gap-3">
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
-            <h1>{item.program_audit}</h1>
+            <h1>{item.bulan} - {item.program_audit}</h1>
             <p>{item.no_tglsp}</p>
             <hr className="mb-3" />
             <div className="flex flex-col gap-2">
               <Link
-                href={`/dashboard/${todo}/${item.id}`}
+                href={`/dashboard/${todo}/${item.id_st}`}
                 className="py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50"
               >
                 {title}
