@@ -27,12 +27,21 @@ const RuangLingkup = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
       ruang_lingkup: '',
     },
   });
+
+  React.useEffect(() => {
+    if (isEditing) {
+      setValue('ruang_lingkup', currentEditValue);
+    } else {
+      reset();
+    }
+  }, [isEditing, currentEditValue, reset, setValue]);
 
   // if (isLoading) return <div>Loading...</div>;
   // if (error) return <div>Error: {error.message}</div>;
@@ -109,6 +118,13 @@ const RuangLingkup = () => {
     }
   };
 
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setCurrentEditId(null);
+    setCurrentEditValue('');
+    reset(); // Reset form saat membatalkan edit
+  };
+
   return (
     <div className="space-y-3">
       <h3 className="text-xl"># Ruang Lingkup</h3>
@@ -133,7 +149,6 @@ const RuangLingkup = () => {
               required: 'Ruang Lingkup wajib diisi',
             })}
             error={errors.ruang_lingkup}
-            defaultValue={isEditing ? currentEditValue : ''}
           />
           <ButtonType
             Text={
@@ -141,6 +156,15 @@ const RuangLingkup = () => {
             }
             type="submit"
           />
+          {isEditing && ( // Tambahkan tombol Batal hanya saat dalam mode editing
+            <button
+              type="button"
+              onClick={handleCancelEdit}
+              className="py-2 text-center w-full rounded-md shadow-md bg-gray-500 hover:bg-gray-700 text-white font-semibold"
+            >
+              Batal
+            </button>
+          )}
         </form>
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">

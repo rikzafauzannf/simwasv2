@@ -7,11 +7,22 @@ import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { useFetch } from '@/hooks/useFetch';
+import {
+  useGetNameJenisLaporan,
+  useGetNameJenisPengawasan,
+  useGetNameRuangLingkup,
+  useGetNameUser,
+} from '@/hooks/useGetName';
 
 const TablePKPT: React.FC = () => {
   const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<PKPTDataBase[]>([]);
+
+  const { getNameJenisPengawasan } = useGetNameJenisPengawasan();
+  const { getNameRuangLingkup } = useGetNameRuangLingkup();
+  const { getNameUser } = useGetNameUser();
+  const { getNameJenisLaporan } = useGetNameJenisLaporan();
 
   const columns: TableColumn<PKPTDataBase>[] = [
     {
@@ -45,7 +56,7 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Jenis Pengawasan',
-      selector: (row) => row.id_jenis_laporan,
+      selector: (row) => getNameJenisPengawasan(row.id_jenis_laporan),
       sortable: true,
     },
     {
@@ -55,7 +66,7 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Ruang Lingkup',
-      selector: (row) => row.id_ruang_lingkup,
+      selector: (row) => getNameRuangLingkup(row.id_ruang_lingkup),
       sortable: true,
     },
     {
@@ -95,7 +106,11 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'TIM',
-      selector: (row) => row.tim,
+      selector: (row) =>
+        row.tim
+          .split(',')
+          .map((id) => getNameUser(Number(id)))
+          .join(', '),
       // selector: (row) => {
       //   if (!row.tim || !Array.isArray(row.tim)) return '';
       //   return row.tim.map((member) => member.name).join(', ');
@@ -109,7 +124,8 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Jumlah Laporan',
-      selector: (row) => row.jumlah_laporan,
+      selector: (row) =>
+        `${row.jumlah_laporan} - ${getNameJenisLaporan(row.id_jenis_laporan)}`,
       sortable: true,
     },
     {
@@ -129,14 +145,13 @@ const TablePKPT: React.FC = () => {
     },
   ];
 
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
 
     if (DataPKPT) {
       const filtered = DataPKPT.filter(
-        (item) =>          
+        (item) =>
           item.area_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
           item.status.toLowerCase().includes(value.toLowerCase())
       );

@@ -1,11 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
-import { FirestoreService } from '@/services/firestore.service';
 import { AxiosService } from '@/services/axiosInstance.service';
 
-const firestoreService = new FirestoreService();
 const axiosService = new AxiosService();
 
-export const useFetchById = <T>(collection: string, docId: string) => {
+export const useFetchById = <T>(collection: string, docId: number) => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -14,7 +12,7 @@ export const useFetchById = <T>(collection: string, docId: string) => {
     try {
       setIsLoading(true);
       const response = await axiosService.getDataById(`${collection}/${docId}`);
-      if (response.success && Array.isArray(response.data)) {
+      if (response.success) {
         setData(response.data as T);
         setError(null);
       } else {

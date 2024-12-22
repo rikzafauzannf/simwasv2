@@ -1,6 +1,6 @@
-export type SuratTugasData ={
-  id_st: number,
-  id_pkpt: number
+export type SuratTugasData = {
+  id_st: number;
+  id_pkpt: number;
   bulan: string;
   program_audit: string;
   no_tglsp: string;
@@ -18,10 +18,10 @@ export type SuratTugasData ={
   link_st: string;
   id_user: number;
   created_at: string;
-}
+};
 
 export interface FormSuratTugas {
-  id_pkpt: number
+  id_pkpt: number;
   bulan: string;
   program_audit: string;
   no_tglsp: string;

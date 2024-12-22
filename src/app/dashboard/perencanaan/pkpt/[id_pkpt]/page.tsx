@@ -13,7 +13,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
 interface PageProps {
   params: {
-    id_pkpt: string;
+    id_pkpt: number;
   };
 }
 

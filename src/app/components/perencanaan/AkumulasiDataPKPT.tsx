@@ -24,14 +24,14 @@ const AkumulasiDataPKPT = () => {
     <section className="grid grid-cols-1 md:grid-cols-2 w-full gap-10">
       <CardAccumulate
         Header="Jumlah PKPT"
-        // Count={data_pkpt.length}
-        Count={20}
+        Count={data_pkpt.length}
+        // Count={20}
         imgurl={imgPKPT}
       />
       <CardAccumulate
         Header="Jumlah Non-PKPT"
-        // Count={data_nonpkpt.length}
-        Count={35}
+        Count={data_nonpkpt.length}
+        // Count={35}
         imgurl={imgNonPKPT}
       />
     </section>
