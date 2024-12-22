@@ -5,6 +5,8 @@ import { ButtonLinkComponent } from '../Global/Button';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
+import { useGetNameJenisPengawasan, useGetNameUser } from '@/hooks/useGetName';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 interface Props {
   todo: string;
@@ -13,14 +15,16 @@ interface Props {
 const MapDataPkpt: React.FC<Props> = ({ todo }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 6;
 
   const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
+  const { getNameJenisPengawasan } = useGetNameJenisPengawasan();
+  const { getNameUser, getUserPhone } = useGetNameUser();
 
   // Search filter
   const filteredData = DataPKPT.filter(
-    (item) =>      
-      item.area_pengawasan.toLowerCase().includes(searchTerm.toLowerCase())||
+    (item) =>
+      item.area_pengawasan.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -40,11 +44,25 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <section className="grid md:grid-cols-4 gap-8">
+      <section className="grid md:grid-cols-3 gap-8">
         {currentItems.map((item, index) => (
-          <CardComponents key={index}>            
+          <CardComponents key={index}>
             <h1># {item.area_pengawasan}</h1>
-            <p>{item.id_jenis_pengawasan}</p>
+            <h1>{getNameJenisPengawasan(item.id_jenis_pengawasan)}</h1>
+            <Link
+              href={`https://wa.me/${getUserPhone(item.id_pkpt)}`}
+              target="blank"
+            >
+              <p className="flex justify-start items-center gap-2">
+                <Icon
+                  icon="solar:user-check-line-duotone"
+                  width="24"
+                  height="24"
+                />
+                {getNameUser(Number(item.id_user))}
+              </p>
+            </Link>
+            <p>{item.created_at}</p>
             <hr className="mb-3" />
             <div className="flex flex-col gap-2">
               <Link

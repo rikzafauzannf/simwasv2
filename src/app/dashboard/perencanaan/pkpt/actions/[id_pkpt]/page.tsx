@@ -18,7 +18,7 @@ import { TeamMember } from '@/middleware/Store/useTeamStore'; // Add this line
 // Cara 1: Menggunakan props params
 interface PageProps {
   params: {
-    id_pkpt: string;
+    id_pkpt: number;
   };
 }
 
@@ -79,7 +79,7 @@ const ActionsPkptPage = ({ params }: PageProps) => {
 
   useEffect(() => {
     if (DataPKPT) {
-      // Parse jumlah_laporan to separate number and type      
+      // Parse jumlah_laporan to separate number and type
 
       // Reset form with modified values
       reset({
@@ -148,21 +148,21 @@ const ActionsPkptPage = ({ params }: PageProps) => {
       };
 
       // Update the document in Firestore
-      const result = await firestoreService.updateData(
-        'pkpt',
-        id_pkpt,
-        updatedData
-      );
+      // const result = await firestoreService.updateData(
+      //   'pkpt',
+      //   id_pkpt,
+      //   updatedData
+      // );
 
-      if (result.success) {
-        setIsEditing(false);
-        // Optionally show success message
-        alert('Data berhasil diperbarui');
-        // Refresh the data
-        window.location.reload();
-      } else {
-        throw new Error(result.message);
-      }
+      // if (result.success) {
+      //   setIsEditing(false);
+      //   // Optionally show success message
+      //   alert('Data berhasil diperbarui');
+      //   // Refresh the data
+      //   window.location.reload();
+      // } else {
+      //   throw new Error(result.message);
+      // }
     } catch (error) {
       console.error('Error updating PKPT:', error);
       alert('Gagal memperbarui data PKPT');
@@ -173,14 +173,14 @@ const ActionsPkptPage = ({ params }: PageProps) => {
   const handleDelete = async () => {
     if (window.confirm('Apakah Anda yakin ingin menghapus PKPT ini?')) {
       try {
-        const result = await firestoreService.deleteData('pkpt', id_pkpt);
-        if (result.success) {
-          alert('PKPT berhasil dihapus');
-          // Redirect to PKPT list page
-          window.location.href = '/dashboard/perencanaan/pkpt';
-        } else {
-          throw new Error(result.message);
-        }
+        // const result = await firestoreService.deleteData('pkpt', id_pkpt);
+        // if (result.success) {
+        //   alert('PKPT berhasil dihapus');
+        //   // Redirect to PKPT list page
+        //   window.location.href = '/dashboard/perencanaan/pkpt';
+        // } else {
+        //   throw new Error(result.message);
+        // }
       } catch (error) {
         console.error('Error deleting PKPT:', error);
         alert('Gagal menghapus PKPT');

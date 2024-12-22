@@ -6,7 +6,7 @@ import { FirestoreService } from '@/services/firestore.service';
 import { useFetchById } from '@/hooks/useFetchById';
 
 interface Props {
-  id_pkpt: string;
+  id_pkpt: number;
 }
 
 const DetailPengawasan = ({ id_pkpt }: Props) => {
@@ -14,7 +14,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
     data: DataPKPT,
     isLoading,
     error,
-  } = useFetchById<PKPTDataBase>('pkpt', id_pkpt);
+  } = useFetchById<PKPTDataBase>(`/pkpt`, id_pkpt);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   return (
@@ -75,15 +75,11 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         <section className="grid grid-cols-2 gap-3">
           <div>
             <p>Rencana Mulai Penugasan</p>
-            <h3>
-              {DataPKPT ? DataPKPT.rmp_pkpt : 'No data available'}
-            </h3>
+            <h3>{DataPKPT ? DataPKPT.rmp_pkpt : 'No data available'}</h3>
           </div>
           <div>
             <p>Rencana Penerbitan Laporan</p>
-            <h3>
-              {DataPKPT ? DataPKPT.rpl_pkpt : 'No data available'}
-            </h3>
+            <h3>{DataPKPT ? DataPKPT.rpl_pkpt : 'No data available'}</h3>
           </div>
         </section>
       </CardComponents>
@@ -108,7 +104,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
                   </div>
                 ))
               : 'No data available'} */}
-              {DataPKPT?.tim}
+            {DataPKPT?.tim}
           </div>
         </CardComponents>
       </section>

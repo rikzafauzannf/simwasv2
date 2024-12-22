@@ -124,7 +124,7 @@ const TableSuratTugas = () => {
       sortable: true,
     },
   ];
-  const { data: DataSuratTugas } = useFetch<SuratTugasData>('surat_tugas');  
+  const { data: DataSuratTugas } = useFetch<SuratTugasData>('surat_tugas');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -144,19 +144,17 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join(',');
 
-    const csvData = DataSuratTugas
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (
-              row: SuratTugasData
-            ) => string | number;
-            return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
-          })
-          .join(',');
-      })
-      .join('\n');
+    const csvData = DataSuratTugas.map((row) => {
+      return columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as (
+            row: SuratTugasData
+          ) => string | number;
+          return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
+        })
+        .join(',');
+    }).join('\n');
 
     const blob = new Blob([`${headers}\n${csvData}`], {
       type: 'text/csv;charset=utf-8',
@@ -170,19 +168,17 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = DataSuratTugas
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (
-              row: SuratTugasData
-            ) => string | number;
-            return selector(row);
-          })
-          .join('\t');
-      })
-      .join('\n');
+    const excelData = DataSuratTugas.map((row) => {
+      return columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as (
+            row: SuratTugasData
+          ) => string | number;
+          return selector(row);
+        })
+        .join('\t');
+    }).join('\n');
 
     const blob = new Blob([`${headers}\n${excelData}`], {
       type: 'application/vnd.ms-excel;charset=utf-8',
