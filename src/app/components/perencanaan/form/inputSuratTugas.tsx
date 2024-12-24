@@ -15,7 +15,7 @@ import {
   SuratTugasData,
 } from '@/interface/interfaceSuratTugas';
 import { useFetch } from '@/hooks/useFetch';
-import { JenisLaporanDB } from '@/interface/interfaceReferensi';
+import { JenisAuditDB, JenisLaporanDB } from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { UserManageDB } from '@/interface/interfaceUserManage';
 
@@ -26,7 +26,7 @@ interface PropsID {
 const axiosSecvice = new AxiosService();
 
 const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
-  const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
+  const { data: DataJenisAudit } = useFetch<JenisAuditDB>('jenis_audit');
   const { data: DataUser } = useFetch<UserManageDB>('pengguna');
   const [uploadOption, setUploadOption] = useState('link');
 
@@ -78,9 +78,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
     mode: 'onBlur',
   });
 
-  const optionsJenisAudit = DataJenisLaporan.map((item) => ({
-    value: String(item.id_jenis_laporan),
-    title: `${item.jenis_laporan} - ${item.keterangan}`,
+  const optionsJenisAudit = DataJenisAudit.map((item) => ({
+    value: String(item.id_jenis_audit),
+    title: `${item.jenis_audit} - ${item.keterangan}`,
   }));
 
   const onSubmit: SubmitHandler<FormSuratTugas> = async (data) => {

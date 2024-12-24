@@ -7,6 +7,7 @@ import RuangLingkup from './components/RuangLingkup';
 import TingkatResiko from './components/TingkatResiko';
 import KodeTemuan from './components/KodeTemuan';
 import JenisLaporan from './components/JenisLaporan';
+import JenisAudit from './components/JenisAudit';
 
 const DataReferensiPage = () => {
   const ReferensiComponents = [
@@ -17,6 +18,10 @@ const DataReferensiPage = () => {
     {
       title: 'Jenis Laporan',
       component: <JenisLaporan />,
+    },
+    {
+      title: 'Jenis Audit',
+      component: <JenisAudit />,
     },
     // {
     //   title: 'Area Pengawasan',
@@ -29,7 +34,7 @@ const DataReferensiPage = () => {
     {
       title: 'Tingkat Resiko',
       component: <TingkatResiko />,
-    },
+    },    
     {
       title: 'Kode Temuan',
       component: <KodeTemuan />,

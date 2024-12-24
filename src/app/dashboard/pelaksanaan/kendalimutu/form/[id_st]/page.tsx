@@ -20,8 +20,7 @@ const FormKendaliMutuPage = ({ params }: PageProps) => {
         <CardComponents>
           <TableKendaliMutu />
         </CardComponents>
-      </div>
-      <LaporanMingguanComponent id_st={id_st} id_pkpt={id_pkpt} />
+      </div>      
     </div>
   );
 };

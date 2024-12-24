@@ -5,27 +5,10 @@ import { useFetchAll } from '@/hooks/useFetchAll';
 import { LaporanMingguan } from '@/interface/interfaceKendaliMutu';
 
 interface PropsID {
-  id_st: string;
   id_pkpt: number;
 }
 
-const LaporanMingguanComponent = ({ id_st, id_pkpt }: PropsID) => {
-  const dummyLaporanMingguan = [
-    {
-      jam: '01.00',
-      tanggal: '15/09/2024',
-      username: 'ucok',
-      laporan:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa, delectus?',
-    },
-    {
-      jam: '11.00',
-      tanggal: '19/09/2024',
-      username: 'Jhon Doe',
-      laporan:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa, delectus?',
-    },
-  ];
+const LaporanMingguanComponent = ({ id_pkpt }: PropsID) => {  
 
   const {
     data: DataLaporanMingguan,
@@ -35,7 +18,7 @@ const LaporanMingguanComponent = ({ id_st, id_pkpt }: PropsID) => {
   } = useFetchAll<LaporanMingguan>('/laporan_mingguan');
 
   const dataLaporanMaps = DataLaporanMingguan.filter(
-    (data) => data.id_pkpt === id_pkpt && data.id_no === id_st
+    (data) => data.id_pkpt === id_pkpt
   );
 
   console.log('data Laporan Maps: ', dataLaporanMaps);
@@ -51,7 +34,7 @@ const LaporanMingguanComponent = ({ id_st, id_pkpt }: PropsID) => {
           >
             <p>
               {/* {item.jam} , {item.tanggal} - <strong>{item.username}</strong>{' '} */}
-              jam , tgl - <strong>tracking username</strong>
+              {item.id_no} - <strong>tracking username</strong>
             </p>
             <p className="text-slate-800">{item.laporan_mingguan}</p>
             <hr />

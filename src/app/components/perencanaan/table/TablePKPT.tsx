@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaPen, FaPaperclip } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
@@ -13,6 +13,10 @@ import {
   useGetNameRuangLingkup,
   useGetNameUser,
 } from '@/hooks/useGetName';
+import Swal from 'sweetalert2';
+import { AxiosService } from '@/services/axiosInstance.service';
+
+const axiosService = new AxiosService()
 
 const TablePKPT: React.FC = () => {
   const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
@@ -23,6 +27,43 @@ const TablePKPT: React.FC = () => {
   const { getNameRuangLingkup } = useGetNameRuangLingkup();
   const { getNameUser } = useGetNameUser();
   const { getNameJenisLaporan } = useGetNameJenisLaporan();
+
+  const handleCreateReport = async(id_pkpt: number) => {
+    Swal.fire({
+      title: 'Buat Laporan Mingguan',
+      html: `
+        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
+        <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
+      `,
+      focusConfirm: false,
+      preConfirm: async () => {
+        const nomor = (document.getElementById('nomor') as HTMLInputElement).value;
+        const content = (document.getElementById('reportContent') as HTMLTextAreaElement).value;
+        if (!content || !nomor) {
+          Swal.showValidationMessage('Silakan isi semua field');
+          return;
+        }
+        return { content, id_pkpt, nomor };
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Logika untuk menyimpan laporan
+        const dataForm = {
+          id_pkpt: id_pkpt,
+          id_no: result.value.nomor,
+          laporan_mingguan: result.value.content,
+        };
+        try {
+          const response = await axiosService.addData('/laporan_mingguan', dataForm);
+          console.log('Laporan:', response);
+          Swal.fire('Laporan berhasil dibuat!', '', 'success');
+        } catch (error) {
+          console.error('Error creating report:', error);
+          Swal.fire('Gagal membuat laporan!', '', 'error');
+        }
+      }
+    });
+  };
 
   const columns: TableColumn<PKPTDataBase>[] = [
     {
@@ -41,8 +82,12 @@ const TablePKPT: React.FC = () => {
           >
             Act
           </Link>
+          <button onClick={() => handleCreateReport(row.id_pkpt)} className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+            <FaPaperclip/>
+          </button>
         </div>
       ),
+      grow:1.5
     },
     {
       name: 'Status',
