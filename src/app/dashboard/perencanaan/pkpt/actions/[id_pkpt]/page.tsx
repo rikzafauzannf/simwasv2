@@ -28,7 +28,7 @@ import {
 import { ButtonType } from '@/app/components/Global/Button';
 import { useFetchById } from '@/hooks/useFetchById';
 import { useGetNameUser } from '@/hooks/useGetName';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface PropsID {
   params: {
@@ -134,7 +134,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
       const pkptData = {
-        status: 'pkpt',
+        status: DataPKPT?.status,
         id_user: 2,
         anggaran: String(data.anggaran),
         anggota_tim: String(data.anggota_tim),
