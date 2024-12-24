@@ -28,7 +28,7 @@ import {
 import { ButtonType } from '@/app/components/Global/Button';
 import { useFetchById } from '@/hooks/useFetchById';
 import { useGetNameUser } from '@/hooks/useGetName';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface PropsID {
   params: {
@@ -134,7 +134,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
       const pkptData = {
-        status: 'pkpt',
+        status: DataPKPT?.status,
         id_user: 2,
         anggaran: String(data.anggaran),
         anggota_tim: String(data.anggota_tim),
@@ -251,10 +251,8 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Data PKPT */}
-      <CardComponents>
-        <div className="flex justify-between items-center">
+    <>
+    <div className="flex justify-between items-center">
           <h3>Data PKPT</h3>
           <div className="space-x-3">
             <button
@@ -273,6 +271,10 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
             )}
           </div>
         </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Data PKPT */}
+      <CardComponents>
+        
         <section className="grid md:grid-cols-2 w-full gap-3">
           <InputFieldComponent
             label="Area Pengawasan"
@@ -659,6 +661,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
         
       </section>
     </form>
+    </>
   );
 };
 
