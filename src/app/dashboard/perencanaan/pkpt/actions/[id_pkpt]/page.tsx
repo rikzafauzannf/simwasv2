@@ -103,6 +103,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
       const dataTIM = DataPKPT?.tim.split(',');
       if (dataTIM.length > 0) {
         dataTIM.forEach((member) => {
+          setNewMemberId(member)
           const selectedMember = potentialMembers.find(
             (m) => m.id === Number(member)
           );
@@ -112,7 +113,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
         });
       }
     }
-  }, [DataPKPT, reset, addTeamMember, resetTeamMembers]);
+  }, [DataPKPT, reset, addTeamMember, resetTeamMembers,setNewMemberId]);
 
   const potentialMembers = DataUser.map((item) => ({
     id: item.id_user,
