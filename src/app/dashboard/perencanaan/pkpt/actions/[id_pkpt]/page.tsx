@@ -95,7 +95,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   // const hasReset = useRef(false);
 
   React.useEffect(() => {
-    resetTeamMembers();
+    // resetTeamMembers();
 
     if (DataPKPT) {
       reset(DataPKPT);
@@ -103,7 +103,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
       const dataTIM = DataPKPT?.tim.split(',');
       if (dataTIM.length > 0) {
         dataTIM.forEach((member) => {
-          setNewMemberId(member)
+          // setNewMemberId(member)
           const selectedMember = potentialMembers.find(
             (m) => m.id === Number(member)
           );
@@ -113,7 +113,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
         });
       }
     }
-  }, [DataPKPT, reset, addTeamMember, resetTeamMembers,setNewMemberId]);
+  }, [DataPKPT, reset, addTeamMember,setNewMemberId]);
 
   const potentialMembers = DataUser.map((item) => ({
     id: item.id_user,
@@ -526,7 +526,6 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
                   Tambah
                 </button>
               </div> : ''}
-              
             </div>
 
             {/* Display Team Members */}
