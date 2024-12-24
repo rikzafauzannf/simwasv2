@@ -7,10 +7,24 @@ import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { useFetch } from '@/hooks/useFetch';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { useFetchById } from '@/hooks/useFetchById';
 
-const TableSuratTugas = () => {
+interface PropsOptions {
+  id_pkpt?: number;
+  filterID?: string;
+}
+
+const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
+  const { data: DataSuratTugas } = useFetchAll<SuratTugasData>('surat_tugas');
+
+  const DataST =
+    filterID === 'true'
+      ? DataSuratTugas.filter((item) => item.id_pkpt === Number(id_pkpt))
+      : DataSuratTugas;
+  console.log('data by id_pkpt : ', DataST);
 
   const columns = [
     {
@@ -124,12 +138,11 @@ const TableSuratTugas = () => {
       sortable: true,
     },
   ];
-  const { data: DataSuratTugas } = useFetch<SuratTugasData>('surat_tugas');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
-    const filtered = DataSuratTugas.filter(
+    const filtered = DataST.filter(
       (item) =>
         item.no_tglsp.toLowerCase().includes(value.toLowerCase()) ||
         item.program_audit.toLowerCase().includes(value.toLowerCase()) ||
@@ -144,7 +157,7 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join(',');
 
-    const csvData = DataSuratTugas.map((row) => {
+    const csvData = DataST.map((row) => {
       return columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
@@ -168,7 +181,7 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = DataSuratTugas.map((row) => {
+    const excelData = DataST.map((row) => {
       return columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
@@ -218,7 +231,7 @@ const TableSuratTugas = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : DataSuratTugas}
+          data={search ? filteredData : DataST}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"

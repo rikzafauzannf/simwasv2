@@ -74,12 +74,12 @@ export class AxiosService {
   }
 
   // Mengambil data spesifik berdasarkan ID
-  async getDataById(endpoint: string) {
+  async getDataById(endpoint: string, id: number) {
     try {
-      const response = await axiosInstance.get(endpoint);
+      const response = await axiosInstance.get(`${endpoint}/${id}`);
       return {
         success: true,
-        data: response.data,
+        data: response,
         message: 'Data berhasil diambil',
       };
     } catch (error) {

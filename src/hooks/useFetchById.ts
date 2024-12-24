@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback } from 'react';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useCallback, useEffect, useState } from 'react';
 
 const axiosService = new AxiosService();
 
-export const useFetchById = <T>(collection: string, docId: number) => {
+export const useFetchById = <T>(collection: string, id: number) => {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -11,7 +11,8 @@ export const useFetchById = <T>(collection: string, docId: number) => {
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await axiosService.getDataById(`${collection}/${docId}`);
+      const response = await axiosService.getDataById(collection, id);
+      console.log('Raw API Response:', response);
       if (response.success) {
         setData(response.data as T);
         setError(null);
@@ -23,7 +24,7 @@ export const useFetchById = <T>(collection: string, docId: number) => {
     } finally {
       setIsLoading(false);
     }
-  }, [collection, docId]);
+  }, [collection, id]);
 
   useEffect(() => {
     fetchData();

@@ -5,27 +5,39 @@ import { ButtonLinkComponent } from '../Global/Button';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
-import { useGetNameJenisPengawasan, useGetNameUser } from '@/hooks/useGetName';
+import {
+  useGetNameJenisPengawasan,
+  useGetNameST,
+  useGetNameUser,
+} from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { NHPData } from '@/interface/interfaceHasilPengawasan';
 
 interface Props {
   todo: string;
 }
 
-const MapDataPkpt: React.FC<Props> = ({ todo }) => {
+const MapDataNHP: React.FC<Props> = ({ todo }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
-  const { getNameJenisPengawasan } = useGetNameJenisPengawasan();
+  const { data: DataNHP, isLoading, error } = useFetch<NHPData>('nhp');
   const { getNameUser, getUserPhone } = useGetNameUser();
+  const { getNameNoSP, getProgramAudit } = useGetNameST();
 
   // Search filter
-  const filteredData = DataPKPT.filter(
+  const filteredData = DataNHP.filter(
     (item) =>
-      item.area_pengawasan.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.status.toLowerCase().includes(searchTerm.toLowerCase())
+      item.keterangan_nhp.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.created_at.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      getNameNoSP(item.id_st)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      getProgramAudit(item.id_st)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      getNameUser(item.id_user).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic
@@ -38,7 +50,7 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Cari jenis pengawasan / area..."
+          placeholder="Cari Data NHP {tgl/NoSP/ProgramAudit/perancang}"
           className="w-full p-2 border rounded-md mt-2"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -47,8 +59,12 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
       <section className="grid md:grid-cols-3 gap-8">
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
-            <h1># {item.area_pengawasan}</h1>
-            <h1>{getNameJenisPengawasan(item.id_jenis_pengawasan)}</h1>
+            <p>ST:</p>
+            <h1>{getNameNoSP(item.id_st)}</h1>
+            <p>{getProgramAudit(item.id_st)}</p>
+            <hr />
+            <h1># {item.keterangan_nhp}</h1>
+            <hr />
             <Link
               href={`https://wa.me/${getUserPhone(item.id_user)}`}
               target="blank"
@@ -66,10 +82,10 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
             <hr className="mb-3" />
             <div className="flex flex-col gap-2">
               <Link
-                href={`/dashboard/${todo}/${item.id_pkpt}`}
+                href={`/dashboard/${todo}/${item.id_nhp}`}
                 className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
               >
-                {item.status} || Buat ST
+                Buat LHP
               </Link>
               {/* <button
                 onClick={() => handleReportClick(item.tim)}
@@ -108,4 +124,4 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
   );
 };
 
-export default MapDataPkpt;
+export default MapDataNHP;

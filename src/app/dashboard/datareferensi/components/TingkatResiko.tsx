@@ -65,7 +65,7 @@ const TingkatResiko = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (
       window.confirm('Apakah Anda yakin ingin menghapus tingkat resiko ini?')
     ) {

@@ -4,7 +4,9 @@ import {
   JenisLaporanDB,
   JenisPengawasanDB,
   RuangLingkupDB,
+  TingkatResikoDB,
 } from '@/interface/interfaceReferensi';
+import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 
 export const useGetNameRuangLingkup = () => {
   const {
@@ -75,4 +77,41 @@ export const useGetNameJenisLaporan = () => {
   };
 
   return { getNameJenisLaporan, isLoading, error };
+};
+
+export const useGetNameTingkatResiko = () => {
+  const {
+    data: DataTingkatResiko,
+    isLoading,
+    error,
+  } = useFetchAll<TingkatResikoDB>('tingkat_resiko');
+
+  const getNameTingkatResiko = (id: number) => {
+    const data = DataTingkatResiko.filter(
+      (item) => item.id_tingkat_resiko === id
+    );
+    return data.length > 0 ? data[0].tingkat_resiko : '';
+  };
+
+  return { getNameTingkatResiko, isLoading, error };
+};
+
+export const useGetNameST = () => {
+  const {
+    data: DataST,
+    isLoading,
+    error,
+  } = useFetchAll<SuratTugasData>('surat_tugas');
+
+  const getNameNoSP = (id: number) => {
+    const data = DataST.filter((item) => item.id_st === id);
+    return data.length > 0 ? data[0].no_tglsp : '';
+  };
+
+  const getProgramAudit = (id: number) => {
+    const data = DataST.filter((item) => item.id_st === id);
+    return data.length > 0 ? data[0].program_audit : '';
+  };
+
+  return { getNameNoSP, getProgramAudit, isLoading, error };
 };
