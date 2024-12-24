@@ -18,12 +18,17 @@ export type RuangLingkupDB = {
 };
 
 export type TingkatResikoDB = {
-  id_tingkat_resiko: string;
+  id_tingkat_resiko: number;
   tingkat_resiko: string;
 };
 
 export type KodeTemuanDB = {
-  id: number;
+  id_kode_temuan: number;
   kode_temuan: string;
-  keterangan: string;
+  keterangan_kode: string;
 };
+
+export interface FormKodeTemuan {
+  kode_temuan: string;
+  keterangan_kode: string;
+}

@@ -31,7 +31,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
         <div className="grid w-full gap-3">
           <h3 className="text-xl">Data Rekap Surat Tugas</h3>
           <CardComponents>
-            <TableSuratTugas />
+            <TableSuratTugas id_pkpt={id_pkpt} filterID="true" />
           </CardComponents>
         </div>
       ),
