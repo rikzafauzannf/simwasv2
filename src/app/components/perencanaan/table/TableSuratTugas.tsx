@@ -9,6 +9,7 @@ import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { useFetch } from '@/hooks/useFetch';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
+import { useGetNameUser } from '@/hooks/useGetName';
 
 interface PropsOptions {
   id_pkpt?: number;
@@ -19,6 +20,8 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
   const { data: DataSuratTugas } = useFetchAll<SuratTugasData>('surat_tugas');
+
+  const { getNameUser } = useGetNameUser();
 
   const DataST =
     filterID === 'true'
@@ -79,27 +82,30 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     },
     {
       name: 'Tim Pemeriksa',
-      selector: (row: SuratTugasData) => row.tim_pemeriksa,
+      selector: (row: SuratTugasData) => getNameUser(Number(row.tim_pemeriksa)),
       sortable: true,
     },
     {
       name: 'Irban',
-      selector: (row: SuratTugasData) => row.wk_penanggung_jawab,
+      selector: (row: SuratTugasData) => getNameUser(Number(row.wk_penanggung_jawab)),
       sortable: true,
     },
     {
       name: 'Pengendali Teknis',
-      selector: (row: SuratTugasData) => row.pengendali_teknis,
+      selector: (row: SuratTugasData) => getNameUser(Number(row.pengendali_teknis)),
       sortable: true,
     },
     {
       name: 'Ketua Tim',
-      selector: (row: SuratTugasData) => row.ketua_tim,
+      selector: (row: SuratTugasData) => getNameUser(Number(row.ketua_tim)),
       sortable: true,
     },
     {
       name: 'Tim',
-      selector: (row: SuratTugasData) => row.anggota_tim,
+      selector: (row: SuratTugasData) => row.anggota_tim
+          .split(',')
+          .map((id) => getNameUser(Number(id)))
+          .join(', '),
       sortable: true,
     },
     {
