@@ -130,7 +130,11 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Anggaran',
-      selector: (row) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(row.anggaran),
+      selector: (row) =>
+        new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+        }).format(row.anggaran),
       sortable: true,
     },
     {

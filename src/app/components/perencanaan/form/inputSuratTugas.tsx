@@ -42,7 +42,12 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
 
   const potentialMembers = DataUser.map((item) => ({
     id: item.id_user,
-    name: item.username,
+    name: `${item.username} - ${item.jabatan}`,
+  }));
+
+  const optionsDataUser = DataUser.map((item) => ({
+    value: String(item.id_user),
+    title: `${item.username} - ${item.jabatan}`,
   }));
 
   const handleAddMember = (e: React.FormEvent) => {
@@ -117,7 +122,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
       console.error('Error submitting form:', error);
       alert('Gagal menyimpan data Jenis Pengawasan');
     }
-  };
+  };  
 
   return (
     <>
@@ -190,7 +195,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
             </section>
             <h3>Tim Audit</h3>
             <section className="grid md:grid-cols-2 gap-3">
-              <InputFieldComponent
+              {/* <InputFieldComponent
                 label="Tim Pemeriksa/Pelaksana Kegiatan"
                 identiti="timPemeriksa"
                 name="timPemeriksa"
@@ -200,8 +205,18 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   required: 'tentukan tim audit',
                 })}
                 error={errors.tim_pemeriksa}
+              /> */}
+              <SelectInputField
+                label="Tim Pemeriksa/Pelaksana Kegiatan"
+                identiti="select-field-timpemeriksa"
+                options={optionsDataUser}
+                register={register('tim_pemeriksa')}
+                placeholder="tentukan tim audit"
+                error={errors.tim_pemeriksa}
+                type="select"
+                name="tim_pemeriksa"
               />
-              <InputFieldComponent
+              {/* <InputFieldComponent
                 label="Irban/Wk.Penanggung Jawab"
                 identiti="irbanwk"
                 name="irbanwk"
@@ -211,8 +226,18 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   required: 'Mohon untuk memasukan Irban/Wk.Penanggung Jawab',
                 })}
                 error={errors.wk_penanggung_jawab}
+              /> */}
+              <SelectInputField
+                label="Irban/Wk.Penanggung Jawab"
+                identiti="select-field-irban"
+                options={optionsDataUser}
+                register={register('wk_penanggung_jawab')}
+                placeholder="Tentuakan Irban/Wk,Penanggung Jawab"
+                error={errors.wk_penanggung_jawab}
+                type="select"
+                name="wk_penanggung_jawab"
               />
-              <InputFieldComponent
+              {/* <InputFieldComponent
                 label="Pengendali Teknis/Supervisor"
                 identiti="pengendaliTeknis"
                 name="pengendaliTeknis"
@@ -221,8 +246,18 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 register={register('pengendali_teknis', {
                   required: 'Pengendali Teknis wajib diisi',
                 })}
+              /> */}
+              <SelectInputField
+                label="Pengendali Teknis/Supervisor"
+                identiti="select-field-pteknis"
+                options={optionsDataUser}
+                register={register('pengendali_teknis')}
+                placeholder="Tentukan Pengendali Teknis"
+                error={errors.pengendali_teknis}
+                type="select"
+                name="pengendaliTeknis"
               />
-              <InputFieldComponent
+              {/* <InputFieldComponent
                 label="Ketua Tim"
                 identiti="ketuaTIM"
                 name="ketuaTIM"
@@ -231,6 +266,16 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 register={register('ketua_tim', {
                   required: 'Masukan Ketua Tim',
                 })}
+              /> */}
+              <SelectInputField
+                label="Ketua Tim"
+                identiti="select-field-irban"
+                options={optionsDataUser}
+                register={register('ketua_tim')}
+                placeholder="Tentukan Pengendali Teknis"
+                error={errors.ketua_tim}
+                type="select"
+                name="ketua_tim"
               />
               <div className="md:col-span-2">
                 <div className="flex flex-col space-y-2">
