@@ -90,8 +90,8 @@ const UserManage = () => {
         }
       );
       if (result.success) {
-        alert('Data User berhasil diperbarui');
         reset();
+        alert('Data User berhasil diperbarui');        
         refetch();
         handleCancelEdit();
       } else {

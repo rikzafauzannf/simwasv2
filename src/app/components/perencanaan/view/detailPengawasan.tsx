@@ -81,9 +81,8 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         <CardComponents>
           <p className="text-sm">Anggaran</p>
           <h3 className="text-xl">
-            Rp.{' '}
             {DataPKPT
-              ? DataPKPT.anggaran.toLocaleString('id-ID')
+              ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(DataPKPT.anggaran)
               : 'No data available'}
           </h3>
         </CardComponents>
@@ -114,20 +113,20 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         <CardComponents>
           <p className="font-medium">Tim</p>
           <div className="flex flex-col gap-2">
-            {/* {DataPKPT
-              ? DataPKPT.tim.map((item, index) => (
+            {DataPKPT
+              ? DataPKPT?.tim.split(',').map((item, index) => (
                   <div
                     key={index}
                     className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950"
                   >
-                    {item.name}
+                    {getNameUser(Number(item))}
                   </div>
                 ))
-              : 'No data available'} */}
-            {DataPKPT?.tim
+              : 'No data available'}
+            {/* {DataPKPT?.tim
               .split(',')
               .map((id) => getNameUser(Number(id)))
-              .join(', ')}
+              .join(', ')} */}
           </div>
         </CardComponents>
       </section>
