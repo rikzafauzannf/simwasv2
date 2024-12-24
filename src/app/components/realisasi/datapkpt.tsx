@@ -5,7 +5,11 @@ import { ButtonLinkComponent } from '../Global/Button';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
-import { useGetNameJenisPengawasan, useGetNameUser } from '@/hooks/useGetName';
+import {
+  useGetNameJenisPengawasan,
+  useGetNameRuangLingkup,
+  useGetNameUser,
+} from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
 interface Props {
@@ -20,6 +24,7 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
   const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
   const { getNameJenisPengawasan } = useGetNameJenisPengawasan();
   const { getNameUser, getUserPhone } = useGetNameUser();
+  const { getNameRuangLingkup } = useGetNameRuangLingkup();
 
   // Search filter
   const filteredData = DataPKPT.filter(
@@ -47,36 +52,51 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
       <section className="grid md:grid-cols-3 gap-8">
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
-            <h1># {item.area_pengawasan}</h1>
-            <h1>{getNameJenisPengawasan(item.id_jenis_pengawasan)}</h1>
-            <Link
-              href={`https://wa.me/${getUserPhone(item.id_user)}`}
-              target="blank"
-            >
-              <p className="flex justify-start items-center gap-2">
+            <div className="space-y-2">
+              <p>
+                {'>>'} {item.status}
+              </p>
+              <hr />
+              <h1>{item.area_pengawasan}</h1>
+              <p>{getNameJenisPengawasan(item.id_jenis_pengawasan)}</p>
+              <p className="flex justify-start items-center gap-3">
                 <Icon
-                  icon="solar:user-check-line-duotone"
+                  icon="solar:buildings-3-line-duotone"
                   width="24"
                   height="24"
                 />
-                {getNameUser(Number(item.id_user))}
+                {getNameRuangLingkup(item.id_ruang_lingkup)}
               </p>
-            </Link>
-            <p>{item.created_at}</p>
-            <hr className="mb-3" />
-            <div className="flex flex-col gap-2">
+              <hr />
               <Link
-                href={`/dashboard/${todo}/${item.id_pkpt}`}
-                className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
+                href={`https://wa.me/${getUserPhone(item.id_user)}`}
+                target="blank"
               >
-                {item.status} || Buat ST
+                <p className="flex justify-start items-center gap-3">
+                  <Icon
+                    icon="solar:user-check-line-duotone"
+                    width="24"
+                    height="24"
+                  />
+                  {getNameUser(Number(item.id_user))}
+                </p>
               </Link>
-              {/* <button
+              <p>{item.created_at}</p>
+              <hr className="mb-3" />
+              <div className="flex flex-col gap-2">
+                <Link
+                  href={`/dashboard/${todo}/${item.id_pkpt}`}
+                  className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
+                >
+                  {item.status} || Buat ST
+                </Link>
+                {/* <button
                 onClick={() => handleReportClick(item.tim)}
                 className="py-1 px-3 w-full bg-green-600 text-white rounded-md text-center font-semibold"
               >
                 Buat Laporan Mingguan
               </button> */}
+              </div>
             </div>
           </CardComponents>
         ))}

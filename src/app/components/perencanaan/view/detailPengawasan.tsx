@@ -82,7 +82,10 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
           <p className="text-sm">Anggaran</p>
           <h3 className="text-xl">
             {DataPKPT
-              ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(DataPKPT.anggaran)
+              ? new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(DataPKPT.anggaran)
               : 'No data available'}
           </h3>
         </CardComponents>

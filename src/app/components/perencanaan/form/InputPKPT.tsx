@@ -76,7 +76,7 @@ const InputPKPT = () => {
 
   const potentialMembers = DataUser.map((item) => ({
     id: item.id_user,
-    name: item.username,
+    name: `${item.username} - ${item.jabatan}`,
   }));
 
   console.log('data dari team: ', teamMembers);
