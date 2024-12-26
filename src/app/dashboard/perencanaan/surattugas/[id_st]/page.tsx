@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { Document, Page } from '@react-pdf/renderer';
+import { useFetchById } from '@/hooks/useFetchById';
+import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 
 interface PageProps {
   params: {
@@ -9,14 +11,24 @@ interface PageProps {
   };
 }
 
-const ViewSuratTugas = ({ params }: PageProps) => {
+const ViewSuratTugas:React.FC<PageProps> = ({ params }) => {
   const id = params.id_st;
 
+  const {data:DataST, error} = useFetchById<SuratTugasData>('surat_tugas',params.id_st)
+
   // URL PDF yang sesuai dengan id_st
-  const pdfUrl = `https://drive.google.com/file/d/1Hf4GdmqiluJ9O6giIj7yrq7fS3iC9lTa/view?usp=sharing`;
+  const pdfUrl = DataST?.link_st;
 
   // Mengubah URL untuk menampilkan PDF di iframe
-  const pdfEmbedUrl = pdfUrl.replace('/view?usp=sharing', '/preview');
+  const pdfEmbedUrl = pdfUrl?.replace('/view?usp=sharing', '/preview');
+
+  if (error) {
+    return <div>Error fetching data</div>; // Menangani kesalahan
+  }
+
+  if (!pdfEmbedUrl) {
+    return <div>No PDF available</div>; // Menangani jika tidak ada PDF
+  }
 
   return (
     <div className="space-y-3">

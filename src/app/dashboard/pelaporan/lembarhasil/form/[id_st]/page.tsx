@@ -3,18 +3,18 @@ import React from 'react';
 
 interface pageProps {
   params: {
-    id_st: string;
+    id_st: number;
   };
 }
 
-const LembarHasilForm = ({ params }: pageProps) => {
-  const id_st = params.id_st;
+const LembarHasilForm:React.FC<pageProps> = ({ params }) => {
+  console.log('Received params: ', params);
+  const id_nhp = params.id_st;
+  console.log('params nhp id: ', id_nhp);
 
-  const id_pkpt = 11;
-  const id_no = '2023-001';
   return (
     <div className="space-y-3">
-      <LembarHasilPengawasan id_pkpt={id_pkpt} id_no={id_no} />
+      <LembarHasilPengawasan id_nhp={id_nhp}/>
     </div>
   );
 };
