@@ -7,7 +7,6 @@ export interface FormKendaliMutu {
   reviuSupervisi: boolean;
   ceklisPenyelesaian: boolean;
   linkGDrive: string;
-  laporan: string;
 }
 
 export interface KendaliMutuData {
