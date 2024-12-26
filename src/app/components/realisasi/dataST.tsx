@@ -52,7 +52,8 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
             <div className="grid gap-2">
-              <p>{item.no_tglsp}</p>
+              <h1>{item.no_tglsp}</h1>
+              <hr />              
               <h1>
                 {item.bulan} - {item.program_audit}
               </h1>

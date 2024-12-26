@@ -15,8 +15,19 @@ export type NHPData = {
 };
 
 export interface FormLHP {
-  id_pkpt: number;
-  id_no: string;
-  link_lhp: string;
+  id_st: number;
+  file_lhp: string;
+  id_user: number;  
   keterangan_lhp: string;
+  id_nhp: number;
+}
+
+export type LHPData ={
+  id_lhp:number;
+  id_st: number;
+  file_lhp: string;
+  id_user: number;  
+  keterangan_lhp: string;
+  id_nhp: number;
+  created_at: string;
 }

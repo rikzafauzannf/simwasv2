@@ -5,6 +5,7 @@ import { CardComponents } from '@/app/components/Global/Card';
 import InputKendaliMutu from '@/app/components/pelaksanaan/form/inputKendaliMutu';
 import LembarHasilPengawasan from '@/app/components/pelaksanaan/form/lembarHasilPengawasan';
 import NotaHasilPengawasan from '@/app/components/pelaksanaan/form/notaHasilPengawasan';
+import LaporanMingguanComponent from '@/app/components/pelaksanaan/laporanMingguan';
 import KendaliMutu from '@/app/components/pelaksanaan/view/KendaliMutu';
 import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
 import TableSuratTugas from '@/app/components/perencanaan/table/TableSuratTugas';
@@ -37,19 +38,23 @@ const ViewPkptPage = ({ params }: PageProps) => {
       ),
     },
     {
-      label: 'Kendali Mutu',
-      component: <KendaliMutu />,
+      label: 'Laporan Mingguan',
+      component: <LaporanMingguanComponent id_pkpt={id_pkpt}/>,
     },
-    {
-      label: 'NHP',
-      // component: <NotaHasilPengawasan />,
-      component: 'NHP',
-    },
-    {
-      label: 'LHP',
-      // component: <LembarHasilPengawasan />,
-      component: 'LHP',
-    },
+    // {
+    //   label: 'Kendali Mutu',
+    //   component: <KendaliMutu />,
+    // },
+    // {
+    //   label: 'NHP',
+    //   // component: <NotaHasilPengawasan />,
+    //   component: 'NHP',
+    // },
+    // {
+    //   label: 'LHP',
+    //   // component: <LembarHasilPengawasan />,
+    //   component: 'LHP',
+    // },
   ];
 
   return (
