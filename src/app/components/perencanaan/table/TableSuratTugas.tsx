@@ -9,7 +9,7 @@ import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { useFetch } from '@/hooks/useFetch';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
-import { useGetNameUser } from '@/hooks/useGetName';
+import { useGetNameJenisAudit, useGetNameUser } from '@/hooks/useGetName';
 
 interface PropsOptions {
   id_pkpt?: number;
@@ -22,6 +22,7 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   const { data: DataSuratTugas } = useFetchAll<SuratTugasData>('surat_tugas');
 
   const { getNameUser } = useGetNameUser();
+  const { getNameJenisAudit } = useGetNameJenisAudit()
 
   const DataST =
     filterID === 'true'
@@ -125,7 +126,7 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     },
     {
       name: 'Jenis Audit',
-      selector: (row: SuratTugasData) => row.id_jenis_laporan,
+      selector: (row: SuratTugasData) => getNameJenisAudit(Number(row.id_jenis_audit)),
       sortable: true,
     },
     {
@@ -133,11 +134,11 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
       selector: (row: SuratTugasData) => row.keterangan,
       sortable: true,
     },
-    {
-      name: 'Link ST',
-      selector: (row: SuratTugasData) => row.link_st,
-      sortable: true,
-    },
+    // {
+    //   name: 'Link ST',
+    //   selector: (row: SuratTugasData) => row.link_st,
+    //   sortable: true,
+    // },
     {
       name: 'File ST',
       selector: (row: SuratTugasData) => row.link_st,

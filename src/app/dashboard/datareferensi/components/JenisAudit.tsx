@@ -97,7 +97,7 @@ const JenisAudit = () => {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-xl"># Jenis Laporan</h3>
+      <h3 className="text-xl"># Jenis Audit</h3>
       <CardComponents>
         <form
           onSubmit={
@@ -106,7 +106,7 @@ const JenisAudit = () => {
           className="grid grid-cols-3 gap-3 w-full"
         >
           <InputFieldComponent
-            label="Jenis laporan"
+            label="Jenis Audit"
             identiti="jenis_laporan"
             name="jenis_laporan"
             placeholder="Tuliskan Jenis Laporan"

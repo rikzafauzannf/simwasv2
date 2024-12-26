@@ -13,30 +13,30 @@ import {
   useGetNameST,
   useGetNameUser,
 } from '@/hooks/useGetName';
-import { NHPData } from '@/interface/interfaceHasilPengawasan';
+import { LHPData} from '@/interface/interfaceHasilPengawasan';
 
-const TableNHP: React.FC = () => {
-  const { data: DataNHP, isLoading, error } = useFetch<NHPData>('nhp');
+const TableLHP: React.FC = () => {
+  const { data: DataLHP, isLoading, error } = useFetch<LHPData>('lhp');
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<NHPData[]>([]);
+  const [filteredData, setFilteredData] = useState<LHPData[]>([]);
 
   const { getNameUser } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
 
-  const columns: TableColumn<NHPData>[] = [
+  const columns: TableColumn<LHPData>[] = [
     {
       name: 'Actions',
-      cell: (row: NHPData) => (
+      cell: (row: LHPData) => (
         <div className="flex gap-2">
           <Link
             // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
-            href={row.file_nhp}
+            href={row.file_lhp}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
           </Link>
           <Link
-            href={`/dashboard/pelaksanaan/actions/${row.id_nhp}`}
+            href={`/dashboard/pelaporan/lembarhasil/actions/${row.id_lhp}`}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act
@@ -60,8 +60,8 @@ const TableNHP: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'Keterangan NHP',
-      selector: (row) => row.keterangan_nhp,
+      name: 'Keterangan LHP',
+      selector: (row) => row.keterangan_lhp,
       sortable: true,
     },
     {
@@ -75,10 +75,10 @@ const TableNHP: React.FC = () => {
     const value = e.target.value;
     setSearch(value);
 
-    if (DataNHP) {
-      const filtered = DataNHP.filter(
+    if (DataLHP) {
+      const filtered = DataLHP.filter(
         (item) =>
-          item.keterangan_nhp.toLowerCase().includes(value.toLowerCase()) ||
+          item.keterangan_lhp.toLowerCase().includes(value.toLowerCase()) ||
           item.created_at.toLowerCase().includes(value.toLowerCase()) ||
           getNameNoSP(item.id_st).toLowerCase().includes(value.toLowerCase()) ||
           getProgramAudit(item.id_st)
@@ -91,19 +91,19 @@ const TableNHP: React.FC = () => {
   };
 
   const exportToCSV = () => {
-    if (!DataNHP) return;
+    if (!DataLHP) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join(',');
 
-    const csvData = DataNHP.map((row) =>
+    const csvData = DataLHP.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row: NHPData
+            row: LHPData
           ) => string | number;
           return `"${selector(row)}"`;
         })
@@ -117,19 +117,19 @@ const TableNHP: React.FC = () => {
   };
 
   const exportToExcel = () => {
-    if (!DataNHP) return;
+    if (!DataLHP) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = DataNHP.map((row) =>
+    const excelData = DataLHP.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row: NHPData
+            row: LHPData
           ) => string | number;
           return selector(row);
         })
@@ -149,7 +149,7 @@ const TableNHP: React.FC = () => {
     <>
       <div className="mb-4 space-y-2">
         <div className="flex justify-between items-center">
-          <h3>Data NHP</h3>
+          <h3>Data LHP</h3>
           <div className="space-x-2">
             <button
               onClick={exportToCSV}
@@ -177,7 +177,7 @@ const TableNHP: React.FC = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : DataNHP}
+          data={search ? filteredData : DataLHP}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"
@@ -188,4 +188,4 @@ const TableNHP: React.FC = () => {
   );
 };
 
-export default TableNHP;
+export default TableLHP;
