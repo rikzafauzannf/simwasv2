@@ -13,7 +13,7 @@ export type SuratTugasData = {
   jumlah_objek: number;
   jumlah_laporan: number;
   no_tgllh: string;
-  id_jenis_laporan: number;
+  id_jenis_audit: number;
   keterangan: string;
   link_st: string;
   id_user: number;
@@ -34,7 +34,7 @@ export interface FormSuratTugas {
   jumlah_objek: number;
   jumlah_laporan: number;
   no_tgllh: string;
-  id_jenis_laporan: number;
+  id_jenis_audit: number;
   keterangan: string;
   link_st: string;
   id_user: number;

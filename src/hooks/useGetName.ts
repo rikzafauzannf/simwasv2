@@ -1,12 +1,14 @@
 import { UserManageDB } from '@/interface/interfaceUserManage';
 import { useFetchAll } from './useFetchAll';
 import {
+  JenisAuditDB,
   JenisLaporanDB,
   JenisPengawasanDB,
   RuangLingkupDB,
   TingkatResikoDB,
 } from '@/interface/interfaceReferensi';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
+import { LHPData } from '@/interface/interfaceHasilPengawasan';
 
 export const useGetNameRuangLingkup = () => {
   const {
@@ -114,4 +116,21 @@ export const useGetNameST = () => {
   };
 
   return { getNameNoSP, getProgramAudit, isLoading, error };
+};
+
+export const useGetNameJenisAudit = () => {
+  const {
+    data: DataJenisAudit,
+    isLoading,
+    error,
+  } = useFetchAll<JenisAuditDB>('jenis_audit');
+
+  const getNameJenisAudit = (id: number) => {
+    const data = DataJenisAudit.filter((item) => item.id_jenis_audit === id);
+    return data.length > 0 ? data[0].jenis_audit : '';
+  };
+
+  
+
+  return { getNameJenisAudit, isLoading, error };
 };

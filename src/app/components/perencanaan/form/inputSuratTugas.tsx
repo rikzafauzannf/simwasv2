@@ -90,7 +90,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
         id_pkpt: Number(id_pkpt),
         anggota_tim: teamMembers.map((item) => String(item.id)).join(','),
         bulan: data.bulan,
-        id_jenis_laporan: Number(data.id_jenis_laporan),
+        id_jenis_audit: Number(data.id_jenis_audit),
         jumlah_laporan: Number(data.jumlah_laporan),
         jumlah_objek: Number(data.jumlah_objek),
         keterangan: data.keterangan,
@@ -376,10 +376,10 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 name="jenisAudit"
                 options={optionsJenisAudit}
                 placeholder="Tentukan Jenis Audit"
-                register={register('id_jenis_laporan', {
+                register={register('id_jenis_audit', {
                   required: 'Masukan jenis Audit',
                 })}
-                error={errors.id_jenis_laporan}
+                error={errors.id_jenis_audit}
                 type="select"
               />
               <TextAreaFieldComponent
