@@ -37,10 +37,34 @@ export type JenisAuditDB = {
   id_jenis_audit: number;
   jenis_audit: string;
   keterangan: string;
-  created_at : string;
-}
+  created_at: string;
+};
 
 export interface FormJenisAudit {
   jenis_audit: string;
   keterangan: string;
+}
+
+export type KodeRekomendasiData = {
+  id_kode_rekomendasi: number;
+  kode_rekomendasi: string;
+  keterangan_kode: string;
+  created_at: string;
+};
+
+export interface FormKodeRekomendasi {
+  kode_rekomendasi: string;
+  keterangan_kode: string;
+}
+
+export type KodeReferensiData = {
+  id_kode_referensi: number;
+  kode_referensi: string;
+  keterangan_kode: string;
+  created_at: string;
+};
+
+export interface FormKodeReferensi {
+  kode_referensi: string;
+  keterangan_kode: string;
 }

@@ -13,7 +13,7 @@ import {
   useGetNameST,
   useGetNameUser,
 } from '@/hooks/useGetName';
-import { LHPData} from '@/interface/interfaceHasilPengawasan';
+import { LHPData } from '@/interface/interfaceHasilPengawasan';
 
 const TableLHP: React.FC = () => {
   const { data: DataLHP, isLoading, error } = useFetch<LHPData>('lhp');

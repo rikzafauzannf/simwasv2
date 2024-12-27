@@ -11,10 +11,13 @@ interface PageProps {
   };
 }
 
-const ViewSuratTugas:React.FC<PageProps> = ({ params }) => {
+const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
   const id = params.id_st;
 
-  const {data:DataST, error} = useFetchById<SuratTugasData>('surat_tugas',params.id_st)
+  const { data: DataST, error } = useFetchById<SuratTugasData>(
+    'surat_tugas',
+    params.id_st
+  );
 
   // URL PDF yang sesuai dengan id_st
   const pdfUrl = DataST?.link_st;
@@ -33,7 +36,7 @@ const ViewSuratTugas:React.FC<PageProps> = ({ params }) => {
   return (
     <div className="space-y-3">
       <h3 className="text-xl"># Detail Surat Tugas {id}</h3>
-      <iframe src={pdfEmbedUrl} style={{ width: '100%', height: '500px' }} />      
+      <iframe src={pdfEmbedUrl} style={{ width: '100%', height: '500px' }} />
     </div>
   );
 };

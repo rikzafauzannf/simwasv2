@@ -7,7 +7,7 @@ const LembarHasilPage = () => {
     <div className="space-y-3">
       <h3 className="text-xl">Lembar Hasil Pengawasan</h3>
       <MapDataNHP todo="pelaporan/lembarhasil/form" />
-      <TableLHP/>
+      <TableLHP />
     </div>
   );
 };

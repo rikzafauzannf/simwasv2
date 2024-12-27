@@ -4,55 +4,54 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
+import { FormKodeRekomendasi, FormKodeTemuan, KodeRekomendasiData, KodeTemuanDB } from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
-import { useFetchAll } from '@/hooks/useFetchAll';
-import { FormJenisAudit, JenisAuditDB } from '@/interface/interfaceReferensi';
+import { useFetch } from '@/hooks/useFetch';
 
 const axiosService = new AxiosService();
 
-const JenisAudit = () => {
-  const { data: DataJenisAudit, refetch } =
-    useFetchAll<JenisAuditDB>('/jenis_audit');
+const KodeRekomendasi = () => {
+  const { data: DataKodeRekomendasi, refetch } =
+    useFetch<KodeRekomendasiData>('/kode_rekomendasi');
   const {
     register,
     handleSubmit,
     reset,
     setValue,
     formState: { errors },
-  } = useForm<FormJenisAudit>({
+  } = useForm<FormKodeRekomendasi>({
     defaultValues: {
-      jenis_audit: '',
-      keterangan: '',
+      kode_rekomendasi: '',
+      keterangan_kode: '',
     },
   });
 
   const [isEditing, setIsEditing] = React.useState(false);
   const [currentEditId, setCurrentEditId] = React.useState<number | null>(null);
 
-  const onSubmit: SubmitHandler<FormJenisAudit> = async (data) => {
+  const onSubmit: SubmitHandler<FormKodeRekomendasi> = async (data) => {
     try {
-      const result = await axiosService.addData('jenis_audit', data);
+      const result = await axiosService.addData('/kode_rekomendasi', data);
       if (result.success) {
-        alert('Data Jenis Audit berhasil disimpan');
+        alert('Data Kode Rekomendasi berhasil disimpan');
         reset();
         refetch();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
-      alert('Gagal menyimpan data Jenis Audit');
+      alert('Gagal menyimpan data Kode Rekomendasi');
     }
   };
 
-  const onEditSubmit: SubmitHandler<FormJenisAudit> = async (data) => {
+  const onEditSubmit: SubmitHandler<FormKodeRekomendasi> = async (data) => {
     try {
       const result = await axiosService.updateData(
-        `/jenis_audit/${currentEditId}`,
+        `/kode_rekomendasi/${currentEditId}`,
         data
       );
       if (result.success) {
-        alert('Data Jenis Audit berhasil diperbarui');
+        alert('Data Kode Rekomendasi berhasil diperbarui');
         reset();
         refetch();
         handleCancelEdit();
@@ -60,22 +59,22 @@ const JenisAudit = () => {
         throw new Error(result.message);
       }
     } catch (error) {
-      alert('Gagal memperbarui data Jenis Audit');
+      alert('Gagal memperbarui data Kode Temuan');
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus jenis audit ini?')) {
+    if (window.confirm('Apakah Anda yakin ingin menghapus Kode Rekomendasi ini?')) {
       try {
-        const result = await axiosService.deleteData(`/jenis_audit/${id}`);
+        const result = await axiosService.deleteData(`/kode_rekomendasi/${id}`);
         if (result.success) {
-          alert('Jenis Audit berhasil dihapus');
+          alert('Kode Rekomendasi berhasil dihapus');
           refetch();
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
-        alert('Gagal menghapus jenis audit');
+        alert('Gagal menghapus Kode Rekomendasi');
       }
     }
   };
@@ -83,8 +82,8 @@ const JenisAudit = () => {
   const handleEdit = (id: number, value: string, keterangan: string) => {
     setIsEditing(true);
     setCurrentEditId(id);
-    setValue('jenis_audit', value);
-    setValue('keterangan', keterangan);
+    setValue('kode_rekomendasi', value);
+    setValue('keterangan_kode', keterangan);
   };
 
   const handleCancelEdit = () => {
@@ -95,48 +94,40 @@ const JenisAudit = () => {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-xl"># Jenis Audit</h3>
+      <h3 className="text-xl"># Kode Rekomendasi</h3>
       <CardComponents>
         <form
           onSubmit={
             isEditing ? handleSubmit(onEditSubmit) : handleSubmit(onSubmit)
           }
-          className="grid grid-cols-3 gap-3 w-full"
+          className="grid gap-3"
         >
           <InputFieldComponent
-            label="Jenis Audit"
-            identiti="jenis_laporan"
-            name="jenis_laporan"
-            placeholder="Tuliskan Jenis Audit"
+            label="Kode Rekomendasi"
+            identiti="kode_rekomendasi"
+            name="kode_temuan"
+            placeholder="Kode Rekomendasi"
             type="text"
-            register={register('jenis_audit', {
-              required: 'Jenis audit wajib diisi',
+            register={register('kode_rekomendasi', {
+              required: 'Kode Rekomendasi wajib diisi',
             })}
-            error={errors.jenis_audit}
+            error={errors.kode_rekomendasi}
           />
-          <div className="col-span-2">
-            <InputFieldComponent
-              label="Keterangan"
-              identiti="keterangan"
-              name="keterangan"
-              placeholder="Tuliskan Keterangan"
-              type="text"
-              register={register('keterangan', {
-                required: 'Keterangan wajib diisi',
-              })}
-              error={errors.keterangan}
-            />
-          </div>
-          <div className="col-span-3">
-            <ButtonType
-              Text={
-                isEditing
-                  ? '+ Perbarui Jenis Laporan'
-                  : '+ Simpan Jenis Laporan'
-              }
-              type="submit"
-            />
-          </div>
+          <InputFieldComponent
+            label="Keterangan"
+            identiti="keterangan"
+            name="keterangan"
+            placeholder="Tuliskan Keterangan"
+            type="text"
+            register={register('keterangan_kode', {
+              required: 'Keterangan wajib diisi',
+            })}
+            error={errors.keterangan_kode}
+          />
+          <ButtonType
+            Text={isEditing ? '+ Perbarui Kode Rekomendasi' : '+ Simpan Kode Rekomendasi'}
+            type="submit"
+          />
           {isEditing && (
             <button type="button" onClick={handleCancelEdit}>
               Batal
@@ -145,18 +136,18 @@ const JenisAudit = () => {
         </form>
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
-        {DataJenisAudit.map((item) => (
-          <CardComponents key={item.id_jenis_audit}>
+        {DataKodeRekomendasi.map((item) => (
+          <CardComponents key={item.id_kode_rekomendasi}>
             <h3 className="text-xl font-bold">
-              {'>>'} {item.jenis_audit}
+              {'>>'} {item.kode_rekomendasi}
             </h3>
-            <p>{item.keterangan}</p>
+            <p>{item.keterangan_kode}</p>
             <button
               onClick={() =>
                 handleEdit(
-                  item.id_jenis_audit,
-                  item.jenis_audit,
-                  item.keterangan
+                  item.id_kode_rekomendasi,
+                  item.kode_rekomendasi,
+                  item.keterangan_kode
                 )
               }
               className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
@@ -164,7 +155,7 @@ const JenisAudit = () => {
               Edit
             </button>
             <button
-              onClick={() => handleDelete(item.id_jenis_audit)}
+              onClick={() => handleDelete(item.id_kode_rekomendasi)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
             >
               Hapus
@@ -176,4 +167,4 @@ const JenisAudit = () => {
   );
 };
 
-export default JenisAudit;
+export default KodeRekomendasi;

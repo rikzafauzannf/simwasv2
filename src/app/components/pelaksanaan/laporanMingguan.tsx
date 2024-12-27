@@ -8,8 +8,7 @@ interface PropsID {
   id_pkpt: number;
 }
 
-const LaporanMingguanComponent = ({ id_pkpt }: PropsID) => {  
-
+const LaporanMingguanComponent = ({ id_pkpt }: PropsID) => {
   const {
     data: DataLaporanMingguan,
     isLoading,
