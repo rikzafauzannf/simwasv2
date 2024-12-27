@@ -22,7 +22,7 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   const { data: DataSuratTugas } = useFetchAll<SuratTugasData>('surat_tugas');
 
   const { getNameUser } = useGetNameUser();
-  const { getNameJenisAudit } = useGetNameJenisAudit()
+  const { getNameJenisAudit } = useGetNameJenisAudit();
 
   const DataST =
     filterID === 'true'
@@ -88,12 +88,14 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     },
     {
       name: 'Irban',
-      selector: (row: SuratTugasData) => getNameUser(Number(row.wk_penanggung_jawab)),
+      selector: (row: SuratTugasData) =>
+        getNameUser(Number(row.wk_penanggung_jawab)),
       sortable: true,
     },
     {
       name: 'Pengendali Teknis',
-      selector: (row: SuratTugasData) => getNameUser(Number(row.pengendali_teknis)),
+      selector: (row: SuratTugasData) =>
+        getNameUser(Number(row.pengendali_teknis)),
       sortable: true,
     },
     {
@@ -103,7 +105,8 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     },
     {
       name: 'Tim',
-      selector: (row: SuratTugasData) => row.anggota_tim
+      selector: (row: SuratTugasData) =>
+        row.anggota_tim
           .split(',')
           .map((id) => getNameUser(Number(id)))
           .join(', '),
@@ -126,7 +129,8 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     },
     {
       name: 'Jenis Audit',
-      selector: (row: SuratTugasData) => getNameJenisAudit(Number(row.id_jenis_audit)),
+      selector: (row: SuratTugasData) =>
+        getNameJenisAudit(Number(row.id_jenis_audit)),
       sortable: true,
     },
     {

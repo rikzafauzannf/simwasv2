@@ -16,7 +16,7 @@ import {
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 
-const axiosService = new AxiosService()
+const axiosService = new AxiosService();
 
 const TablePKPT: React.FC = () => {
   const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
@@ -28,7 +28,7 @@ const TablePKPT: React.FC = () => {
   const { getNameUser } = useGetNameUser();
   const { getNameJenisLaporan } = useGetNameJenisLaporan();
 
-  const handleCreateReport = async(id_pkpt: number) => {
+  const handleCreateReport = async (id_pkpt: number) => {
     Swal.fire({
       title: 'Buat Laporan Mingguan',
       html: `
@@ -37,14 +37,17 @@ const TablePKPT: React.FC = () => {
       `,
       focusConfirm: false,
       preConfirm: async () => {
-        const nomor = (document.getElementById('nomor') as HTMLInputElement).value;
-        const content = (document.getElementById('reportContent') as HTMLTextAreaElement).value;
+        const nomor = (document.getElementById('nomor') as HTMLInputElement)
+          .value;
+        const content = (
+          document.getElementById('reportContent') as HTMLTextAreaElement
+        ).value;
         if (!content || !nomor) {
           Swal.showValidationMessage('Silakan isi semua field');
           return;
         }
         return { content, id_pkpt, nomor };
-      }
+      },
     }).then(async (result) => {
       if (result.isConfirmed) {
         // Logika untuk menyimpan laporan
@@ -54,7 +57,10 @@ const TablePKPT: React.FC = () => {
           laporan_mingguan: result.value.content,
         };
         try {
-          const response = await axiosService.addData('/laporan_mingguan', dataForm);
+          const response = await axiosService.addData(
+            '/laporan_mingguan',
+            dataForm
+          );
           console.log('Laporan:', response);
           Swal.fire('Laporan berhasil dibuat!', '', 'success');
         } catch (error) {
@@ -82,12 +88,15 @@ const TablePKPT: React.FC = () => {
           >
             Act
           </Link>
-          <button onClick={() => handleCreateReport(row.id_pkpt)} className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600">
-            <FaPaperclip/>
+          <button
+            onClick={() => handleCreateReport(row.id_pkpt)}
+            className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+          >
+            <FaPaperclip />
           </button>
         </div>
       ),
-      grow:1.5
+      grow: 1.5,
     },
     {
       name: 'Status',

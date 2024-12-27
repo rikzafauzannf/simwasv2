@@ -8,6 +8,8 @@ import TingkatResiko from './components/TingkatResiko';
 import KodeTemuan from './components/KodeTemuan';
 import JenisLaporan from './components/JenisLaporan';
 import JenisAudit from './components/JenisAudit';
+import KodeRekomendasi from './components/KodeRekomendasi';
+import KodeReferensi from './components/KodeReferensi';
 
 const DataReferensiPage = () => {
   const ReferensiComponents = [
@@ -34,10 +36,18 @@ const DataReferensiPage = () => {
     {
       title: 'Tingkat Resiko',
       component: <TingkatResiko />,
-    },    
+    },
     {
       title: 'Kode Temuan',
       component: <KodeTemuan />,
+    },
+    {
+      title: 'Kode Rekomendasi',
+      component: <KodeRekomendasi />,
+    },
+    {
+      title: 'Kode Referensi',
+      component: <KodeReferensi />,
     },
   ];
   return (

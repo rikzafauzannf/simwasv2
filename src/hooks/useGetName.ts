@@ -9,6 +9,7 @@ import {
 } from '@/interface/interfaceReferensi';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
+import { PKPTData, PKPTDataBase } from '@/interface/interfacePKPT';
 
 export const useGetNameRuangLingkup = () => {
   const {
@@ -130,7 +131,25 @@ export const useGetNameJenisAudit = () => {
     return data.length > 0 ? data[0].jenis_audit : '';
   };
 
-  
-
   return { getNameJenisAudit, isLoading, error };
+};
+
+export const useGetNamePKPT = () => {
+  const {
+    data: DataPKPT,
+    isLoading,
+    error,
+  } = useFetchAll<PKPTDataBase>('pkpt');
+
+  const getNameAreaPengawasan = (id: number) => {
+    const data = DataPKPT.filter((item) => item.id_pkpt === id);
+    return data.length > 0 ? data[0].area_pengawasan : '';
+  };
+
+  const getNameStatusPKPT = (id: number) => {
+    const data = DataPKPT.filter((item) => item.id_pkpt === id);
+    return data.length > 0 ? data[0].status : '';
+  };
+
+  return { getNameAreaPengawasan, getNameStatusPKPT, isLoading, error };
 };

@@ -10,17 +10,13 @@ interface PageProps {
   };
 }
 
-const FormKendaliMutuPage = ({ params }: PageProps) => {
-  const id_st = 'TG123456';
-  const id_pkpt = 1;
+const FormKendaliMutuPage: React.FC<PageProps> = ({ params }) => {
+  console.log('data params: ', params);
+  const id_pkpt = params.id_st;
+
   return (
     <div className="space-y-3">
-      <InputKendaliMutu id_st={id_st} id_pkpt={id_pkpt} />
-      <div className="grid w-full gap-3">
-        <CardComponents>
-          <TableKendaliMutu />
-        </CardComponents>
-      </div>      
+      <InputKendaliMutu id_pkpt={id_pkpt} />
     </div>
   );
 };

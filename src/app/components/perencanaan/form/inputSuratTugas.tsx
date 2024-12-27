@@ -122,7 +122,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
       console.error('Error submitting form:', error);
       alert('Gagal menyimpan data Jenis Pengawasan');
     }
-  };  
+  };
 
   return (
     <>

@@ -53,7 +53,7 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
           <CardComponents key={index}>
             <div className="grid gap-2">
               <h1>{item.no_tglsp}</h1>
-              <hr />              
+              <hr />
               <h1>
                 {item.bulan} - {item.program_audit}
               </h1>

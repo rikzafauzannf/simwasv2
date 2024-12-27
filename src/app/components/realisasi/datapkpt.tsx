@@ -14,9 +14,10 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 
 interface Props {
   todo: string;
+  title: string;
 }
 
-const MapDataPkpt: React.FC<Props> = ({ todo }) => {
+const MapDataPkpt: React.FC<Props> = ({ todo, title }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -88,7 +89,7 @@ const MapDataPkpt: React.FC<Props> = ({ todo }) => {
                   href={`/dashboard/${todo}/${item.id_pkpt}`}
                   className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
                 >
-                  {item.status} || Buat ST
+                  {item.status} || {title}
                 </Link>
                 {/* <button
                 onClick={() => handleReportClick(item.tim)}

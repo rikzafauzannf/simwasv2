@@ -17,16 +17,14 @@ interface PropsID {
 }
 
 const axiosService = new AxiosService();
-const LembarHasilPengawasan:React.FC<PropsID> = ({ id_nhp }) => {
+const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
   const [uploadOption, setUploadOption] = useState('link');
-  
-  console.log('data nhp: ',id_nhp)
+
+  console.log('data nhp: ', id_nhp);
 
   const { data: DataNHP, error } = useFetchById<NHPData>('nhp', id_nhp);
 
   const id_st = Number(DataNHP ? DataNHP.id_st : null);
-
-  
 
   const handleUploadOptionChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -41,21 +39,20 @@ const LembarHasilPengawasan:React.FC<PropsID> = ({ id_nhp }) => {
     formState: { errors },
   } = useForm<FormLHP>({
     defaultValues: {
-      file_lhp:'',
-      keterangan_lhp:'',
+      file_lhp: '',
+      keterangan_lhp: '',
     },
   });
 
   const onSubmit: SubmitHandler<FormLHP> = async (data) => {
     try {
-      const result = await axiosService.addData('lhp',{
-        file_lhp:data.file_lhp,
-        keterangan_lhp:data.keterangan_lhp,
-        id_nhp:Number(id_nhp),
-        id_st:Number(id_st),
-        id_user:2,
-      }      
-      );
+      const result = await axiosService.addData('lhp', {
+        file_lhp: data.file_lhp,
+        keterangan_lhp: data.keterangan_lhp,
+        id_nhp: Number(id_nhp),
+        id_st: Number(id_st),
+        id_user: 2,
+      });
 
       if (result.success) {
         console.log('Laporan Hasil Pengawasan berhasil disimpan:', result);

@@ -7,14 +7,14 @@ interface pageProps {
   };
 }
 
-const LembarHasilForm:React.FC<pageProps> = ({ params }) => {
+const LembarHasilForm: React.FC<pageProps> = ({ params }) => {
   console.log('Received params: ', params);
   const id_nhp = params.id_st;
   console.log('params nhp id: ', id_nhp);
 
   return (
     <div className="space-y-3">
-      <LembarHasilPengawasan id_nhp={id_nhp}/>
+      <LembarHasilPengawasan id_nhp={id_nhp} />
     </div>
   );
 };
