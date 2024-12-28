@@ -4,6 +4,9 @@ import {
   JenisAuditDB,
   JenisLaporanDB,
   JenisPengawasanDB,
+  KodeReferensiData,
+  KodeRekomendasiData,
+  KodeTemuanDB,
   RuangLingkupDB,
   TingkatResikoDB,
 } from '@/interface/interfaceReferensi';
@@ -11,6 +14,7 @@ import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import { PKPTData, PKPTDataBase } from '@/interface/interfacePKPT';
 
+// ======Ruang Lingkup======
 export const useGetNameRuangLingkup = () => {
   const {
     data: DataRuangLingkup,
@@ -28,6 +32,7 @@ export const useGetNameRuangLingkup = () => {
   return { getNameRuangLingkup, isLoading, error };
 };
 
+// ======User (Pengguna)======
 export const useGetNameUser = () => {
   const {
     data: DataPengguna,
@@ -48,6 +53,7 @@ export const useGetNameUser = () => {
   return { getNameUser, getUserPhone, isLoading, error };
 };
 
+// ======Jenis Pengawasan======
 export const useGetNameJenisPengawasan = () => {
   const {
     data: DataJenisPengawasan,
@@ -65,6 +71,7 @@ export const useGetNameJenisPengawasan = () => {
   return { getNameJenisPengawasan, isLoading, error };
 };
 
+// ======Jenis Laporan======
 export const useGetNameJenisLaporan = () => {
   const {
     data: DataJenisLaporan,
@@ -82,6 +89,7 @@ export const useGetNameJenisLaporan = () => {
   return { getNameJenisLaporan, isLoading, error };
 };
 
+// ======Tingkat Resiko======
 export const useGetNameTingkatResiko = () => {
   const {
     data: DataTingkatResiko,
@@ -99,6 +107,7 @@ export const useGetNameTingkatResiko = () => {
   return { getNameTingkatResiko, isLoading, error };
 };
 
+// ======Surat Tugas======
 export const useGetNameST = () => {
   const {
     data: DataST,
@@ -119,6 +128,7 @@ export const useGetNameST = () => {
   return { getNameNoSP, getProgramAudit, isLoading, error };
 };
 
+// ======Jenis Audit======
 export const useGetNameJenisAudit = () => {
   const {
     data: DataJenisAudit,
@@ -134,6 +144,7 @@ export const useGetNameJenisAudit = () => {
   return { getNameJenisAudit, isLoading, error };
 };
 
+// ======PKPT======
 export const useGetNamePKPT = () => {
   const {
     data: DataPKPT,
@@ -153,3 +164,36 @@ export const useGetNamePKPT = () => {
 
   return { getNameAreaPengawasan, getNameStatusPKPT, isLoading, error };
 };
+
+// ======Kode Rekomendasi======
+export const useGetNameKode = () => {
+  const {
+    data: DataKodeRekomendasi,
+  } = useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
+
+  const {
+    data: DataKodeReferensi,
+  } = useFetchAll<KodeReferensiData>('kode_referensi');
+
+  const {
+    data: DataKodeTemuan,
+  } = useFetchAll<KodeTemuanDB>('kode_temuan');
+
+  const getNameKodeRekomendasi = (id: number) => {
+    const data = DataKodeRekomendasi.filter((item) => item.id_kode_rekomendasi === id);
+    return data.length > 0 ? data[0].kode_rekomendasi : '';
+  };
+
+  const getNameKodeReferensi = (id: number) => {
+    const data = DataKodeReferensi.filter((item) => item.id_kode_referensi === id);
+    return data.length > 0 ? data[0].kode_referensi : '';
+  };
+
+  const getNameKodeTemuan = (id: number) => {
+    const data = DataKodeTemuan.filter((item) => item.id_kode_temuan === id);
+    return data.length > 0 ? data[0].kode_temuan : '';
+  };
+
+  return { getNameKodeRekomendasi,getNameKodeReferensi,getNameKodeTemuan};
+};
+
