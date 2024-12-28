@@ -4,7 +4,12 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { FormKodeRekomendasi, FormKodeTemuan, KodeRekomendasiData, KodeTemuanDB } from '@/interface/interfaceReferensi';
+import {
+  FormKodeRekomendasi,
+  FormKodeTemuan,
+  KodeRekomendasiData,
+  KodeTemuanDB,
+} from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetch } from '@/hooks/useFetch';
 
@@ -64,7 +69,9 @@ const KodeRekomendasi = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus Kode Rekomendasi ini?')) {
+    if (
+      window.confirm('Apakah Anda yakin ingin menghapus Kode Rekomendasi ini?')
+    ) {
       try {
         const result = await axiosService.deleteData(`/kode_rekomendasi/${id}`);
         if (result.success) {
@@ -125,7 +132,11 @@ const KodeRekomendasi = () => {
             error={errors.keterangan_kode}
           />
           <ButtonType
-            Text={isEditing ? '+ Perbarui Kode Rekomendasi' : '+ Simpan Kode Rekomendasi'}
+            Text={
+              isEditing
+                ? '+ Perbarui Kode Rekomendasi'
+                : '+ Simpan Kode Rekomendasi'
+            }
             type="submit"
           />
           {isEditing && (

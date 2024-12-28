@@ -4,7 +4,14 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { FormKodeReferensi, FormKodeRekomendasi, FormKodeTemuan, KodeReferensiData, KodeRekomendasiData, KodeTemuanDB } from '@/interface/interfaceReferensi';
+import {
+  FormKodeReferensi,
+  FormKodeRekomendasi,
+  FormKodeTemuan,
+  KodeReferensiData,
+  KodeRekomendasiData,
+  KodeTemuanDB,
+} from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetch } from '@/hooks/useFetch';
 
@@ -64,7 +71,9 @@ const KodeReferensi = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus Kode Referensi ini?')) {
+    if (
+      window.confirm('Apakah Anda yakin ingin menghapus Kode Referensi ini?')
+    ) {
       try {
         const result = await axiosService.deleteData(`/kode_referensi/${id}`);
         if (result.success) {
@@ -125,7 +134,11 @@ const KodeReferensi = () => {
             error={errors.keterangan_kode}
           />
           <ButtonType
-            Text={isEditing ? '+ Perbarui Kode Referensi' : '+ Simpan Kode Referensi'}
+            Text={
+              isEditing
+                ? '+ Perbarui Kode Referensi'
+                : '+ Simpan Kode Referensi'
+            }
             type="submit"
           />
           {isEditing && (

@@ -11,7 +11,10 @@ const RealisasiPKPTPage = () => {
       <h3>Data Realisasi PKPT</h3>
 
       <CollapseComponents title="Input Data Realisasi">
-        <MapDataPkpt todo="perencanaan/realisasipkpt/inputrealisasi" title='Buat Realisasi'/>
+        <MapDataPkpt
+          todo="perencanaan/realisasipkpt/inputrealisasi"
+          title="Buat Realisasi"
+        />
       </CollapseComponents>
 
       <div className="grid w-full gap-3">
