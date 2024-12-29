@@ -167,25 +167,25 @@ export const useGetNamePKPT = () => {
 
 // ======Kode Rekomendasi======
 export const useGetNameKode = () => {
-  const {
-    data: DataKodeRekomendasi,
-  } = useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
+  const { data: DataKodeRekomendasi } =
+    useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
 
-  const {
-    data: DataKodeReferensi,
-  } = useFetchAll<KodeReferensiData>('kode_referensi');
+  const { data: DataKodeReferensi } =
+    useFetchAll<KodeReferensiData>('kode_referensi');
 
-  const {
-    data: DataKodeTemuan,
-  } = useFetchAll<KodeTemuanDB>('kode_temuan');
+  const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
 
   const getNameKodeRekomendasi = (id: number) => {
-    const data = DataKodeRekomendasi.filter((item) => item.id_kode_rekomendasi === id);
+    const data = DataKodeRekomendasi.filter(
+      (item) => item.id_kode_rekomendasi === id
+    );
     return data.length > 0 ? data[0].kode_rekomendasi : '';
   };
 
   const getNameKodeReferensi = (id: number) => {
-    const data = DataKodeReferensi.filter((item) => item.id_kode_referensi === id);
+    const data = DataKodeReferensi.filter(
+      (item) => item.id_kode_referensi === id
+    );
     return data.length > 0 ? data[0].kode_referensi : '';
   };
 
@@ -194,6 +194,5 @@ export const useGetNameKode = () => {
     return data.length > 0 ? data[0].kode_temuan : '';
   };
 
-  return { getNameKodeRekomendasi,getNameKodeReferensi,getNameKodeTemuan};
+  return { getNameKodeRekomendasi, getNameKodeReferensi, getNameKodeTemuan };
 };
-

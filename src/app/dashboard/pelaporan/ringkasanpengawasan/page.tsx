@@ -12,7 +12,7 @@ const RingkasanPengawasanPage = () => {
         todo="pelaporan/ringkasanpengawasan/form"
       />
       <CardComponents>
-      <TableTemuanHasil/>
+        <TableTemuanHasil />
       </CardComponents>
     </div>
   );
