@@ -4,7 +4,7 @@ import { CardComponents } from '../Global/Card';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
-import { useGetNameUser } from '@/hooks/useGetName';
+import { useGetNamePKPT, useGetNameUser } from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
 interface PropsComponent {
@@ -16,6 +16,8 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+
+  const { getNameStatusPKPT, getNameAreaPengawasan } = useGetNamePKPT();
 
   const {
     data: DataST,
@@ -52,7 +54,11 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
             <div className="grid gap-2">
-              <h1>{item.no_tglsp}</h1>
+              <div className="flex justify-between items-center">
+                <h1>{item.no_tglsp}</h1>
+                <p>{getNameStatusPKPT(item.id_pkpt)}</p>
+              </div>
+              <p>{getNameAreaPengawasan(item.id_pkpt)}</p>
               <hr />
               <h1>
                 {item.bulan} - {item.program_audit}

@@ -16,15 +16,21 @@ import {
 } from '@/hooks/useGetName';
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import { formatCurrency } from '@/hooks/formatCurrency';
 
 const TableTemuanHasil: React.FC = () => {
-  const { data: DataTemuanHasil, isLoading, error } = useFetch<TemuanHasilData>('temuan_hasil');
+  const {
+    data: DataTemuanHasil,
+    isLoading,
+    error,
+  } = useFetch<TemuanHasilData>('temuan_hasil');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<TemuanHasilData[]>([]);
 
   const { getNameUser } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
-  const { getNameKodeReferensi,getNameKodeRekomendasi,getNameKodeTemuan} = useGetNameKode()
+  const { getNameKodeReferensi, getNameKodeRekomendasi, getNameKodeTemuan } =
+    useGetNameKode();
 
   const columns: TableColumn<TemuanHasilData>[] = [
     // {
@@ -68,35 +74,35 @@ const TableTemuanHasil: React.FC = () => {
       sortable: true,
     },
     {
-        name: 'Kode Temuan',
-        selector: (row) => getNameKodeTemuan(row.id_kode_temuan),
-        sortable: true,
-      },
-      {
-        name: 'Kondisi Temuan',
-        selector: (row) => row.kondisi_temuan,
-        sortable: true,
-      },
-      {
-        name: 'Kode Rekomendasi',
-        selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
-        sortable: true,
-      },
-      {
-        name: 'Rekomendasi/Saran',
-        selector: (row) => row.rekomendasi_saran,
-        sortable: true,
-      },
-      {
-        name: 'Nilai Rekomendasi',
-        selector: (row) => row.nilai_rekomendasi,
-        sortable: true,
-      },
-      {
-        name: 'Kode Referensi',
-        selector: (row) => getNameKodeReferensi(row.id_kode_referensi),
-        sortable: true,
-      },
+      name: 'Kode Temuan',
+      selector: (row) => getNameKodeTemuan(row.id_kode_temuan),
+      sortable: true,
+    },
+    {
+      name: 'Kondisi Temuan',
+      selector: (row) => row.kondisi_temuan,
+      sortable: true,
+    },
+    {
+      name: 'Kode Rekomendasi',
+      selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
+      sortable: true,
+    },
+    {
+      name: 'Rekomendasi/Saran',
+      selector: (row) => row.rekomendasi_saran,
+      sortable: true,
+    },
+    {
+      name: 'Nilai Rekomendasi',
+      selector: (row) => formatCurrency(row.nilai_rekomendasi),
+      sortable: true,
+    },
+    {
+      name: 'Kode Referensi',
+      selector: (row) => getNameKodeReferensi(row.id_kode_referensi),
+      sortable: true,
+    },
     {
       name: 'Perancang Temuan Hasil',
       selector: (row) => getNameUser(row.id_user),
@@ -112,7 +118,7 @@ const TableTemuanHasil: React.FC = () => {
       const filtered = DataTemuanHasil.filter(
         (item) =>
           item.uraian.toLowerCase().includes(value.toLowerCase()) ||
-            item.kondisi_temuan.toLowerCase().includes(value.toLowerCase()) ||
+          item.kondisi_temuan.toLowerCase().includes(value.toLowerCase()) ||
           item.created_at.toLowerCase().includes(value.toLowerCase()) ||
           getNameNoSP(item.id_st).toLowerCase().includes(value.toLowerCase()) ||
           getProgramAudit(item.id_st)
@@ -137,7 +143,7 @@ const TableTemuanHasil: React.FC = () => {
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row:TemuanHasilData
+            row: TemuanHasilData
           ) => string | number;
           return `"${selector(row)}"`;
         })
@@ -163,7 +169,7 @@ const TableTemuanHasil: React.FC = () => {
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row:TemuanHasilData
+            row: TemuanHasilData
           ) => string | number;
           return selector(row);
         })

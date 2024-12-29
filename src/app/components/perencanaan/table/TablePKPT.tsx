@@ -15,6 +15,7 @@ import {
 } from '@/hooks/useGetName';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { formatCurrency } from '@/hooks/formatCurrency';
 
 const axiosService = new AxiosService();
 
@@ -184,11 +185,7 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Anggaran',
-      selector: (row) =>
-        new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-        }).format(row.anggaran),
+      selector: (row) => formatCurrency(row.anggaran),
       sortable: true,
     },
     {
