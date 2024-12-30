@@ -104,7 +104,7 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
       sortable: true,
     },
     {
-      name: 'Tim',
+      name: 'Anggota Tim',
       selector: (row: SuratTugasData) =>
         row.anggota_tim
           .split(',')
