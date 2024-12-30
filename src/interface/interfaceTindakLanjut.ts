@@ -7,7 +7,7 @@ export type TindakLanjutDB = {
   kondisi_rekomendasi: string;
   sisa_nominal: number;
   tanggal_pengiriman: string;
-  batas_akhit_tl: string;
+  batas_akhir_tl: string;
   keterangan: string;
   id_user: number;
   created_at: string;
@@ -21,7 +21,7 @@ export interface FormTindakLanjut {
   kondisi_rekomendasi: string;
   sisa_nominal: number;
   tanggal_pengiriman: string;
-  batas_akhit_tl: string;
+  batas_akhir_tl: string;
   keterangan: string;
   id_user: number;
 }

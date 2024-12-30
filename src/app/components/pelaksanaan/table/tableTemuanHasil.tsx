@@ -20,14 +20,14 @@ import { formatCurrency } from '@/hooks/formatCurrency';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 
-const axiosSecvice = new AxiosService()
+const axiosSecvice = new AxiosService();
 
 const TableTemuanHasil: React.FC = () => {
   const {
     data: DataTemuanHasil,
     isLoading,
     error,
-    refetch
+    refetch,
   } = useFetch<TemuanHasilData>('temuan_hasil');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<TemuanHasilData[]>([]);
@@ -37,28 +37,28 @@ const TableTemuanHasil: React.FC = () => {
   const { getNameKodeReferensi, getNameKodeRekomendasi, getNameKodeTemuan } =
     useGetNameKode();
 
-    const handleDelete = async (id: number) => {
-      const result = await Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
-      });
-  
-      if (result.isConfirmed) {
-        try {
-          await axiosSecvice.deleteData(`temuan_hasil/${id}`);
-          refetch();
-          Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        } catch (error) {
-          console.error(error);
-          Swal.fire('Error!', 'There was an error deleting the file.', 'error');
-        }
+  const handleDelete = async (id: number) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosSecvice.deleteData(`temuan_hasil/${id}`);
+        refetch();
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error!', 'There was an error deleting the file.', 'error');
       }
-    };
+    }
+  };
 
   const columns: TableColumn<TemuanHasilData>[] = [
     {

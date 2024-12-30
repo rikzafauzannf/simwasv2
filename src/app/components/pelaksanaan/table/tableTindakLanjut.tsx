@@ -16,13 +16,21 @@ import {
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
-import { FormTindakLanjut, TindakLanjutDB } from '@/interface/interfaceTindakLanjut';
+import {
+  FormTindakLanjut,
+  TindakLanjutDB,
+} from '@/interface/interfaceTindakLanjut';
 import { formatCurrency } from '@/hooks/formatCurrency';
 
 const axiosSecvice = new AxiosService();
 
 const TableTindakLanjut: React.FC = () => {
-  const { data: DataTindakLanjut, isLoading, error, refetch } = useFetch<TindakLanjutDB>('tindak_lanjut');
+  const {
+    data: DataTindakLanjut,
+    isLoading,
+    error,
+    refetch,
+  } = useFetch<TindakLanjutDB>('tindak_lanjut');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<TindakLanjutDB[]>([]);
 
@@ -90,40 +98,40 @@ const TableTindakLanjut: React.FC = () => {
       sortable: true,
     },
     {
-        name: 'Nilai Setor',
-        selector: (row) => formatCurrency(row.nilai_setor),
-        sortable: true,
-      },
-      {
-        name: 'Kondisi Temuan',
-        selector: (row) => row.kondisi_temuan,
-        sortable: true,
-      },
-      {
-        name: 'Kondisi Rekomendasi',
-        selector: (row) => row.kondisi_rekomendasi,
-        sortable: true,
-      },
-      {
-        name: 'Sisa Nominal',
-        selector: (row) => formatCurrency(row.sisa_nominal),
-        sortable: true,
-      },
-      {
-        name: 'Tanggal Pengiriman',
-        selector: (row) => row.tanggal_pengiriman,
-        sortable: true,
-      },
-      {
-        name: 'Batas Akhir TL',
-        selector: (row) => row.batas_akhit_tl,
-        sortable: true,
-      },
-      {
-        name: 'Keterangan',
-        selector: (row) => row.keterangan,
-        sortable: true,
-      },
+      name: 'Nilai Setor',
+      selector: (row) => formatCurrency(row.nilai_setor),
+      sortable: true,
+    },
+    {
+      name: 'Kondisi Temuan',
+      selector: (row) => row.kondisi_temuan,
+      sortable: true,
+    },
+    {
+      name: 'Kondisi Rekomendasi',
+      selector: (row) => row.kondisi_rekomendasi,
+      sortable: true,
+    },
+    {
+      name: 'Sisa Nominal',
+      selector: (row) => formatCurrency(row.sisa_nominal),
+      sortable: true,
+    },
+    {
+      name: 'Tanggal Pengiriman',
+      selector: (row) => row.tanggal_pengiriman,
+      sortable: true,
+    },
+    {
+      name: 'Batas Akhir TL',
+      selector: (row) => row.batas_akhir_tl,
+      sortable: true,
+    },
+    {
+      name: 'Keterangan',
+      selector: (row) => row.keterangan,
+      sortable: true,
+    },
     {
       name: 'Perancang Tindak Lanjut',
       selector: (row) => getNameUser(row.id_user),
@@ -139,9 +147,11 @@ const TableTindakLanjut: React.FC = () => {
       const filtered = DataTindakLanjut.filter(
         (item) =>
           item.uraian.toLowerCase().includes(value.toLowerCase()) ||
-        item.kondisi_temuan.toLowerCase().includes(value.toLowerCase()) ||
-        item.kondisi_rekomendasi.toLowerCase().includes(value.toLowerCase()) ||
-          item.created_at.toLowerCase().includes(value.toLowerCase()) ||        
+          item.kondisi_temuan.toLowerCase().includes(value.toLowerCase()) ||
+          item.kondisi_rekomendasi
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          item.created_at.toLowerCase().includes(value.toLowerCase()) ||
           getNameUser(item.id_user).toLowerCase().includes(value.toLowerCase())
       );
       setFilteredData(filtered);
@@ -161,7 +171,7 @@ const TableTindakLanjut: React.FC = () => {
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row:TindakLanjutDB
+            row: TindakLanjutDB
           ) => string | number;
           return `"${selector(row)}"`;
         })
@@ -187,7 +197,7 @@ const TableTindakLanjut: React.FC = () => {
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row:TindakLanjutDB
+            row: TindakLanjutDB
           ) => string | number;
           return selector(row);
         })
