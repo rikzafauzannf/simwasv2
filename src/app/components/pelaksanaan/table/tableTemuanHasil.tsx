@@ -17,12 +17,17 @@ import {
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
 import { formatCurrency } from '@/hooks/formatCurrency';
+import Swal from 'sweetalert2';
+import { AxiosService } from '@/services/axiosInstance.service';
+
+const axiosSecvice = new AxiosService()
 
 const TableTemuanHasil: React.FC = () => {
   const {
     data: DataTemuanHasil,
     isLoading,
     error,
+    refetch
   } = useFetch<TemuanHasilData>('temuan_hasil');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<TemuanHasilData[]>([]);
@@ -32,27 +37,56 @@ const TableTemuanHasil: React.FC = () => {
   const { getNameKodeReferensi, getNameKodeRekomendasi, getNameKodeTemuan } =
     useGetNameKode();
 
+    const handleDelete = async (id: number) => {
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+      });
+  
+      if (result.isConfirmed) {
+        try {
+          await axiosSecvice.deleteData(`temuan_hasil/${id}`);
+          refetch();
+          Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        } catch (error) {
+          console.error(error);
+          Swal.fire('Error!', 'There was an error deleting the file.', 'error');
+        }
+      }
+    };
+
   const columns: TableColumn<TemuanHasilData>[] = [
-    // {
-    //   name: 'Actions',
-    //   cell: (row) => (
-    //     <div className="flex gap-2">
-    //       <Link
-    //         // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
-    //         href={`${row.id_tlhp}`}
-    //         className="p-2 text-blue-500 hover:text-blue-700"
-    //       >
-    //         <FaEye />
-    //       </Link>
-    //       <Link
-    //         href={`/dashboard/pelaksanaan/actions/${row.id_tlhp}`}
-    //         className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-    //       >
-    //         Act
-    //       </Link>
-    //     </div>
-    //   ),
-    // },
+    {
+      name: 'Actions',
+      cell: (row) => (
+        <div className="flex gap-2">
+          {/* <Link
+            // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
+            href={`${row.id_tlhp}`}
+            className="p-2 text-blue-500 hover:text-blue-700"
+          >
+            <FaEye />
+          </Link>
+          <Link
+            href={`/dashboard/pelaksanaan/actions/${row.id_tlhp}`}
+            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+          >
+            Act
+          </Link> */}
+          <button
+            onClick={() => handleDelete(row.id_tlhp)}
+            className="p-2 text-red-500 hover:text-red-700"
+          >
+            <FaTrash />
+          </button>
+        </div>
+      ),
+    },
     {
       name: 'Create At',
       selector: (row) => row.created_at,
