@@ -14,14 +14,41 @@ import {
   useGetNameUser,
 } from '@/hooks/useGetName';
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
+import Swal from 'sweetalert2';
+import { AxiosService } from '@/services/axiosInstance.service';
+
+const axiosSecvice = new AxiosService();
 
 const TableLHP: React.FC = () => {
-  const { data: DataLHP, isLoading, error } = useFetch<LHPData>('lhp');
+  const { data: DataLHP, isLoading, error, refetch } = useFetch<LHPData>('lhp');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<LHPData[]>([]);
 
   const { getNameUser } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
+
+  const handleDelete = async (id: number) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosSecvice.deleteData(`lhp/${id}`);
+        refetch();
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error!', 'There was an error deleting the file.', 'error');
+      }
+    }
+  };
 
   const columns: TableColumn<LHPData>[] = [
     {
@@ -35,12 +62,18 @@ const TableLHP: React.FC = () => {
           >
             <FaEye />
           </Link>
-          <Link
+          {/* <Link
             href={`/dashboard/pelaporan/lembarhasil/actions/${row.id_lhp}`}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act
-          </Link>
+          </Link> */}
+          <button
+            onClick={() => handleDelete(row.id_lhp)}
+            className="p-2 text-red-500 hover:text-red-700"
+          >
+            <FaTrash />
+          </button>
         </div>
       ),
     },

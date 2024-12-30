@@ -16,13 +16,15 @@ import {
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { FormTindakLanjut, TindakLanjutDB } from '@/interface/interfaceTindakLanjut';
+import { formatCurrency } from '@/hooks/formatCurrency';
 
 const axiosSecvice = new AxiosService();
 
-const TableNHP: React.FC = () => {
-  const { data: DataNHP, isLoading, error, refetch } = useFetch<NHPData>('nhp');
+const TableTindakLanjut: React.FC = () => {
+  const { data: DataTindakLanjut, isLoading, error, refetch } = useFetch<TindakLanjutDB>('tindak_lanjut');
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<NHPData[]>([]);
+  const [filteredData, setFilteredData] = useState<TindakLanjutDB[]>([]);
 
   const { getNameUser } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
@@ -40,7 +42,7 @@ const TableNHP: React.FC = () => {
 
     if (result.isConfirmed) {
       try {
-        await axiosSecvice.deleteData(`nhp/${id}`);
+        await axiosSecvice.deleteData(`tindak_lanjut/${id}`);
         refetch();
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       } catch (error) {
@@ -50,18 +52,18 @@ const TableNHP: React.FC = () => {
     }
   };
 
-  const columns: TableColumn<NHPData>[] = [
+  const columns: TableColumn<TindakLanjutDB>[] = [
     {
       name: 'Actions',
-      cell: (row: NHPData) => (
+      cell: (row) => (
         <div className="flex gap-2">
-          <Link
+          {/* <Link
             // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
             href={row.file_nhp}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
-          </Link>
+          </Link> */}
           {/* <Link
             href={`/dashboard/pelaksanaan/actions/${row.id_nhp}`}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
@@ -69,7 +71,7 @@ const TableNHP: React.FC = () => {
             Act
           </Link> */}
           <button
-            onClick={() => handleDelete(row.id_nhp)}
+            onClick={() => handleDelete(row.id_tindak_lanjut)}
             className="p-2 text-red-500 hover:text-red-700"
           >
             <FaTrash />
@@ -83,22 +85,47 @@ const TableNHP: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'No/Tgl SP',
-      selector: (row) => getNameNoSP(row.id_st),
+      name: 'Uraian',
+      selector: (row) => row.uraian,
       sortable: true,
     },
     {
-      name: 'Program Audit',
-      selector: (row) => getProgramAudit(row.id_st),
-      sortable: true,
-    },
+        name: 'Nilai Setor',
+        selector: (row) => formatCurrency(row.nilai_setor),
+        sortable: true,
+      },
+      {
+        name: 'Kondisi Temuan',
+        selector: (row) => row.kondisi_temuan,
+        sortable: true,
+      },
+      {
+        name: 'Kondisi Rekomendasi',
+        selector: (row) => row.kondisi_rekomendasi,
+        sortable: true,
+      },
+      {
+        name: 'Sisa Nominal',
+        selector: (row) => formatCurrency(row.sisa_nominal),
+        sortable: true,
+      },
+      {
+        name: 'Tanggal Pengiriman',
+        selector: (row) => row.tanggal_pengiriman,
+        sortable: true,
+      },
+      {
+        name: 'Batas Akhir TL',
+        selector: (row) => row.batas_akhit_tl,
+        sortable: true,
+      },
+      {
+        name: 'Keterangan',
+        selector: (row) => row.keterangan,
+        sortable: true,
+      },
     {
-      name: 'Keterangan NHP',
-      selector: (row) => row.keterangan_nhp,
-      sortable: true,
-    },
-    {
-      name: 'Perancang NHP',
+      name: 'Perancang Tindak Lanjut',
       selector: (row) => getNameUser(row.id_user),
       sortable: true,
     },
@@ -108,15 +135,13 @@ const TableNHP: React.FC = () => {
     const value = e.target.value;
     setSearch(value);
 
-    if (DataNHP) {
-      const filtered = DataNHP.filter(
+    if (DataTindakLanjut) {
+      const filtered = DataTindakLanjut.filter(
         (item) =>
-          item.keterangan_nhp.toLowerCase().includes(value.toLowerCase()) ||
-          item.created_at.toLowerCase().includes(value.toLowerCase()) ||
-          getNameNoSP(item.id_st).toLowerCase().includes(value.toLowerCase()) ||
-          getProgramAudit(item.id_st)
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
+          item.uraian.toLowerCase().includes(value.toLowerCase()) ||
+        item.kondisi_temuan.toLowerCase().includes(value.toLowerCase()) ||
+        item.kondisi_rekomendasi.toLowerCase().includes(value.toLowerCase()) ||
+          item.created_at.toLowerCase().includes(value.toLowerCase()) ||        
           getNameUser(item.id_user).toLowerCase().includes(value.toLowerCase())
       );
       setFilteredData(filtered);
@@ -124,19 +149,19 @@ const TableNHP: React.FC = () => {
   };
 
   const exportToCSV = () => {
-    if (!DataNHP) return;
+    if (!DataTindakLanjut) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join(',');
 
-    const csvData = DataNHP.map((row) =>
+    const csvData = DataTindakLanjut.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row: NHPData
+            row:TindakLanjutDB
           ) => string | number;
           return `"${selector(row)}"`;
         })
@@ -150,19 +175,19 @@ const TableNHP: React.FC = () => {
   };
 
   const exportToExcel = () => {
-    if (!DataNHP) return;
+    if (!DataTindakLanjut) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = DataNHP.map((row) =>
+    const excelData = DataTindakLanjut.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row: NHPData
+            row:TindakLanjutDB
           ) => string | number;
           return selector(row);
         })
@@ -182,7 +207,7 @@ const TableNHP: React.FC = () => {
     <>
       <div className="mb-4 space-y-2">
         <div className="flex justify-between items-center">
-          <h3>Data NHP</h3>
+          <h3>Data Tindak Lanjut</h3>
           <div className="space-x-2">
             <button
               onClick={exportToCSV}
@@ -201,7 +226,7 @@ const TableNHP: React.FC = () => {
         <input
           id="search"
           type="text"
-          placeholder="Cari Data NHP {tgl/noSP/programAudit/perancang}"
+          placeholder="Cari Data Tindak Lanjut"
           value={search}
           onChange={handleSearch}
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
@@ -210,7 +235,7 @@ const TableNHP: React.FC = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : DataNHP}
+          data={search ? filteredData : DataTindakLanjut}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"
@@ -221,4 +246,4 @@ const TableNHP: React.FC = () => {
   );
 };
 
-export default TableNHP;
+export default TableTindakLanjut;
