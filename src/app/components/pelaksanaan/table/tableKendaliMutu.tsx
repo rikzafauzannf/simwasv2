@@ -8,6 +8,10 @@ import Link from 'next/link';
 import { KendaliMutuData } from '@/interface/interfaceKendaliMutu';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useGetNamePKPT } from '@/hooks/useGetName';
+import Swal from 'sweetalert2';
+import { AxiosService } from '@/services/axiosInstance.service';
+
+const axiosService = new AxiosService();
 
 const TableKendaliMutu = () => {
   const [search, setSearch] = useState('');
@@ -38,16 +42,13 @@ const TableKendaliMutu = () => {
             className="p-2 text-yellow-500 hover:text-yellow-700"
           >
             <FaEdit />
-          </button>
+          </button> */}
           <button
-             onClick={() => {
-               setSelectedRow(row);
-               setShowDeleteDialog(true);
-             }}
+            onClick={() => handleDelete(row.id)}
             className="p-2 text-red-500 hover:text-red-700"
           >
             <FaTrash />
-          </button> */}
+          </button>
         </div>
       ),
     },
@@ -115,8 +116,30 @@ const TableKendaliMutu = () => {
     // },
   ];
 
-  const { data: DataKendaliMutu } =
+  const { data: DataKendaliMutu, refetch } =
     useFetchAll<KendaliMutuData>('kendali_mutu');
+  const handleDelete = async (id: number) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosService.deleteData(`kendali_mutu/${id}`);
+        refetch();
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error!', 'There was an error deleting the file.', 'error');
+      }
+    }
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

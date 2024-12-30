@@ -177,27 +177,29 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
                 min: 0,
               })}
             />
-            <SelectInputField
-              label="Kode Referensi"
-              identiti="kodeReferensi"
-              options={optionKodeReferensi}
-              register={register('id_kode_referensi', {
-                required: 'Pilih Kode Referensi',
-              })}
-              error={errors.id_kode_referensi}
-              placeholder="Pilih Kode Referensi"
-              // error={errors.JenisPengawasan}
-              type="select"
-              name="kodeReferensi"
-            />
-            <InputFieldComponent
+            <div className="col-span-2">
+              <SelectInputField
+                label="Kode Referensi"
+                identiti="kodeReferensi"
+                options={optionKodeReferensi}
+                register={register('id_kode_referensi', {
+                  required: 'Pilih Kode Referensi',
+                })}
+                error={errors.id_kode_referensi}
+                placeholder="Pilih Kode Referensi"
+                type="select"
+                name="kodeReferensi"
+              />
+            </div>
+
+            {/* <InputFieldComponent
               label="Link Google Drive"
               identiti="link"
               name="link"
               placeholder="Masukan Nominal Rekomendasi"
               type="number"
               register={'link'}
-            />
+            /> */}
           </section>
           <ButtonType Text="+ Buat Ringkasan Pengawasan" type="submit" />
         </form>

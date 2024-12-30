@@ -21,7 +21,7 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
     id
   );
 
-  const {getNameUser,getUserNIP} = useGetNameUser()
+  const { getNameUser, getUserNIP } = useGetNameUser();
 
   // URL PDF yang sesuai dengan id_st
   const pdfUrl = DataST?.link_st;
@@ -49,19 +49,18 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
               {DataST?.waktu_penugasan} - Hari
             </p>
           </div>
-          
-            <h1>{DataST?.no_tglsp}</h1>
-            <p>Laporan - {DataST?.jumlah_laporan}</p>
-            <p>Object - {DataST?.jumlah_objek}</p>
-          
+
+          <h1>{DataST?.no_tglsp}</h1>
+          <p>Laporan - {DataST?.jumlah_laporan}</p>
+          <p>Object - {DataST?.jumlah_objek}</p>
         </div>
-        
+
         <hr />
         <h2># {DataST?.program_audit}</h2>
         <h3>{DataST?.keterangan}</h3>
         <hr />
 
-        <div className='grid grid-cols-4 gap-3'>
+        <div className="grid grid-cols-4 gap-3">
           <div>
             <p>Tim Pemeriksa</p>
             <h2>{getNameUser(Number(DataST?.tim_pemeriksa))}</h2>
@@ -82,13 +81,14 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
             <h2>{getNameUser(Number(DataST?.ketua_tim))}</h2>
             <p>NIP - {getUserNIP(Number(DataST?.ketua_tim))}</p>
           </div>
-          <div className='col-span-4'>
+          <div className="col-span-4">
             <p>Anggota Tim</p>
-            <h2>{DataST?.anggota_tim
-          .split(',')
-          .map((id) => getNameUser(Number(id)))
-          .join(', ')}
-          </h2>
+            <h2>
+              {DataST?.anggota_tim
+                .split(',')
+                .map((id) => getNameUser(Number(id)))
+                .join(', ')}
+            </h2>
           </div>
         </div>
       </CardComponents>

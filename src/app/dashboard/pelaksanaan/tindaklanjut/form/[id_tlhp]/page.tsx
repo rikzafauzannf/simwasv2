@@ -3,8 +3,10 @@ import { ButtonType } from '@/app/components/Global/Button';
 import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import { FormTindakLanjut } from '@/interface/interfaceTindakLanjut';
+import { AxiosService } from '@/services/axiosInstance.service';
+import { useRouter } from 'next/navigation';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface PageProps {
   params: {
@@ -12,8 +14,11 @@ interface PageProps {
   };
 }
 
+const axiosSecvice = new AxiosService()
+
 const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
   const id_tlhp = params.id_tlhp;
+  const route = useRouter()
   const {
     register,
     handleSubmit,
@@ -27,15 +32,49 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
       keterangan: '',
       kondisi_rekomendasi: '',
       kondisi_temuan: '',
+      batas_akhit_tl:'',
     },
     mode: 'onBlur',
   });
+
+  const onSubmit: SubmitHandler<FormTindakLanjut> = async (data) => {
+    try {
+      const FormDataTL = {
+        id_tlhp:Number(id_tlhp),
+        id_user:2,
+        uraian:data.uraian,
+        keterangan:data.keterangan,
+        batas_akhir_tl:data.batas_akhit_tl ? String(data.batas_akhit_tl) : null,
+        kondisi_rekomendasi:data.kondisi_rekomendasi,
+        kondisi_temuan:data.kondisi_temuan,
+        nilai_setor:Number(data.nilai_setor),
+        sisa_nominal:Number(data.sisa_nominal),
+        tanggal_pengiriman:data.tanggal_pengiriman
+      };
+      console.log('Data yang dikirim:', FormDataTL);
+      const result = await axiosSecvice.addData('/tindak_lanjut', FormDataTL);
+
+      console.log('Respons dari server:', result);
+
+      if (result.success) {
+        console.log('Jenis Pengawasan berhasil disimpan:', result);
+        reset();
+        alert('Data Jenis Pengawasan berhasil disimpan');
+        route.push('/dashboard/pelaksanaan/tindaklanjut');
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Gagal menyimpan data Jenis Pengawasan');
+    }
+  };
   return (
     <div className="space-y-3">
-      <h3 className="text-xl">Tindak Lanjut {id_tlhp}</h3>
+      <h3 className="text-xl">Tindak Lanjut</h3>
       <CardComponents>
-        <form className="grid grid-cols-2 gap-3 w-full">
-          <div className="col-span-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid md:grid-cols-2 gap-3 w-full">
+          <div className="md:col-span-2">
             <InputFieldComponent
               label="Uraian"
               identiti="uraian"
@@ -106,15 +145,16 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
           <InputFieldComponent
             label="Batas Akhir Tl"
             identiti="batas_akhir_tl"
-            type="number"
+            type="date"
             name="batas_akhir_tl"
             placeholder="Tentukan Batas Akhir Tindak Lanjut"
             register={register('batas_akhit_tl', {
               required: 'Batas Akhir Tindak Lanjut wajib diisi',
+              setValueAs: v => v ? new Date(v).toISOString().split('T')[0] : '',
             })}
             error={errors.batas_akhit_tl}
           />
-          <div className="col-span-2">
+          <div className="md:col-span-2">
             <InputFieldComponent
               label="Keterangan"
               identiti="keterangan"
@@ -127,7 +167,9 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
               error={errors.keterangan}
             />
           </div>
-          <ButtonType type="submit" Text="Buat Tindak Lanjut" />
+          <div className='md:col-span-2'>
+            <ButtonType type="submit" Text="Buat Tindak Lanjut" />
+          </div>          
         </form>
       </CardComponents>
     </div>

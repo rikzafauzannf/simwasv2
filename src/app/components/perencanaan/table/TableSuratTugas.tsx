@@ -10,16 +10,21 @@ import { useFetch } from '@/hooks/useFetch';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
 import { useGetNameJenisAudit, useGetNameUser } from '@/hooks/useGetName';
+import { AxiosService } from '@/services/axiosInstance.service';
+import Swal from 'sweetalert2';
 
 interface PropsOptions {
   id_pkpt?: number;
   filterID?: string;
 }
 
+const axiosSecvice = new AxiosService();
+
 const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
-  const { data: DataSuratTugas } = useFetchAll<SuratTugasData>('surat_tugas');
+  const { data: DataSuratTugas, refetch } =
+    useFetchAll<SuratTugasData>('surat_tugas');
 
   const { getNameUser } = useGetNameUser();
   const { getNameJenisAudit } = useGetNameJenisAudit();
@@ -29,6 +34,29 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
       ? DataSuratTugas.filter((item) => item.id_pkpt === Number(id_pkpt))
       : DataSuratTugas;
   console.log('data by id_pkpt : ', DataST);
+
+  const handleDelete = async (id: number) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosSecvice.deleteData(`surat_tugas/${id}`);
+        refetch();
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error!', 'There was an error deleting the file.', 'error');
+      }
+    }
+  };
 
   const columns = [
     {
@@ -53,16 +81,13 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
             className="p-2 text-yellow-500 hover:text-yellow-700"
           >
             <FaEdit />
-          </button>
+          </button> */}
           <button
-             onClick={() => {
-               setSelectedRow(row);
-               setShowDeleteDialog(true);
-             }}
+            onClick={() => handleDelete(row.id_st)}
             className="p-2 text-red-500 hover:text-red-700"
           >
             <FaTrash />
-          </button> */}
+          </button>
         </div>
       ),
     },
