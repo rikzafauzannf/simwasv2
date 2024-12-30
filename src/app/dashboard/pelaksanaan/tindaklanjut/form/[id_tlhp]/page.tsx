@@ -14,11 +14,11 @@ interface PageProps {
   };
 }
 
-const axiosSecvice = new AxiosService()
+const axiosSecvice = new AxiosService();
 
 const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
   const id_tlhp = params.id_tlhp;
-  const route = useRouter()
+  const route = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,7 +32,7 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
       keterangan: '',
       kondisi_rekomendasi: '',
       kondisi_temuan: '',
-      batas_akhit_tl:'',
+      batas_akhir_tl: '',
     },
     mode: 'onBlur',
   });
@@ -40,16 +40,18 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
   const onSubmit: SubmitHandler<FormTindakLanjut> = async (data) => {
     try {
       const FormDataTL = {
-        id_tlhp:Number(id_tlhp),
-        id_user:2,
-        uraian:data.uraian,
-        keterangan:data.keterangan,
-        batas_akhir_tl:data.batas_akhit_tl ? String(data.batas_akhit_tl) : null,
-        kondisi_rekomendasi:data.kondisi_rekomendasi,
-        kondisi_temuan:data.kondisi_temuan,
-        nilai_setor:Number(data.nilai_setor),
-        sisa_nominal:Number(data.sisa_nominal),
-        tanggal_pengiriman:data.tanggal_pengiriman
+        id_tlhp: Number(id_tlhp),
+        id_user: 2,
+        uraian: data.uraian,
+        keterangan: data.keterangan,
+        batas_akhir_tl: data.batas_akhir_tl
+          ? String(data.batas_akhir_tl)
+          : null,
+        kondisi_rekomendasi: data.kondisi_rekomendasi,
+        kondisi_temuan: data.kondisi_temuan,
+        nilai_setor: Number(data.nilai_setor),
+        sisa_nominal: Number(data.sisa_nominal),
+        tanggal_pengiriman: data.tanggal_pengiriman,
       };
       console.log('Data yang dikirim:', FormDataTL);
       const result = await axiosSecvice.addData('/tindak_lanjut', FormDataTL);
@@ -73,7 +75,10 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
     <div className="space-y-3">
       <h3 className="text-xl">Tindak Lanjut</h3>
       <CardComponents>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid md:grid-cols-2 gap-3 w-full">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid md:grid-cols-2 gap-3 w-full"
+        >
           <div className="md:col-span-2">
             <InputFieldComponent
               label="Uraian"
@@ -148,11 +153,12 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
             type="date"
             name="batas_akhir_tl"
             placeholder="Tentukan Batas Akhir Tindak Lanjut"
-            register={register('batas_akhit_tl', {
+            register={register('batas_akhir_tl', {
               required: 'Batas Akhir Tindak Lanjut wajib diisi',
-              setValueAs: v => v ? new Date(v).toISOString().split('T')[0] : '',
+              setValueAs: (v) =>
+                v ? new Date(v).toISOString().split('T')[0] : '',
             })}
-            error={errors.batas_akhit_tl}
+            error={errors.batas_akhir_tl}
           />
           <div className="md:col-span-2">
             <InputFieldComponent
@@ -167,9 +173,9 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
               error={errors.keterangan}
             />
           </div>
-          <div className='md:col-span-2'>
+          <div className="md:col-span-2">
             <ButtonType type="submit" Text="Buat Tindak Lanjut" />
-          </div>          
+          </div>
         </form>
       </CardComponents>
     </div>
