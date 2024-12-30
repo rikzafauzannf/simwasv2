@@ -50,7 +50,12 @@ export const useGetNameUser = () => {
     return data.length > 0 ? data[0].no_whatsapp : '';
   };
 
-  return { getNameUser, getUserPhone, isLoading, error };
+  const getUserNIP = (id: number) => {
+    const data = DataPengguna.filter((item) => item.id_user === id);
+    return data.length > 0 ? data[0].nip : '';
+  };
+
+  return { getNameUser, getUserPhone, getUserNIP, isLoading, error };
 };
 
 // ======Jenis Pengawasan======
