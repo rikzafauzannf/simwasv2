@@ -4,25 +4,20 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { FirestoreService } from '@/services/firestore.service';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
-import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchAll } from '@/hooks/useFetchAll';
-import Swal from 'sweetalert2';
 
 const axiosService = new AxiosService();
+
 const JenisPengawasan = () => {
-  const {
-    data: DataJenisPengawasan,
-    isLoading,
-    error,
-    refetch,
-  } = useFetchAll<JenisPengawasanDB>('/jenis_pengawasan');
+  const { data: DataJenisPengawasan, refetch } =
+    useFetchAll<JenisPengawasanDB>('/jenis_pengawasan');
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -30,84 +25,87 @@ const JenisPengawasan = () => {
     },
   });
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>Error: {error.message}</div>;
-
-  // if (!DataJenisPengawasan || DataJenisPengawasan.length === 0)
-  //   return <div>No data available</div>;
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [currentEditId, setCurrentEditId] = React.useState<number | null>(null);
 
   const onSubmit: SubmitHandler<{ jenis_pengawasan: string }> = async (
     data
   ) => {
     try {
-      console.log('Data yang dikirim:', data);
-      const result = await axiosService.addData('/jenis_pengawasan', {
-        jenis_pengawasan: data.jenis_pengawasan,
-      });
-
-      console.log('Respons dari server:', result);
-
+      const result = await axiosService.addData('/jenis_pengawasan', data);
       if (result.success) {
-        console.log('Jenis Pengawasan berhasil disimpan:', result);
+        alert('Data Jenis Pengawasan berhasil disimpan');
         reset();
-        Swal.fire({
-          icon: 'success',
-          title: 'Berhasil',
-          text: 'Data Jenis Pengawasan berhasil disimpan',
-        });
         refetch();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: 'Gagal menyimpan data Jenis Pengawasan',
-      });
+      alert('Gagal menyimpan data Jenis Pengawasan');
+    }
+  };
+
+  const onEditSubmit: SubmitHandler<{ jenis_pengawasan: string }> = async (
+    data
+  ) => {
+    try {
+      const result = await axiosService.updateData(
+        `/jenis_pengawasan/${currentEditId}`,
+        data
+      );
+      if (result.success) {
+        alert('Data Jenis Pengawasan berhasil diperbarui');
+        reset();
+        refetch();
+        handleCancelEdit();
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      alert('Gagal memperbarui data Jenis Pengawasan');
     }
   };
 
   const handleDelete = async (id: number) => {
-    const result = await Swal.fire({
-      title: 'Apakah Anda yakin?',
-      text: 'Apakah Anda yakin ingin menghapus jenis pengawasan ini?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Ya',
-      cancelButtonText: 'Tidak',
-    });
-
-    if (result.isConfirmed) {
+    if (
+      window.confirm('Apakah Anda yakin ingin menghapus jenis pengawasan ini?')
+    ) {
       try {
         const result = await axiosService.deleteData(`/jenis_pengawasan/${id}`);
         if (result.success) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Berhasil',
-            text: 'Jenis Pengawasan berhasil dihapus',
-          });
+          alert('Jenis Pengawasan berhasil dihapus');
           refetch();
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
-        console.error('Error deleting jenis pengawasan:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: 'Gagal menghapus jenis pengawasan',
-        });
+        alert('Gagal menghapus jenis pengawasan');
       }
     }
+  };
+
+  const handleEdit = (id: number, value: string) => {
+    setIsEditing(true);
+    setCurrentEditId(id);
+    setValue('jenis_pengawasan', value);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setCurrentEditId(null);
+    reset();
   };
 
   return (
     <div className="space-y-3">
       <h3 className="text-xl"># Jenis Pengawasan</h3>
       <CardComponents>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3">
+        <form
+          onSubmit={
+            isEditing ? handleSubmit(onEditSubmit) : handleSubmit(onSubmit)
+          }
+          className="grid gap-3"
+        >
           <InputFieldComponent
             label="Jenis Pengawasan"
             identiti="jenis_pengawasan"
@@ -119,7 +117,19 @@ const JenisPengawasan = () => {
             })}
             error={errors.jenis_pengawasan}
           />
-          <ButtonType Text="+ Simpan Jenis Pengawasan" type="submit" />
+          <ButtonType
+            Text={
+              isEditing
+                ? '+ Perbarui Jenis Pengawasan'
+                : '+ Simpan Jenis Pengawasan'
+            }
+            type="submit"
+          />
+          {isEditing && (
+            <button type="button" onClick={handleCancelEdit}>
+              Batal
+            </button>
+          )}
         </form>
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
@@ -128,6 +138,14 @@ const JenisPengawasan = () => {
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_pengawasan}
             </h3>
+            <button
+              onClick={() =>
+                handleEdit(item.id_jenis_pengawasan, item.jenis_pengawasan)
+              }
+              className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
+            >
+              Edit
+            </button>
             <button
               onClick={() => handleDelete(item.id_jenis_pengawasan)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"

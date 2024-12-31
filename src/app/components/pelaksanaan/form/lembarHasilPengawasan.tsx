@@ -8,17 +8,23 @@ import { CardComponents } from '../../Global/Card';
 
 import { ButtonType } from '../../Global/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormLHP } from '@/interface/interfaceHasilPengawasan';
+import { FormLHP, NHPData } from '@/interface/interfaceHasilPengawasan';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useFetchById } from '@/hooks/useFetchById';
 
 interface PropsID {
-  id_pkpt: number;
-  id_no: string;
+  id_nhp: number;
 }
 
 const axiosService = new AxiosService();
-const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
+const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
   const [uploadOption, setUploadOption] = useState('link');
+
+  console.log('data nhp: ', id_nhp);
+
+  const { data: DataNHP, error } = useFetchById<NHPData>('nhp', id_nhp);
+
+  const id_st = Number(DataNHP ? DataNHP.id_st : null);
 
   const handleUploadOptionChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -33,17 +39,19 @@ const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
     formState: { errors },
   } = useForm<FormLHP>({
     defaultValues: {
+      file_lhp: '',
       keterangan_lhp: '',
-      link_lhp: '',
     },
   });
 
   const onSubmit: SubmitHandler<FormLHP> = async (data) => {
     try {
       const result = await axiosService.addData('lhp', {
-        ...data,
-        id_pkpt,
-        id_no,
+        file_lhp: data.file_lhp,
+        keterangan_lhp: data.keterangan_lhp,
+        id_nhp: Number(id_nhp),
+        id_st: Number(id_st),
+        id_user: 2,
       });
 
       if (result.success) {
@@ -59,6 +67,7 @@ const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
       alert('Gagal menyimpan data Laporan Hasil Pengawasan');
     }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <h3 className="text-xl">Upload LHP (Lembar Hasil Pengawasan)</h3>
@@ -113,10 +122,10 @@ const LembarHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
                 name="linkStSuresman"
                 placeholder="Masukan Link Suresman ST"
                 type="link"
-                register={register('link_lhp', {
+                register={register('file_lhp', {
                   required: 'Masukan Link Laporan Hasil Pengawasan',
                 })}
-                error={errors.link_lhp}
+                error={errors.file_lhp}
               />
             )}
             {/* </section> */}

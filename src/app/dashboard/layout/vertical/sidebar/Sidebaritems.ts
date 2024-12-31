@@ -59,17 +59,17 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         url: '/dashboard/perencanaan/pkpt',
       },
-    ],
-  },
-  {
-    heading: 'Pelaksanaan',
-    children: [
       {
         name: 'Surat Tugas',
         icon: 'solar:file-send-line-duotone',
         id: uniqueId(),
         url: '/dashboard/perencanaan/surattugas',
       },
+    ],
+  },
+  {
+    heading: 'Pelaksanaan',
+    children: [
       {
         name: 'Kendali Mutu',
         icon: 'solar:checklist-minimalistic-line-duotone',
@@ -82,11 +82,6 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         url: '/dashboard/pelaksanaan/notahasil',
       },
-    ],
-  },
-  {
-    heading: 'Pelaporan',
-    children: [
       {
         name: 'Lembar Hasil',
         icon: 'solar:folder-check-line-duotone',
@@ -101,9 +96,21 @@ const SidebarContent: MenuItem[] = [
       },
     ],
   },
+  // {
+  //   heading: 'Pelaporan',
+  //   children: [
+  //
+  //   ],
+  // },
   {
     heading: 'Tindak Lanjut',
     children: [
+      {
+        name: 'Tindak Lanjut',
+        icon: 'solar:presentation-graph-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/pelaksanaan/tindaklanjut',
+      },
       // {
       //   name: 'TLHP',
       //   icon: 'solar:folder-check-broken',

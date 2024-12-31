@@ -1,14 +1,33 @@
 export interface FormNHP {
-  id_pkpt: number;
-  id_no: string;
-  tanggal_lhp: string;
-  link_nhp: string;
+  id_st: number;
+  file_nhp: string;
+  id_user: number;
   keterangan_nhp: string;
 }
 
+export type NHPData = {
+  id_nhp: number;
+  id_st: number;
+  file_nhp: string;
+  id_user: number;
+  keterangan_nhp: string;
+  created_at: string;
+};
+
 export interface FormLHP {
-  id_pkpt: number;
-  id_no: string;
-  link_lhp: string;
+  id_st: number;
+  file_lhp: string;
+  id_user: number;
   keterangan_lhp: string;
+  id_nhp: number;
 }
+
+export type LHPData = {
+  id_lhp: number;
+  id_st: number;
+  file_lhp: string;
+  id_user: number;
+  keterangan_lhp: string;
+  id_nhp: number;
+  created_at: string;
+};

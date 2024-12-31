@@ -43,6 +43,9 @@ const UserManage = () => {
     error: errorRuangLingkup,
   } = useGetNameRuangLingkup();
 
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [currentEditId, setCurrentEditId] = React.useState<number | null>(null);
+
   if (isLoadingRuangLingkup) return <div>Loading...</div>;
   if (errorRuangLingkup) return <div>Error: {errorRuangLingkup.message}</div>;
 
@@ -74,6 +77,50 @@ const UserManage = () => {
     }
   };
 
+  const onEditSubmit: SubmitHandler<FormUserManage> = async (data) => {
+    try {
+      const result = await axiosService.updateData(
+        `/pengguna/${currentEditId}`,
+        {
+          username: data.username,
+          nip: data.nip,
+          no_whatsapp: data.no_whatsapp,
+          jabatan: data.jabatan,
+          id_ruang_lingkup: Number(data.id_ruang_lingkup),
+        }
+      );
+      if (result.success) {
+        reset();
+        alert('Data User berhasil diperbarui');
+        refetch();
+        handleCancelEdit();
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+      alert('Gagal memperbarui data User');
+    }
+  };
+
+  const handleEdit = (user: UserManageDB) => {
+    setIsEditing(true);
+    setCurrentEditId(user.id_user);
+    reset({
+      username: user.username,
+      nip: user.nip,
+      no_whatsapp: user.no_whatsapp,
+      jabatan: user.jabatan,
+      id_ruang_lingkup: user.id_ruang_lingkup,
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setCurrentEditId(null);
+    reset();
+  };
+
   const handleDelete = async (id: number) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus User ini?')) {
       try {
@@ -95,7 +142,10 @@ const UserManage = () => {
     <div className="space-y-3">
       <h3 className="text-xl"># UserManage</h3>
       <CardComponents>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3">
+        <form
+          onSubmit={handleSubmit(isEditing ? onEditSubmit : onSubmit)}
+          className="grid gap-3"
+        >
           <section className="grid md:grid-cols-3 gap-3 w-full">
             <div className="md:col-span-2">
               <InputFieldComponent
@@ -154,7 +204,15 @@ const UserManage = () => {
               error={errors.no_whatsapp}
             />
           </section>
-          <ButtonType Text="+ Simpan User" type="submit" />
+          <ButtonType
+            Text={isEditing ? '+ Perbarui User' : '+ Simpan User'}
+            type="submit"
+          />
+          {isEditing && (
+            <button type="button" onClick={handleCancelEdit}>
+              Batal
+            </button>
+          )}
         </form>
       </CardComponents>
       <section className="grid md:grid-cols-2 gap-3">
@@ -185,6 +243,12 @@ const UserManage = () => {
                 {item.no_whatsapp}
               </p>
             </div>
+            <button
+              onClick={() => handleEdit(item)}
+              className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
+            >
+              Edit
+            </button>
             <button
               onClick={() => handleDelete(item.id_user)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"

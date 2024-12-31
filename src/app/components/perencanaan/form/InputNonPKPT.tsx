@@ -76,7 +76,7 @@ const InputNonPKPT = () => {
 
   const potentialMembers = DataUser.map((item) => ({
     id: item.id_user,
-    name: item.username,
+    name: `${item.username} - ${item.jabatan}`,
   }));
 
   console.log('data dari team: ', teamMembers);
@@ -94,7 +94,7 @@ const InputNonPKPT = () => {
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
       const pkptData = {
-        status: 'nonpkpt',
+        status: 'non-pkpt',
         id_user: 2,
         anggaran: String(data.anggaran),
         anggota_tim: String(data.anggota_tim),

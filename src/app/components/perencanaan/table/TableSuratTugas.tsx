@@ -7,10 +7,56 @@ import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { useFetch } from '@/hooks/useFetch';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { useFetchById } from '@/hooks/useFetchById';
+import { useGetNameJenisAudit, useGetNameUser } from '@/hooks/useGetName';
+import { AxiosService } from '@/services/axiosInstance.service';
+import Swal from 'sweetalert2';
 
-const TableSuratTugas = () => {
+interface PropsOptions {
+  id_pkpt?: number;
+  filterID?: string;
+}
+
+const axiosSecvice = new AxiosService();
+
+const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
+  const { data: DataSuratTugas, refetch } =
+    useFetchAll<SuratTugasData>('surat_tugas');
+
+  const { getNameUser } = useGetNameUser();
+  const { getNameJenisAudit } = useGetNameJenisAudit();
+
+  const DataST =
+    filterID === 'true'
+      ? DataSuratTugas.filter((item) => item.id_pkpt === Number(id_pkpt))
+      : DataSuratTugas;
+  console.log('data by id_pkpt : ', DataST);
+
+  const handleDelete = async (id: number) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosSecvice.deleteData(`surat_tugas/${id}`);
+        refetch();
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error!', 'There was an error deleting the file.', 'error');
+      }
+    }
+  };
 
   const columns = [
     {
@@ -19,7 +65,7 @@ const TableSuratTugas = () => {
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={`/dashboard/perencanaan/surattugas/${row.id_jenis_laporan}`}
+            href={`/dashboard/perencanaan/surattugas/${row.id_st}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
@@ -35,16 +81,13 @@ const TableSuratTugas = () => {
             className="p-2 text-yellow-500 hover:text-yellow-700"
           >
             <FaEdit />
-          </button>
+          </button> */}
           <button
-             onClick={() => {
-               setSelectedRow(row);
-               setShowDeleteDialog(true);
-             }}
+            onClick={() => handleDelete(row.id_st)}
             className="p-2 text-red-500 hover:text-red-700"
           >
             <FaTrash />
-          </button> */}
+          </button>
         </div>
       ),
     },
@@ -65,27 +108,33 @@ const TableSuratTugas = () => {
     },
     {
       name: 'Tim Pemeriksa',
-      selector: (row: SuratTugasData) => row.tim_pemeriksa,
+      selector: (row: SuratTugasData) => getNameUser(Number(row.tim_pemeriksa)),
       sortable: true,
     },
     {
       name: 'Irban',
-      selector: (row: SuratTugasData) => row.wk_penanggung_jawab,
+      selector: (row: SuratTugasData) =>
+        getNameUser(Number(row.wk_penanggung_jawab)),
       sortable: true,
     },
     {
       name: 'Pengendali Teknis',
-      selector: (row: SuratTugasData) => row.pengendali_teknis,
+      selector: (row: SuratTugasData) =>
+        getNameUser(Number(row.pengendali_teknis)),
       sortable: true,
     },
     {
       name: 'Ketua Tim',
-      selector: (row: SuratTugasData) => row.ketua_tim,
+      selector: (row: SuratTugasData) => getNameUser(Number(row.ketua_tim)),
       sortable: true,
     },
     {
-      name: 'Tim',
-      selector: (row: SuratTugasData) => row.anggota_tim,
+      name: 'Anggota Tim',
+      selector: (row: SuratTugasData) =>
+        row.anggota_tim
+          .split(',')
+          .map((id) => getNameUser(Number(id)))
+          .join(', '),
       sortable: true,
     },
     {
@@ -105,7 +154,8 @@ const TableSuratTugas = () => {
     },
     {
       name: 'Jenis Audit',
-      selector: (row: SuratTugasData) => row.id_jenis_laporan,
+      selector: (row: SuratTugasData) =>
+        getNameJenisAudit(Number(row.id_jenis_audit)),
       sortable: true,
     },
     {
@@ -113,23 +163,22 @@ const TableSuratTugas = () => {
       selector: (row: SuratTugasData) => row.keterangan,
       sortable: true,
     },
-    {
-      name: 'Link ST',
-      selector: (row: SuratTugasData) => row.link_st,
-      sortable: true,
-    },
+    // {
+    //   name: 'Link ST',
+    //   selector: (row: SuratTugasData) => row.link_st,
+    //   sortable: true,
+    // },
     {
       name: 'File ST',
       selector: (row: SuratTugasData) => row.link_st,
       sortable: true,
     },
   ];
-  const { data: DataSuratTugas } = useFetch<SuratTugasData>('surat_tugas');  
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
-    const filtered = DataSuratTugas.filter(
+    const filtered = DataST.filter(
       (item) =>
         item.no_tglsp.toLowerCase().includes(value.toLowerCase()) ||
         item.program_audit.toLowerCase().includes(value.toLowerCase()) ||
@@ -144,19 +193,17 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join(',');
 
-    const csvData = DataSuratTugas
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (
-              row: SuratTugasData
-            ) => string | number;
-            return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
-          })
-          .join(',');
-      })
-      .join('\n');
+    const csvData = DataST.map((row) => {
+      return columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as (
+            row: SuratTugasData
+          ) => string | number;
+          return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
+        })
+        .join(',');
+    }).join('\n');
 
     const blob = new Blob([`${headers}\n${csvData}`], {
       type: 'text/csv;charset=utf-8',
@@ -170,19 +217,17 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = DataSuratTugas
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (
-              row: SuratTugasData
-            ) => string | number;
-            return selector(row);
-          })
-          .join('\t');
-      })
-      .join('\n');
+    const excelData = DataST.map((row) => {
+      return columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as (
+            row: SuratTugasData
+          ) => string | number;
+          return selector(row);
+        })
+        .join('\t');
+    }).join('\n');
 
     const blob = new Blob([`${headers}\n${excelData}`], {
       type: 'application/vnd.ms-excel;charset=utf-8',
@@ -222,7 +267,7 @@ const TableSuratTugas = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : DataSuratTugas}
+          data={search ? filteredData : DataST}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"

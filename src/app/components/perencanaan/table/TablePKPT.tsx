@@ -2,16 +2,75 @@
 
 import React, { useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaPen, FaPaperclip } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { useFetch } from '@/hooks/useFetch';
+import {
+  useGetNameJenisLaporan,
+  useGetNameJenisPengawasan,
+  useGetNameRuangLingkup,
+  useGetNameUser,
+} from '@/hooks/useGetName';
+import Swal from 'sweetalert2';
+import { AxiosService } from '@/services/axiosInstance.service';
+import { formatCurrency } from '@/hooks/formatCurrency';
+
+const axiosService = new AxiosService();
 
 const TablePKPT: React.FC = () => {
   const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<PKPTDataBase[]>([]);
+
+  const { getNameJenisPengawasan } = useGetNameJenisPengawasan();
+  const { getNameRuangLingkup } = useGetNameRuangLingkup();
+  const { getNameUser } = useGetNameUser();
+  const { getNameJenisLaporan } = useGetNameJenisLaporan();
+
+  const handleCreateReport = async (id_pkpt: number) => {
+    Swal.fire({
+      title: 'Buat Laporan Mingguan',
+      html: `
+        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
+        <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
+      `,
+      focusConfirm: false,
+      preConfirm: async () => {
+        const nomor = (document.getElementById('nomor') as HTMLInputElement)
+          .value;
+        const content = (
+          document.getElementById('reportContent') as HTMLTextAreaElement
+        ).value;
+        if (!content || !nomor) {
+          Swal.showValidationMessage('Silakan isi semua field');
+          return;
+        }
+        return { content, id_pkpt, nomor };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Logika untuk menyimpan laporan
+        const dataForm = {
+          id_pkpt: id_pkpt,
+          id_no: result.value.nomor,
+          laporan_mingguan: result.value.content,
+        };
+        try {
+          const response = await axiosService.addData(
+            '/laporan_mingguan',
+            dataForm
+          );
+          console.log('Laporan:', response);
+          Swal.fire('Laporan berhasil dibuat!', '', 'success');
+        } catch (error) {
+          console.error('Error creating report:', error);
+          Swal.fire('Gagal membuat laporan!', '', 'error');
+        }
+      }
+    });
+  };
 
   const columns: TableColumn<PKPTDataBase>[] = [
     {
@@ -30,8 +89,15 @@ const TablePKPT: React.FC = () => {
           >
             Act
           </Link>
+          <button
+            onClick={() => handleCreateReport(row.id_pkpt)}
+            className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+          >
+            <FaPaperclip />
+          </button>
         </div>
       ),
+      grow: 1.5,
     },
     {
       name: 'Status',
@@ -45,7 +111,7 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Jenis Pengawasan',
-      selector: (row) => row.id_jenis_laporan,
+      selector: (row) => getNameJenisPengawasan(row.id_jenis_laporan),
       sortable: true,
     },
     {
@@ -55,7 +121,7 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Ruang Lingkup',
-      selector: (row) => row.id_ruang_lingkup,
+      selector: (row) => getNameRuangLingkup(row.id_ruang_lingkup),
       sortable: true,
     },
     {
@@ -95,7 +161,11 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'TIM',
-      selector: (row) => row.tim,
+      selector: (row) =>
+        row.tim
+          .split(',')
+          .map((id) => getNameUser(Number(id)))
+          .join(', '),
       // selector: (row) => {
       //   if (!row.tim || !Array.isArray(row.tim)) return '';
       //   return row.tim.map((member) => member.name).join(', ');
@@ -109,12 +179,13 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Jumlah Laporan',
-      selector: (row) => row.jumlah_laporan,
+      selector: (row) =>
+        `${row.jumlah_laporan} - ${getNameJenisLaporan(row.id_jenis_laporan)}`,
       sortable: true,
     },
     {
       name: 'Anggaran',
-      selector: (row) => row.anggaran,
+      selector: (row) => formatCurrency(row.anggaran),
       sortable: true,
     },
     {
@@ -129,14 +200,13 @@ const TablePKPT: React.FC = () => {
     },
   ];
 
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
 
     if (DataPKPT) {
       const filtered = DataPKPT.filter(
-        (item) =>          
+        (item) =>
           item.area_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
           item.status.toLowerCase().includes(value.toLowerCase())
       );

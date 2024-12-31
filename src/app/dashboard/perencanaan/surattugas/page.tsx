@@ -1,5 +1,4 @@
 import { CardComponents } from '@/app/components/Global/Card';
-import CollapseComponents from '@/app/components/Global/Collapse';
 import TableSuratTugas from '@/app/components/perencanaan/table/TableSuratTugas';
 import MapDataPkpt from '@/app/components/realisasi/datapkpt';
 import React from 'react';
@@ -11,7 +10,7 @@ const SuratTugasPage = () => {
       {/* <CollapseComponents title="+ Buat Rekap Surat Tugas">
         <MapDataPkpt todo="perencanaan/surattugas/form" />
       </CollapseComponents> */}
-      <MapDataPkpt todo="perencanaan/surattugas/form" />
+      <MapDataPkpt todo="perencanaan/surattugas/form" title="Buat ST" />
       <div className="grid w-full gap-3">
         <CardComponents>
           <TableSuratTugas />

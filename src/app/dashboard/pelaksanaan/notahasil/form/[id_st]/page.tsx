@@ -10,11 +10,9 @@ interface PageProps {
 const FormNotaHasilPage = ({ params }: PageProps) => {
   const id_st = params.id_st;
 
-  const id_pkpt = 11;
-  const id_no = '2023-001';
   return (
     <div>
-      <NotaHasilPengawasan id_pkpt={id_pkpt} id_no={id_no} />
+      <NotaHasilPengawasan id_st={id_st} />
     </div>
   );
 };

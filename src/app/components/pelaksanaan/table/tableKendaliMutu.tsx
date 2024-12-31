@@ -1,144 +1,175 @@
 'use client';
 
 import React, { useState } from 'react';
-import DataTable from 'react-data-table-component';
+import DataTable, { TableColumn } from 'react-data-table-component';
 import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { KendaliMutuData } from '@/interface/interfaceKendaliMutu';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { useGetNamePKPT } from '@/hooks/useGetName';
+import Swal from 'sweetalert2';
+import { AxiosService } from '@/services/axiosInstance.service';
+
+const axiosService = new AxiosService();
 
 const TableKendaliMutu = () => {
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<KendaliMutuData[]>([]);
 
-  const columns = [
-    // {
-    //   name: 'Actions',
-    //   cell: (row: KendaliMutuData) => (
-    //     <div className="flex gap-2">
-    //       <Link
-    //         // onClick={() => handleView(row)}
-    //         href={`/perencanaan/surattugas/${row.id}`}
-    //         className="p-2 text-blue-500 hover:text-blue-700"
-    //       >
-    //         <FaEye />
-    //       </Link>
-    //       {/* <Link
-    //         href={'/perencanaan/pkpt/actions/1'}
-    //         className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-    //       >
-    //         Act
-    //       </Link> */}
-    //       {/* <button
-    //         onClick={() => handleEdit(row)}
-    //         className="p-2 text-yellow-500 hover:text-yellow-700"
-    //       >
-    //         <FaEdit />
-    //       </button>
-    //       <button
-    //          onClick={() => {
-    //            setSelectedRow(row);
-    //            setShowDeleteDialog(true);
-    //          }}
-    //         className="p-2 text-red-500 hover:text-red-700"
-    //       >
-    //         <FaTrash />
-    //       </button> */}
-    //     </div>
-    //   ),
-    // },
+  const { getNameAreaPengawasan, getNameStatusPKPT } = useGetNamePKPT();
+
+  const columns: TableColumn<KendaliMutuData>[] = [
+    {
+      name: 'Actions',
+      cell: (row) => (
+        <div className="flex gap-2">
+          <Link
+            // onClick={() => handleView(row)}
+            href={row.link_google_drive}
+            className="p-2 text-blue-500 hover:text-blue-700"
+          >
+            <FaEye />
+          </Link>
+          {/* <Link
+            href={'/perencanaan/pkpt/actions/1'}
+            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+          >
+            Act
+          </Link> */}
+          {/* <button
+            onClick={() => handleEdit(row)}
+            className="p-2 text-yellow-500 hover:text-yellow-700"
+          >
+            <FaEdit />
+          </button> */}
+          <button
+            onClick={() => handleDelete(row.id)}
+            className="p-2 text-red-500 hover:text-red-700"
+          >
+            <FaTrash />
+          </button>
+        </div>
+      ),
+    },
+    {
+      name: 'Status PKPT',
+      selector: (row) => getNameStatusPKPT(row.id_pkpt),
+      sortable: true,
+    },
+    {
+      name: 'Area Pengawasan',
+      selector: (row) => getNameAreaPengawasan(row.id_pkpt),
+      sortable: true,
+    },
     {
       name: 'Kartu Penugasan',
-      selector: (row: KendaliMutuData) => row.kartuPenugasan,
+      selector: (row) =>
+        String(row.kartu_penugasan) === 'true' ? 'Ada' : 'Tidak Ada',
       sortable: true,
     },
     {
       name: 'Program Kerja Pengawasan',
-      selector: (row: KendaliMutuData) => row.programKerja,
+      selector: (row) =>
+        String(row.program_kerja_pengawasan) === 'true' ? 'Ada' : 'Tidak Ada',
       sortable: true,
     },
     {
       name: 'Notulensi Kesepakatan',
-      selector: (row: KendaliMutuData) => row.notulensiKesepakatan,
+      selector: (row) =>
+        String(row.notulensi_kesepakatan) === 'true' ? 'Ada' : 'Tidak Ada',
       sortable: true,
     },
     {
       name: 'Kertas Kerja Pengawasan',
-      selector: (row: KendaliMutuData) => row.kertasKerja,
+      selector: (row) =>
+        String(row.kertas_kerja_pengawasan) === 'true' ? 'Ada' : 'Tidak Ada',
       sortable: true,
     },
     {
       name: 'Dokumentasi Pemeriksaan',
-      selector: (row: KendaliMutuData) => row.dokumentasiPemeriksaan,
+      selector: (row) =>
+        String(row.dokumentasi_pemeriksaan) === 'true' ? 'Ada' : 'Tidak Ada',
       sortable: true,
     },
     {
       name: 'Reviu Supervisi',
-      selector: (row: KendaliMutuData) => row.riviuSupervisor,
+      selector: (row) =>
+        String(row.reviu_supervisi) === 'true' ? 'Ada' : 'Tidak Ada',
       sortable: true,
     },
     {
       name: 'Ceklis Penyelesaian',
-      selector: (row: KendaliMutuData) => row.ceklisPenyelesaian,
+      selector: (row) =>
+        String(row.ceklis_penyelesaian) === 'true' ? 'Ada' : 'Tidak Ada',
       sortable: true,
     },
-    {
-      name: 'Link GDrive',
-      selector: (row: KendaliMutuData) => row.linkDrive,
-      sortable: true,
-    },
-    {
-      name: 'Keterangan',
-      selector: (row: KendaliMutuData) => row.keterangan,
-      sortable: true,
-    },
+    // {
+    //   name: 'Link GDrive',
+    //   selector: (row) => row.link_google_drive,
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Keterangan',
+    //   selector: (row) => row.keterangan,
+    //   sortable: true,
+    // },
   ];
 
-  const data: KendaliMutuData[] = [
-    {
-      id: 1,
-      kertasKerja: 'string',
-      kartuPenugasan: 'string',
-      programKerja: 'string',
-      notulensiKesepakatan: 'string',
-      dokumentasiPemeriksaan: 'string',
-      riviuSupervisor: 'string',
-      ceklisPenyelesaian: 'string',
-      linkDrive: 'string',
-      keterangan: 'string',
-    },
-  ];
+  const { data: DataKendaliMutu, refetch } =
+    useFetchAll<KendaliMutuData>('kendali_mutu');
+  const handleDelete = async (id: number) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosService.deleteData(`kendali_mutu/${id}`);
+        refetch();
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error!', 'There was an error deleting the file.', 'error');
+      }
+    }
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
-    const filtered = data.filter(
-      (item) =>
-        item.kartuPenugasan.toLowerCase().includes(value.toLowerCase()) ||
-        item.keterangan.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredData(filtered);
+    if (DataKendaliMutu) {
+      const filtered = DataKendaliMutu.filter((item) =>
+        item.id_no_tg.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }
   };
 
   const exportToCSV = () => {
+    if (!DataKendaliMutu) return;
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join(',');
 
-    const csvData = data
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (
-              row: KendaliMutuData
-            ) => string | number;
-            return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
-          })
-          .join(',');
-      })
-      .join('\n');
+    const csvData = DataKendaliMutu.map((row) => {
+      return columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as (
+            row: KendaliMutuData
+          ) => string | number;
+          return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
+        })
+        .join(',');
+    }).join('\n');
 
     const blob = new Blob([`${headers}\n${csvData}`], {
       type: 'text/csv;charset=utf-8',
@@ -147,24 +178,23 @@ const TableKendaliMutu = () => {
   };
 
   const exportToExcel = () => {
+    if (!DataKendaliMutu) return;
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = data
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (
-              row: KendaliMutuData
-            ) => string | number;
-            return selector(row);
-          })
-          .join('\t');
-      })
-      .join('\n');
+    const excelData = DataKendaliMutu.map((row) => {
+      return columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as (
+            row: KendaliMutuData
+          ) => string | number;
+          return selector(row);
+        })
+        .join('\t');
+    }).join('\n');
 
     const blob = new Blob([`${headers}\n${excelData}`], {
       type: 'application/vnd.ms-excel;charset=utf-8',
@@ -204,7 +234,7 @@ const TableKendaliMutu = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : data}
+          data={search ? filteredData : DataKendaliMutu}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"

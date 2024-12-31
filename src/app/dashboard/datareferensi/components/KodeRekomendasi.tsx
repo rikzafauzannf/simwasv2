@@ -4,56 +4,59 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { TingkatResikoDB } from '@/interface/interfaceReferensi';
+import {
+  FormKodeRekomendasi,
+  FormKodeTemuan,
+  KodeRekomendasiData,
+  KodeTemuanDB,
+} from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetch } from '@/hooks/useFetch';
 
 const axiosService = new AxiosService();
 
-const TingkatResiko = () => {
-  const { data: DataTingkatResiko, refetch } =
-    useFetch<TingkatResikoDB>('tingkat_resiko');
+const KodeRekomendasi = () => {
+  const { data: DataKodeRekomendasi, refetch } =
+    useFetch<KodeRekomendasiData>('/kode_rekomendasi');
   const {
     register,
     handleSubmit,
     reset,
     setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormKodeRekomendasi>({
     defaultValues: {
-      tingkat_resiko: '',
+      kode_rekomendasi: '',
+      keterangan_kode: '',
     },
   });
 
   const [isEditing, setIsEditing] = React.useState(false);
   const [currentEditId, setCurrentEditId] = React.useState<number | null>(null);
-  const [currentEditValue, setCurrentEditValue] = React.useState<string>('');
 
-  const onSubmit: SubmitHandler<{ tingkat_resiko: string }> = async (data) => {
+  const onSubmit: SubmitHandler<FormKodeRekomendasi> = async (data) => {
     try {
-      const result = await axiosService.addData('/tingkat_resiko', data);
+      const result = await axiosService.addData('/kode_rekomendasi', data);
       if (result.success) {
-        alert('Data Tingkat Resiko berhasil disimpan');
+        alert('Data Kode Rekomendasi berhasil disimpan');
         reset();
         refetch();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
-      alert('Gagal menyimpan data Tingkat Resiko');
+      alert('Gagal menyimpan data Kode Rekomendasi');
     }
   };
 
-  const onEditSubmit: SubmitHandler<{ tingkat_resiko: string }> = async (
-    data
-  ) => {
+  const onEditSubmit: SubmitHandler<FormKodeRekomendasi> = async (data) => {
     try {
       const result = await axiosService.updateData(
-        `/tingkat_resiko/${currentEditId}`,
+        `/kode_rekomendasi/${currentEditId}`,
         data
       );
       if (result.success) {
-        alert('Data Tingkat Resiko berhasil diperbarui');
+        alert('Data Kode Rekomendasi berhasil diperbarui');
         reset();
         refetch();
         handleCancelEdit();
@@ -61,46 +64,44 @@ const TingkatResiko = () => {
         throw new Error(result.message);
       }
     } catch (error) {
-      alert('Gagal memperbarui data Tingkat Resiko');
+      alert('Gagal memperbarui data Kode Temuan');
     }
   };
 
   const handleDelete = async (id: number) => {
     if (
-      window.confirm('Apakah Anda yakin ingin menghapus tingkat resiko ini?')
+      window.confirm('Apakah Anda yakin ingin menghapus Kode Rekomendasi ini?')
     ) {
       try {
-        const result = await axiosService.deleteData(
-          `/tingkat_resiko/${Number(id)}`
-        );
+        const result = await axiosService.deleteData(`/kode_rekomendasi/${id}`);
         if (result.success) {
-          alert('Tingkat Resiko berhasil dihapus');
+          alert('Kode Rekomendasi berhasil dihapus');
           refetch();
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
-        alert('Gagal menghapus tingkat resiko');
+        alert('Gagal menghapus Kode Rekomendasi');
       }
     }
   };
 
-  const handleEdit = (id: number, value: string) => {
+  const handleEdit = (id: number, value: string, keterangan: string) => {
     setIsEditing(true);
-    setCurrentEditId(Number(id));
-    setValue('tingkat_resiko', value);
+    setCurrentEditId(id);
+    setValue('kode_rekomendasi', value);
+    setValue('keterangan_kode', keterangan);
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
     setCurrentEditId(null);
-    setCurrentEditValue('');
     reset();
   };
 
   return (
     <div className="space-y-3">
-      <h3 className="text-xl"># Tingkat Resiko</h3>
+      <h3 className="text-xl"># Kode Rekomendasi</h3>
       <CardComponents>
         <form
           onSubmit={
@@ -109,21 +110,32 @@ const TingkatResiko = () => {
           className="grid gap-3"
         >
           <InputFieldComponent
-            label="Tingkat Resiko"
-            identiti="tingkat_resiko"
-            name="tingkat_resiko"
-            placeholder="Tuliskan Tingkat Resiko"
+            label="Kode Rekomendasi"
+            identiti="kode_rekomendasi"
+            name="kode_temuan"
+            placeholder="Kode Rekomendasi"
             type="text"
-            register={register('tingkat_resiko', {
-              required: 'Tingkat Resiko wajib diisi',
+            register={register('kode_rekomendasi', {
+              required: 'Kode Rekomendasi wajib diisi',
             })}
-            error={errors.tingkat_resiko}
+            error={errors.kode_rekomendasi}
+          />
+          <InputFieldComponent
+            label="Keterangan"
+            identiti="keterangan"
+            name="keterangan"
+            placeholder="Tuliskan Keterangan"
+            type="text"
+            register={register('keterangan_kode', {
+              required: 'Keterangan wajib diisi',
+            })}
+            error={errors.keterangan_kode}
           />
           <ButtonType
             Text={
               isEditing
-                ? '+ Perbarui Tingkat Resiko'
-                : '+ Simpan Tingkat Resiko'
+                ? '+ Perbarui Kode Rekomendasi'
+                : '+ Simpan Kode Rekomendasi'
             }
             type="submit"
           />
@@ -135,21 +147,26 @@ const TingkatResiko = () => {
         </form>
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
-        {DataTingkatResiko.map((item) => (
-          <CardComponents key={item.id_tingkat_resiko}>
+        {DataKodeRekomendasi.map((item) => (
+          <CardComponents key={item.id_kode_rekomendasi}>
             <h3 className="text-xl font-bold">
-              {'>>'} {item.tingkat_resiko}
+              {'>>'} {item.kode_rekomendasi}
             </h3>
+            <p>{item.keterangan_kode}</p>
             <button
               onClick={() =>
-                handleEdit(Number(item.id_tingkat_resiko), item.tingkat_resiko)
+                handleEdit(
+                  item.id_kode_rekomendasi,
+                  item.kode_rekomendasi,
+                  item.keterangan_kode
+                )
               }
               className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
             >
               Edit
             </button>
             <button
-              onClick={() => handleDelete(item.id_tingkat_resiko)}
+              onClick={() => handleDelete(item.id_kode_rekomendasi)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
             >
               Hapus
@@ -161,4 +178,4 @@ const TingkatResiko = () => {
   );
 };
 
-export default TingkatResiko;
+export default KodeRekomendasi;

@@ -4,24 +4,25 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { JenisLaporanDB } from '@/interface/interfaceReferensi';
+
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchAll } from '@/hooks/useFetchAll';
+import { FormJenisAudit, JenisAuditDB } from '@/interface/interfaceReferensi';
 
 const axiosService = new AxiosService();
 
-const JenisLaporan = () => {
-  const { data: DataJenisLaporan, refetch } =
-    useFetchAll<JenisLaporanDB>('/jenis_laporan');
+const JenisAudit = () => {
+  const { data: DataJenisAudit, refetch } =
+    useFetchAll<JenisAuditDB>('/jenis_audit');
   const {
     register,
     handleSubmit,
     reset,
     setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormJenisAudit>({
     defaultValues: {
-      jenis_laporan: '',
+      jenis_audit: '',
       keterangan: '',
     },
   });
@@ -29,35 +30,29 @@ const JenisLaporan = () => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [currentEditId, setCurrentEditId] = React.useState<number | null>(null);
 
-  const onSubmit: SubmitHandler<{
-    jenis_laporan: string;
-    keterangan: string;
-  }> = async (data) => {
+  const onSubmit: SubmitHandler<FormJenisAudit> = async (data) => {
     try {
-      const result = await axiosService.addData('jenis_laporan', data);
+      const result = await axiosService.addData('jenis_audit', data);
       if (result.success) {
-        alert('Data Jenis Laporan berhasil disimpan');
+        alert('Data Jenis Audit berhasil disimpan');
         reset();
         refetch();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
-      alert('Gagal menyimpan data Jenis Laporan');
+      alert('Gagal menyimpan data Jenis Audit');
     }
   };
 
-  const onEditSubmit: SubmitHandler<{
-    jenis_laporan: string;
-    keterangan: string;
-  }> = async (data) => {
+  const onEditSubmit: SubmitHandler<FormJenisAudit> = async (data) => {
     try {
       const result = await axiosService.updateData(
-        `/jenis_laporan/${currentEditId}`,
+        `/jenis_audit/${currentEditId}`,
         data
       );
       if (result.success) {
-        alert('Data Jenis Laporan berhasil diperbarui');
+        alert('Data Jenis Audit berhasil diperbarui');
         reset();
         refetch();
         handleCancelEdit();
@@ -65,24 +60,22 @@ const JenisLaporan = () => {
         throw new Error(result.message);
       }
     } catch (error) {
-      alert('Gagal memperbarui data Jenis Laporan');
+      alert('Gagal memperbarui data Jenis Audit');
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (
-      window.confirm('Apakah Anda yakin ingin menghapus jenis laporan ini?')
-    ) {
+    if (window.confirm('Apakah Anda yakin ingin menghapus jenis audit ini?')) {
       try {
-        const result = await axiosService.deleteData(`/jenis_laporan/${id}`);
+        const result = await axiosService.deleteData(`/jenis_audit/${id}`);
         if (result.success) {
-          alert('Jenis Laporan berhasil dihapus');
+          alert('Jenis Audit berhasil dihapus');
           refetch();
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
-        alert('Gagal menghapus jenis laporan');
+        alert('Gagal menghapus jenis audit');
       }
     }
   };
@@ -90,7 +83,7 @@ const JenisLaporan = () => {
   const handleEdit = (id: number, value: string, keterangan: string) => {
     setIsEditing(true);
     setCurrentEditId(id);
-    setValue('jenis_laporan', value);
+    setValue('jenis_audit', value);
     setValue('keterangan', keterangan);
   };
 
@@ -102,7 +95,7 @@ const JenisLaporan = () => {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-xl"># Jenis Laporan</h3>
+      <h3 className="text-xl"># Jenis Audit</h3>
       <CardComponents>
         <form
           onSubmit={
@@ -111,15 +104,15 @@ const JenisLaporan = () => {
           className="grid grid-cols-3 gap-3 w-full"
         >
           <InputFieldComponent
-            label="Jenis laporan"
+            label="Jenis Audit"
             identiti="jenis_laporan"
             name="jenis_laporan"
-            placeholder="Tuliskan Jenis Laporan"
+            placeholder="Tuliskan Jenis Audit"
             type="text"
-            register={register('jenis_laporan', {
-              required: 'Jenis laporan wajib diisi',
+            register={register('jenis_audit', {
+              required: 'Jenis audit wajib diisi',
             })}
-            error={errors.jenis_laporan}
+            error={errors.jenis_audit}
           />
           <div className="col-span-2">
             <InputFieldComponent
@@ -152,17 +145,17 @@ const JenisLaporan = () => {
         </form>
       </CardComponents>
       <section className="grid grid-cols-2 gap-3">
-        {DataJenisLaporan.map((item) => (
-          <CardComponents key={item.id_jenis_laporan}>
+        {DataJenisAudit.map((item) => (
+          <CardComponents key={item.id_jenis_audit}>
             <h3 className="text-xl font-bold">
-              {'>>'} {item.jenis_laporan}
+              {'>>'} {item.jenis_audit}
             </h3>
             <p>{item.keterangan}</p>
             <button
               onClick={() =>
                 handleEdit(
-                  item.id_jenis_laporan,
-                  item.jenis_laporan,
+                  item.id_jenis_audit,
+                  item.jenis_audit,
                   item.keterangan
                 )
               }
@@ -171,7 +164,7 @@ const JenisLaporan = () => {
               Edit
             </button>
             <button
-              onClick={() => handleDelete(item.id_jenis_laporan)}
+              onClick={() => handleDelete(item.id_jenis_audit)}
               className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
             >
               Hapus
@@ -183,4 +176,4 @@ const JenisLaporan = () => {
   );
 };
 
-export default JenisLaporan;
+export default JenisAudit;

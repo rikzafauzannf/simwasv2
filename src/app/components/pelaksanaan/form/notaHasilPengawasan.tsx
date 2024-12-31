@@ -11,12 +11,11 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface PropsID {
-  id_pkpt: number;
-  id_no: string;
+  id_st: number;
 }
 
 const axiosService = new AxiosService();
-const NotaHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
+const NotaHasilPengawasan = ({ id_st }: PropsID) => {
   const [uploadOption, setUploadOption] = useState('link');
 
   const handleUploadOptionChange = (
@@ -33,17 +32,17 @@ const NotaHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
   } = useForm<FormNHP>({
     defaultValues: {
       keterangan_nhp: '',
-      tanggal_lhp: '',
-      link_nhp: '',
+      file_nhp: '',
     },
   });
 
   const onSubmit: SubmitHandler<FormNHP> = async (data) => {
     try {
       const result = await axiosService.addData('nhp', {
-        ...data,
-        id_pkpt,
-        id_no,
+        id_st: Number(id_st),
+        id_user: 2,
+        file_nhp: data.file_nhp,
+        keterangan_nhp: data.keterangan_nhp,
       });
 
       if (result.success) {
@@ -114,13 +113,13 @@ const NotaHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
                   name="linkStSuresman"
                   placeholder="Masukan Link Suresman ST"
                   type="link"
-                  register={register('link_nhp', {
+                  register={register('file_nhp', {
                     required: 'harap masukan link NHP',
                   })}
-                  error={errors.link_nhp}
+                  error={errors.file_nhp}
                 />
               )}
-              <InputFieldComponent
+              {/* <InputFieldComponent
                 label="Tanggal LHP"
                 identiti="tanggal_lhp"
                 name="tanggal_lhp"
@@ -130,7 +129,7 @@ const NotaHasilPengawasan = ({ id_pkpt, id_no }: PropsID) => {
                   required: 'masukan tanggal_lhp',
                 })}
                 error={errors.tanggal_lhp}
-              />
+              /> */}
             </div>
             {/* </section> */}
             {/* <hr className='my-4 border-4'/> */}
