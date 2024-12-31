@@ -12,20 +12,26 @@ interface AuthState {
   clearAuth: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  // Initial state membaca dari localStorage
-  token: JSON.parse(localStorage.getItem('user') || '{}')?.token || null,
-  user: JSON.parse(localStorage.getItem('user') || '{}')?.user || null,
-  
-  // Fungsi untuk mengatur data auth
-  setAuth: (data: { token: string; user: User }) => {
-    localStorage.setItem('user', JSON.stringify(data));
-    set({ token: data.token, user: data.user });
-  },
+export const useAuthStore = create<AuthState>((set) => {
+  let initialToken = null;
+  let initialUser = null;
 
-  // Fungsi untuk menghapus data auth
-  clearAuth: () => {
-    localStorage.removeItem('user');
-    set({ token: null, user: null });
-  },
-}));
+  if (typeof window !== 'undefined') {
+    const storedData = JSON.parse(localStorage.getItem('user') || '{}');
+    initialToken = storedData?.token || null;
+    initialUser = storedData?.user || null;
+  }
+
+  return {
+    token: initialToken,
+    user: initialUser,
+    setAuth: (data: { token: string; user: User }) => {
+      localStorage.setItem('user', JSON.stringify(data));
+      set({ token: data.token, user: data.user });
+    },
+    clearAuth: () => {
+      localStorage.removeItem('user');
+      set({ token: null, user: null });
+    },
+  };
+});
