@@ -12,6 +12,7 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormTemuanHasil } from '@/interface/interfaceTemuanHasil';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface CompoProps {
   id_st: number;
@@ -20,6 +21,7 @@ interface CompoProps {
 const axiosSecvice = new AxiosService();
 
 const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
+  const { user } = useAuthStore()
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataKodeRekomendasi } =
     useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
@@ -63,7 +65,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
         id_kode_rekomendasi: Number(data.id_kode_rekomendasi),
         id_kode_temuan: Number(data.id_kode_temuan),
         id_st: Number(id_st),
-        id_user: 2,
+        id_user: Number(user?.id_user),
         nilai_rekomendasi: Number(data.nilai_rekomendasi),
         kondisi_temuan: data.kondisi_temuan,
         rekomendasi_saran: data.rekomendasi_saran,

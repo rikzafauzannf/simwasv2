@@ -89,7 +89,7 @@ const ViewPkptPage = ({ params }: PageProps) => {
           <h1>test</h1>
         </CardComponents> */}
       </div>
-      <div>
+      <div className='w-full'>
         <DailyActivity />
       </div>
     </section>

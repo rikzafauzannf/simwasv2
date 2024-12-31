@@ -9,6 +9,7 @@ import { ButtonType } from '../../Global/Button';
 import { FormNHP } from '@/interface/interfaceHasilPengawasan';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface PropsID {
   id_st: number;
@@ -16,6 +17,7 @@ interface PropsID {
 
 const axiosService = new AxiosService();
 const NotaHasilPengawasan = ({ id_st }: PropsID) => {
+  const { user } = useAuthStore()
   const [uploadOption, setUploadOption] = useState('link');
 
   const handleUploadOptionChange = (
@@ -40,7 +42,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
     try {
       const result = await axiosService.addData('nhp', {
         id_st: Number(id_st),
-        id_user: 2,
+        id_user: Number(user?.id_user),
         file_nhp: data.file_nhp,
         keterangan_nhp: data.keterangan_nhp,
       });

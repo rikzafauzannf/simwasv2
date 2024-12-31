@@ -18,6 +18,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { JenisAuditDB, JenisLaporanDB } from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { UserManageDB } from '@/interface/interfaceUserManage';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface PropsID {
   id_pkpt: number;
@@ -26,6 +27,7 @@ interface PropsID {
 const axiosSecvice = new AxiosService();
 
 const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
+  const { user } = useAuthStore()
   const { data: DataJenisAudit } = useFetch<JenisAuditDB>('jenis_audit');
   const { data: DataUser } = useFetch<UserManageDB>('pengguna');
   const [uploadOption, setUploadOption] = useState('link');
@@ -86,7 +88,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
   const onSubmit: SubmitHandler<FormSuratTugas> = async (data) => {
     try {
       const dataST: FormSuratTugas = {
-        id_user: 2,
+        id_user: Number(user?.id_user),
         id_pkpt: Number(id_pkpt),
         anggota_tim: teamMembers.map((item) => String(item.id)).join(','),
         bulan: data.bulan,

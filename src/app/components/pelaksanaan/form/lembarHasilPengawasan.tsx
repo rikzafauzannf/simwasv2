@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormLHP, NHPData } from '@/interface/interfaceHasilPengawasan';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchById } from '@/hooks/useFetchById';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface PropsID {
   id_nhp: number;
@@ -18,6 +19,7 @@ interface PropsID {
 
 const axiosService = new AxiosService();
 const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
+  const { user } = useAuthStore()
   const [uploadOption, setUploadOption] = useState('link');
 
   console.log('data nhp: ', id_nhp);
@@ -51,7 +53,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
         keterangan_lhp: data.keterangan_lhp,
         id_nhp: Number(id_nhp),
         id_st: Number(id_st),
-        id_user: 2,
+        id_user: Number(user?.id_user),
       });
 
       if (result.success) {

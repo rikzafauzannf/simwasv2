@@ -278,6 +278,7 @@ const TablePKPT: React.FC = () => {
         <div className="flex justify-between items-center">
           <h3>Data PKPT</h3>
           <div className="space-x-2">
+            <Link href={"/dashboard/perencanaan/pkpt/preview"} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Preview Table</Link>
             <button
               onClick={exportToCSV}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"

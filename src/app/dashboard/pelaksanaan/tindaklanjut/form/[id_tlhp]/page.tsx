@@ -3,6 +3,7 @@ import { ButtonType } from '@/app/components/Global/Button';
 import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import { FormTindakLanjut } from '@/interface/interfaceTindakLanjut';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -18,6 +19,7 @@ const axiosSecvice = new AxiosService();
 
 const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
   const id_tlhp = params.id_tlhp;
+  const { user } = useAuthStore()
   const route = useRouter();
   const {
     register,
@@ -40,8 +42,8 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
   const onSubmit: SubmitHandler<FormTindakLanjut> = async (data) => {
     try {
       const FormDataTL = {
-        id_tlhp: Number(id_tlhp),
-        id_user: 2,
+        id_lhp: Number(id_tlhp),
+        id_user: Number(user?.id_user),
         uraian: data.uraian,
         keterangan: data.keterangan,
         batas_akhir_tl: data.batas_akhir_tl
