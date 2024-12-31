@@ -19,10 +19,13 @@ import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useScopeStore } from '@/middleware/Store/useScopeStore';
 import { UserManageDB } from '@/interface/interfaceUserManage';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();
 
 const InputPKPT = () => {
+  const {user} = useAuthStore()
+
   const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
 
   const { data: DataPengawasan } =
@@ -95,7 +98,7 @@ const InputPKPT = () => {
     try {
       const pkptData = {
         status: 'pkpt',
-        id_user: 2,
+        id_user: Number(user?.id_user),
         anggaran: String(data.anggaran),
         anggota_tim: String(data.anggota_tim),
         area_pengawasan: data.area_pengawasan,
@@ -122,16 +125,16 @@ const InputPKPT = () => {
       console.log('Respons dari server:', result);
 
       if (result.success) {
-        console.log('Jenis Pengawasan berhasil disimpan:', result);
+        console.log('PKPT berhasil disimpan:', result);
         reset();
-        alert('Data Jenis Pengawasan berhasil disimpan');
+        alert('Data PKPT berhasil disimpan');
         resetTeamMembers();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Gagal menyimpan data Jenis Pengawasan');
+      alert('Gagal menyimpan data PKPT');
     }
   };
 

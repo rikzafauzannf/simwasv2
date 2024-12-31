@@ -1,46 +1,63 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { NotifikasiDB } from '@/interface/interfaceNotifikasi';
+import { useGetNamePKPT, useGetNameUser } from '@/hooks/useGetName';
+
 const DailyActivity = () => {
-  const ActivitySteps = [
-    {
-      Time: '09:46',
-      action: 'Payment received from John Doe of $385.90',
-      color: 'bg-primary',
-      line: 'h-full w-px bg-border',
-    },
-    {
-      Time: '09:46',
-      action: 'New sale recorded',
-      id: '#ML-3467',
-      color: 'bg-warning',
-      line: 'h-full w-px bg-border',
-    },
-    {
-      Time: '09:46',
-      action: 'Payment was made of $64.95 to Michael',
-      color: 'bg-warning',
-      line: 'h-full w-px bg-border',
-    },
-    {
-      Time: '09:46',
-      action: 'New sale recorded',
-      id: '#ML-3467',
-      color: 'bg-secondary',
-      line: 'h-full w-px bg-border',
-    },
-    {
-      Time: '09:46',
-      action: 'Project meeting',
-      color: 'bg-error',
-      line: 'h-full w-px bg-border',
-    },
-    {
-      Time: '09:46',
-      action: 'Payment received from John Doe of $385.90',
-      color: 'bg-primary',
-    },
-  ];
+
+  const {data:DataNotifikasi} = useFetchAll<NotifikasiDB>('notifikasi')
+  const {getNameUser}  = useGetNameUser()
+  const {getNameStatusPKPT} = useGetNamePKPT()
+
+
+const ActivitySteps = DataNotifikasi.map((item) => ({
+  Time: new Date(item.created_at).toLocaleString(),
+  action: `${item.notifikasi} @${getNameStatusPKPT(item.id_pkpt)}`,
+  id: getNameUser(item.id_user),
+  color: 'bg-primary',
+  line: 'h-full w-px bg-border',
+  }));
+  // const ActivitySteps = [
+  //   {
+  //     Time: '09:46',
+  //     action: 'Payment received from John Doe of $385.90',
+  //     color: 'bg-primary',
+  //     line: 'h-full w-px bg-border',
+  //   },
+  //   {
+  //     Time: '09:46',
+  //     action: 'New sale recorded',
+  //     id: '#ML-3467',
+  //     color: 'bg-warning',
+  //     line: 'h-full w-px bg-border',
+  //   },
+  //   {
+  //     Time: '09:46',
+  //     action: 'Payment was made of $64.95 to Michael',
+  //     color: 'bg-warning',
+  //     line: 'h-full w-px bg-border',
+  //   },
+  //   {
+  //     Time: '09:46',
+  //     action: 'New sale recorded',
+  //     id: '#ML-3467',
+  //     color: 'bg-secondary',
+  //     line: 'h-full w-px bg-border',
+  //   },
+  //   {
+  //     Time: '09:46',
+  //     action: 'Project meeting',
+  //     color: 'bg-error',
+  //     line: 'h-full w-px bg-border',
+  //   },
+  //   {
+  //     Time: '09:46',
+  //     action: 'Payment received from John Doe of $385.90',
+  //     color: 'bg-primary',
+  //   },
+  // ];
   return (
     <>
       <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
