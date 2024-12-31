@@ -32,7 +32,7 @@ const LaporanMingguanComponent = ({ id_pkpt }: PropsID) => {
     <CardComponents>
       <h3>Rekap Laporan Mingguan</h3>
       <section className="grid w-full gap-3">
-        {dataLaporanMaps.map((item) => (
+        {dataLaporanMaps.length > 0 ? dataLaporanMaps.map((item) => (
           <div
             key={item.id}
             className="space-y-2 p-3 rounded-md shadow-md hover:bg-slate-500/35 hover:text-black"
@@ -44,7 +44,7 @@ const LaporanMingguanComponent = ({ id_pkpt }: PropsID) => {
             <p className="text-slate-800">{item.laporan_mingguan}</p>
             <hr />
           </div>
-        ))}
+        )):(<h1>{">>"} Belum Ada Laporan Tersedia</h1>)}
       </section>
     </CardComponents>
   );
