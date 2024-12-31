@@ -27,6 +27,7 @@ export interface KendaliMutuData {
 
 export type LaporanMingguan = {
   id: number;
+  id_user:string;
   id_pkpt: number;
   id_no: string;
   laporan_mingguan: string;

@@ -16,10 +16,12 @@ import {
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { formatCurrency } from '@/hooks/formatCurrency';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosService = new AxiosService();
 
 const TablePKPT: React.FC = () => {
+  const {user} = useAuthStore()
   const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<PKPTDataBase[]>([]);
@@ -54,8 +56,9 @@ const TablePKPT: React.FC = () => {
         // Logika untuk menyimpan laporan
         const dataForm = {
           id_pkpt: id_pkpt,
-          id_no: result.value.nomor,
-          laporan_mingguan: result.value.content,
+          id_user: String(user?.id_user),
+          id_no: String(result.value.nomor),
+          laporan_mingguan: String(result.value.content),
         };
         try {
           const response = await axiosService.addData(
