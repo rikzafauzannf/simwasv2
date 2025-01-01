@@ -27,7 +27,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "build/types/**/*.ts"
-  ],
+, "src/middleware/HOC.tsx"  ],
   "exclude": ["node_modules"],
   "baseUrl": "."
 }

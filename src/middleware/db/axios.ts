@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { useAuthStore } from '../Store/useAuthStore';
 
 // Validasi bahwa API endpoint tersedia
 const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -20,7 +21,7 @@ const axiosInstance: AxiosInstance = axios.create({
 // Interceptor untuk menambahkan Authorization jika dibutuhkan
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = process.env.NEXT_SECRET_API_TOKEN;
+    const {token} = useAuthStore()
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

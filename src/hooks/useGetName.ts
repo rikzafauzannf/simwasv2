@@ -55,7 +55,14 @@ export const useGetNameUser = () => {
     return data.length > 0 ? data[0].nip : '';
   };
 
-  return { getNameUser, getUserPhone, getUserNIP, isLoading, error };
+  const {getNameRuangLingkup} = useGetNameRuangLingkup()
+
+  const getUserDinas = (id: number) => {
+    const data = DataPengguna.filter((item) => item.id_user === id);
+    return data.length > 0 ?  getNameRuangLingkup(Number(data[0].id_ruang_lingkup)) : '';
+  };
+
+  return { getNameUser, getUserPhone, getUserNIP, getUserDinas, isLoading, error };
 };
 
 // ======Jenis Pengawasan======

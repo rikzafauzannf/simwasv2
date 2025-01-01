@@ -1,25 +1,19 @@
-import React from 'react';
-import { CardComponents } from '../components/Global/Card';
-import CardAkumulasiDataALL from '../components/dashboard/CardAkumulasiDataALL';
-import ChartTingkatRisiko from '../components/dashboard/ChartTingkatRisiko';
-import ChartPengawasan from '../components/dashboard/ChartPengawasan';
-import ChartRuangLingkup from '../components/dashboard/ChartRuangLingkup';
-import ChartJenisPengawasan from '../components/dashboard/ChartJenisPengawasan';
-import ChartAnggaran from '../components/dashboard/ChartAnggaran';
-import Chartlaporan from '../components/dashboard/ChartLaporan';
-import RevenueForecast from '../components/dashboard/RevenueForecast';
-// import SalesProfit from '../components/dashboard/RevenueForecast';
-// import NewCustomers from '../components/dashboard/NewCustomers';
-// import TotalIncome from '../components/dashboard/TotalIncome';
-// import ProductRevenue from '../components/dashboard/ProductRevenue';
-// import DailyActivity from '../components/dashboard/DailyActivity';
-// import BlogCards from '../components/dashboard/BlogCards';
-// import Link from 'next/link';
+import React from "react";
+import { CardComponents } from "../components/Global/Card";
+import CardAkumulasiDataALL from "../components/dashboard/CardAkumulasiDataALL";
+import ChartTingkatRisiko from "../components/dashboard/ChartTingkatRisiko";
+import ChartPengawasan from "../components/dashboard/ChartPengawasan";
+import ChartRuangLingkup from "../components/dashboard/ChartRuangLingkup";
+import ChartJenisPengawasan from "../components/dashboard/ChartJenisPengawasan";
+import ChartAnggaran from "../components/dashboard/ChartAnggaran";
+import Chartlaporan from "../components/dashboard/ChartLaporan";
+import RevenueForecast from "../components/dashboard/RevenueForecast";
+import withAuthAndRole from "@/middleware/HOC";
 
-const page = () => {
+const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-8">
-      {/* top */}
+      {/* Top Section */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
         <div className="lg:col-span-2">
           <CardAkumulasiDataALL />
@@ -28,7 +22,7 @@ const page = () => {
           <ChartTingkatRisiko />
         </CardComponents>
       </section>
-      {/* data chart */}
+      {/* Data Chart */}
       <CardComponents>
         <ChartPengawasan />
       </CardComponents>
@@ -55,4 +49,5 @@ const page = () => {
   );
 };
 
-export default page;
+// Apply HOC to enforce role-based access
+export default withAuthAndRole(DashboardPage, { allowedRoles: ["admin", "manager"] });
