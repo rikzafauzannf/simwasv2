@@ -5,9 +5,15 @@ import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useGetNameUser } from '@/hooks/useGetName';
+
 const Profile = () => {
-  const { user } = useAuthStore();
-  const { getNameUser } = useGetNameUser()
+  const { user, clearAuth } = useAuthStore(); // Destructure clearAuth from useAuthStore
+  const { getNameUser } = useGetNameUser();
+
+  const handleLogout = () => {
+    clearAuth(); // Call clearAuth to clear the authentication data
+  };
+
   return (
     <div className="relative group/menu">
       <Dropdown
@@ -27,8 +33,6 @@ const Profile = () => {
         )}
       >
         <Dropdown.Item
-          // as={Link}
-          // href="#"
           className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark"
         >
           <Icon icon="solar:user-circle-outline" height={20} />
@@ -42,19 +46,12 @@ const Profile = () => {
           <Icon icon="solar:letter-linear" height={20} />
           Account
         </Dropdown.Item>
-        {/* <Dropdown.Item
-          as={Link}
-          href="#"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark"
-        >
-          <Icon icon="solar:checklist-linear" height={20} />
-          My Task
-        </Dropdown.Item> */}
         <div className="p-3 pt-0">
           <Button
             as={Link}
             size={'sm'}
             href="/"
+            onClick={handleLogout} // Add onClick handler for logout
             className="mt-2 border border-primary text-primary bg-transparent hover:bg-lightprimary outline-none focus:outline-none"
           >
             Logout
