@@ -15,12 +15,13 @@ import {
 } from '@/hooks/useGetName';
 import { formatCurrency } from '@/hooks/formatCurrency';
 import { sum } from 'lodash';
+import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 
-interface TableToPrintProps {
-  DataPKPT: PKPTDataBase[];
-}
+const TableToPrint = () => {
 
-const TableToPrint: React.FC<TableToPrintProps> = ({ DataPKPT }) => {
+  const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
+  const { data: DataJenisPengawasan } = useFetchAll<JenisPengawasanDB>('jenis_pengawasan')
+
   const { getNameUser } = useGetNameUser();
   const { getNameTingkatResiko } = useGetNameTingkatResiko();
   const { getNameRuangLingkup } = useGetNameRuangLingkup();
@@ -113,98 +114,110 @@ const TableToPrint: React.FC<TableToPrintProps> = ({ DataPKPT }) => {
           <td className="border border-gray-300 p-2">(11)</td>
           <td className="border border-gray-300 p-2">(12)</td>
         </tr>
-        <tr className="hover:bg-gray-100 bg-gray-200">
-          <th className="border border-gray-300 p-2">A.</th>
-          <th className="border border-gray-300 p-2" colSpan={2}>
-            AUDIT KINERJA
-          </th>
-          {/* <th className='border border-gray-300 p-2'></th> */}
-          <th className="border border-gray-300 p-2">{DataPKPT.length}</th>
-          <th className="border border-gray-300 p-2" colSpan={2}></th>
-          <th className="border border-gray-300 p-2">
-            {sum(DataPKPT.map((item) => item.id_ruang_lingkup))}
-          </th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2" colSpan={2}>
-            {sum(DataPKPT.map((item) => item.jumlah_laporan))}
-          </th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-          <th className="border border-gray-300 p-2"></th>
-        </tr>
-        {DataPKPT.map((item, index) => (
-          <tr key={item.id_pkpt} className="hover:bg-gray-100">
-            <td className="border border-gray-300 p-2 text-center">
-              {index + 1}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {item.area_pengawasan}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {getNameJenisPengawasan(item.id_jenis_pengawasan)}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {item.tujuan_sasaran}
-            </td>
-            <td className="border border-gray-300 p-2" colSpan={2}>
-              {getNameRuangLingkup(item.id_ruang_lingkup)}
-            </td>
-            <td className="border border-gray-300 p-2">1</td>
-            <td className="border border-gray-300 p-2">{item.rmp_pkpt}</td>
-            <td className="border border-gray-300 p-2">{item.rpl_pkpt}</td>
-            <td className="border border-gray-300 p-2">
-              {item.penanggung_jawab}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {item.wakil_penanggung_jawab}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {item.pengendali_teknis}
-            </td>
-            <td className="border border-gray-300 p-2">{item.ketua_tim}</td>
-            <td className="border border-gray-300 p-2">{item.anggota_tim}</td>
-            <td className="border border-gray-300 p-2">{item.jumlah}</td>
-            <td className="border border-gray-300 p-2">
-              {item.tim
-                .split(',')
-                .map((id) => getNameUser(Number(id)))
-                .join(', ')}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {formatCurrency(item.anggaran)}
-            </td>
-            <td className="border border-gray-300 p-2" colSpan={2}>
-              {item.jumlah_laporan}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {getNameJenisLaporan(item.id_jenis_laporan)}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {item.sarana_prasarana}
-            </td>
-            <td className="border border-gray-300 p-2">
-              {getNameTingkatResiko(item.id_tingkat_resiko)}
-            </td>
-            <td className="border border-gray-300 p-2">{item.keterangan}</td>
-          </tr>
-        ))}
+        {DataJenisPengawasan.map((jenisPengawasanItem, index) => {
+          const filteredPKPT = DataPKPT.filter(
+            (pkptItem) => pkptItem.id_jenis_pengawasan === jenisPengawasanItem.id_jenis_pengawasan
+          );
+
+          const letter = String.fromCharCode(65 + index);
+
+          return (
+            <React.Fragment key={jenisPengawasanItem.id_jenis_pengawasan}>
+              <tr className="hover:bg-gray-100 bg-gray-200">
+                <th className="border border-gray-300 p-2">{letter}.</th>
+                <th className="border border-gray-300 p-2" colSpan={2}>
+                  {jenisPengawasanItem.jenis_pengawasan}
+                </th>
+                <th className="border border-gray-300 p-2">
+                  {filteredPKPT.length}
+                </th>
+                <th className="border border-gray-300 p-2" colSpan={2}></th>
+                <th className="border border-gray-300 p-2">
+                  {sum(filteredPKPT.map((item) => item.id_ruang_lingkup))}
+                </th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2" colSpan={2}>
+                  {sum(filteredPKPT.map((item) => item.jumlah_laporan))}
+                </th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+                <th className="border border-gray-300 p-2"></th>
+              </tr>
+              {filteredPKPT.map((item, index) => (
+                <tr key={item.id_pkpt} className="hover:bg-gray-100">
+                  <td className="border border-gray-300 p-2 text-center">
+                    {index + 1}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {item.area_pengawasan}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {getNameJenisPengawasan(item.id_jenis_pengawasan)}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {item.tujuan_sasaran}
+                  </td>
+                  <td className="border border-gray-300 p-2" colSpan={2}>
+                    {getNameRuangLingkup(item.id_ruang_lingkup)}
+                  </td>
+                  <td className="border border-gray-300 p-2">1</td>
+                  <td className="border border-gray-300 p-2">{item.rmp_pkpt}</td>
+                  <td className="border border-gray-300 p-2">{item.rpl_pkpt}</td>
+                  <td className="border border-gray-300 p-2">
+                    {item.penanggung_jawab}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {item.wakil_penanggung_jawab}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {item.pengendali_teknis}
+                  </td>
+                  <td className="border border-gray-300 p-2">{item.ketua_tim}</td>
+                  <td className="border border-gray-300 p-2">{item.anggota_tim}</td>
+                  <td className="border border-gray-300 p-2">{item.jumlah}</td>
+                  <td className="border border-gray-300 p-2">
+                    {item.tim
+                      .split(',')
+                      .map((id) => getNameUser(Number(id)))
+                      .join(', ')}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {formatCurrency(item.anggaran)}
+                  </td>
+                  <td className="border border-gray-300 p-2" colSpan={2}>
+                    {item.jumlah_laporan}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {getNameJenisLaporan(item.id_jenis_laporan)}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {item.sarana_prasarana}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {getNameTingkatResiko(item.id_tingkat_resiko)}
+                  </td>
+                  <td className="border border-gray-300 p-2">{item.keterangan}</td>
+                </tr>
+              ))}
+            </React.Fragment>
+          );
+        })}
       </tbody>
     </Table>
   );
 };
 
-const SamplePage: React.FC = () => {
-  const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
+const SamplePage: React.FC = () => {  
   const componentRef = useRef<HTMLDivElement | null>(null);
   // const handlePrint = useReactToPrint({
   //   content: () => componentRef.current,
@@ -221,7 +234,7 @@ const SamplePage: React.FC = () => {
       <CardComponents>
         <div className="overflow-x-auto">
           <div ref={componentRef}>
-            <TableToPrint DataPKPT={DataPKPT} />
+            <TableToPrint/>
           </div>
         </div>
       </CardComponents>
