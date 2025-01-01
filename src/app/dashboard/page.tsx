@@ -8,9 +8,9 @@ import ChartJenisPengawasan from "../components/dashboard/ChartJenisPengawasan";
 import ChartAnggaran from "../components/dashboard/ChartAnggaran";
 import Chartlaporan from "../components/dashboard/ChartLaporan";
 import RevenueForecast from "../components/dashboard/RevenueForecast";
-import withAuthAndRole from "@/middleware/HOC";
 
-const DashboardPage: React.FC = () => {
+
+const DashboardPage = () => {
   return (
     <div className="space-y-8">
       {/* Top Section */}
@@ -49,5 +49,4 @@ const DashboardPage: React.FC = () => {
   );
 };
 
-// Apply HOC to enforce role-based access
-export default withAuthAndRole(DashboardPage, { allowedRoles: ["admin", "manager"] });
+export default DashboardPage;

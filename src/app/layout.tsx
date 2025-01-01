@@ -25,7 +25,9 @@ export default function RootLayout({
         <ThemeModeScript />
       </head>
       <body className={`${manrope.className}`}>
+        
         <Flowbite theme={{ theme: customTheme }}>{children}</Flowbite>
+        
       </body>
     </html>
   );
