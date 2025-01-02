@@ -20,6 +20,7 @@ interface PageProps {
 
 const ViewPkptPage = ({ params }: PageProps) => {
   const id_pkpt = params.id_pkpt;
+  console.log("id_pkpt params: ",id_pkpt)
 
   const tabs_list = [
     {
@@ -89,8 +90,8 @@ const ViewPkptPage = ({ params }: PageProps) => {
           <h1>test</h1>
         </CardComponents> */}
       </div>
-      <div className='w-full'>
-        <DailyActivity />
+      <div className="w-full">
+        <DailyActivity id_pkpt={id_pkpt}/>
       </div>
     </section>
   );

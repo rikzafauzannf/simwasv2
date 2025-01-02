@@ -19,7 +19,7 @@ interface PropsID {
 
 const axiosService = new AxiosService();
 const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
-  const { user } = useAuthStore()
+  const { user } = useAuthStore();
   const [uploadOption, setUploadOption] = useState('link');
 
   console.log('data nhp: ', id_nhp);

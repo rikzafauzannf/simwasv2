@@ -21,6 +21,7 @@
     "firebase": "^11.0.2",
     "flowbite": "2.3.0",
     "flowbite-react": "0.10.1",
+    "html2pdf.js": "^0.10.2",
     "lodash": "^4.17.21",
     "moment": "2.29.4",
     "next": "^14.2.17",

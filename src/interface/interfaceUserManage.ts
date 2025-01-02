@@ -4,6 +4,7 @@ export interface FormUserManage {
   no_whatsapp: string;
   jabatan: string;
   id_ruang_lingkup: string;
+  role:string
 }
 
 export type UserManageDB = {
@@ -13,6 +14,7 @@ export type UserManageDB = {
   no_whatsapp: string;
   jabatan: string;
   id_ruang_lingkup: string;
+  role:string;
   created_at: string;
   otp: string;
   exp_otp: string;

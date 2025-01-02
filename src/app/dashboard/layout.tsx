@@ -10,20 +10,20 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthRoleWrapper allowedRoles={['admin']} >
-    <div className="flex w-full min-h-screen">
-      <div className="page-wrapper flex w-full">
-        {/* Header/sidebar */}
-        <Sidebar />
-        <div className="body-wrapper w-full bg-white dark:bg-dark">
-          <Header />
-          {/* Body Content  */}
-          <div className="bg-lightgray mr-3 rounded-page min-h-[90vh]">
-            <div className={`container mx-auto  py-30`}>{children}</div>
+    <AuthRoleWrapper allowedRoles={['Admin']}>
+      <div className="flex w-full min-h-screen">
+        <div className="page-wrapper flex w-full">
+          {/* Header/sidebar */}
+          <Sidebar />
+          <div className="body-wrapper w-full bg-white dark:bg-dark">
+            <Header />
+            {/* Body Content  */}
+            <div className="bg-lightgray mr-3 rounded-page min-h-[90vh]">
+              <div className={`container mx-auto  py-30`}>{children}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </AuthRoleWrapper>
   );
 }

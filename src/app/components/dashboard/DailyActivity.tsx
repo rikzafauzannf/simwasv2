@@ -5,20 +5,29 @@ import { useFetchAll } from '@/hooks/useFetchAll';
 import { NotifikasiDB } from '@/interface/interfaceNotifikasi';
 import { useGetNamePKPT, useGetNameUser } from '@/hooks/useGetName';
 
-const DailyActivity = () => {
+interface PropsComponent {
+  id_pkpt : number;
+}
 
-  const {data:DataNotifikasi} = useFetchAll<NotifikasiDB>('notifikasi')
-  const {getNameUser}  = useGetNameUser()
-  const {getNameStatusPKPT} = useGetNamePKPT()
+const DailyActivity: React.FC<PropsComponent> = ({id_pkpt}) => {
+  console.log("conf id_pkpt: ", id_pkpt);
+  const { data: DataNotifikasi } = useFetchAll<NotifikasiDB>('notifikasi');
+  const { getNameUser,getUserPhone } = useGetNameUser();
+  const { getNameStatusPKPT } = useGetNamePKPT();
+  console.log("data Notifikasi all: ",DataNotifikasi)
+  const dataFilter = DataNotifikasi ? DataNotifikasi.filter((item) => item.id_pkpt === Number(id_pkpt)) : [];
+  console.log("Data Notifikasi hasil filter: ", dataFilter);
 
-
-const ActivitySteps = DataNotifikasi.map((item) => ({
-  Time: new Date(item.created_at).toLocaleString(),
-  action: `${item.notifikasi} @${getNameStatusPKPT(item.id_pkpt)}`,
-  id: getNameUser(item.id_user),
-  color: 'bg-primary',
-  line: 'h-full w-px bg-border',
+  const ActivitySteps = dataFilter.map((item) => ({
+    Time: new Date(item.created_at).toLocaleString(),
+    action: `${item.notifikasi} @${getNameStatusPKPT(item.id_pkpt)}`,
+    id: getNameUser(item.id_user),
+    no_wa : getUserPhone(item.id_user),
+    color: 'bg-primary',
+    line: 'h-full w-px bg-border',
   }));
+  console.log("ActivitySteps: ", ActivitySteps);
+
   // const ActivitySteps = [
   //   {
   //     Time: '09:46',
@@ -63,7 +72,7 @@ const ActivitySteps = DataNotifikasi.map((item) => ({
       <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
         <h5 className="card-title mb-6">Notifikasi</h5>
 
-        <div className="min-h-dvh overflow-auto">
+        <div className="maxh-dvh overflow-auto">
           <div className="flex flex-col mt-2">
             <ul>
               {ActivitySteps.map((item, index) => (
@@ -80,7 +89,7 @@ const ActivitySteps = DataNotifikasi.map((item) => ({
                     </div>
                     <div className="">
                       <p className="text-dark text-start">{item.action}</p>
-                      <Link href="#" className="text-blue-700">
+                      <Link href={`https://wa.me/${item.no_wa}`} target='blank' className="text-blue-700">
                         {item.id}
                       </Link>
                     </div>

@@ -27,7 +27,7 @@ interface PropsID {
 const axiosSecvice = new AxiosService();
 
 const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
-  const { user } = useAuthStore()
+  const { user } = useAuthStore();
   const { data: DataJenisAudit } = useFetch<JenisAuditDB>('jenis_audit');
   const { data: DataUser } = useFetch<UserManageDB>('pengguna');
   const [uploadOption, setUploadOption] = useState('link');

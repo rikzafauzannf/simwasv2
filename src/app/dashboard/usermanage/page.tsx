@@ -49,10 +49,33 @@ const UserManage = () => {
   if (isLoadingRuangLingkup) return <div>Loading...</div>;
   if (errorRuangLingkup) return <div>Error: {errorRuangLingkup.message}</div>;
 
-  const optionsRole = DataRuangLingkup.map((item) => ({
+  const optionRuangLingkup = DataRuangLingkup.map((item) => ({
     value: String(item.id_ruang_lingkup),
     title: item.ruang_lingkup,
   }));
+
+  const OptionsRole = [
+    {
+      value:"Admin",
+      title:"Admin"
+    },
+    {
+      value:"Pimpinan",
+      title:"Pimpinan",
+    },
+    {
+      value:"Perencana",
+      title:"Perencana",
+    },
+    {
+      value:"Pelaksana",
+      title:"Pelaksana",
+    },
+    {
+      value:"Auditor",
+      title:"Auditor",
+    }
+  ]
 
   const onSubmit: SubmitHandler<FormUserManage> = async (data) => {
     try {
@@ -61,12 +84,12 @@ const UserManage = () => {
         nip: data.nip,
         no_whatsapp: data.no_whatsapp,
         jabatan: data.jabatan,
+        role: data.role,
         id_ruang_lingkup: Number(data.id_ruang_lingkup),
       });
       if (result.success) {
-        console.log('User berhasil disimpan:', result);
-        reset();
         alert('Data User berhasil disimpan');
+        reset();
         refetch();
       } else {
         throw new Error(result.message);
@@ -86,12 +109,13 @@ const UserManage = () => {
           nip: data.nip,
           no_whatsapp: data.no_whatsapp,
           jabatan: data.jabatan,
+          role: data.role,
           id_ruang_lingkup: Number(data.id_ruang_lingkup),
         }
       );
       if (result.success) {
-        reset();
         alert('Data User berhasil diperbarui');
+        reset();
         refetch();
         handleCancelEdit();
       } else {
@@ -111,14 +135,15 @@ const UserManage = () => {
       nip: user.nip,
       no_whatsapp: user.no_whatsapp,
       jabatan: user.jabatan,
+      role: user.role,
       id_ruang_lingkup: user.id_ruang_lingkup,
     });
   };
 
   const handleCancelEdit = () => {
-    setIsEditing(false);
-    setCurrentEditId(null);
     reset();
+    setIsEditing(false);
+    setCurrentEditId(null);    
   };
 
   const handleDelete = async (id: number) => {
@@ -146,8 +171,8 @@ const UserManage = () => {
           onSubmit={handleSubmit(isEditing ? onEditSubmit : onSubmit)}
           className="grid gap-3"
         >
-          <section className="grid md:grid-cols-3 gap-3 w-full">
-            <div className="md:col-span-2">
+          <section className="grid md:grid-cols-4 gap-3 w-full">
+            <div className="md:col-span-3">
               <InputFieldComponent
                 label="Nama Lengkap"
                 identiti="nama"
@@ -163,12 +188,22 @@ const UserManage = () => {
             <SelectInputField
               label="Role"
               identiti="select-field-role"
-              options={optionsRole}
-              register={register('id_ruang_lingkup')}
-              placeholder="Pilih Role Anda"
-              error={errors.id_ruang_lingkup}
+              options={OptionsRole}
+              register={register('role')}
+              placeholder="Pilih Ruang Lingkup Anda"
+              error={errors.role}
               type="select"
               name="role"
+            />
+            <SelectInputField
+              label="Asal Dinas"
+              identiti="select-field-asal"
+              options={optionRuangLingkup}
+              register={register('id_ruang_lingkup')}
+              placeholder="Pilih Ruang Lingkup Anda"
+              error={errors.id_ruang_lingkup}
+              type="select"
+              name="asal"
             />
             <InputFieldComponent
               label="NIP"
@@ -218,6 +253,7 @@ const UserManage = () => {
       <section className="grid md:grid-cols-2 gap-3">
         {DataPengguna.map((item) => (
           <CardComponents key={item.id_user}>
+            <p>@ {item.role}</p>
             <h3 className="text-xl font-bold">
               {'>>'} {item.username}
             </h3>

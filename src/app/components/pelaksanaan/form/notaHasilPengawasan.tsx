@@ -17,7 +17,7 @@ interface PropsID {
 
 const axiosService = new AxiosService();
 const NotaHasilPengawasan = ({ id_st }: PropsID) => {
-  const { user } = useAuthStore()
+  const { user } = useAuthStore();
   const [uploadOption, setUploadOption] = useState('link');
 
   const handleUploadOptionChange = (

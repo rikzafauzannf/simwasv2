@@ -21,7 +21,7 @@ interface CompoProps {
 const axiosSecvice = new AxiosService();
 
 const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
-  const { user } = useAuthStore()
+  const { user } = useAuthStore();
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataKodeRekomendasi } =
     useFetchAll<KodeRekomendasiData>('kode_rekomendasi');

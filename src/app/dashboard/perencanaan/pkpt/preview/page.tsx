@@ -18,9 +18,9 @@ import { sum } from 'lodash';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 
 const TableToPrint = () => {
-
   const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
-  const { data: DataJenisPengawasan } = useFetchAll<JenisPengawasanDB>('jenis_pengawasan')
+  const { data: DataJenisPengawasan } =
+    useFetchAll<JenisPengawasanDB>('jenis_pengawasan');
 
   const { getNameUser } = useGetNameUser();
   const { getNameTingkatResiko } = useGetNameTingkatResiko();
@@ -116,7 +116,9 @@ const TableToPrint = () => {
         </tr>
         {DataJenisPengawasan.map((jenisPengawasanItem, index) => {
           const filteredPKPT = DataPKPT.filter(
-            (pkptItem) => pkptItem.id_jenis_pengawasan === jenisPengawasanItem.id_jenis_pengawasan
+            (pkptItem) =>
+              pkptItem.id_jenis_pengawasan ===
+              jenisPengawasanItem.id_jenis_pengawasan
           );
 
           const letter = String.fromCharCode(65 + index);
@@ -133,7 +135,7 @@ const TableToPrint = () => {
                 </th>
                 <th className="border border-gray-300 p-2" colSpan={2}></th>
                 <th className="border border-gray-300 p-2">
-                  {sum(filteredPKPT.map((item) => item.id_ruang_lingkup))}
+                  {filteredPKPT.filter((item) => item.id_ruang_lingkup).length}
                 </th>
                 <th className="border border-gray-300 p-2"></th>
                 <th className="border border-gray-300 p-2"></th>
@@ -171,8 +173,12 @@ const TableToPrint = () => {
                     {getNameRuangLingkup(item.id_ruang_lingkup)}
                   </td>
                   <td className="border border-gray-300 p-2">1</td>
-                  <td className="border border-gray-300 p-2">{item.rmp_pkpt}</td>
-                  <td className="border border-gray-300 p-2">{item.rpl_pkpt}</td>
+                  <td className="border border-gray-300 p-2">
+                    {item.rmp_pkpt}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {item.rpl_pkpt}
+                  </td>
                   <td className="border border-gray-300 p-2">
                     {item.penanggung_jawab}
                   </td>
@@ -182,8 +188,12 @@ const TableToPrint = () => {
                   <td className="border border-gray-300 p-2">
                     {item.pengendali_teknis}
                   </td>
-                  <td className="border border-gray-300 p-2">{item.ketua_tim}</td>
-                  <td className="border border-gray-300 p-2">{item.anggota_tim}</td>
+                  <td className="border border-gray-300 p-2">
+                    {item.ketua_tim}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {item.anggota_tim}
+                  </td>
                   <td className="border border-gray-300 p-2">{item.jumlah}</td>
                   <td className="border border-gray-300 p-2">
                     {item.tim
@@ -206,7 +216,9 @@ const TableToPrint = () => {
                   <td className="border border-gray-300 p-2">
                     {getNameTingkatResiko(item.id_tingkat_resiko)}
                   </td>
-                  <td className="border border-gray-300 p-2">{item.keterangan}</td>
+                  <td className="border border-gray-300 p-2">
+                    {item.keterangan}
+                  </td>
                 </tr>
               ))}
             </React.Fragment>
@@ -217,14 +229,14 @@ const TableToPrint = () => {
   );
 };
 
-const SamplePage: React.FC = () => {  
+const SamplePage: React.FC = () => {
   const componentRef = useRef<HTMLDivElement | null>(null);
   // const handlePrint = useReactToPrint({
   //   content: () => componentRef.current,
   // });
 
   return (
-    <div className='space-y-3'>
+    <div className="space-y-3">
       <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
         <h5 className="card-title mb-3">Sample Table PKPT</h5>
         <p className="card-subtitle">Development Stage Only</p>
@@ -234,7 +246,7 @@ const SamplePage: React.FC = () => {
       <CardComponents>
         <div className="overflow-x-auto">
           <div ref={componentRef}>
-            <TableToPrint/>
+            <TableToPrint />
           </div>
         </div>
       </CardComponents>

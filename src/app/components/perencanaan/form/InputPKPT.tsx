@@ -24,7 +24,7 @@ import { useAuthStore } from '@/middleware/Store/useAuthStore';
 const axiosSecvice = new AxiosService();
 
 const InputPKPT = () => {
-  const {user} = useAuthStore()
+  const { user } = useAuthStore();
 
   const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
 

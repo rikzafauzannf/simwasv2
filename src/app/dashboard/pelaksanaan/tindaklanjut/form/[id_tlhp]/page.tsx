@@ -19,7 +19,7 @@ const axiosSecvice = new AxiosService();
 
 const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
   const id_tlhp = params.id_tlhp;
-  const { user } = useAuthStore()
+  const { user } = useAuthStore();
   const route = useRouter();
   const {
     register,
