@@ -22,7 +22,7 @@ import { formatCurrency } from '@/hooks/formatCurrency';
 const axiosSecvice = new AxiosService();
 
 const TableRekapTemuan: React.FC = () => {
-  const { data: DataRekapTemuan, isLoading, error, refetch } = useFetch<RekapTemuanDB>('lhp');
+  const { data: DataRekapTemuan, isLoading, error, refetch } = useFetch<RekapTemuanDB>('rekap_temuan');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<RekapTemuanDB[]>([]);
 

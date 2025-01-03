@@ -18,9 +18,9 @@ const AuthRoleWrapper: React.FC<AuthRoleWrapperProps> = ({
 
   React.useEffect(() => {
     if (!token) {
-      router.push('/'); // Redirect to login if not authenticated
+      router.push('/unauthorized'); // Redirect to login if not authenticated
     } else if (!user || !allowedRoles.includes(user.role)) {
-      router.push('/unauthorized'); // Redirect to unauthorized page if role is not allowed
+      router.push('/dashboard/accessdenied'); // Redirect to unauthorized page if role is not allowed
     }
   }, [user, token, allowedRoles, router]);
 
