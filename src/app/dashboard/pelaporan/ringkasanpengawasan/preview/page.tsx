@@ -10,7 +10,7 @@ import React from 'react';
 const TablePreviewTemuanHasil = () => {
   const { data: DataTemuanHasil } =
     useFetchAll<TemuanHasilData>('temuan_hasil');
-const {data:DataKodeTemuan} = useFetchAll<KodeTemuanDB>('kode_temuan')
+  const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
 
   const { getNameNoSP } = useGetNameST();
   const { getNameKodeTemuan, getNameKodeRekomendasi, getNameKodeReferensi } =
@@ -100,25 +100,41 @@ const {data:DataKodeTemuan} = useFetchAll<KodeTemuanDB>('kode_temuan')
             })}
             {DataKodeTemuan.map((item, index) => {
               return (
-                <tr key={index} className="hover:bg-gray-100 text-center align-middle">
-                  <td className="border border-gray-300 p-2 text-center" colSpan={6}>
+                <tr
+                  key={index}
+                  className="hover:bg-gray-100 text-center align-middle"
+                >
+                  <td
+                    className="border border-gray-300 p-2 text-center"
+                    colSpan={6}
+                  >
                     {item.keterangan_kode}
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
-                    {DataTemuanHasil.filter(
-                      (filterby) => filterby.id_kode_temuan === item.id_kode_temuan
-                    ).length}
+                    {
+                      DataTemuanHasil.filter(
+                        (filterby) =>
+                          filterby.id_kode_temuan === item.id_kode_temuan
+                      ).length
+                    }
                   </td>
                   <td className="border border-gray-300 p-2 text-center"></td>
                   <td className="border border-gray-300 p-2 text-center">
-                    {DataTemuanHasil.filter(
-                      (filterby) => filterby.id_kode_temuan === item.id_kode_temuan
-                    ).length}
+                    {
+                      DataTemuanHasil.filter(
+                        (filterby) =>
+                          filterby.id_kode_temuan === item.id_kode_temuan
+                      ).length
+                    }
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
                     {DataTemuanHasil.filter(
-                      (filterby) => filterby.id_kode_temuan === item.id_kode_temuan
-                    ).reduce((sum, current) => sum + current.nilai_rekomendasi, 0)}
+                      (filterby) =>
+                        filterby.id_kode_temuan === item.id_kode_temuan
+                    ).reduce(
+                      (sum, current) => sum + current.nilai_rekomendasi,
+                      0
+                    )}
                   </td>
                   <td className="border border-gray-300 p-2 text-center"></td>
                   <td className="border border-gray-300 p-2 text-center"></td>
@@ -126,7 +142,10 @@ const {data:DataKodeTemuan} = useFetchAll<KodeTemuanDB>('kode_temuan')
               );
             })}
             <tr className="hover:bg-gray-100 text-center align-middle">
-              <td className="border border-gray-300 p-2 text-center" colSpan={6}>
+              <td
+                className="border border-gray-300 p-2 text-center"
+                colSpan={6}
+              >
                 Total
               </td>
               <td className="border border-gray-300 p-2 text-center">
@@ -137,7 +156,10 @@ const {data:DataKodeTemuan} = useFetchAll<KodeTemuanDB>('kode_temuan')
                 {DataTemuanHasil.length}
               </td>
               <td className="border border-gray-300 p-2 text-center">
-                {DataTemuanHasil.reduce((sum, current) => sum + current.nilai_rekomendasi, 0)}
+                {DataTemuanHasil.reduce(
+                  (sum, current) => sum + current.nilai_rekomendasi,
+                  0
+                )}
               </td>
               <td className="border border-gray-300 p-2 text-center"></td>
               <td className="border border-gray-300 p-2 text-center"></td>
