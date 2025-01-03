@@ -3,18 +3,13 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
 import { useFetchAll } from '@/hooks/useFetchAll';
+import { DataChartPEngawasan } from '@/interface/interfaceChartData';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-type DataChart = {
-  mulai_perencanaan: string;
-  jumlah_data: number;
-  total_anggaran: number;
-}
-
 const ChartPengawasan = () => {
 
-  const {data:DataPengawasan} = useFetchAll<DataChart>('dashboardpkpt')
+  const {data:DataPengawasan} = useFetchAll<DataChartPEngawasan>('dashboardpkpt')
 
   const options: ApexOptions = {
     chart: {
