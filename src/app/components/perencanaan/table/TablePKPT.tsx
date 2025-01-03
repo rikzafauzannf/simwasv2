@@ -275,7 +275,7 @@ const TablePKPT: React.FC = () => {
   return (
     <>
       <div className="mb-4 space-y-2">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
           <h3>Data PKPT</h3>
           <div className="space-x-2">
             <Link
@@ -284,12 +284,12 @@ const TablePKPT: React.FC = () => {
             >
               Preview Table
             </Link>
-            <button
+            {/* <button
               onClick={exportToCSV}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
               Export CSV
-            </button>
+            </button> */}
             <button
               onClick={exportToExcel}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

@@ -205,7 +205,7 @@ const TableKendaliMutu = () => {
   return (
     <>
       <div className="mb-4 space-y-2">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
           <h3>Table Rekap Kedali Mutu</h3>
           <div className="space-x-2">
             <button

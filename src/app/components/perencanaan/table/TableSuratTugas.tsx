@@ -238,7 +238,7 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   return (
     <>
       <div className="mb-4 space-y-2">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
           <h3>Table Rekap Surat Tugas</h3>
           <div className="space-x-2">
             <button

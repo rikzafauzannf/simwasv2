@@ -19,7 +19,7 @@ interface PropsID {
 const axiosService = new AxiosService();
 const NotaHasilPengawasan = ({ id_st }: PropsID) => {
   const { user } = useAuthStore();
-  const router = useRouter()
+  const router = useRouter();
 
   const [uploadOption, setUploadOption] = useState('link');
 
@@ -55,7 +55,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
         reset(); // Reset form after successful submission
         alert('Data Nota Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
-        router.push('/dashboard/pelaksanaan/notahasil')
+        router.push('/dashboard/pelaksanaan/notahasil');
       } else {
         throw new Error(result.message);
       }
@@ -100,7 +100,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
               </label>
             </div>
             {/* <section className="flex gap-2 w-full"> */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-3">
               {uploadOption === 'file' ? (
                 // <input type="file" name="fileUpload" />
                 <InputFieldComponent

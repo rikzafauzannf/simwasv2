@@ -11,8 +11,11 @@ const RealisasiPKPTPage = () => {
       <h3>Data Realisasi PKPT</h3>
 
       <CardComponents>
-        <h1 className='text-2xl'>Development Process</h1>
-        <p>fitur realisasi masi belum redy, (dalam proses analisis bagian realisasi)</p>
+        <h1 className="text-2xl">Development Process</h1>
+        <p>
+          fitur realisasi masi belum redy, (dalam proses analisis bagian
+          realisasi)
+        </p>
       </CardComponents>
 
       <CollapseComponents title="Input Data Realisasi">

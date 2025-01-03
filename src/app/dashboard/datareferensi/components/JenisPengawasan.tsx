@@ -138,21 +138,21 @@ const JenisPengawasan = () => {
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_pengawasan}
             </h3>
-            <div className='grid grid-cols-2 gap-3'>
-            <button
-              onClick={() =>
-                handleEdit(item.id_jenis_pengawasan, item.jenis_pengawasan)
-              }
-              className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => handleDelete(item.id_jenis_pengawasan)}
-              className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
-            >
-              Hapus
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() =>
+                  handleEdit(item.id_jenis_pengawasan, item.jenis_pengawasan)
+                }
+                className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(item.id_jenis_pengawasan)}
+                className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
+              >
+                Hapus
+              </button>
             </div>
           </CardComponents>
         ))}

@@ -181,7 +181,7 @@ const TableLHP: React.FC = () => {
   return (
     <>
       <div className="mb-4 space-y-2">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
           <h3>Data LHP</h3>
           <div className="space-x-2">
             <button
@@ -201,7 +201,7 @@ const TableLHP: React.FC = () => {
         <input
           id="search"
           type="text"
-          placeholder="Cari Data NHP {tgl/noSP/programAudit/perancang}"
+          placeholder="Cari Data LHP"
           value={search}
           onChange={handleSearch}
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"

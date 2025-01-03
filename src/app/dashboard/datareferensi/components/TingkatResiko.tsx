@@ -140,21 +140,24 @@ const TingkatResiko = () => {
             <h3 className="text-xl font-bold">
               {'>>'} {item.tingkat_resiko}
             </h3>
-            <div className='grid grid-cols-2 gap-3'>
-            <button
-              onClick={() =>
-                handleEdit(Number(item.id_tingkat_resiko), item.tingkat_resiko)
-              }
-              className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => handleDelete(item.id_tingkat_resiko)}
-              className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
-            >
-              Hapus
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() =>
+                  handleEdit(
+                    Number(item.id_tingkat_resiko),
+                    item.tingkat_resiko
+                  )
+                }
+                className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(item.id_tingkat_resiko)}
+                className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
+              >
+                Hapus
+              </button>
             </div>
           </CardComponents>
         ))}

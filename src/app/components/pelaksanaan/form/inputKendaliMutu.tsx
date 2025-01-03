@@ -16,7 +16,7 @@ const axiosService = new AxiosService();
 
 const InputKendaliMutu: React.FC<PropsID> = ({ id_pkpt }) => {
   console.log('id_pkpt data: ', id_pkpt);
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -68,7 +68,7 @@ const InputKendaliMutu: React.FC<PropsID> = ({ id_pkpt }) => {
         console.log('Kendali Mutu berhasil disimpan:', result);
         reset();
         alert('Data Kendali Mutu berhasil disimpan');
-        router.push('/dashboard/pelaksanaan/kendalimutu')
+        router.push('/dashboard/pelaksanaan/kendalimutu');
       } else {
         throw new Error(result.message);
         // refetch();

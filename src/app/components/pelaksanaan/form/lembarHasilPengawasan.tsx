@@ -21,7 +21,7 @@ interface PropsID {
 const axiosService = new AxiosService();
 const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
   const { user } = useAuthStore();
-  const router = useRouter()
+  const router = useRouter();
 
   const [uploadOption, setUploadOption] = useState('link');
 
@@ -64,7 +64,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
         reset(); // Reset form after successful submission
         alert('Data Laporan Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
-        router.push('/dashboard/pelaporan/lembarhasil')
+        router.push('/dashboard/pelaporan/lembarhasil');
       } else {
         throw new Error(result.message);
       }

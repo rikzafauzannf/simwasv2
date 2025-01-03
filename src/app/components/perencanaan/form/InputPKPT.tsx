@@ -26,7 +26,7 @@ const axiosSecvice = new AxiosService();
 
 const InputPKPT = () => {
   const { user } = useAuthStore();
-  const router = useRouter()
+  const router = useRouter();
 
   const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
 
@@ -131,7 +131,7 @@ const InputPKPT = () => {
         reset();
         alert('Data PKPT berhasil disimpan');
         resetTeamMembers();
-        router.push('/dashboard/perencanaan/pkpt')
+        router.push('/dashboard/perencanaan/pkpt');
       } else {
         throw new Error(result.message);
       }

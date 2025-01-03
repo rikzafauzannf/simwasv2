@@ -214,7 +214,7 @@ export const useGetNameTemuanHasil = () => {
   const getNameKondisiTemuan = (id: number) => {
     const data = DataTemuanHasil.filter((item) => item.id_tlhp === id);
     return data.length > 0 ? data[0].kondisi_temuan : '';
-  };  
+  };
 
   return { getNameKondisiTemuan, isLoading, error };
 };

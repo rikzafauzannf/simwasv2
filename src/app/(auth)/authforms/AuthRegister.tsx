@@ -120,18 +120,18 @@ const AuthRegister = () => {
               error={errors.username}
             />
           </div>
-          <div className='col-span-2'>
-          <InputFieldComponent
-            label="NIP"
-            identiti="nip"
-            name="nip"
-            placeholder="Tuliskan nip"
-            type="number"
-            register={register('nip', {
-              required: 'nip wajib diisi',
-            })}
-            error={errors.nip}
-          />
+          <div className="col-span-2">
+            <InputFieldComponent
+              label="NIP"
+              identiti="nip"
+              name="nip"
+              placeholder="Tuliskan nip"
+              type="number"
+              register={register('nip', {
+                required: 'nip wajib diisi',
+              })}
+              error={errors.nip}
+            />
           </div>
           {/* <SelectInputField
             label="Role"
@@ -152,7 +152,7 @@ const AuthRegister = () => {
             error={errors.id_ruang_lingkup}
             type="select"
             name="asal"
-          />          
+          />
           <InputFieldComponent
             label="Jabatan"
             identiti="jabatan"
