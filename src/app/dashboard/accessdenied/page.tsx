@@ -14,9 +14,8 @@ const gradientStyle = {
 };
 
 const AccessDeniedPage = () => {
-
-    const {user} = useAuthStore()
-    const {getNameUser} = useGetNameUser()
+  const { user } = useAuthStore();
+  const { getNameUser } = useGetNameUser();
   return (
     <div style={gradientStyle} className="relative overflow-hidden h-screen">
       <div className="flex h-full justify-center items-center px-4">
@@ -25,11 +24,9 @@ const AccessDeniedPage = () => {
             <div className="mx-auto">
               <FullLogo />
             </div>
-            <div className='text-center'>
-            <h1 className='text-4xl font-extrabold'>AccessDenied</h1>
-            <p>
-                {getNameUser(Number(user?.id_user))}
-            </p>
+            <div className="text-center">
+              <h1 className="text-4xl font-extrabold">AccessDenied</h1>
+              <p>{getNameUser(Number(user?.id_user))}</p>
             </div>
           </div>
         </div>

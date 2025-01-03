@@ -6,27 +6,29 @@ import { NotifikasiDB } from '@/interface/interfaceNotifikasi';
 import { useGetNamePKPT, useGetNameUser } from '@/hooks/useGetName';
 
 interface PropsComponent {
-  id_pkpt : number;
+  id_pkpt: number;
 }
 
-const DailyActivity: React.FC<PropsComponent> = ({id_pkpt}) => {
-  console.log("conf id_pkpt: ", id_pkpt);
+const DailyActivity: React.FC<PropsComponent> = ({ id_pkpt }) => {
+  console.log('conf id_pkpt: ', id_pkpt);
   const { data: DataNotifikasi } = useFetchAll<NotifikasiDB>('notifikasi');
-  const { getNameUser,getUserPhone } = useGetNameUser();
+  const { getNameUser, getUserPhone } = useGetNameUser();
   const { getNameStatusPKPT } = useGetNamePKPT();
-  console.log("data Notifikasi all: ",DataNotifikasi)
-  const dataFilter = DataNotifikasi ? DataNotifikasi.filter((item) => item.id_pkpt === Number(id_pkpt)) : [];
-  console.log("Data Notifikasi hasil filter: ", dataFilter);
+  console.log('data Notifikasi all: ', DataNotifikasi);
+  const dataFilter = DataNotifikasi
+    ? DataNotifikasi.filter((item) => item.id_pkpt === Number(id_pkpt))
+    : [];
+  console.log('Data Notifikasi hasil filter: ', dataFilter);
 
   const ActivitySteps = dataFilter.map((item) => ({
     Time: new Date(item.created_at).toLocaleString(),
     action: `${item.notifikasi} @${getNameStatusPKPT(item.id_pkpt)}`,
     id: getNameUser(item.id_user),
-    no_wa : getUserPhone(item.id_user),
+    no_wa: getUserPhone(item.id_user),
     color: 'bg-primary',
     line: 'h-full w-px bg-border',
   }));
-  console.log("ActivitySteps: ", ActivitySteps);
+  console.log('ActivitySteps: ', ActivitySteps);
 
   // const ActivitySteps = [
   //   {
@@ -89,7 +91,11 @@ const DailyActivity: React.FC<PropsComponent> = ({id_pkpt}) => {
                     </div>
                     <div className="">
                       <p className="text-dark text-start">{item.action}</p>
-                      <Link href={`https://wa.me/${item.no_wa}`} target='blank' className="text-blue-700">
+                      <Link
+                        href={`https://wa.me/${item.no_wa}`}
+                        target="blank"
+                        className="text-blue-700"
+                      >
                         {item.id}
                       </Link>
                     </div>

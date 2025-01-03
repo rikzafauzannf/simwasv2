@@ -22,7 +22,12 @@ import { formatCurrency } from '@/hooks/formatCurrency';
 const axiosSecvice = new AxiosService();
 
 const TableRekapTemuan: React.FC = () => {
-  const { data: DataRekapTemuan, isLoading, error, refetch } = useFetch<RekapTemuanDB>('rekap_temuan');
+  const {
+    data: DataRekapTemuan,
+    isLoading,
+    error,
+    refetch,
+  } = useFetch<RekapTemuanDB>('rekap_temuan');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<RekapTemuanDB[]>([]);
 
@@ -100,10 +105,10 @@ const TableRekapTemuan: React.FC = () => {
       sortable: true,
     },
     {
-        name: 'Persentase',
-        selector: (row) => `${row.persentase}%`,
-        sortable: true,
-      },
+      name: 'Persentase',
+      selector: (row) => `${row.persentase}%`,
+      sortable: true,
+    },
     {
       name: 'Perancang NHP',
       selector: (row) => getNameUser(row.id_user),
@@ -118,8 +123,11 @@ const TableRekapTemuan: React.FC = () => {
     if (DataRekapTemuan) {
       const filtered = DataRekapTemuan.filter(
         (item) =>
-          item.id_tlhp || item.jumlah_kejadian || item.nilai_rp || item.persentase ||
-          item.created_at.toLowerCase().includes(value.toLowerCase()) ||          
+          item.id_tlhp ||
+          item.jumlah_kejadian ||
+          item.nilai_rp ||
+          item.persentase ||
+          item.created_at.toLowerCase().includes(value.toLowerCase()) ||
           getNameUser(item.id_user).toLowerCase().includes(value.toLowerCase())
       );
       setFilteredData(filtered);
@@ -139,7 +147,7 @@ const TableRekapTemuan: React.FC = () => {
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row:RekapTemuanDB
+            row: RekapTemuanDB
           ) => string | number;
           return `"${selector(row)}"`;
         })
@@ -165,7 +173,7 @@ const TableRekapTemuan: React.FC = () => {
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row:RekapTemuanDB
+            row: RekapTemuanDB
           ) => string | number;
           return selector(row);
         })

@@ -56,26 +56,26 @@ const UserManage = () => {
 
   const OptionsRole = [
     {
-      value:"Admin",
-      title:"Admin"
+      value: 'Admin',
+      title: 'Admin',
     },
     {
-      value:"Pimpinan",
-      title:"Pimpinan",
+      value: 'Pimpinan',
+      title: 'Pimpinan',
     },
     {
-      value:"Perencana",
-      title:"Perencana",
+      value: 'Perencana',
+      title: 'Perencana',
     },
     {
-      value:"Pelaksana",
-      title:"Pelaksana",
+      value: 'Pelaksana',
+      title: 'Pelaksana',
     },
     {
-      value:"Auditor",
-      title:"Auditor",
-    }
-  ]
+      value: 'Auditor',
+      title: 'Auditor',
+    },
+  ];
 
   const onSubmit: SubmitHandler<FormUserManage> = async (data) => {
     try {
@@ -143,7 +143,7 @@ const UserManage = () => {
   const handleCancelEdit = () => {
     reset();
     setIsEditing(false);
-    setCurrentEditId(null);    
+    setCurrentEditId(null);
   };
 
   const handleDelete = async (id: number) => {

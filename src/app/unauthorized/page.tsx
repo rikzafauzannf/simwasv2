@@ -20,9 +20,11 @@ const UnauthorizedPage = () => {
             <div className="mx-auto">
               <FullLogo />
             </div>
-            <div className='text-center'>
-            <h1 className='text-4xl font-extrabold'>unAuthorized</h1>
-            <Link href={"/"} className='text-slate-800'>Login</Link>
+            <div className="text-center">
+              <h1 className="text-4xl font-extrabold">unAuthorized</h1>
+              <Link href={'/'} className="text-slate-800">
+                Login
+              </Link>
             </div>
           </div>
         </div>
