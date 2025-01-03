@@ -108,7 +108,7 @@ const JenisLaporan = () => {
           onSubmit={
             isEditing ? handleSubmit(onEditSubmit) : handleSubmit(onSubmit)
           }
-          className="grid grid-cols-3 gap-3 w-full"
+          className="grid lg:grid-cols-3 gap-3 w-full"
         >
           <InputFieldComponent
             label="Jenis laporan"
@@ -121,7 +121,7 @@ const JenisLaporan = () => {
             })}
             error={errors.jenis_laporan}
           />
-          <div className="col-span-2">
+          <div className="lg:col-span-2">
             <InputFieldComponent
               label="Keterangan"
               identiti="keterangan"
@@ -151,13 +151,14 @@ const JenisLaporan = () => {
           )}
         </form>
       </CardComponents>
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataJenisLaporan.map((item) => (
           <CardComponents key={item.id_jenis_laporan}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_laporan}
             </h3>
             <p>{item.keterangan}</p>
+            <div className='grid grid-cols-2 gap-3'>
             <button
               onClick={() =>
                 handleEdit(
@@ -176,6 +177,7 @@ const JenisLaporan = () => {
             >
               Hapus
             </button>
+            </div>
           </CardComponents>
         ))}
       </section>

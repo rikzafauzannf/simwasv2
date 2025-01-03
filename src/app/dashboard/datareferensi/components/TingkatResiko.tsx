@@ -134,12 +134,13 @@ const TingkatResiko = () => {
           )}
         </form>
       </CardComponents>
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataTingkatResiko.map((item) => (
           <CardComponents key={item.id_tingkat_resiko}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.tingkat_resiko}
             </h3>
+            <div className='grid grid-cols-2 gap-3'>
             <button
               onClick={() =>
                 handleEdit(Number(item.id_tingkat_resiko), item.tingkat_resiko)
@@ -154,6 +155,7 @@ const TingkatResiko = () => {
             >
               Hapus
             </button>
+            </div>
           </CardComponents>
         ))}
       </section>

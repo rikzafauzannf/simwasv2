@@ -132,12 +132,13 @@ const JenisPengawasan = () => {
           )}
         </form>
       </CardComponents>
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataJenisPengawasan.map((item) => (
           <CardComponents key={item.id_jenis_pengawasan}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_pengawasan}
             </h3>
+            <div className='grid grid-cols-2 gap-3'>
             <button
               onClick={() =>
                 handleEdit(item.id_jenis_pengawasan, item.jenis_pengawasan)
@@ -152,6 +153,7 @@ const JenisPengawasan = () => {
             >
               Hapus
             </button>
+            </div>
           </CardComponents>
         ))}
       </section>

@@ -101,7 +101,7 @@ const JenisAudit = () => {
           onSubmit={
             isEditing ? handleSubmit(onEditSubmit) : handleSubmit(onSubmit)
           }
-          className="grid grid-cols-3 gap-3 w-full"
+          className="grid lg:grid-cols-3 gap-3 w-full"
         >
           <InputFieldComponent
             label="Jenis Audit"
@@ -114,7 +114,7 @@ const JenisAudit = () => {
             })}
             error={errors.jenis_audit}
           />
-          <div className="col-span-2">
+          <div className="lg:col-span-2">
             <InputFieldComponent
               label="Keterangan"
               identiti="keterangan"
@@ -127,7 +127,7 @@ const JenisAudit = () => {
               error={errors.keterangan}
             />
           </div>
-          <div className="col-span-3">
+          <div className="lg:col-span-3">
             <ButtonType
               Text={
                 isEditing
@@ -144,13 +144,14 @@ const JenisAudit = () => {
           )}
         </form>
       </CardComponents>
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataJenisAudit.map((item) => (
           <CardComponents key={item.id_jenis_audit}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.jenis_audit}
             </h3>
             <p>{item.keterangan}</p>
+            <div className='grid grid-cols-2 gap-3'>
             <button
               onClick={() =>
                 handleEdit(
@@ -169,6 +170,7 @@ const JenisAudit = () => {
             >
               Hapus
             </button>
+            </div>
           </CardComponents>
         ))}
       </section>

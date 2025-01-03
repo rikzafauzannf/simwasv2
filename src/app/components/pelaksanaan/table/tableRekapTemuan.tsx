@@ -11,6 +11,7 @@ import {
   useGetNameJenisPengawasan,
   useGetNameRuangLingkup,
   useGetNameST,
+  useGetNameTemuanHasil,
   useGetNameUser,
 } from '@/hooks/useGetName';
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
@@ -28,6 +29,7 @@ const TableRekapTemuan: React.FC = () => {
     error,
     refetch,
   } = useFetch<RekapTemuanDB>('rekap_temuan');
+  const {getNameKondisiTemuan} = useGetNameTemuanHasil()
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<RekapTemuanDB[]>([]);
 
@@ -91,7 +93,7 @@ const TableRekapTemuan: React.FC = () => {
     },
     {
       name: 'Kondisi Temuan',
-      selector: (row) => row.id_tlhp,
+      selector: (row) => getNameKondisiTemuan(row.id_tlhp),
       sortable: true,
     },
     {

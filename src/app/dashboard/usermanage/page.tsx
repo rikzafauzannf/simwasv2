@@ -250,7 +250,7 @@ const UserManage = () => {
           )}
         </form>
       </CardComponents>
-      <section className="grid md:grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataPengguna.map((item) => (
           <CardComponents key={item.id_user}>
             <p>@ {item.role}</p>

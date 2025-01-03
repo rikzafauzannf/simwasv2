@@ -148,13 +148,14 @@ const KodeReferensi = () => {
           )}
         </form>
       </CardComponents>
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataKodeReferensi.map((item) => (
           <CardComponents key={item.id_kode_referensi}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.kode_referensi}
             </h3>
             <p>{item.keterangan_kode}</p>
+            <div className='grid grid-cols-2 gap-3'>
             <button
               onClick={() =>
                 handleEdit(
@@ -173,6 +174,7 @@ const KodeReferensi = () => {
             >
               Hapus
             </button>
+            </div>
           </CardComponents>
         ))}
       </section>
