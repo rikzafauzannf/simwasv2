@@ -6,6 +6,7 @@ import { InputFieldComponent } from '../../Global/Input';
 import { ButtonType } from '../../Global/Button';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { FormKendaliMutu } from '@/interface/interfaceKendaliMutu';
+import { useRouter } from 'next/navigation';
 
 interface PropsID {
   id_pkpt: number;
@@ -15,6 +16,7 @@ const axiosService = new AxiosService();
 
 const InputKendaliMutu: React.FC<PropsID> = ({ id_pkpt }) => {
   console.log('id_pkpt data: ', id_pkpt);
+  const router = useRouter()
 
   const {
     register,
@@ -66,6 +68,7 @@ const InputKendaliMutu: React.FC<PropsID> = ({ id_pkpt }) => {
         console.log('Kendali Mutu berhasil disimpan:', result);
         reset();
         alert('Data Kendali Mutu berhasil disimpan');
+        router.push('/dashboard/pelaksanaan/kendalimutu')
       } else {
         throw new Error(result.message);
         // refetch();

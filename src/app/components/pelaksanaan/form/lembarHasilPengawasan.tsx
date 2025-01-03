@@ -12,6 +12,7 @@ import { FormLHP, NHPData } from '@/interface/interfaceHasilPengawasan';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchById } from '@/hooks/useFetchById';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 interface PropsID {
   id_nhp: number;
@@ -20,6 +21,8 @@ interface PropsID {
 const axiosService = new AxiosService();
 const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
   const { user } = useAuthStore();
+  const router = useRouter()
+
   const [uploadOption, setUploadOption] = useState('link');
 
   console.log('data nhp: ', id_nhp);
@@ -61,6 +64,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
         reset(); // Reset form after successful submission
         alert('Data Laporan Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
+        router.push('/dashboard/pelaporan/lembarhasil')
       } else {
         throw new Error(result.message);
       }

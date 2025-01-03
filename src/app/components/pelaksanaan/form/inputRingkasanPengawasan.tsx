@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormTemuanHasil } from '@/interface/interfaceTemuanHasil';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 interface CompoProps {
   id_st: number;
@@ -22,6 +23,8 @@ const axiosSecvice = new AxiosService();
 
 const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   const { user } = useAuthStore();
+  const router = useRouter()
+
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataKodeRekomendasi } =
     useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
@@ -83,6 +86,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
         console.log('Jenis Pengawasan berhasil disimpan:', result);
         reset();
         alert('Data Jenis Pengawasan berhasil disimpan');
+        router.push('/dashboard/pelaporan/ringkasanpengawasan')
       } else {
         throw new Error(result.message);
       }

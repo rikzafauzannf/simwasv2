@@ -20,11 +20,13 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { useScopeStore } from '@/middleware/Store/useScopeStore';
 import { UserManageDB } from '@/interface/interfaceUserManage';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 const axiosSecvice = new AxiosService();
 
 const InputNonPKPT = () => {
   const { user } = useAuthStore();
+  const router = useRouter()
 
   const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
 
@@ -129,6 +131,7 @@ const InputNonPKPT = () => {
         reset();
         alert('Data PKPT berhasil disimpan');
         resetTeamMembers();
+        router.push('/dashboard/perencanaan/pkpt')
       } else {
         throw new Error(result.message);
       }
