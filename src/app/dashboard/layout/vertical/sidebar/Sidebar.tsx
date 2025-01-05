@@ -2,15 +2,21 @@
 
 import React from 'react';
 import { Sidebar } from 'flowbite-react';
-import SidebarContent from './Sidebaritems';
+import { filterSidebarByRole } from './Sidebaritems';
 import NavItems from './NavItems';
 import NavCollapse from './NavCollapse';
 import SimpleBar from 'simplebar-react';
 import FullLogo from '../../shared/logo/FullLogo';
 import { Icon } from '@iconify/react';
 import Upgrade from './Upgrade';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const SidebarLayout = () => {
+  const { user } = useAuthStore();
+  const userRole = String(user?.role);
+
+  const filteredContent = filterSidebarByRole(userRole);
+
   return (
     <>
       <div className="xl:block hidden">
@@ -26,7 +32,7 @@ const SidebarLayout = () => {
             <SimpleBar className="h-[calc(100vh_-_120px)]">
               <Sidebar.Items className="px-6">
                 <Sidebar.ItemGroup className="sidebar-nav">
-                  {SidebarContent.map((item, index) => (
+                  {filteredContent.map((item, index) => (
                     <React.Fragment key={index}>
                       <h5 className="text-link text-xs caption">
                         <span className="hide-menu">{item.heading}</span>

@@ -1,3 +1,5 @@
+import { uniqueId } from 'lodash';
+
 export interface ChildItem {
   id?: number | string;
   name?: string;
@@ -19,8 +21,6 @@ export interface MenuItem {
   url?: any;
 }
 
-import { uniqueId } from 'lodash';
-
 const SidebarContent: MenuItem[] = [
   {
     heading: 'Resume',
@@ -37,7 +37,7 @@ const SidebarContent: MenuItem[] = [
     heading: 'Referensi',
     children: [
       {
-        name: 'Buat Data Referensi',
+        name: 'Data Referensi',
         icon: 'solar:shield-plus-line-duotone',
         id: uniqueId(),
         url: '/dashboard/datareferensi',
@@ -150,4 +150,51 @@ const SidebarContent: MenuItem[] = [
   },
 ];
 
-export default SidebarContent;
+export function filterSidebarByRole(role: string): MenuItem[] {
+  return SidebarContent.map((item) => {
+    const filteredChildren = item.children?.filter((child) => {
+      if (role === 'Admin') {
+        // Admin Role
+        return (
+          child.name &&
+          ['Dashboard', 'Data Referensi', 'User Account'].includes(
+            child.name
+          )
+        );
+      }else if (role === 'Pempinan') {
+        // Admin Role
+        return (
+          child.name &&
+          ['Dashboard',' PKPT', 'Surat Tugas', 'Kendali Mutu', 'Nota Hasil', 'Lembar Hasil', 'Hasil Temuan', 'Rekap Temuan', 'Tindak Lanjut'].includes(
+            child.name
+          )
+        );
+      }
+      else if (role === 'Perencana') {
+        // Admin Role
+        return (
+          child.name &&
+          ['Dashboard', 'Data Referensi', ' PKPT', 'Surat Tugas'].includes(
+            child.name
+          )
+        );
+      }
+      else if (role === 'Pelaksana' || role === 'Auditor') {
+        // Admin Role
+        return (
+          child.name &&
+          ['Dashboard',' PKPT','Kendali Mutu', 'Nota Hasil', 'Lembar Hasil', 'Hasil Temuan', 'Rekap Temuan', 'Tindak Lanjut'].includes(
+            child.name
+          )
+        );
+      }
+      return false;
+    });
+
+    return { ...item, children: filteredChildren };
+  }).filter((item) => item.children && item.children.length > 0);
+}
+
+// const filteredSidebarContent = filterSidebarByRole(SidebarContent, userRole);
+
+// Gunakan `filteredSidebarContent` untuk menampilkan sidebar

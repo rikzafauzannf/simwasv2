@@ -8,8 +8,8 @@ import { DataChartPEngawasan } from '@/interface/interfaceChartData';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const ChartPengawasan = () => {
-
-  const {data:DataPengawasan} = useFetchAll<DataChartPEngawasan>('dashboardpkpt')
+  const { data: DataPengawasan } =
+    useFetchAll<DataChartPEngawasan>('dashboardpkpt');
 
   const options: ApexOptions = {
     chart: {
@@ -26,7 +26,7 @@ const ChartPengawasan = () => {
       curve: 'smooth',
     },
     xaxis: {
-      categories: DataPengawasan.map((item)=>item.mulai_perencanaan)
+      categories: DataPengawasan.map((item) => item.mulai_perencanaan),
     },
     tooltip: {
       x: {
@@ -41,9 +41,8 @@ const ChartPengawasan = () => {
   const series = [
     {
       name: 'Pengawasan',
-      data: DataPengawasan.map((item)=>item.jumlah_data)
+      data: DataPengawasan.map((item) => item.jumlah_data),
     },
-    
   ];
 
   return (

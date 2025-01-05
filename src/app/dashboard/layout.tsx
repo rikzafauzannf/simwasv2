@@ -10,7 +10,7 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthRoleWrapper allowedRoles={['Admin']}>
+    <AuthRoleWrapper allowedRoles={['Admin','Pimpinan','Perencana','Pelaksana','Auditor']}>
       <div className="flex w-full min-h-screen">
         <div className="page-wrapper flex w-full">
           {/* Header/sidebar */}

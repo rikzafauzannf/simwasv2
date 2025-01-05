@@ -9,7 +9,8 @@ import { formatCurrency } from '@/hooks/formatCurrency';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const ChartAnggaran = () => {
-  const {data:DataPengawasan} = useFetchAll<DataChartPEngawasan>('dashboardpkpt')
+  const { data: DataPengawasan } =
+    useFetchAll<DataChartPEngawasan>('dashboardpkpt');
   const options: ApexOptions = {
     chart: {
       type: 'bar',
@@ -25,7 +26,7 @@ const ChartAnggaran = () => {
       curve: 'smooth',
     },
     xaxis: {
-      categories:DataPengawasan.map((item)=>item.mulai_perencanaan)
+      categories: DataPengawasan.map((item) => item.mulai_perencanaan),
     },
     tooltip: {
       x: {
@@ -47,7 +48,7 @@ const ChartAnggaran = () => {
   const series = [
     {
       name: 'Jenis Pengawasan',
-      data: DataPengawasan.map((item)=>item.total_anggaran),
+      data: DataPengawasan.map((item) => item.total_anggaran),
     },
   ];
 
@@ -61,7 +62,11 @@ const ChartAnggaran = () => {
       </div>
       <h4 className="text-slate-900">
         {' '}
-        <span className="text-xl font-bold">{formatCurrency(DataPengawasan.reduce((acc, item) => acc + item.total_anggaran, 0))}</span>{' '}
+        <span className="text-xl font-bold">
+          {formatCurrency(
+            DataPengawasan.reduce((acc, item) => acc + item.total_anggaran, 0)
+          )}
+        </span>{' '}
         <small>Total Anggaran Pertahun</small>
       </h4>
       <Chart options={options} series={series} type="bar" height={250} />

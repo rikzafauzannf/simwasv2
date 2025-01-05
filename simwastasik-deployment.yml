@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simwastasik-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simwastasik
+  template:
+    metadata:
+      labels:
+        app: simwastasik
+    spec:
+      containers:
+      - name: simwastasik-container
+        image: simwastasik:tag
+        ports:
+        - containerPort: 80
