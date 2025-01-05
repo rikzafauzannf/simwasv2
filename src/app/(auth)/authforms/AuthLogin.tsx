@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
-const axiosService = new AxiosService()
+const axiosService = new AxiosService();
 
 const AuthLogin = () => {
   const {
@@ -20,30 +20,30 @@ const AuthLogin = () => {
   const [error, setError] = useState<string>('');
   const [focusIndex, setFocusIndex] = useState<number>(0);
   const [showOtp, setShowOtp] = useState<boolean>(false);
-  const [NIP, setNIP] = useState()
-  const route =useRouter()
-  
+  const [NIP, setNIP] = useState();
+  const route = useRouter();
+
   const onSubmitNIP: SubmitHandler<FieldValues> = async (data) => {
     const { NIP } = data;
-    
+
     // Kirim NIP dan tunggu respons
-    const response = await axiosService.addData('login',{nip:NIP});
-    setNIP(NIP) 
-    console.log('Response server: ',response)
+    const response = await axiosService.addData('login', { nip: NIP });
+    setNIP(NIP);
+    console.log('Response server: ', response);
     if (response.success) {
-        setShowOtp(true); // Tampilkan OTP setelah NIP berhasil dikirim
-        Swal.fire({
-            icon: 'success',
-            title: 'NIP Diterima',
-            text: 'Silakan masukkan OTP yang telah dikirim.',
-        });
+      setShowOtp(true); // Tampilkan OTP setelah NIP berhasil dikirim
+      Swal.fire({
+        icon: 'success',
+        title: 'NIP Diterima',
+        text: 'Silakan masukkan OTP yang telah dikirim.',
+      });
     } else {
-        setError('NIP tidak terdaftar'); // Tampilkan error jika NIP tidak valid
-        Swal.fire({
-            icon: 'error',
-            title: 'NIP Tidak Ditemukan',
-            text: 'NIP yang Anda masukkan tidak terdaftar.',
-        });
+      setError('NIP tidak terdaftar'); // Tampilkan error jika NIP tidak valid
+      Swal.fire({
+        icon: 'error',
+        title: 'NIP Tidak Ditemukan',
+        text: 'NIP yang Anda masukkan tidak terdaftar.',
+      });
     }
   };
 
@@ -54,7 +54,7 @@ const AuthLogin = () => {
     }
 
     try {
-      const response = await axiosService.addData('verify-otp',{
+      const response = await axiosService.addData('verify-otp', {
         nip: NIP,
         otp: otp.join(''),
       });
@@ -65,12 +65,12 @@ const AuthLogin = () => {
           title: 'Login Berhasil',
           text: 'Anda berhasil masuk.',
         });
-        localStorage.setItem('user', JSON.stringify(response.data));        
+        localStorage.setItem('user', JSON.stringify(response.data));
       } else {
         throw new Error('OTP tidak valid');
       }
 
-      route.push("/dashboard")
+      route.push('/dashboard');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Terjadi kesalahan');
       Swal.fire({
@@ -109,7 +109,7 @@ const AuthLogin = () => {
 
   return (
     <>
-    {/* form send nip */}
+      {/* form send nip */}
       <form onSubmit={handleSubmit(onSubmitNIP)}>
         <div className="mb-4">
           <div className="mb-2 block">
@@ -160,7 +160,7 @@ const AuthLogin = () => {
             {error && <p className="text-red-500">{error}</p>}
           </div>
           <Button
-            color={'primary'}            
+            color={'primary'}
             className="w-full bg-primary text-white rounded-xl"
             onClick={onSubmitOTP}
           >

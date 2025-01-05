@@ -12,6 +12,8 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormTemuanHasil } from '@/interface/interfaceTemuanHasil';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 interface CompoProps {
   id_st: number;
@@ -20,6 +22,9 @@ interface CompoProps {
 const axiosSecvice = new AxiosService();
 
 const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
+  const { user } = useAuthStore();
+  const router = useRouter();
+
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataKodeRekomendasi } =
     useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
@@ -63,7 +68,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
         id_kode_rekomendasi: Number(data.id_kode_rekomendasi),
         id_kode_temuan: Number(data.id_kode_temuan),
         id_st: Number(id_st),
-        id_user: 2,
+        id_user: Number(user?.id_user),
         nilai_rekomendasi: Number(data.nilai_rekomendasi),
         kondisi_temuan: data.kondisi_temuan,
         rekomendasi_saran: data.rekomendasi_saran,
@@ -81,6 +86,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
         console.log('Jenis Pengawasan berhasil disimpan:', result);
         reset();
         alert('Data Jenis Pengawasan berhasil disimpan');
+        router.push('/dashboard/pelaporan/ringkasanpengawasan');
       } else {
         throw new Error(result.message);
       }
@@ -110,7 +116,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
             />
           </section>
           <h3>Kondisi Temuan</h3>
-          <section className="grid grid-cols-3 gap-3">
+          <section className="grid lg:grid-cols-3 gap-3">
             <SelectInputField
               label="Kode Temuan"
               identiti="kodeTemuan"
@@ -124,7 +130,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
               name="kodeTemuan"
               error={errors.id_kode_temuan}
             />
-            <div className="col-span-2">
+            <div className="lg:col-span-2">
               <InputFieldComponent
                 label="Kondisi Temuan"
                 identiti="kondisiTemuan"
@@ -139,7 +145,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
             </div>
           </section>
           <h3>Rekomendasi dan Sasaran</h3>
-          <section className="grid grid-cols-3 gap-3">
+          <section className="grid lg:grid-cols-3 gap-3">
             <SelectInputField
               label="Kode Rekomendasi"
               identiti="kodeRekomendasi"
@@ -153,7 +159,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
               name="kodeRekomendasi"
               error={errors.id_kode_rekomendasi}
             />
-            <div className="col-span-2">
+            <div className="lg:col-span-2">
               <InputFieldComponent
                 label="Rekomendasi/Saran"
                 identiti="rekomendasiSaran"
@@ -177,7 +183,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
                 min: 0,
               })}
             />
-            <div className="col-span-2">
+            <div className="lg:col-span-2">
               <SelectInputField
                 label="Kode Referensi"
                 identiti="kodeReferensi"

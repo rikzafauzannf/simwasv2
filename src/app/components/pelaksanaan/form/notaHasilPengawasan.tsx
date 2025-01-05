@@ -9,6 +9,8 @@ import { ButtonType } from '../../Global/Button';
 import { FormNHP } from '@/interface/interfaceHasilPengawasan';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 interface PropsID {
   id_st: number;
@@ -16,6 +18,9 @@ interface PropsID {
 
 const axiosService = new AxiosService();
 const NotaHasilPengawasan = ({ id_st }: PropsID) => {
+  const { user } = useAuthStore();
+  const router = useRouter();
+
   const [uploadOption, setUploadOption] = useState('link');
 
   const handleUploadOptionChange = (
@@ -40,7 +45,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
     try {
       const result = await axiosService.addData('nhp', {
         id_st: Number(id_st),
-        id_user: 2,
+        id_user: Number(user?.id_user),
         file_nhp: data.file_nhp,
         keterangan_nhp: data.keterangan_nhp,
       });
@@ -50,6 +55,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
         reset(); // Reset form after successful submission
         alert('Data Nota Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
+        router.push('/dashboard/pelaksanaan/notahasil');
       } else {
         throw new Error(result.message);
       }
@@ -94,7 +100,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
               </label>
             </div>
             {/* <section className="flex gap-2 w-full"> */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-3">
               {uploadOption === 'file' ? (
                 // <input type="file" name="fileUpload" />
                 <InputFieldComponent

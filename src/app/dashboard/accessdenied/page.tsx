@@ -2,9 +2,8 @@
 import FullLogo from '@/app/dashboard/layout/shared/logo/FullLogo';
 import React from 'react';
 import Link from 'next/link';
-import AuthLogin from '../authforms/AuthLogin';
-import AuthRegister from '../authforms/AuthRegister';
-import useAuthToggleStore from '@/middleware/Store/useAuthToggleStore';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { useGetNameUser } from '@/hooks/useGetName';
 
 const gradientStyle = {
   background:
@@ -14,9 +13,9 @@ const gradientStyle = {
   height: '100vh',
 };
 
-const BoxedLogin = () => {
-  const { isLogin, toggleAuth } = useAuthToggleStore();
-
+const AccessDeniedPage = () => {
+  const { user } = useAuthStore();
+  const { getNameUser } = useGetNameUser();
   return (
     <div style={gradientStyle} className="relative overflow-hidden h-screen">
       <div className="flex h-full justify-center items-center px-4">
@@ -25,16 +24,10 @@ const BoxedLogin = () => {
             <div className="mx-auto">
               <FullLogo />
             </div>
-            <p className="text-sm text-center text-dark my-3">
-              {isLogin ? 'Login Menggunakan NIP' : 'Register Menggunakan NIP'}
-            </p>
-            {isLogin ? <AuthLogin /> : <AuthRegister />}
-            <button
-              onClick={toggleAuth}
-              className="mt-4 text-primary text-sm font-medium"
-            >
-              {isLogin ? 'Switch to Signup' : 'Switch to Login'}
-            </button>
+            <div className="text-center">
+              <h1 className="text-4xl font-extrabold">AccessDenied</h1>
+              <p>{getNameUser(Number(user?.id_user))}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -55,4 +48,4 @@ const BoxedLogin = () => {
   );
 };
 
-export default BoxedLogin;
+export default AccessDeniedPage;

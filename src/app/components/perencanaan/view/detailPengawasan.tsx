@@ -44,7 +44,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         </h1>
       </div>
       <p>Ruang Lingkup:</p>
-      <section className="grid grid-cols-4 gap-3">
+      <section className="grid lg:grid-cols-4 gap-3">
         <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
           {DataPKPT
             ? getNameRuangLingkup(DataPKPT.id_ruang_lingkup)
@@ -62,7 +62,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       </section>
 
       {/* section data identiti*/}
-      <section className="grid grid-cols-3 gap-3">
+      <section className="grid lg:grid-cols-3 gap-3">
         <CardComponents>
           <p className="text-sm">Jenis Pengawasan</p>
           <h3 className="text-xl">
@@ -90,7 +90,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       <CardComponents>
         <p>Jadwal Penugasan</p>
         <hr />
-        <section className="grid grid-cols-2 gap-3">
+        <section className="grid ld:grid-cols-2 gap-3">
           <div>
             <p>Rencana Mulai Penugasan</p>
             <h3>{DataPKPT ? DataPKPT.rmp_pkpt : 'No data available'}</h3>
@@ -102,7 +102,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         </section>
       </CardComponents>
       {/* section tujuan dan tim */}
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         <CardComponents>
           <p className="font-medium">Tujuan/Sasaran</p>
           <p className="text-slate-950">
@@ -140,7 +140,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
             </h2>
           </div>
           <div className="flex-1">
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid lg:grid-cols-3 gap-3">
               <div>
                 <small>Penanggung Jawab</small>
                 <h3>
@@ -174,7 +174,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         </section>
       </CardComponents>
       {/* data minor */}
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         <CardComponents>
           <p>Jumlah Laporan</p>
           <h3 className="text-xl">
@@ -190,7 +190,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
             {DataPKPT ? DataPKPT.sarana_prasarana : 'No data available'}
           </p>
         </CardComponents>
-        <div className="col-span-2">
+        <div className="lg:col-span-2">
           <CardComponents>
             <p>Keterangan</p>
             <h3>{DataPKPT ? DataPKPT.keterangan : 'No data available'}</h3>

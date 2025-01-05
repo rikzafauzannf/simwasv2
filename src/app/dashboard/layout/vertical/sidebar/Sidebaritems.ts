@@ -106,6 +106,12 @@ const SidebarContent: MenuItem[] = [
     heading: 'Tindak Lanjut',
     children: [
       {
+        name: 'Rekap Temuan',
+        icon: 'solar:presentation-graph-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/pelaksanaan/rekaptemuan',
+      },
+      {
         name: 'Tindak Lanjut',
         icon: 'solar:presentation-graph-line-duotone',
         id: uniqueId(),

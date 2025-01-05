@@ -135,31 +135,33 @@ const KodeTemuan = () => {
           )}
         </form>
       </CardComponents>
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataKodeTemuan.map((item) => (
           <CardComponents key={item.id_kode_temuan}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.kode_temuan}
             </h3>
             <p>{item.keterangan_kode}</p>
-            <button
-              onClick={() =>
-                handleEdit(
-                  item.id_kode_temuan,
-                  item.kode_temuan,
-                  item.keterangan_kode
-                )
-              }
-              className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => handleDelete(item.id_kode_temuan)}
-              className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
-            >
-              Hapus
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() =>
+                  handleEdit(
+                    item.id_kode_temuan,
+                    item.kode_temuan,
+                    item.keterangan_kode
+                  )
+                }
+                className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(item.id_kode_temuan)}
+                className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
+              >
+                Hapus
+              </button>
+            </div>
           </CardComponents>
         ))}
       </section>

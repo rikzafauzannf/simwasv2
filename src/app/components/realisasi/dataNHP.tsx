@@ -50,7 +50,7 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Cari Data NHP {tgl/NoSP/ProgramAudit/perancang}"
+          placeholder="Cari Data NHP"
           className="w-full p-2 border rounded-md mt-2"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

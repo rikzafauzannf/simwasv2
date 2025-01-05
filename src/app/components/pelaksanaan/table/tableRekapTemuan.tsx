@@ -11,18 +11,27 @@ import {
   useGetNameJenisPengawasan,
   useGetNameRuangLingkup,
   useGetNameST,
+  useGetNameTemuanHasil,
   useGetNameUser,
 } from '@/hooks/useGetName';
-import { NHPData } from '@/interface/interfaceHasilPengawasan';
+import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { RekapTemuanDB } from '@/interface/interfaceRekapTemuan';
+import { formatCurrency } from '@/hooks/formatCurrency';
 
 const axiosSecvice = new AxiosService();
 
-const TableNHP: React.FC = () => {
-  const { data: DataNHP, isLoading, error, refetch } = useFetch<NHPData>('nhp');
+const TableRekapTemuan: React.FC = () => {
+  const {
+    data: DataRekapTemuan,
+    isLoading,
+    error,
+    refetch,
+  } = useFetch<RekapTemuanDB>('rekap_temuan');
+  const { getNameKondisiTemuan } = useGetNameTemuanHasil();
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<NHPData[]>([]);
+  const [filteredData, setFilteredData] = useState<RekapTemuanDB[]>([]);
 
   const { getNameUser } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
@@ -40,7 +49,7 @@ const TableNHP: React.FC = () => {
 
     if (result.isConfirmed) {
       try {
-        await axiosSecvice.deleteData(`nhp/${id}`);
+        await axiosSecvice.deleteData(`rekap_temuan/${id}`);
         refetch();
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       } catch (error) {
@@ -50,26 +59,26 @@ const TableNHP: React.FC = () => {
     }
   };
 
-  const columns: TableColumn<NHPData>[] = [
+  const columns: TableColumn<RekapTemuanDB>[] = [
     {
       name: 'Actions',
-      cell: (row: NHPData) => (
+      cell: (row) => (
         <div className="flex gap-2">
-          <Link
+          {/* <Link
             // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
-            href={row.file_nhp}
+            href={row.file_lhp}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
-          </Link>
+          </Link> */}
           {/* <Link
-            href={`/dashboard/pelaksanaan/actions/${row.id_nhp}`}
+            href={`/dashboard/pelaporan/lembarhasil/actions/${row.id_lhp}`}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act
           </Link> */}
           <button
-            onClick={() => handleDelete(row.id_nhp)}
+            onClick={() => handleDelete(row.id_rekap_temuan)}
             className="p-2 text-red-500 hover:text-red-700"
           >
             <FaTrash />
@@ -83,18 +92,23 @@ const TableNHP: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'No/Tgl SP',
-      selector: (row) => getNameNoSP(row.id_st),
+      name: 'Kondisi Temuan',
+      selector: (row) => getNameKondisiTemuan(row.id_tlhp),
       sortable: true,
     },
     {
-      name: 'Program Audit',
-      selector: (row) => getProgramAudit(row.id_st),
+      name: 'Jumlah Kejadian',
+      selector: (row) => row.jumlah_kejadian,
       sortable: true,
     },
     {
-      name: 'Keterangan NHP',
-      selector: (row) => row.keterangan_nhp,
+      name: 'Nilai Temuan',
+      selector: (row) => formatCurrency(row.nilai_rp),
+      sortable: true,
+    },
+    {
+      name: 'Persentase',
+      selector: (row) => `${row.persentase}%`,
       sortable: true,
     },
     {
@@ -108,15 +122,14 @@ const TableNHP: React.FC = () => {
     const value = e.target.value;
     setSearch(value);
 
-    if (DataNHP) {
-      const filtered = DataNHP.filter(
+    if (DataRekapTemuan) {
+      const filtered = DataRekapTemuan.filter(
         (item) =>
-          item.keterangan_nhp.toLowerCase().includes(value.toLowerCase()) ||
+          item.id_tlhp ||
+          item.jumlah_kejadian ||
+          item.nilai_rp ||
+          item.persentase ||
           item.created_at.toLowerCase().includes(value.toLowerCase()) ||
-          getNameNoSP(item.id_st).toLowerCase().includes(value.toLowerCase()) ||
-          getProgramAudit(item.id_st)
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
           getNameUser(item.id_user).toLowerCase().includes(value.toLowerCase())
       );
       setFilteredData(filtered);
@@ -124,19 +137,19 @@ const TableNHP: React.FC = () => {
   };
 
   const exportToCSV = () => {
-    if (!DataNHP) return;
+    if (!DataRekapTemuan) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join(',');
 
-    const csvData = DataNHP.map((row) =>
+    const csvData = DataRekapTemuan.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row: NHPData
+            row: RekapTemuanDB
           ) => string | number;
           return `"${selector(row)}"`;
         })
@@ -146,23 +159,23 @@ const TableNHP: React.FC = () => {
     const blob = new Blob([`${headers}\n${csvData.join('\n')}`], {
       type: 'text/csv;charset=utf-8',
     });
-    saveAs(blob, 'pkpt_data.csv');
+    saveAs(blob, 'rekap_temuan.csv');
   };
 
   const exportToExcel = () => {
-    if (!DataNHP) return;
+    if (!DataRekapTemuan) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = DataNHP.map((row) =>
+    const excelData = DataRekapTemuan.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row: NHPData
+            row: RekapTemuanDB
           ) => string | number;
           return selector(row);
         })
@@ -172,7 +185,7 @@ const TableNHP: React.FC = () => {
     const blob = new Blob([`${headers}\n${excelData.join('\n')}`], {
       type: 'application/vnd.ms-excel;charset=utf-8',
     });
-    saveAs(blob, 'pkpt_data.xls');
+    saveAs(blob, 'rekap_temuan.xls');
   };
 
   // if (isLoading) return <div>Loading...</div>;
@@ -182,7 +195,7 @@ const TableNHP: React.FC = () => {
     <>
       <div className="mb-4 space-y-2">
         <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
-          <h3>Data NHP</h3>
+          <h3>Data Rekap Temuan</h3>
           <div className="space-x-2">
             <button
               onClick={exportToCSV}
@@ -201,7 +214,7 @@ const TableNHP: React.FC = () => {
         <input
           id="search"
           type="text"
-          placeholder="Cari Data NHP {tgl/noSP/programAudit/perancang}"
+          placeholder="Cari Data Rekap Temuan"
           value={search}
           onChange={handleSearch}
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
@@ -210,7 +223,7 @@ const TableNHP: React.FC = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : DataNHP}
+          data={search ? filteredData : DataRekapTemuan}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"
@@ -221,4 +234,4 @@ const TableNHP: React.FC = () => {
   );
 };
 
-export default TableNHP;
+export default TableRekapTemuan;

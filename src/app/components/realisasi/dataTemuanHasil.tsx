@@ -16,9 +16,10 @@ import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
 
 interface Props {
   todo: string;
+  title: string;
 }
 
-const MapDataTemuanHasil: React.FC<Props> = ({ todo }) => {
+const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -96,7 +97,7 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo }) => {
                 href={`/dashboard/${todo}/${item.id_tlhp}`}
                 className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
               >
-                Buat Tindak Lanjut
+                {title}
               </Link>
               {/* <button
                 onClick={() => handleReportClick(item.tim)}

@@ -13,6 +13,7 @@ import {
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import { PKPTData, PKPTDataBase } from '@/interface/interfacePKPT';
+import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
 
 // ======Ruang Lingkup======
 export const useGetNameRuangLingkup = () => {
@@ -200,4 +201,20 @@ export const useGetNameKode = () => {
   };
 
   return { getNameKodeRekomendasi, getNameKodeReferensi, getNameKodeTemuan };
+};
+
+// ======TLHP Temuan Hasil======
+export const useGetNameTemuanHasil = () => {
+  const {
+    data: DataTemuanHasil,
+    isLoading,
+    error,
+  } = useFetchAll<TemuanHasilData>('temuan_hasil');
+
+  const getNameKondisiTemuan = (id: number) => {
+    const data = DataTemuanHasil.filter((item) => item.id_tlhp === id);
+    return data.length > 0 ? data[0].kondisi_temuan : '';
+  };
+
+  return { getNameKondisiTemuan, isLoading, error };
 };

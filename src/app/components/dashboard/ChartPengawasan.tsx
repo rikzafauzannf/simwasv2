@@ -2,10 +2,15 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { DataChartPEngawasan } from '@/interface/interfaceChartData';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const ChartPengawasan = () => {
+
+  const {data:DataPengawasan} = useFetchAll<DataChartPEngawasan>('dashboardpkpt')
+
   const options: ApexOptions = {
     chart: {
       type: 'area',
@@ -21,20 +26,7 @@ const ChartPengawasan = () => {
       curve: 'smooth',
     },
     xaxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+      categories: DataPengawasan.map((item)=>item.mulai_perencanaan)
     },
     tooltip: {
       x: {
@@ -49,16 +41,9 @@ const ChartPengawasan = () => {
   const series = [
     {
       name: 'Pengawasan',
-      data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 150, 160, 180], // Sample data - replace with actual data
+      data: DataPengawasan.map((item)=>item.jumlah_data)
     },
-    {
-      name: 'Pengawasan',
-      data: [20, 42, 30, 40, 40, 50, 80, 91, 125, 140, 165, 185], // Sample data - replace with actual data
-    },
-    {
-      name: 'Pengawasan',
-      data: [36, 46, 37, 56, 46, 66, 76, 96, 126, 156, 166, 186], // Sample data - replace with actual data
-    },
+    
   ];
 
   return (

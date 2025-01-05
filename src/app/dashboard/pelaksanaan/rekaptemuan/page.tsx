@@ -2,20 +2,21 @@ import React from 'react';
 import MapDataTemuanHasil from '../../../components/realisasi/dataTemuanHasil';
 import { CardComponents } from '@/app/components/Global/Card';
 import TableTindakLanjut from '@/app/components/pelaksanaan/table/tableTindakLanjut';
+import TableRekapTemuan from '@/app/components/pelaksanaan/table/tableRekapTemuan';
 
-const TindakLajutPage = () => {
+const RekapTemuanPage = () => {
   return (
     <div className="space-y-3">
-      <h3 className="text-xl">Tindak Lanjut</h3>
+      <h3 className="text-xl">Rekap Temuan</h3>
       <MapDataTemuanHasil
-        todo="pelaksanaan/tindaklanjut/form"
-        title="Buat Tindak Lanjut"
+        todo="pelaksanaan/rekaptemuan/form"
+        title="Buat Rekap Temuan"
       />
       <CardComponents>
-        <TableTindakLanjut />
+        <TableRekapTemuan />
       </CardComponents>
     </div>
   );
 };
 
-export default TindakLajutPage;
+export default RekapTemuanPage;

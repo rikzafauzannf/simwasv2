@@ -167,7 +167,7 @@ const RuangLingkup = () => {
           )}
         </form>
       </CardComponents>
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataRuangLingkup.map((item) => (
           <CardComponents key={item.id_ruang_lingkup}>
             <h3 className="text-xl font-bold">

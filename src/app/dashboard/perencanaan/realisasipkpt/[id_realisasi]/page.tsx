@@ -122,9 +122,9 @@ const ViewDataRealisasiPage = ({ params }: PageProps) => {
               </div>
             </CardComponents>
           </div>
-          <div className="order-1 md:order-2">
+          {/* <div className="order-1 md:order-2">
             <DailyActivity />
-          </div>
+          </div> */}
         </section>
         <CardComponents>
           <h3 className="mb-3">TIM ST</h3>

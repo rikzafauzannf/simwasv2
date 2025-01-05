@@ -24,7 +24,7 @@ const PerencanaanPage = () => {
           </CardComponents>
         </div>
         {/* <CardComponents>Notifikasi</CardComponents> */}
-        <DailyActivity />
+        {/* <DailyActivity /> */}
       </section>
     </div>
   );

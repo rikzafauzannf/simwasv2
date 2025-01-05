@@ -4,8 +4,8 @@ import { AxiosResponse } from 'axios';
 export interface VerifyOtpResponse {
   success: boolean;
   data?: {
-      user: { id_user: number; nip: string };
-      token: string;
+    user: { id_user: number; nip: string };
+    token: string;
   };
   message: string;
   error?: string;
@@ -102,9 +102,13 @@ export class AxiosService {
     }
   }
 
-  async verifyOtp(data: { nip: string; otp: string }): Promise<VerifyOtpResponse> {
+  async verifyOtp(data: {
+    nip: string;
+    otp: string;
+  }): Promise<VerifyOtpResponse> {
     try {
-      const response: AxiosResponse<VerifyOtpResponse> = await axiosInstance.post('verify-otp', data);
+      const response: AxiosResponse<VerifyOtpResponse> =
+        await axiosInstance.post('verify-otp', data);
 
       // Simpan data ke localStorage jika berhasil
       if (response.data?.success && response.data.data) {
@@ -125,7 +129,10 @@ export class AxiosService {
       };
     } catch (error: any) {
       // Tangkap error dengan tipe yang lebih aman
-      const errorMessage = error?.response?.data?.message || error.message || 'Terjadi kesalahan tidak diketahui';
+      const errorMessage =
+        error?.response?.data?.message ||
+        error.message ||
+        'Terjadi kesalahan tidak diketahui';
       return {
         success: false,
         error: errorMessage,

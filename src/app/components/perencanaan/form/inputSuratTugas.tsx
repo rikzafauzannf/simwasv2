@@ -18,6 +18,8 @@ import { useFetch } from '@/hooks/useFetch';
 import { JenisAuditDB, JenisLaporanDB } from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { UserManageDB } from '@/interface/interfaceUserManage';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 interface PropsID {
   id_pkpt: number;
@@ -26,6 +28,9 @@ interface PropsID {
 const axiosSecvice = new AxiosService();
 
 const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
+  const { user } = useAuthStore();
+  const router = useRouter();
+
   const { data: DataJenisAudit } = useFetch<JenisAuditDB>('jenis_audit');
   const { data: DataUser } = useFetch<UserManageDB>('pengguna');
   const [uploadOption, setUploadOption] = useState('link');
@@ -86,7 +91,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
   const onSubmit: SubmitHandler<FormSuratTugas> = async (data) => {
     try {
       const dataST: FormSuratTugas = {
-        id_user: 2,
+        id_user: Number(user?.id_user),
         id_pkpt: Number(id_pkpt),
         anggota_tim: teamMembers.map((item) => String(item.id)).join(','),
         bulan: data.bulan,
@@ -115,6 +120,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
         reset();
         alert('Data Surat Tugas berhasil disimpan');
         resetTeamMembers();
+        router.push('/dashboard/perencanaan/surattugas');
       } else {
         throw new Error(result.message);
       }
@@ -130,7 +136,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <CardComponents>
           <div className="space-y-3">
-            <section className="grid grid-cols-2 gap-3">
+            <section className="grid lg:grid-cols-2 gap-3">
               <InputFieldComponent
                 label="Bulan"
                 identiti="Bulan"
@@ -194,7 +200,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               {/* </div> */}
             </section>
             <h3>Tim Audit</h3>
-            <section className="grid md:grid-cols-2 gap-3">
+            <section className="grid lg:grid-cols-2 gap-3">
               {/* <InputFieldComponent
                 label="Tim Pemeriksa/Pelaksana Kegiatan"
                 identiti="timPemeriksa"
@@ -277,7 +283,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 type="select"
                 name="ketua_tim"
               />
-              <div className="md:col-span-2">
+              <div className="lg:col-span-2">
                 <div className="flex flex-col space-y-2">
                   <label htmlFor="Tim" className="text-slate-800">
                     TIM [{teamMembers.length}]
@@ -328,7 +334,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               </div>
             </section>
             <h3>Audit</h3>
-            <section className="grid grid-cols-2 gap-3">
+            <section className="grid lg:grid-cols-2 gap-3">
               <InputFieldComponent
                 label="Jumlah Objek Pengawasan"
                 identiti="jumlahObjek"
