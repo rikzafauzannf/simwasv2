@@ -13,6 +13,7 @@ import { KodeTemuanDB, RuangLingkupDB } from '@/interface/interfaceReferensi';
 import { FormUserManage, UserManageDB } from '@/interface/interfaceUserManage';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { useGetNameRuangLingkup } from '@/hooks/useGetName';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 
 const axiosService = new AxiosService();
 const UserManage = () => {
@@ -164,137 +165,144 @@ const UserManage = () => {
   };
 
   return (
-    <div className="space-y-3">
-      <h3 className="text-xl"># UserManage</h3>
-      <CardComponents>
-        <form
-          onSubmit={handleSubmit(isEditing ? onEditSubmit : onSubmit)}
-          className="grid gap-3"
-        >
-          <section className="grid md:grid-cols-4 gap-3 w-full">
-            <div className="md:col-span-3">
-              <InputFieldComponent
-                label="Nama Lengkap"
-                identiti="nama"
-                name="nama"
-                placeholder="Tuliskan nama"
-                type="text"
-                register={register('username', {
-                  required: 'nama wajib diisi',
-                })}
-                error={errors.username}
-              />
-            </div>
-            <SelectInputField
-              label="Role"
-              identiti="select-field-role"
-              options={OptionsRole}
-              register={register('role')}
-              placeholder="Pilih Ruang Lingkup Anda"
-              error={errors.role}
-              type="select"
-              name="role"
-            />
-            <SelectInputField
-              label="Asal Dinas"
-              identiti="select-field-asal"
-              options={optionRuangLingkup}
-              register={register('id_ruang_lingkup')}
-              placeholder="Pilih Ruang Lingkup Anda"
-              error={errors.id_ruang_lingkup}
-              type="select"
-              name="asal"
-            />
-            <InputFieldComponent
-              label="NIP"
-              identiti="nip"
-              name="nip"
-              placeholder="Tuliskan nip"
-              type="number"
-              register={register('nip', {
-                required: 'nip wajib diisi',
-              })}
-              error={errors.nip}
-            />
-            <InputFieldComponent
-              label="Jabatan"
-              identiti="jabatan"
-              name="jabatan"
-              placeholder="Tuliskan jabatan"
-              type="text"
-              register={register('jabatan', {
-                required: 'jabatan wajib diisi',
-              })}
-              error={errors.jabatan}
-            />
-            <InputFieldComponent
-              label="Nomor Whatsapp"
-              identiti="nomor_wa"
-              name="nomor_wa"
-              placeholder="Tuliskan Nomor Whatsapp"
-              type="text"
-              register={register('no_whatsapp', {
-                required: 'Nomor Whatsapp wajib diisi',
-              })}
-              error={errors.no_whatsapp}
-            />
-          </section>
-          <ButtonType
-            Text={isEditing ? '+ Perbarui User' : '+ Simpan User'}
-            type="submit"
-          />
-          {isEditing && (
-            <button type="button" onClick={handleCancelEdit}>
-              Batal
-            </button>
-          )}
-        </form>
-      </CardComponents>
-      <section className="grid lg:grid-cols-2 gap-3">
-        {DataPengguna.map((item) => (
-          <CardComponents key={item.id_user}>
-            <p>@ {item.role}</p>
-            <h3 className="text-xl font-bold">
-              {'>>'} {item.username}
-            </h3>
-            <p className="font-medium flex gap-3 items-center">
-              <Icon icon="solar:shield-check-broken" width="24" height="24" />
-              {getNameRuangLingkup(Number(item.id_ruang_lingkup))}
-            </p>
-            <div className="grid grid-cols-3 gap-3 w-full">
-              <p className="font-medium flex gap-3 items-center">
-                <Icon icon="solar:card-2-broken" width="24" height="24" />
-                {item.nip}
-              </p>
-              <p className="font-medium flex gap-3 items-center">
-                <Icon icon="solar:user-id-broken" width="24" height="24" />
-                {item.jabatan}
-              </p>
-              <p className="font-medium flex gap-3 items-center">
-                <Icon
-                  icon="solar:phone-calling-broken"
-                  width="24"
-                  height="24"
+    <AuthRoleWrapper allowedRoles={['Admin']}>
+      <div className="space-y-3">
+        <h3 className="text-xl"># UserManage</h3>
+        <CardComponents>
+          <form
+            onSubmit={handleSubmit(isEditing ? onEditSubmit : onSubmit)}
+            className="grid gap-3"
+          >
+            <section className="grid md:grid-cols-4 gap-3 w-full">
+              <div className="md:col-span-3">
+                <InputFieldComponent
+                  label="Nama Lengkap"
+                  identiti="nama"
+                  name="nama"
+                  placeholder="Tuliskan nama"
+                  type="text"
+                  register={register('username', {
+                    required: 'nama wajib diisi',
+                  })}
+                  error={errors.username}
                 />
-                {item.no_whatsapp}
+              </div>
+              <SelectInputField
+                label="Role"
+                identiti="select-field-role"
+                options={OptionsRole}
+                register={register('role')}
+                placeholder="Pilih Ruang Lingkup Anda"
+                error={errors.role}
+                type="select"
+                name="role"
+              />
+              <SelectInputField
+                label="Asal Dinas"
+                identiti="select-field-asal"
+                options={optionRuangLingkup}
+                register={register('id_ruang_lingkup')}
+                placeholder="Pilih Ruang Lingkup Anda"
+                error={errors.id_ruang_lingkup}
+                type="select"
+                name="asal"
+              />
+              <InputFieldComponent
+                label="NIP"
+                identiti="nip"
+                name="nip"
+                placeholder="Tuliskan nip"
+                type="number"
+                register={register('nip', {
+                  required: 'nip wajib diisi',
+                })}
+                error={errors.nip}
+              />
+              <InputFieldComponent
+                label="Jabatan"
+                identiti="jabatan"
+                name="jabatan"
+                placeholder="Tuliskan jabatan"
+                type="text"
+                register={register('jabatan', {
+                  required: 'jabatan wajib diisi',
+                })}
+                error={errors.jabatan}
+              />
+              <InputFieldComponent
+                label="Nomor Whatsapp"
+                identiti="nomor_wa"
+                name="nomor_wa"
+                placeholder="Tuliskan Nomor Whatsapp"
+                type="text"
+                register={register('no_whatsapp', {
+                  required: 'Nomor Whatsapp wajib diisi',
+                })}
+                error={errors.no_whatsapp}
+              />
+            </section>
+            <ButtonType
+              Text={isEditing ? '+ Perbarui User' : '+ Simpan User'}
+              type="submit"
+            />
+            {isEditing && (
+              <button type="button" onClick={handleCancelEdit}>
+                Batal
+              </button>
+            )}
+          </form>
+        </CardComponents>
+        <section className="grid lg:grid-cols-2 gap-3">
+          {DataPengguna.map((item) => (
+            <CardComponents key={item.id_user}>
+              <p>@ {item.role}</p>
+              <h3 className="text-xl font-bold">
+                {'>>'} {item.username}
+              </h3>
+              <p className="font-medium flex gap-3 items-center">
+                <Icon icon="solar:shield-check-broken" width="24" height="24" />
+                {getNameRuangLingkup(Number(item.id_ruang_lingkup))}
               </p>
-            </div>
-            <button
-              onClick={() => handleEdit(item)}
-              className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => handleDelete(item.id_user)}
-              className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
-            >
-              Hapus
-            </button>
-          </CardComponents>
-        ))}
-      </section>
-    </div>
+              <div className="grid grid-cols-2 gap-3 w-full">
+                <p className="font-medium flex gap-3 items-center">
+                  <Icon icon="solar:card-2-broken" width="24" height="24" />
+                  {item.nip}
+                </p>
+
+                <p className="font-medium flex gap-3 items-center">
+                  <Icon
+                    icon="solar:phone-calling-broken"
+                    width="24"
+                    height="24"
+                  />
+                  {item.no_whatsapp}
+                </p>
+                <div className="col-span-2">
+                  <p className="font-medium flex gap-3 items-center">
+                    <Icon icon="solar:user-id-broken" width="24" height="24" />
+                    {item.jabatan}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2 ">
+                <button
+                  onClick={() => handleEdit(item)}
+                  className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(item.id_user)}
+                  className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
+                >
+                  Hapus
+                </button>
+              </div>
+            </CardComponents>
+          ))}
+        </section>
+      </div>
+    </AuthRoleWrapper>
   );
 };
 

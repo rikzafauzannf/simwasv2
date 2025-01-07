@@ -1,4 +1,5 @@
 import LembarHasilPengawasan from '@/app/components/pelaksanaan/form/lembarHasilPengawasan';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
 
 interface pageProps {
@@ -13,9 +14,11 @@ const LembarHasilForm: React.FC<pageProps> = ({ params }) => {
   console.log('params nhp id: ', id_nhp);
 
   return (
-    <div className="space-y-3">
-      <LembarHasilPengawasan id_nhp={id_nhp} />
-    </div>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor']}>
+      <div className="space-y-3">
+        <LembarHasilPengawasan id_nhp={id_nhp} />
+      </div>
+    </AuthRoleWrapper>
   );
 };
 

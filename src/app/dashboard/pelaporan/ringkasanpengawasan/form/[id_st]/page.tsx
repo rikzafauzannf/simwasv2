@@ -1,4 +1,5 @@
 import InputRingkasanPengawasan from '@/app/components/pelaksanaan/form/inputRingkasanPengawasan';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
 
 interface PageProps {
@@ -10,9 +11,11 @@ interface PageProps {
 const FormRingkasanPengawasanPage: React.FC<PageProps> = ({ params }) => {
   console.log('params data page props: ', params.id_st);
   return (
-    <div className="space-y-3">
-      <InputRingkasanPengawasan id_st={params.id_st} />
-    </div>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor']}>
+      <div className="space-y-3">
+        <InputRingkasanPengawasan id_st={params.id_st} />
+      </div>
+    </AuthRoleWrapper>
   );
 };
 

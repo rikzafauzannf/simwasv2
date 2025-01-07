@@ -2,6 +2,8 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
+import Image from 'next/image';
+import IconsJenisPengawasan from '/public/images/products/jenis_pengawasn_bg.svg';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -58,8 +60,13 @@ const ChartJenisPengawasan = () => {
   return (
     <div className="w-full items-center">
       <div className="flex gap-2 items-center">
-        <img
+        {/* <img
           src="/images/products/jenis_pengawasn_bg.svg"
+          className="w-8 md:w-10"
+        /> */}
+        <Image
+          src={IconsJenisPengawasan}
+          alt="icons-jenis-pengawasan"
           className="w-8 md:w-10"
         />
         <h3 className="font-bold text-sm md:text-lg text-neutral-700">

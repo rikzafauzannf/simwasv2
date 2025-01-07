@@ -16,6 +16,7 @@ import {
 import { formatCurrency } from '@/hooks/formatCurrency';
 import { sum } from 'lodash';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 
 const TableToPrint = () => {
   const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
@@ -236,21 +237,25 @@ const SamplePage: React.FC = () => {
   // });
 
   return (
-    <div className="space-y-3">
-      <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
-        <h5 className="card-title mb-3">Sample Table PKPT</h5>
-        <p className="card-subtitle">Development Stage Only</p>
-        {/* <button className="btn btn-primary" onClick={() => handlePrint()}>Print Table</button>         */}
-      </div>
-
-      <CardComponents>
-        <div className="overflow-x-auto">
-          <div ref={componentRef}>
-            <TableToPrint />
-          </div>
+    <AuthRoleWrapper
+      allowedRoles={['Admin', 'Perencana', 'Pimpinan', 'Pelaksana', 'Auditor']}
+    >
+      <div className="space-y-3">
+        <div className="rounded-xl dark:shadow-dark-md shadow-md bg-white dark:bg-darkgray p-6 relative w-full break-words">
+          <h5 className="card-title mb-3">Sample Table PKPT</h5>
+          <p className="card-subtitle">Development Stage Only</p>
+          {/* <button className="btn btn-primary" onClick={() => handlePrint()}>Print Table</button>         */}
         </div>
-      </CardComponents>
-    </div>
+
+        <CardComponents>
+          <div className="overflow-x-auto">
+            <div ref={componentRef}>
+              <TableToPrint />
+            </div>
+          </div>
+        </CardComponents>
+      </div>
+    </AuthRoleWrapper>
   );
 };
 

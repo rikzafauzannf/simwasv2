@@ -13,7 +13,7 @@ spec:
         app: simwastasik
     spec:
       containers:
-      - name: simwastasik-container
-        image: simwastasik:tag
-        ports:
-        - containerPort: 80
+        - name: simwastasik-container
+          image: simwastasik:tag
+          ports:
+            - containerPort: 80

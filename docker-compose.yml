@@ -1,9 +1,9 @@
 services:
   app:
-    image: simwastasik:v1.0.0
+    image: simwastasik:latest
     container_name: nextjs-app
     ports:
-      - "3002:3000"
+      - '3002:3000'
     environment:
       - NODE_ENV=production
     restart: unless-stopped

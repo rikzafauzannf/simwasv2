@@ -8,6 +8,7 @@ import ChartJenisPengawasan from '../components/dashboard/ChartJenisPengawasan';
 import ChartAnggaran from '../components/dashboard/ChartAnggaran';
 import Chartlaporan from '../components/dashboard/ChartLaporan';
 import RevenueForecast from '../components/dashboard/RevenueForecast';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 // import SalesProfit from '../components/dashboard/RevenueForecast';
 // import NewCustomers from '../components/dashboard/NewCustomers';
 // import TotalIncome from '../components/dashboard/TotalIncome';
@@ -18,40 +19,44 @@ import RevenueForecast from '../components/dashboard/RevenueForecast';
 
 const page = () => {
   return (
-    <div className="space-y-8">
-      {/* top */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
-        <div className="lg:col-span-2">
-          <CardAkumulasiDataALL />
-        </div>
-        <CardComponents>
-          <ChartTingkatRisiko />
-        </CardComponents>
-      </section>
-      {/* data chart */}
-      <CardComponents>
-        <ChartPengawasan />
-      </CardComponents>
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
-        <CardComponents>
-          <ChartRuangLingkup />
-        </CardComponents>
-        <div className="lg:col-span-2">
+    <AuthRoleWrapper
+      allowedRoles={['Admin', 'Pimpinan', 'Perencana', 'Pelaksana', 'Auditor']}
+    >
+      <div className="space-y-8">
+        {/* top */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
+          <div className="lg:col-span-2">
+            <CardAkumulasiDataALL />
+          </div>
           <CardComponents>
-            <ChartJenisPengawasan />
+            <ChartTingkatRisiko />
           </CardComponents>
-        </div>
-        <div className="lg:col-span-2">
-          <CardComponents>
-            <ChartAnggaran />
-          </CardComponents>
-        </div>
+        </section>
+        {/* data chart */}
         <CardComponents>
-          <Chartlaporan />
+          <ChartPengawasan />
         </CardComponents>
-      </section>
-      <RevenueForecast />
-    </div>
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
+          <CardComponents>
+            <ChartRuangLingkup />
+          </CardComponents>
+          <div className="lg:col-span-2">
+            <CardComponents>
+              <ChartJenisPengawasan />
+            </CardComponents>
+          </div>
+          <div className="lg:col-span-2">
+            <CardComponents>
+              <ChartAnggaran />
+            </CardComponents>
+          </div>
+          <CardComponents>
+            <Chartlaporan />
+          </CardComponents>
+        </section>
+        <RevenueForecast />
+      </div>
+    </AuthRoleWrapper>
   );
 };
 

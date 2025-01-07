@@ -19,10 +19,15 @@ import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
 import { formatCurrency } from '@/hooks/formatCurrency';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();
 
 const TableTemuanHasil: React.FC = () => {
+  const { user } = useAuthStore();
+  const hashPermission = ['Pelaksana', 'Auditor'].includes(
+    user?.role as string
+  );
   const {
     data: DataTemuanHasil,
     isLoading,
@@ -61,32 +66,37 @@ const TableTemuanHasil: React.FC = () => {
   };
 
   const columns: TableColumn<TemuanHasilData>[] = [
-    {
-      name: 'Actions',
-      cell: (row) => (
-        <div className="flex gap-2">
-          {/* <Link
-            // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
-            href={`${row.id_tlhp}`}
-            className="p-2 text-blue-500 hover:text-blue-700"
-          >
-            <FaEye />
-          </Link>
-          <Link
-            href={`/dashboard/pelaksanaan/actions/${row.id_tlhp}`}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-          >
-            Act
-          </Link> */}
-          <button
-            onClick={() => handleDelete(row.id_tlhp)}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button>
-        </div>
-      ),
-    },
+    ...(hashPermission
+      ? [
+          {
+            name: 'Actions',
+            cell: (row: TemuanHasilData) => (
+              <div className="flex gap-2">
+                {/* <Link
+              // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
+              href={`${row.id_tlhp}`}
+              className="p-2 text-blue-500 hover:text-blue-700"
+            >
+              <FaEye />
+            </Link>
+            <Link
+              href={`/dashboard/pelaksanaan/actions/${row.id_tlhp}`}
+              className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+            >
+              Act
+            </Link> */}
+                <button
+                  onClick={() => handleDelete(row.id_tlhp)}
+                  className="p-2 text-red-500 hover:text-red-700"
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            ),
+          },
+        ]
+      : []),
+
     {
       name: 'Create At',
       selector: (row) => row.created_at,

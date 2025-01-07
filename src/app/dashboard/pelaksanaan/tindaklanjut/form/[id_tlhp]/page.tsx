@@ -3,6 +3,7 @@ import { ButtonType } from '@/app/components/Global/Button';
 import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import { FormTindakLanjut } from '@/interface/interfaceTindakLanjut';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useRouter } from 'next/navigation';
@@ -74,113 +75,115 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
     }
   };
   return (
-    <div className="space-y-3">
-      <h3 className="text-xl">Tindak Lanjut</h3>
-      <CardComponents>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid md:grid-cols-2 gap-3 w-full"
-        >
-          <div className="md:col-span-2">
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor']}>
+      <div className="space-y-3">
+        <h3 className="text-xl">Tindak Lanjut</h3>
+        <CardComponents>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid md:grid-cols-2 gap-3 w-full"
+          >
+            <div className="md:col-span-2">
+              <InputFieldComponent
+                label="Uraian"
+                identiti="uraian"
+                type="text"
+                name="Uraian"
+                placeholder="Tuliskan Uraian Tindak Lanjut"
+                register={register('uraian', {
+                  required: 'Uraian Tindak Lanjut wajib diisi',
+                })}
+                error={errors.uraian}
+              />
+            </div>
             <InputFieldComponent
-              label="Uraian"
-              identiti="uraian"
-              type="text"
-              name="Uraian"
-              placeholder="Tuliskan Uraian Tindak Lanjut"
-              register={register('uraian', {
-                required: 'Uraian Tindak Lanjut wajib diisi',
+              label="Nilai Setor"
+              identiti="nilai_setor"
+              type="number"
+              name="nilai_setor"
+              placeholder="Masukan Nulai Retoran"
+              register={register('nilai_setor', {
+                required: 'Nilai Setor Tindak Lanjut wajib diisi',
               })}
-              error={errors.uraian}
+              error={errors.nilai_setor}
             />
-          </div>
-          <InputFieldComponent
-            label="Nilai Setor"
-            identiti="nilai_setor"
-            type="number"
-            name="nilai_setor"
-            placeholder="Masukan Nulai Retoran"
-            register={register('nilai_setor', {
-              required: 'Nilai Setor Tindak Lanjut wajib diisi',
-            })}
-            error={errors.nilai_setor}
-          />
-          <InputFieldComponent
-            label="Kondisi temuan"
-            identiti="kondisi_temuan"
-            type="text"
-            name="kondisi_temuan"
-            placeholder="Tuliskan Kondisi Temuan Tindak Lanjut"
-            register={register('kondisi_temuan', {
-              required: 'Kondisi Temuan Tindak Lanjut wajib diisi',
-            })}
-            error={errors.kondisi_temuan}
-          />
-          <InputFieldComponent
-            label="Kondisi Rekomendasi"
-            identiti="kondisi_rekomendasi"
-            type="text"
-            name="kondisi_rekomendasi"
-            placeholder="Tuliskan Kondisi Rekomendasi Tindak Lanjut"
-            register={register('kondisi_rekomendasi', {
-              required: 'Kondisi Rekomendasi Tindak Lanjut wajib diisi',
-            })}
-            error={errors.kondisi_rekomendasi}
-          />
-          <InputFieldComponent
-            label="Sisa Nominal"
-            identiti="sisa_nominal"
-            type="number"
-            name="sisa_nominal"
-            placeholder="Tuliskan Sisa Nominal Tindak Lanjut"
-            register={register('sisa_nominal', {
-              required: 'Sisa Nominal Tindak Lanjut wajib diisi',
-            })}
-            error={errors.sisa_nominal}
-          />
-          <InputFieldComponent
-            label="Tanggal Pengiriman"
-            identiti="tanggal_pengiriman"
-            type="date"
-            name="tanggal_pengiriman"
-            placeholder="Tentukan Tanggal Pengiriman Tindak Lanjut"
-            register={register('tanggal_pengiriman', {
-              required: 'Tanggal Pengiriman Tindak Lanjut wajib diisi',
-            })}
-            error={errors.tanggal_pengiriman}
-          />
-          <InputFieldComponent
-            label="Batas Akhir Tl"
-            identiti="batas_akhir_tl"
-            type="date"
-            name="batas_akhir_tl"
-            placeholder="Tentukan Batas Akhir Tindak Lanjut"
-            register={register('batas_akhir_tl', {
-              required: 'Batas Akhir Tindak Lanjut wajib diisi',
-              setValueAs: (v) =>
-                v ? new Date(v).toISOString().split('T')[0] : '',
-            })}
-            error={errors.batas_akhir_tl}
-          />
-          <div className="md:col-span-2">
             <InputFieldComponent
-              label="Keterangan"
-              identiti="keterangan"
+              label="Kondisi temuan"
+              identiti="kondisi_temuan"
               type="text"
-              name="keterangan"
-              placeholder="Tuliskan Keterangan Tindak Lanjut"
-              register={register('keterangan', {
-                required: 'Keterangan Tindak Lanjut wajib diisi',
+              name="kondisi_temuan"
+              placeholder="Tuliskan Kondisi Temuan Tindak Lanjut"
+              register={register('kondisi_temuan', {
+                required: 'Kondisi Temuan Tindak Lanjut wajib diisi',
               })}
-              error={errors.keterangan}
+              error={errors.kondisi_temuan}
             />
-          </div>
-          <div className="md:col-span-2">
-            <ButtonType type="submit" Text="Buat Tindak Lanjut" />
-          </div>
-        </form>
-      </CardComponents>
-    </div>
+            <InputFieldComponent
+              label="Kondisi Rekomendasi"
+              identiti="kondisi_rekomendasi"
+              type="text"
+              name="kondisi_rekomendasi"
+              placeholder="Tuliskan Kondisi Rekomendasi Tindak Lanjut"
+              register={register('kondisi_rekomendasi', {
+                required: 'Kondisi Rekomendasi Tindak Lanjut wajib diisi',
+              })}
+              error={errors.kondisi_rekomendasi}
+            />
+            <InputFieldComponent
+              label="Sisa Nominal"
+              identiti="sisa_nominal"
+              type="number"
+              name="sisa_nominal"
+              placeholder="Tuliskan Sisa Nominal Tindak Lanjut"
+              register={register('sisa_nominal', {
+                required: 'Sisa Nominal Tindak Lanjut wajib diisi',
+              })}
+              error={errors.sisa_nominal}
+            />
+            <InputFieldComponent
+              label="Tanggal Pengiriman"
+              identiti="tanggal_pengiriman"
+              type="date"
+              name="tanggal_pengiriman"
+              placeholder="Tentukan Tanggal Pengiriman Tindak Lanjut"
+              register={register('tanggal_pengiriman', {
+                required: 'Tanggal Pengiriman Tindak Lanjut wajib diisi',
+              })}
+              error={errors.tanggal_pengiriman}
+            />
+            <InputFieldComponent
+              label="Batas Akhir Tl"
+              identiti="batas_akhir_tl"
+              type="date"
+              name="batas_akhir_tl"
+              placeholder="Tentukan Batas Akhir Tindak Lanjut"
+              register={register('batas_akhir_tl', {
+                required: 'Batas Akhir Tindak Lanjut wajib diisi',
+                setValueAs: (v) =>
+                  v ? new Date(v).toISOString().split('T')[0] : '',
+              })}
+              error={errors.batas_akhir_tl}
+            />
+            <div className="md:col-span-2">
+              <InputFieldComponent
+                label="Keterangan"
+                identiti="keterangan"
+                type="text"
+                name="keterangan"
+                placeholder="Tuliskan Keterangan Tindak Lanjut"
+                register={register('keterangan', {
+                  required: 'Keterangan Tindak Lanjut wajib diisi',
+                })}
+                error={errors.keterangan}
+              />
+            </div>
+            <div className="md:col-span-2">
+              <ButtonType type="submit" Text="Buat Tindak Lanjut" />
+            </div>
+          </form>
+        </CardComponents>
+      </div>
+    </AuthRoleWrapper>
   );
 };
 

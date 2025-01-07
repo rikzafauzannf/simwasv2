@@ -6,6 +6,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { useGetNamePKPT, useGetNameUser } from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface PropsComponent {
   title: string;
@@ -38,6 +39,10 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const { user } = useAuthStore();
+  if (!user || !['Pelaksana', 'Auditor'].includes(user.role as string))
+    return null;
 
   return (
     <>

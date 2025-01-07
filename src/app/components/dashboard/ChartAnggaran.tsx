@@ -5,6 +5,8 @@ import { ApexOptions } from 'apexcharts';
 import { DataChartPEngawasan } from '@/interface/interfaceChartData';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { formatCurrency } from '@/hooks/formatCurrency';
+import Image from 'next/image';
+import IconsAnggaran from '/public/images/products/anggaran_bg.svg';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -55,7 +57,8 @@ const ChartAnggaran = () => {
   return (
     <div className="w-full">
       <div className="flex gap-2 items-center">
-        <img src="/images/products/anggaran_bg.svg" className="w-8 md:w-10" />
+        {/* <img src="/images/products/anggaran_bg.svg" className="w-8 md:w-10" /> */}
+        <Image src={IconsAnggaran} alt="image-icon" className="w-8 md:w-10" />
         <h3 className="font-bold text-neutral-700 text-sm md:text-lg">
           Anggaran Per bulan
         </h3>

@@ -29,6 +29,7 @@ import { ButtonType } from '@/app/components/Global/Button';
 import { useFetchById } from '@/hooks/useFetchById';
 import { useGetNameUser } from '@/hooks/useGetName';
 import { useRouter } from 'next/navigation';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 
 interface PropsID {
   params: {
@@ -255,7 +256,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   };
 
   return (
-    <>
+    <AuthRoleWrapper allowedRoles={['Perencana']}>
       <div className="flex justify-between items-center">
         <h3>Data PKPT</h3>
         <div className="space-x-3">
@@ -665,7 +666,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
           {isEditing ? <ButtonType Text="Edit Data" type="submit" /> : ''}
         </section>
       </form>
-    </>
+    </AuthRoleWrapper>
   );
 };
 

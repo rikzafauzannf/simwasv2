@@ -10,10 +10,16 @@ import { useFetchAll } from '@/hooks/useFetchAll';
 import { useGetNamePKPT } from '@/hooks/useGetName';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosService = new AxiosService();
 
 const TableKendaliMutu = () => {
+  const { user } = useAuthStore();
+  const hashPermission = ['Pelaksana', 'Auditor'].includes(
+    user?.role as string
+  );
+
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<KendaliMutuData[]>([]);
 
@@ -43,12 +49,14 @@ const TableKendaliMutu = () => {
           >
             <FaEdit />
           </button> */}
-          <button
-            onClick={() => handleDelete(row.id)}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button>
+          {hashPermission && (
+            <button
+              onClick={() => handleDelete(row.id)}
+              className="p-2 text-red-500 hover:text-red-700"
+            >
+              <FaTrash />
+            </button>
+          )}
         </div>
       ),
     },

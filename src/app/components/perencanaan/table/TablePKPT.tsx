@@ -86,35 +86,48 @@ const TablePKPT: React.FC = () => {
           >
             <FaEye />
           </Link>
-          <Link
-            href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-          >
-            Act
-          </Link>
-          <button
-            onClick={() => handleCreateReport(row.id_pkpt)}
-            className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-          >
-            <FaPaperclip />
-          </button>
+          {user?.role === 'Perencana' ? (
+            <>
+              <Link
+                href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
+                className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+              >
+                Act
+              </Link>
+              <button
+                onClick={() => handleCreateReport(row.id_pkpt)}
+                className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              >
+                <FaPaperclip />
+              </button>
+            </>
+          ) : ['Pelaksana', 'Auditor'].includes(user?.role as string) ? (
+            <button
+              onClick={() => handleCreateReport(row.id_pkpt)}
+              className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+            >
+              <FaPaperclip />
+            </button>
+          ) : null}
         </div>
       ),
-      grow: 1.5,
+      // grow: 0.2,
     },
     {
       name: 'Status',
       selector: (row) => row.status,
       sortable: true,
+      grow: 0.2,
     },
     {
       name: 'Create At',
       selector: (row) => row.created_at,
       sortable: true,
+      // grow: 0.5,
     },
     {
       name: 'Jenis Pengawasan',
-      selector: (row) => getNameJenisPengawasan(row.id_jenis_laporan),
+      selector: (row) => getNameJenisPengawasan(row.id_jenis_pengawasan),
       sortable: true,
     },
     {
@@ -200,6 +213,7 @@ const TablePKPT: React.FC = () => {
       name: 'Keterangan',
       selector: (row) => row.keterangan,
       sortable: true,
+      maxWidth: '170px',
     },
   ];
 
@@ -315,6 +329,7 @@ const TablePKPT: React.FC = () => {
           fixedHeader
           fixedHeaderScrollHeight="300px"
           responsive
+          style={{ tableLayout: 'auto' }}
         />
       </div>
     </>

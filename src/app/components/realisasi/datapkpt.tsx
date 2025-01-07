@@ -11,6 +11,7 @@ import {
   useGetNameUser,
 } from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface Props {
   todo: string;
@@ -39,6 +40,14 @@ const MapDataPkpt: React.FC<Props> = ({ todo, title }) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const { user } = useAuthStore();
+  if (
+    !user ||
+    !['Perencana', 'Pelaksana', 'Audotor'].includes(user.role as string)
+  )
+    return null;
+
   return (
     <>
       <div className="mb-4">

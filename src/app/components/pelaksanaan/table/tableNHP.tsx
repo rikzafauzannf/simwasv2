@@ -16,10 +16,16 @@ import {
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();
 
 const TableNHP: React.FC = () => {
+  const { user } = useAuthStore();
+  const hashPermission = ['Pelaksana', 'Auditor'].includes(
+    user?.role as string
+  );
+
   const { data: DataNHP, isLoading, error, refetch } = useFetch<NHPData>('nhp');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<NHPData[]>([]);
@@ -28,6 +34,7 @@ const TableNHP: React.FC = () => {
   const { getNameNoSP, getProgramAudit } = useGetNameST();
 
   const handleDelete = async (id: number) => {
+    if (!hashPermission) return;
     const result = await Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -68,12 +75,14 @@ const TableNHP: React.FC = () => {
           >
             Act
           </Link> */}
-          <button
-            onClick={() => handleDelete(row.id_nhp)}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button>
+          {hashPermission && (
+            <button
+              onClick={() => handleDelete(row.id_nhp)}
+              className="p-2 text-red-500 hover:text-red-700"
+            >
+              <FaTrash />
+            </button>
+          )}
         </div>
       ),
     },
@@ -201,7 +210,7 @@ const TableNHP: React.FC = () => {
         <input
           id="search"
           type="text"
-          placeholder="Cari Data NHP {tgl/noSP/programAudit/perancang}"
+          placeholder="Cari Data NHP"
           value={search}
           onChange={handleSearch}
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"

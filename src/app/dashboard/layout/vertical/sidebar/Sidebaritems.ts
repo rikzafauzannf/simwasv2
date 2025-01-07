@@ -42,6 +42,54 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         url: '/dashboard/datareferensi',
       },
+      {
+        name: 'Data Jenis Audit',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/jenisaudit',
+      },
+      {
+        name: 'Data Jenis Laporan',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/jenislaporan',
+      },
+      {
+        name: 'Data Jenis Pengawasan',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/jenispengawasan',
+      },
+      {
+        name: 'Data Kode Referensi',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/kodereferensi',
+      },
+      {
+        name: 'Data Kode Rekomendasi',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/koderekomendasi',
+      },
+      {
+        name: 'Data Kode Temuan',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/kodetemuan',
+      },
+      {
+        name: 'Data Ruang Lingkup',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/ruanglingkup',
+      },
+      {
+        name: 'Data Tingkat Resiko',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/tingkatresiko',
+      },
     ],
   },
   {
@@ -151,44 +199,73 @@ const SidebarContent: MenuItem[] = [
 ];
 
 export function filterSidebarByRole(role: string): MenuItem[] {
+  const dataReferensi = [
+    'Data Jenis Audit',
+    'Data Jenis Laporan',
+    'Data Jenis Pengawasan',
+    'Data Kode Referensi',
+    'Data Kode Rekomendasi',
+    'Data Kode Temuan',
+    'Data Ruang Lingkup',
+    'Data Tingkat Resiko',
+  ];
+  const roleBasedFilter = {
+    Admin: [
+      'Dashboard',
+      ...dataReferensi,
+      // 'Data Referensi',
+      'Dashboard',
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+      'User Account',
+    ],
+    Pimpinan: [
+      'Dashboard',
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+    ],
+    Perencana: ['Dashboard', ...dataReferensi, 'PKPT', 'Surat Tugas'],
+    Pelaksana: [
+      'Dashboard',
+      'PKPT',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+    ],
+    Auditor: [
+      'Dashboard',
+      'PKPT',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+    ],
+  };
+
   return SidebarContent.map((item) => {
     const filteredChildren = item.children?.filter((child) => {
-      if (role === 'Admin') {
-        // Admin Role
-        return (
-          child.name &&
-          ['Dashboard', 'Data Referensi', 'User Account'].includes(
-            child.name
-          )
-        );
-      }else if (role === 'Pempinan') {
-        // Admin Role
-        return (
-          child.name &&
-          ['Dashboard',' PKPT', 'Surat Tugas', 'Kendali Mutu', 'Nota Hasil', 'Lembar Hasil', 'Hasil Temuan', 'Rekap Temuan', 'Tindak Lanjut'].includes(
-            child.name
-          )
-        );
-      }
-      else if (role === 'Perencana') {
-        // Admin Role
-        return (
-          child.name &&
-          ['Dashboard', 'Data Referensi', ' PKPT', 'Surat Tugas'].includes(
-            child.name
-          )
-        );
-      }
-      else if (role === 'Pelaksana' || role === 'Auditor') {
-        // Admin Role
-        return (
-          child.name &&
-          ['Dashboard',' PKPT','Kendali Mutu', 'Nota Hasil', 'Lembar Hasil', 'Hasil Temuan', 'Rekap Temuan', 'Tindak Lanjut'].includes(
-            child.name
-          )
-        );
-      }
-      return false;
+      // const allowedNames = roleBasedFilter[role as keyof typeof roleBasedFilter];
+      const allowedNames =
+        roleBasedFilter[role as keyof typeof roleBasedFilter];
+
+      return allowedNames ? allowedNames.includes(child.name as string) : false;
     });
 
     return { ...item, children: filteredChildren };

@@ -12,6 +12,7 @@ import { useFetchById } from '@/hooks/useFetchById';
 import { useGetNameJenisAudit, useGetNameUser } from '@/hooks/useGetName';
 import { AxiosService } from '@/services/axiosInstance.service';
 import Swal from 'sweetalert2';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface PropsOptions {
   id_pkpt?: number;
@@ -21,6 +22,9 @@ interface PropsOptions {
 const axiosSecvice = new AxiosService();
 
 const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
+  const { user } = useAuthStore();
+  const hashPermission = ['Perencana'].includes(user?.role as string);
+
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
   const { data: DataSuratTugas, refetch } =
@@ -82,12 +86,14 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
           >
             <FaEdit />
           </button> */}
-          <button
-            onClick={() => handleDelete(row.id_st)}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button>
+          {hashPermission && (
+            <button
+              onClick={() => handleDelete(row.id_st)}
+              className="p-2 text-red-500 hover:text-red-700"
+            >
+              <FaTrash />
+            </button>
+          )}
         </div>
       ),
     },
