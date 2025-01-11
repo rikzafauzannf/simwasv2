@@ -17,6 +17,7 @@ import { formatCurrency } from '@/hooks/formatCurrency';
 import { sum } from 'lodash';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
+import PdfGenerator from '@/app/components/PDFGenerator';
 
 const TableToPrint = () => {
   const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
@@ -248,11 +249,9 @@ const SamplePage: React.FC = () => {
         </div>
 
         <CardComponents>
-          <div className="overflow-x-auto">
-            <div ref={componentRef}>
-              <TableToPrint />
-            </div>
-          </div>
+          <PdfGenerator>
+            <TableToPrint />
+          </PdfGenerator>
         </CardComponents>
       </div>
     </AuthRoleWrapper>

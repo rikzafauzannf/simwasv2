@@ -1,10 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
 
 // Validasi bahwa API endpoint tersedia
-const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+const apiEndpoint = process.env.NEXT_PUBLIC_API_BASE_URL;
 if (!apiEndpoint) {
   throw new Error(
-    'NEXT_PUBLIC_API_ENDPOINT is not defined in environment variables.'
+    'NEXT_PUBLIC_API_BASE_URL is not defined in environment variables.'
   );
 }
 

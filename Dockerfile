@@ -1,29 +1,37 @@
-# Gunakan image Node.js versi LTS
-FROM node:18-alpine
+# Build stage
+FROM node:18-alpine AS builder
 
-# Set build-time argument
-ARG API_BASE_URL
-
-# Set environment variable for runtime
-ENV NEXT_PUBLIC_API_ENDPOINT=${API_BASE_URL}
-
-# Tentukan direktori kerja dalam container
+# Set working directory
 WORKDIR /app
 
-# Salin file package.json dan package-lock.json
-COPY package*.json ./
+# Copy dependency definitions
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
-# Salin seluruh proyek ke dalam container
+# Copy application files
 COPY . .
 
-# Build aplikasi Next.js
+# Build the application
+ARG NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 RUN npm run build
 
-# Ekspos port untuk aplikasi
+# Production stage
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy built application from builder
+COPY --from=builder /app .
+
+# Set runtime environment variable
+ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+
+# Expose port
 EXPOSE 3000
 
-# Perintah default untuk menjalankan aplikasi
+# Run the application
 CMD ["npm", "start"]

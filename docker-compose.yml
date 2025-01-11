@@ -1,9 +1,12 @@
+version: '3.8'
 services:
-  app:
-    image: simwastasik:latest
-    container_name: nextjs-app
+  simwastasik-app:
+    image: rikzafrontenddev/simwastasik:latest
+    container_name: simwastasik-app
     ports:
-      - '3002:3000'
+      - '3000:3000'
     environment:
-      - NODE_ENV=production
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+    volumes:
+      - .:/app
     restart: unless-stopped
