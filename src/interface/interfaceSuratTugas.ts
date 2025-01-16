@@ -12,6 +12,7 @@ export type SuratTugasData = {
   anggota_tim: string;
   jumlah_objek: number;
   jumlah_laporan: number;
+  jumlah_hp: number;
   no_tgllh: string;
   id_jenis_audit: number;
   keterangan: string;
@@ -25,7 +26,7 @@ export interface FormSuratTugas {
   bulan: string;
   program_audit: string;
   no_tglsp: string;
-  waktu_penugasan: string;
+  // waktu_penugasan: string;
   tim_pemeriksa: string;
   wk_penanggung_jawab: string;
   pengendali_teknis: string;
@@ -35,6 +36,11 @@ export interface FormSuratTugas {
   jumlah_laporan: number;
   no_tgllh: string;
   id_jenis_audit: number;
+
+  jumlah_hp: number;
+  waktu_awal: string;
+  waktu_akhir: string;
+
   keterangan: string;
   link_st: string;
   id_user: number;

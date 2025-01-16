@@ -13,7 +13,7 @@ import {
   useGetNameTingkatResiko,
   useGetNameUser,
 } from '@/hooks/useGetName';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency } from '@/data/formatData';
 import { sum } from 'lodash';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';

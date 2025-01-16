@@ -6,21 +6,12 @@ import { InputFieldComponent, SelectInputField } from '../../Global/Input';
 import { ButtonType } from '../../Global/Button';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
-import { title } from 'process';
-import { FirestoreService } from '@/services/firestore.service';
 import { PKPTData, PKPTFormData } from '@/interface/interfacePKPT';
-import {
-  JenisLaporanDB,
-  JenisPengawasanDB,
-  RuangLingkupDB,
-  TingkatResikoDB,
-} from '@/interface/interfaceReferensi';
-import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useScopeStore } from '@/middleware/Store/useScopeStore';
-import { UserManageDB } from '@/interface/interfaceUserManage';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import { useOptions } from '@/data/selectValue';
 
 const axiosSecvice = new AxiosService();
 
@@ -28,36 +19,16 @@ const InputNonPKPT = () => {
   const { user } = useAuthStore();
   const router = useRouter();
 
-  const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
-
-  const { data: DataPengawasan } =
-    useFetch<JenisPengawasanDB>('jenis_pengawasan');
-
-  const { data: DataTingkatRisiko } =
-    useFetch<TingkatResikoDB>('tingkat_resiko');
-
-  const { data: DataRuangLingkup } = useFetch<RuangLingkupDB>('ruang_lingkup');
-  const { data: DataUser } = useFetch<UserManageDB>('pengguna');
-
-  const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
-    value: String(item.id_jenis_laporan),
-    title: `${item.jenis_laporan} - ${item.keterangan}`,
-  }));
-
-  const optionsJenisPengawasan = DataPengawasan.map((item) => ({
-    value: String(item.id_jenis_pengawasan),
-    title: item.jenis_pengawasan,
-  }));
-
-  const optionsTingkatRisiko = DataTingkatRisiko.map((item) => ({
-    value: String(item.id_tingkat_resiko),
-    title: item.tingkat_resiko,
-  }));
-
-  const optionsRuangLingkup = DataRuangLingkup.map((item) => ({
-    value: String(item.id_ruang_lingkup),
-    title: item.ruang_lingkup,
-  }));
+  const {
+    optionsDataUser,
+    optionsJenisAudit,
+    optionsJenisLaporan,
+    optionsJenisPengawasan,
+    optionsRuangLingkup,
+    optionsTingkatRisiko,
+    potentialMembers,
+    potentialScopes,
+  } = useOptions();
 
   const {
     register,
@@ -79,20 +50,10 @@ const InputNonPKPT = () => {
     useTeamStore();
   const [newMemberId, setNewMemberId] = React.useState<number | string>('');
 
-  const potentialMembers = DataUser.map((item) => ({
-    id: item.id_user,
-    name: `${item.username} - ${item.jabatan}`,
-  }));
-
   console.log('data dari team: ', teamMembers);
 
   const { scopes, addScope, removeScope } = useScopeStore();
   const [newScopeId, setNewScopeId] = React.useState<number | string>('');
-
-  const potentialScopes = DataRuangLingkup.map((item) => ({
-    id: item.id_ruang_lingkup,
-    name: item.ruang_lingkup,
-  }));
 
   console.log('data dari scope: ', scopes);
 
@@ -102,7 +63,8 @@ const InputNonPKPT = () => {
         status: 'non-pkpt',
         id_user: Number(user?.id_user),
         anggaran: String(data.anggaran),
-        anggota_tim: String(data.anggota_tim),
+        // anggota_tim: String(data.anggota_tim),
+        anggota_tim: null,
         area_pengawasan: data.area_pengawasan,
         id_jenis_laporan: Number(data.id_jenis_laporan),
         id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
@@ -175,32 +137,32 @@ const InputNonPKPT = () => {
   const aTim = watch('anggota_tim');
 
   // Effect untuk menghitung jumlah otomatis
-  React.useEffect(() => {
-    let total = 0;
+  // React.useEffect(() => {
+  //   let total = 0;
 
-    // Hitung jumlah berdasarkan nilai yang diinput
-    if (penanggungJawab) total += Number(penanggungJawab) || 0;
-    if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
-    if (supervisor) total += Number(supervisor) || 0;
-    if (ketuaTim) total += Number(ketuaTim) || 0;
-    if (aTim) total += Number(aTim) || 0;
+  //   // Hitung jumlah berdasarkan nilai yang diinput
+  //   if (penanggungJawab) total += Number(penanggungJawab) || 0;
+  //   if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
+  //   if (supervisor) total += Number(supervisor) || 0;
+  //   if (ketuaTim) total += Number(ketuaTim) || 0;
+  //   if (aTim) total += Number(aTim) || 0;
 
-    // Set nilai jumlah
-    setValue('jumlah', total);
-  }, [
-    penanggungJawab,
-    wakilPenanggungJawab,
-    supervisor,
-    ketuaTim,
-    aTim,
-    setValue,
-  ]);
+  //   // Set nilai jumlah
+  //   setValue('jumlah', total);
+  // }, [
+  //   penanggungJawab,
+  //   wakilPenanggungJawab,
+  //   supervisor,
+  //   ketuaTim,
+  //   aTim,
+  //   setValue,
+  // ]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Data PKPT */}
       <CardComponents>
-        <h3>Data NON-PKPT</h3>
+        <h3>Data NonPKPT</h3>
         <section className="grid md:grid-cols-2 w-full gap-3">
           <InputFieldComponent
             label="Area Pengawasan"
@@ -235,17 +197,17 @@ const InputNonPKPT = () => {
             name="ruangLingkup"
           />
 
-          <div className="md:col-span-2">
-            <InputFieldComponent
-              label="Tujuan / Sasaran"
-              identiti="tSasaran"
-              type="text"
-              name="TujuanSasaran"
-              placeholder="Masukan Tujuan / Sasaran pengawasan"
-              register={register('tujuan_sasaran')}
-              error={errors.tujuan_sasaran}
-            />
-          </div>
+          {/* <div className="md:col-span-2"> */}
+          <InputFieldComponent
+            label="Tujuan / Sasaran"
+            identiti="tSasaran"
+            type="text"
+            name="TujuanSasaran"
+            placeholder="Masukan Tujuan / Sasaran pengawasan"
+            register={register('tujuan_sasaran')}
+            error={errors.tujuan_sasaran}
+          />
+          {/* </div> */}
 
           {/* <div className="md:col-span-2">
             <div className="flex flex-col space-y-2">
@@ -329,8 +291,8 @@ const InputNonPKPT = () => {
       {/* Hari Penugasan */}
       <CardComponents>
         <h3>Hari Penugasan</h3>
-        <section className="grid md:grid-cols-2 gap-3">
-          <InputFieldComponent
+        <section className="grid md:grid-cols-2 gap-3 w-full">
+          {/* <InputFieldComponent
             label="Penanggung Jawab"
             identiti="penganggungJawab"
             type="number"
@@ -341,8 +303,18 @@ const InputNonPKPT = () => {
               min: { value: 0, message: 'Tidak boleh negatif' },
             })}
             error={errors.penanggung_jawab}
+          /> */}
+          <SelectInputField
+            label="Penanggung Jawab"
+            identiti="penanggung_jawab"
+            options={optionsDataUser}
+            register={register('penanggung_jawab')}
+            placeholder="Pilih Penanggung Jawab"
+            error={errors.penanggung_jawab}
+            type="select"
+            name="penanggung_jawab"
           />
-          <InputFieldComponent
+          {/* <InputFieldComponent
             label="Wakil Penanggung Jawab"
             identiti="wPenanggungJawab"
             type="number"
@@ -353,8 +325,18 @@ const InputNonPKPT = () => {
               min: { value: 0, message: 'Tidak boleh negatif' },
             })}
             error={errors.wakil_penanggung_jawab}
+          /> */}
+          <SelectInputField
+            label="Wakil Penanggung Jawab"
+            identiti="wakil_penanggung_jawab"
+            options={optionsDataUser}
+            register={register('wakil_penanggung_jawab')}
+            placeholder="Pilih Wakil Penanggung Jawab"
+            error={errors.wakil_penanggung_jawab}
+            type="select"
+            name="wakil_penanggung_jawab"
           />
-          <InputFieldComponent
+          {/* <InputFieldComponent
             label="Pengendali Teknis/Supervisor"
             identiti="pengendaliTeknis"
             type="number"
@@ -369,8 +351,18 @@ const InputNonPKPT = () => {
               // },
             })}
             error={errors.pengendali_teknis}
+          /> */}
+          <SelectInputField
+            label="Pengendali Teknis/Supervisor"
+            identiti="pengendali_teknis"
+            options={optionsDataUser}
+            register={register('pengendali_teknis')}
+            placeholder="Pilih Pengendali Teknis/Supervisor"
+            error={errors.pengendali_teknis}
+            type="select"
+            name="pengendali_teknis"
           />
-          <InputFieldComponent
+          {/* <InputFieldComponent
             label="Ketua TIM"
             identiti="ketuaTim"
             type="number"
@@ -385,8 +377,18 @@ const InputNonPKPT = () => {
               // },
             })}
             error={errors.ketua_tim}
+          /> */}
+          <SelectInputField
+            label="Ketua TIM"
+            identiti="ketua_tim"
+            options={optionsDataUser}
+            register={register('ketua_tim')}
+            placeholder="Pilih Ketua TIM"
+            error={errors.ketua_tim}
+            type="select"
+            name="ketua_tim"
           />
-          <InputFieldComponent
+          {/* <InputFieldComponent
             label="AnggotaTIM"
             identiti="ATim"
             type="number"
@@ -401,64 +403,80 @@ const InputNonPKPT = () => {
               // },
             })}
             error={errors.anggota_tim}
-          />
-          <InputFieldComponent
-            label="Jumlah"
+          /> */}
+          {/* <InputFieldComponent
+            label="Total Hari"
             identiti="Jumlah"
             type="number"
             name="Jumlah"
             placeholder="Total Jumlah"
             register={register('jumlah')}
             error={errors.jumlah}
-            disabled={true}
-          />
-          <div className="md:col-span-2">
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="Tim" className="text-slate-800">
-                TIM [{teamMembers.length}]
-              </label>
-              <div className="flex gap-2 w-full justify-start flex-grow">
-                <select
-                  value={newMemberId}
-                  onChange={(e) => setNewMemberId(e.target.value)}
-                  className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
-                >
-                  <option value="" disabled>
-                    Select a team member
-                  </option>
-                  {potentialMembers.map((member) => (
-                    <option key={member.id} value={member.id}>
-                      {member.name}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  onClick={handleAddMember}
-                  type="button"
-                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary"
-                >
-                  Tambah
-                </button>
-              </div>
-            </div>
-
-            {/* Display Team Members */}
-            <div className="mt-4 space-y-2 w-full">
-              {teamMembers.map((member, index) => (
-                <div
-                  key={member.id}
-                  className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
-                >
-                  <span className="text-slate-800">{member.name}</span>
-                  <button
-                    onClick={() => removeTeamMember(index)}
-                    type="button"
-                    className="text-red-500 hover:text-red-700"
+            disabled={false}
+          /> */}
+          <div className="md:col-span-2 w-full">
+            <div className="grid lg:grid-cols-3 gap-3 w-full">
+              <InputFieldComponent
+                label="Total Hari Penugasan"
+                identiti="Jumlah"
+                type="number"
+                name="Jumlah"
+                placeholder="Total Jumlah"
+                register={register('jumlah')}
+                error={errors.jumlah}
+                disabled={false}
+              />
+              <section className="lg:col-span-2">
+                <div className="flex flex-col space-y-2 w-full">
+                  <label
+                    htmlFor="Tim"
+                    className="text-slate-800 text-sm sm:text-base"
                   >
-                    <FaTrash />
-                  </button>
+                    TIM [{teamMembers.length}]
+                  </label>
+                  <div className="flex flex-col sm:flex-row w-full space-y-2 sm:space-y-0 sm:space-x-2">
+                    <select
+                      value={newMemberId}
+                      onChange={(e) => setNewMemberId(e.target.value)}
+                      className="border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1 px-2 py-1 text-sm sm:text-base"
+                    >
+                      <option value="" disabled>
+                        Select a team member
+                      </option>
+                      {potentialMembers.map((member) => (
+                        <option key={member.id} value={member.id}>
+                          {member.name}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      onClick={handleAddMember}
+                      type="button"
+                      className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary text-sm sm:text-base"
+                    >
+                      Tambah
+                    </button>
+                  </div>
                 </div>
-              ))}
+
+                <div className="mt-4 space-y-2 w-full">
+                  {teamMembers.map((member, index) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
+                    >
+                      <span className="text-slate-800">{member.name}</span>
+                      <button
+                        onClick={() => removeTeamMember(index)}
+                        type="button"
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </section>
             </div>
           </div>
         </section>

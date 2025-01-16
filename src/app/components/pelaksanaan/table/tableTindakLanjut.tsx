@@ -20,7 +20,7 @@ import {
   FormTindakLanjut,
   TindakLanjutDB,
 } from '@/interface/interfaceTindakLanjut';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency } from '@/data/formatData';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();

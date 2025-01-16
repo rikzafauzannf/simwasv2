@@ -42,60 +42,136 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Perencana', 'Pimpinan', 'Pelaksana', 'Auditor']}
     >
-      <div className="space-y-3">
-        <h3 className="text-xl"># Detail Surat Tugas</h3>
+      <h3 className="text-xl mb-3"># Detail Surat Tugas</h3>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="col-span-2 space-y-3">
+          <CardComponents>
+            {/* <h2 className='text-lg'>Detail ST</h2> */}
+            <section className='grid grid-cols-3 gap-3 w-full'>
+              <div>
+                <p>Bulan</p>
+                <h3>{DataST?.bulan}</h3>
+              </div>
+              <div>
+                <p>No.Tgl.SP gsgsgsg</p>
+                <h3>{DataST?.no_tglsp}</h3>
+              </div>
+              <div>
+                <p>Program Audit/Kegiatan</p>
+                <h3>{DataST?.program_audit}</h3>
+              </div>
+            </section>
+          </CardComponents>
 
-        <CardComponents>
-          <div className="grid md:flex md:justify-between md:items-center gap-2 w-full">
-            <div>
-              <p>{DataST?.bulan}</p>
-              <p className="text-slate-800 font-semibold">
-                {DataST?.waktu_penugasan} - Hari
-              </p>
+          <CardComponents>
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <p>Jumlah HP</p>
+                <h3>{DataST?.jumlah_hp} - Hari</h3>
+              </div>
+              <div className='col-span-2'>
+                <p>Waktu Penugasan Penugasan</p>
+                <h3>{DataST?.waktu_penugasan}</h3>
+              </div>
+            </div>
+          </CardComponents>
+
+          <CardComponents>
+          <div className="grid md:grid-cols-2 gap-3">
+              <div>
+                <p>Tim Pemeriksa</p>
+                <h2>{getNameUser(Number(DataST?.tim_pemeriksa))}</h2>
+                <p>NIP - {getUserNIP(Number(DataST?.tim_pemeriksa))}</p>
+              </div>
+              <div>
+                <p>Wakil Penanggung Jawab</p>
+                <h2>{getNameUser(Number(DataST?.wk_penanggung_jawab))}</h2>
+                <p>NIP - {getUserNIP(Number(DataST?.wk_penanggung_jawab))}</p>
+              </div>
+              <div>
+                <p>Pengendali Teknis</p>
+                <h2>{getNameUser(Number(DataST?.pengendali_teknis))}</h2>
+                <p>NIP - {getUserNIP(Number(DataST?.pengendali_teknis))}</p>
+              </div>
+              <div>
+                <p>Ketua Tim</p>
+                <h2>{getNameUser(Number(DataST?.ketua_tim))}</h2>
+                <p>NIP - {getUserNIP(Number(DataST?.ketua_tim))}</p>
+              </div>
+              <div className="md:col-span-2">
+                <hr />
+                <p>Anggota Tim</p>
+                <div className="grid md:grid-cols-3 gap-3">
+                  {DataST?.anggota_tim.split(',').map((id) => {
+                    return (
+                      <div>
+                        <h2>{getNameUser(Number(id))}</h2>
+                        <p>NIP - {getUserNIP(Number(id))}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </CardComponents>
+
+          <CardComponents>
+            <div className="grid md:flex md:justify-between md:items-center gap-2 w-full">
+              <div>
+                <p>{DataST?.bulan}</p>
+                <p className="text-slate-800 font-semibold">
+                  {DataST?.waktu_penugasan}
+                </p>
+              </div>
+
+              <h1>{DataST?.no_tglsp}</h1>
+              <p>Laporan - {DataST?.jumlah_laporan}</p>
+              <p>Object - {DataST?.jumlah_objek}</p>
             </div>
 
-            <h1>{DataST?.no_tglsp}</h1>
-            <p>Laporan - {DataST?.jumlah_laporan}</p>
-            <p>Object - {DataST?.jumlah_objek}</p>
-          </div>
+            <hr />
+            <h2># {DataST?.program_audit}</h2>
+            <h3>{DataST?.keterangan}</h3>
+            <hr />
 
-          <hr />
-          <h2># {DataST?.program_audit}</h2>
-          <h3>{DataST?.keterangan}</h3>
-          <hr />
-
-          <div className="grid grid-cols-4 gap-3">
-            <div>
-              <p>Tim Pemeriksa</p>
-              <h2>{getNameUser(Number(DataST?.tim_pemeriksa))}</h2>
-              <p>NIP - {getUserNIP(Number(DataST?.tim_pemeriksa))}</p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div>
+                <p>Tim Pemeriksa</p>
+                <h2>{getNameUser(Number(DataST?.tim_pemeriksa))}</h2>
+                <p>NIP - {getUserNIP(Number(DataST?.tim_pemeriksa))}</p>
+              </div>
+              <div>
+                <p>Wakil Penanggung Jawab</p>
+                <h2>{getNameUser(Number(DataST?.wk_penanggung_jawab))}</h2>
+                <p>NIP - {getUserNIP(Number(DataST?.wk_penanggung_jawab))}</p>
+              </div>
+              <div>
+                <p>Pengendali Teknis</p>
+                <h2>{getNameUser(Number(DataST?.pengendali_teknis))}</h2>
+                <p>NIP - {getUserNIP(Number(DataST?.pengendali_teknis))}</p>
+              </div>
+              <div>
+                <p>Ketua Tim</p>
+                <h2>{getNameUser(Number(DataST?.ketua_tim))}</h2>
+                <p>NIP - {getUserNIP(Number(DataST?.ketua_tim))}</p>
+              </div>
+              <div className="md:col-span-2 lg:col-span-4">
+                <hr />
+                <p>Anggota Tim</p>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {DataST?.anggota_tim.split(',').map((id) => {
+                    return (
+                      <div>
+                        <h2>{getNameUser(Number(id))}</h2>
+                        <p>NIP - {getUserNIP(Number(id))}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-            <div>
-              <p>Wakil Penanggung Jawab</p>
-              <h2>{getNameUser(Number(DataST?.wk_penanggung_jawab))}</h2>
-              <p>NIP - {getUserNIP(Number(DataST?.wk_penanggung_jawab))}</p>
-            </div>
-            <div>
-              <p>Pengendali Teknis</p>
-              <h2>{getNameUser(Number(DataST?.pengendali_teknis))}</h2>
-              <p>NIP - {getUserNIP(Number(DataST?.pengendali_teknis))}</p>
-            </div>
-            <div>
-              <p>Ketua Tim</p>
-              <h2>{getNameUser(Number(DataST?.ketua_tim))}</h2>
-              <p>NIP - {getUserNIP(Number(DataST?.ketua_tim))}</p>
-            </div>
-            <div className="col-span-4">
-              <p>Anggota Tim</p>
-              <h2>
-                {DataST?.anggota_tim
-                  .split(',')
-                  .map((id) => getNameUser(Number(id)))
-                  .join(', ')}
-              </h2>
-            </div>
-          </div>
-        </CardComponents>
+          </CardComponents>
+        </div>
 
         <CardComponents>
           <iframe

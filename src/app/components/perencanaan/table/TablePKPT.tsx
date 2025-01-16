@@ -15,7 +15,7 @@ import {
 } from '@/hooks/useGetName';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency, formatToLocalDate } from '@/data/formatData';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosService = new AxiosService();
@@ -121,7 +121,7 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Create At',
-      selector: (row) => row.created_at,
+      selector: (row) => formatToLocalDate(row.created_at),
       sortable: true,
       // grow: 0.5,
     },
@@ -147,32 +147,32 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Rencana Penugasan',
-      selector: (row) => row.rmp_pkpt,
+      selector: (row) => formatToLocalDate(row.rmp_pkpt),
       sortable: true,
     },
     {
       name: 'Rencana Penerbitan',
-      selector: (row) => row.rpl_pkpt,
+      selector: (row) => formatToLocalDate(row.rpl_pkpt),
       sortable: true,
     },
     {
       name: 'Penanggung Jawab',
-      selector: (row) => row.penanggung_jawab,
+      selector: (row) => getNameUser(Number(row.penanggung_jawab)),
       sortable: true,
     },
     {
       name: 'Wakil Penanggung Jawab',
-      selector: (row) => row.wakil_penanggung_jawab,
+      selector: (row) => getNameUser(Number(row.wakil_penanggung_jawab)),
       sortable: true,
     },
     {
       name: 'Pengendali Teknis / Supervisor',
-      selector: (row) => row.pengendali_teknis,
+      selector: (row) => getNameUser(Number(row.pengendali_teknis)),
       sortable: true,
     },
     {
       name: 'Ketua TIM',
-      selector: (row) => row.ketua_tim,
+      selector: (row) => getNameUser(Number(row.ketua_tim)),
       sortable: true,
     },
     {

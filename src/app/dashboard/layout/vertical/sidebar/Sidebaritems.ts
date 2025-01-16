@@ -107,17 +107,23 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         url: '/dashboard/perencanaan/pkpt',
       },
+      // {
+      //   name: 'Surat Tugas',
+      //   icon: 'solar:file-send-line-duotone',
+      //   id: uniqueId(),
+      //   url: '/dashboard/perencanaan/surattugas',
+      // },
+    ],
+  },
+  {
+    heading: 'Pelaksanaan',
+    children: [
       {
         name: 'Surat Tugas',
         icon: 'solar:file-send-line-duotone',
         id: uniqueId(),
         url: '/dashboard/perencanaan/surattugas',
       },
-    ],
-  },
-  {
-    heading: 'Pelaksanaan',
-    children: [
       {
         name: 'Kendali Mutu',
         icon: 'solar:checklist-minimalistic-line-duotone',

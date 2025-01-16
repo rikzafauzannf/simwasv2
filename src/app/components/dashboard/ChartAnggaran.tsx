@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
 import { DataChartPEngawasan } from '@/interface/interfaceChartData';
 import { useFetchAll } from '@/hooks/useFetchAll';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency } from '@/data/formatData';
 import Image from 'next/image';
 import IconsAnggaran from '/public/images/products/anggaran_bg.svg';
 

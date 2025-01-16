@@ -18,7 +18,7 @@ import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { RekapTemuanDB } from '@/interface/interfaceRekapTemuan';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency } from '@/data/formatData';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();

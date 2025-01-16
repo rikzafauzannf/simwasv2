@@ -4,32 +4,22 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { CardComponents } from '@/app/components/Global/Card';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
-import { title } from 'process';
-import { FirestoreService } from '@/services/firestore.service';
 import {
   PKPTData,
   PKPTDataBase,
   PKPTFormData,
 } from '@/interface/interfacePKPT';
-import {
-  JenisLaporanDB,
-  JenisPengawasanDB,
-  RuangLingkupDB,
-  TingkatResikoDB,
-} from '@/interface/interfaceReferensi';
-import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useScopeStore } from '@/middleware/Store/useScopeStore';
-import { UserManageDB } from '@/interface/interfaceUserManage';
 import {
   InputFieldComponent,
   SelectInputField,
 } from '@/app/components/Global/Input';
 import { ButtonType } from '@/app/components/Global/Button';
 import { useFetchById } from '@/hooks/useFetchById';
-import { useGetNameUser } from '@/hooks/useGetName';
 import { useRouter } from 'next/navigation';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
+import { useOptions } from '@/data/selectValue';
 
 interface PropsID {
   params: {
@@ -46,36 +36,16 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   );
   console.log('Data FROM DB : ', DataPKPT);
 
-  const { data: DataJenisLaporan } = useFetch<JenisLaporanDB>('jenis_laporan');
-
-  const { data: DataPengawasan } =
-    useFetch<JenisPengawasanDB>('jenis_pengawasan');
-
-  const { data: DataTingkatRisiko } =
-    useFetch<TingkatResikoDB>('tingkat_resiko');
-
-  const { data: DataRuangLingkup } = useFetch<RuangLingkupDB>('ruang_lingkup');
-  const { data: DataUser } = useFetch<UserManageDB>('pengguna');
-
-  const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
-    value: String(item.id_jenis_laporan),
-    title: `${item.jenis_laporan} - ${item.keterangan}`,
-  }));
-
-  const optionsJenisPengawasan = DataPengawasan.map((item) => ({
-    value: String(item.id_jenis_pengawasan),
-    title: item.jenis_pengawasan,
-  }));
-
-  const optionsTingkatRisiko = DataTingkatRisiko.map((item) => ({
-    value: String(item.id_tingkat_resiko),
-    title: item.tingkat_resiko,
-  }));
-
-  const optionsRuangLingkup = DataRuangLingkup.map((item) => ({
-    value: String(item.id_ruang_lingkup),
-    title: item.ruang_lingkup,
-  }));
+  const {
+    optionsDataUser,
+    optionsJenisAudit,
+    optionsJenisLaporan,
+    optionsJenisPengawasan,
+    optionsRuangLingkup,
+    optionsTingkatRisiko,
+    potentialMembers,
+    potentialScopes,
+  } = useOptions();
 
   const {
     register,
@@ -116,20 +86,10 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
     }
   }, [DataPKPT, reset, addTeamMember, setNewMemberId]);
 
-  const potentialMembers = DataUser.map((item) => ({
-    id: item.id_user,
-    name: item.username,
-  }));
-
   console.log('data dari team: ', teamMembers);
 
   const { scopes, addScope, removeScope } = useScopeStore();
   const [newScopeId, setNewScopeId] = React.useState<number | string>('');
-
-  const potentialScopes = DataRuangLingkup.map((item) => ({
-    id: item.id_ruang_lingkup,
-    name: item.ruang_lingkup,
-  }));
 
   console.log('data dari scope: ', scopes);
 
@@ -215,26 +175,26 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   const aTim = watch('anggota_tim');
 
   // Effect untuk menghitung jumlah otomatis
-  React.useEffect(() => {
-    let total = 0;
+  // React.useEffect(() => {
+  //   let total = 0;
 
-    // Hitung jumlah berdasarkan nilai yang diinput
-    if (penanggungJawab) total += Number(penanggungJawab) || 0;
-    if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
-    if (supervisor) total += Number(supervisor) || 0;
-    if (ketuaTim) total += Number(ketuaTim) || 0;
-    if (aTim) total += Number(aTim) || 0;
+  //   // Hitung jumlah berdasarkan nilai yang diinput
+  //   if (penanggungJawab) total += Number(penanggungJawab) || 0;
+  //   if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
+  //   if (supervisor) total += Number(supervisor) || 0;
+  //   if (ketuaTim) total += Number(ketuaTim) || 0;
+  //   if (aTim) total += Number(aTim) || 0;
 
-    // Set nilai jumlah
-    setValue('jumlah', total);
-  }, [
-    penanggungJawab,
-    wakilPenanggungJawab,
-    supervisor,
-    ketuaTim,
-    aTim,
-    setValue,
-  ]);
+  //   // Set nilai jumlah
+  //   setValue('jumlah', total);
+  // }, [
+  //   penanggungJawab,
+  //   wakilPenanggungJawab,
+  //   supervisor,
+  //   ketuaTim,
+  //   aTim,
+  //   setValue,
+  // ]);
 
   const [isEditing, setIsEditing] = useState(false);
   const handleDelete = async () => {
@@ -281,6 +241,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Data PKPT */}
         <CardComponents>
+          <h3>Data PKPT</h3>
           <section className="grid md:grid-cols-2 w-full gap-3">
             <InputFieldComponent
               label="Area Pengawasan"
@@ -301,9 +262,9 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
               register={register('id_jenis_pengawasan')}
               placeholder="Pilih Jenis Pengawasan"
               error={errors.id_jenis_pengawasan}
+              disabled={!isEditing}
               type="select"
               name="JenisPengawasan"
-              disabled={!isEditing}
             />
 
             <SelectInputField
@@ -313,71 +274,20 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
               register={register('id_ruang_lingkup')}
               placeholder="Pilih Ruang Lingkup"
               error={errors.id_ruang_lingkup}
+              disabled={!isEditing}
               type="select"
               name="ruangLingkup"
+            />
+            <InputFieldComponent
+              label="Tujuan / Sasaran"
+              identiti="tSasaran"
+              type="text"
+              name="TujuanSasaran"
+              placeholder="Masukan Tujuan / Sasaran pengawasan"
+              register={register('tujuan_sasaran')}
+              error={errors.tujuan_sasaran}
               disabled={!isEditing}
             />
-
-            <div className="md:col-span-2">
-              <InputFieldComponent
-                label="Tujuan / Sasaran"
-                identiti="tSasaran"
-                type="text"
-                name="TujuanSasaran"
-                placeholder="Masukan Tujuan / Sasaran pengawasan"
-                register={register('tujuan_sasaran')}
-                error={errors.tujuan_sasaran}
-                disabled={!isEditing}
-              />
-            </div>
-
-            {/* <div className="md:col-span-2">
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="RuangLingkup" className="text-slate-800">
-                Ruang Lingkup [{scopes.length}]
-              </label>
-              <div className="flex gap-2 w-full justify-start flex-grow">
-                <select
-                  value={newScopeId}
-                  onChange={(e) => setNewScopeId(e.target.value)}
-                  className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
-                >
-                  <option value="" disabled>
-                    Select a scope
-                  </option>
-                  {potentialScopes.map((scope) => (
-                    <option key={scope.id} value={scope.id}>
-                      {scope.name}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  onClick={handleAddScope}
-                  type="button"
-                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary"
-                >
-                  Tambah
-                </button>
-              </div>
-            </div>            
-            <div className="mt-4 space-y-2 w-full">
-              {scopes.map((scope, index) => (
-                <div
-                  key={scope.id}
-                  className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
-                >
-                  <span className="text-slate-800">{scope.name}</span>
-                  <button
-                    onClick={() => removeScope(index)}
-                    type="button"
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div> */}
           </section>
         </CardComponents>
 
@@ -415,145 +325,114 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
         {/* Hari Penugasan */}
         <CardComponents>
           <h3>Hari Penugasan</h3>
-          <section className="grid md:grid-cols-2 gap-3">
-            <InputFieldComponent
+          <section className="grid md:grid-cols-2 gap-3 w-full">
+            <SelectInputField
               label="Penanggung Jawab"
-              identiti="penganggungJawab"
-              type="number"
-              name="PenanggungJawab"
-              placeholder="Masukkan jumlah penanggung jawab"
-              register={register('penanggung_jawab', {
-                required: 'Penanggung Jawab wajib diisi',
-                min: { value: 0, message: 'Tidak boleh negatif' },
-              })}
+              identiti="penanggung_jawab"
+              options={optionsDataUser}
+              register={register('penanggung_jawab')}
+              placeholder="Pilih Penanggung Jawab"
               error={errors.penanggung_jawab}
               disabled={!isEditing}
+              type="select"
+              name="penanggung_jawab"
             />
-            <InputFieldComponent
+            <SelectInputField
               label="Wakil Penanggung Jawab"
-              identiti="wPenanggungJawab"
-              type="number"
-              name="WakilPenanggungJawab"
-              placeholder="Masukkan jumlah wakil penanggung jawab"
-              register={register('wakil_penanggung_jawab', {
-                required: 'Wakil Penanggung Jawab wajib diisi',
-                min: { value: 0, message: 'Tidak boleh negatif' },
-              })}
+              identiti="wakil_penanggung_jawab"
+              options={optionsDataUser}
+              register={register('wakil_penanggung_jawab')}
+              placeholder="Pilih Wakil Penanggung Jawab"
               error={errors.wakil_penanggung_jawab}
               disabled={!isEditing}
+              type="select"
+              name="wakil_penanggung_jawab"
             />
-            <InputFieldComponent
+            <SelectInputField
               label="Pengendali Teknis/Supervisor"
-              identiti="pengendaliTeknis"
-              type="number"
-              name="Supervisor"
-              placeholder="Tentukan pengendali teknis"
-              register={register('pengendali_teknis', {
-                required: 'Supervisor wajib diisi',
-                min: { value: 0, message: 'Tidak boleh negatif' },
-                // pattern: {
-                //   value: /^[a-zA-Z\s]*$/,
-                //   message: 'Hanya boleh berisi huruf dan spasi',
-                // },
-              })}
+              identiti="pengendali_teknis"
+              options={optionsDataUser}
+              register={register('pengendali_teknis')}
+              placeholder="Pilih Pengendali Teknis/Supervisor"
               error={errors.pengendali_teknis}
               disabled={!isEditing}
+              type="select"
+              name="pengendali_teknis"
             />
-            <InputFieldComponent
+            <SelectInputField
               label="Ketua TIM"
-              identiti="ketuaTim"
-              type="number"
-              name="KetuaTIM"
-              placeholder="Tentukan ketua tim"
-              register={register('ketua_tim', {
-                required: 'Ketua TIM wajib diisi',
-                min: { value: 0, message: 'Tidak boleh negatif' },
-                // pattern: {
-                //   value: /^[a-zA-Z\s]*$/,
-                //   message: 'Hanya boleh berisi huruf dan spasi',
-                // },
-              })}
+              identiti="ketua_tim"
+              options={optionsDataUser}
+              register={register('ketua_tim')}
+              placeholder="Pilih Ketua TIM"
               error={errors.ketua_tim}
               disabled={!isEditing}
+              type="select"
+              name="ketua_tim"
             />
-            <InputFieldComponent
-              label="AnggotaTIM"
-              identiti="ATim"
-              type="number"
-              name="ATim"
-              placeholder="Masukan Anggota Tim"
-              register={register('anggota_tim', {
-                required: 'Anggota TIM wajib diisi',
-                min: { value: 0, message: 'Tidak boleh negatif' },
-                // pattern: {
-                //   value: /^[a-zA-Z\s]*$/,
-                //   message: 'Hanya boleh berisi huruf dan spasi',
-                // },
-              })}
-              error={errors.anggota_tim}
-              disabled={!isEditing}
-            />
-            <InputFieldComponent
-              label="Jumlah"
-              identiti="Jumlah"
-              type="number"
-              name="Jumlah"
-              placeholder="Total Jumlah"
-              register={register('jumlah')}
-              error={errors.jumlah}
-              disabled={true}
-            />
-            <div className="md:col-span-2">
-              <div className="flex flex-col space-y-2">
-                <label htmlFor="Tim" className="text-slate-800">
-                  TIM [{teamMembers.length}]
-                </label>
-                {isEditing ? (
-                  <div className="flex gap-2 w-full justify-start flex-grow">
-                    <select
-                      value={newMemberId}
-                      onChange={(e) => setNewMemberId(e.target.value)}
-                      className="border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1"
+            <div className="md:col-span-2 w-full">
+              <div className="grid lg:grid-cols-3 gap-3 w-full">
+                <InputFieldComponent
+                  label="Total Hari Penugasan"
+                  identiti="Jumlah"
+                  type="number"
+                  name="Jumlah"
+                  placeholder="Total Jumlah"
+                  register={register('jumlah')}
+                  error={errors.jumlah}
+                  disabled={!isEditing}
+                />
+                <section className="lg:col-span-2">
+                  <div className="flex flex-col space-y-2 w-full">
+                    <label
+                      htmlFor="Tim"
+                      className="text-slate-800 text-sm sm:text-base"
                     >
-                      <option value="" disabled>
-                        Select a team member
-                      </option>
-                      {potentialMembers.map((member) => (
-                        <option key={member.id} value={member.id}>
-                          {member.name}
+                      TIM [{teamMembers.length}]
+                    </label>
+                    <div className="flex flex-col sm:flex-row w-full space-y-2 sm:space-y-0 sm:space-x-2">
+                      <select
+                        value={newMemberId}
+                        onChange={(e) => setNewMemberId(e.target.value)}
+                        className="border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1 px-2 py-1 text-sm sm:text-base"
+                      >
+                        <option value="" disabled>
+                          Select a team member
                         </option>
-                      ))}
-                    </select>
-                    <button
-                      onClick={handleAddMember}
-                      type="button"
-                      className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary"
-                    >
-                      Tambah
-                    </button>
+                        {potentialMembers.map((member) => (
+                          <option key={member.id} value={member.id}>
+                            {member.name}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={handleAddMember}
+                        type="button"
+                        className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary text-sm sm:text-base"
+                      >
+                        Tambah
+                      </button>
+                    </div>
                   </div>
-                ) : (
-                  ''
-                )}
-              </div>
 
-              {/* Display Team Members */}
-              <div className="mt-4 space-y-2 w-full">
-                {teamMembers.map((member, index) => (
-                  <div
-                    key={member.id}
-                    className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
-                  >
-                    <span className="text-slate-800">{member.name}</span>
-                    <button
-                      onClick={() => removeTeamMember(index)}
-                      type="button"
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <FaTrash />
-                    </button>
+                  <div className="mt-4 space-y-2 w-full">
+                    {teamMembers.map((member, index) => (
+                      <div
+                        key={member.id}
+                        className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
+                      >
+                        <span className="text-slate-800">{member.name}</span>
+                        <button
+                          onClick={() => removeTeamMember(index)}
+                          type="button"
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </section>
               </div>
             </div>
           </section>
@@ -603,9 +482,9 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
                   register={register('id_jenis_laporan')}
                   placeholder="Pilih Jenis Laporan"
                   error={errors.id_jenis_laporan}
+                  disabled={!isEditing}
                   type="select"
                   name="JenisLaporan"
-                  disabled={!isEditing}
                 />
               </div>
             </div>
@@ -619,22 +498,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
               error={errors.sarana_prasarana}
               disabled={!isEditing}
             />
-            {/* <InputFieldComponent
-            label="Tingkat Risiko"
-            identiti="tRisiko"
-            type="text"
-            name="TingkatRisiko"
-            placeholder="Tentukan tingkat risiko"
-            register={register('TingkatRisiko', {
-              required: 'Tingkat Risiko wajib diisi',
-              pattern: {
-                value: /^(Rendah|Sedang|Tinggi|Non-PBR)$/i,
-                message:
-                  'Tingkat risiko harus berupa: Rendah, Sedang, Tinggi atau Non-PBR',
-              },
-            })}
-            error={errors.TingkatRisiko}
-          /> */}
+
             <SelectInputField
               label="Tingkat Risiko"
               identiti="tRisiko"
@@ -642,9 +506,9 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
               register={register('id_tingkat_resiko')}
               placeholder="Pilih Tingkat Risiko"
               error={errors.id_tingkat_resiko}
+              disabled={!isEditing}
               type="select"
               name="TingkatRisiko"
-              disabled={!isEditing}
             />
             <div className="md:col-span-2">
               <InputFieldComponent
@@ -662,7 +526,6 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
         </CardComponents>
 
         <section className="flex">
-          {/* <ButtonType Text="Ulangi" type="reset" /> */}
           {isEditing ? <ButtonType Text="Edit Data" type="submit" /> : ''}
         </section>
       </form>

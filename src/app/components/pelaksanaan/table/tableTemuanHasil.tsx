@@ -16,7 +16,7 @@ import {
 } from '@/hooks/useGetName';
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency } from '@/data/formatData';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
