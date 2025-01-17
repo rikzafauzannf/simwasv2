@@ -113,9 +113,9 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
                 <hr className="my-3" />
                 <p>Anggota Tim</p>
                 <div className="grid md:grid-cols-3 gap-3">
-                  {DataST?.anggota_tim.split(',').map((id) => {
+                  {DataST?.anggota_tim.split(',').map((id,index) => {
                     return (
-                      <div>
+                      <div key={index}>
                         <h2>{getNameUser(Number(id))}</h2>
                         <p>NIP - {getUserNIP(Number(id))}</p>
                       </div>

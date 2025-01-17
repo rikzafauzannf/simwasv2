@@ -14,6 +14,7 @@ import { FormTemuanHasil } from '@/interface/interfaceTemuanHasil';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import { useOptions } from '@/data/selectValue';
 
 interface CompoProps {
   id_st: number;
@@ -25,24 +26,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   const { user } = useAuthStore();
   const router = useRouter();
 
-  const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
-  const { data: DataKodeRekomendasi } =
-    useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
-  const { data: DataKodeReferensi } =
-    useFetchAll<KodeReferensiData>('kode_referensi');
-
-  const optionKodeTemuan = DataKodeTemuan.map((item) => ({
-    value: String(item.id_kode_temuan),
-    title: `${item.kode_temuan} - ${item.keterangan_kode}`,
-  }));
-  const optionKodeRekomendasi = DataKodeRekomendasi.map((item) => ({
-    value: String(item.id_kode_rekomendasi),
-    title: `${item.kode_rekomendasi} - ${item.keterangan_kode}`,
-  }));
-  const optionKodeReferensi = DataKodeReferensi.map((item) => ({
-    value: String(item.id_kode_referensi),
-    title: `${item.kode_referensi} - ${item.keterangan_kode}`,
-  }));
+  const {optionKodeReferensi,optionKodeRekomendasi,optionKodeTemuan} = useOptions()
 
   const {
     register,

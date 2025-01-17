@@ -44,7 +44,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
     optionsRuangLingkup,
     optionsTingkatRisiko,
     potentialMembers,
-    potentialScopes,
+    potentialScopes,  
   } = useOptions();
 
   const {
@@ -66,15 +66,11 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   // const hasReset = useRef(false);
 
   React.useEffect(() => {
-    // resetTeamMembers();
-
     if (DataPKPT) {
       reset(DataPKPT);
-      // hasReset.current = true;
       const dataTIM = DataPKPT?.tim.split(',');
       if (dataTIM.length > 0) {
         dataTIM.forEach((member) => {
-          // setNewMemberId(member)
           const selectedMember = potentialMembers.find(
             (m) => m.id === Number(member)
           );
@@ -84,7 +80,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
         });
       }
     }
-  }, [DataPKPT, reset, addTeamMember, setNewMemberId]);
+  }, [DataPKPT, reset, addTeamMember, potentialMembers]); // Tambahkan potentialMembers
 
   console.log('data dari team: ', teamMembers);
 

@@ -3,6 +3,9 @@ import {
   JenisAuditDB,
   JenisLaporanDB,
   JenisPengawasanDB,
+  KodeReferensiData,
+  KodeRekomendasiData,
+  KodeTemuanDB,
   RuangLingkupDB,
   TingkatResikoDB,
 } from '@/interface/interfaceReferensi';
@@ -20,6 +23,11 @@ export const useOptions = () => {
   const { data: DataUser = [] } = useFetchAll<UserManageDB>('pengguna');
   const { data: DataJenisAudit = [] } =
     useFetchAll<JenisAuditDB>('jenis_audit');
+    const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
+  const { data: DataKodeRekomendasi } =
+    useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
+  const { data: DataKodeReferensi } =
+    useFetchAll<KodeReferensiData>('kode_referensi');
 
   const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
     value: String(item.id_jenis_laporan),
@@ -65,6 +73,44 @@ export const useOptions = () => {
     label: `${item.jenis_audit} - ${item.keterangan}`,
   }));
 
+  const optionKodeTemuan = DataKodeTemuan.map((item) => ({
+    value: String(item.id_kode_temuan),
+    label: `${item.kode_temuan} - ${item.keterangan_kode}`,
+  }));
+
+  const optionKodeRekomendasi = DataKodeRekomendasi.map((item) => ({
+    value: String(item.id_kode_rekomendasi),
+    label: `${item.kode_rekomendasi} - ${item.keterangan_kode}`,
+  }));
+
+  const optionKodeReferensi = DataKodeReferensi.map((item) => ({
+    value: String(item.id_kode_referensi),
+    label: `${item.kode_referensi} - ${item.keterangan_kode}`,
+  }));
+
+  const optionsRole = [
+    {
+      value: 'Admin',
+      label: 'Admin',
+    },
+    {
+      value: 'Pimpinan',
+      label: 'Pimpinan',
+    },
+    {
+      value: 'Perencana',
+      label: 'Perencana',
+    },
+    {
+      value: 'Pelaksana',
+      label: 'Pelaksana',
+    },
+    {
+      value: 'Auditor',
+      label: 'Auditor',
+    },
+  ];
+
   return {
     optionsJenisLaporan,
     optionsJenisPengawasan,
@@ -74,5 +120,9 @@ export const useOptions = () => {
     optionsDataUser,
     potentialMembers,
     optionsJenisAudit,
+    optionKodeTemuan,
+    optionKodeReferensi,
+    optionKodeRekomendasi,
+    optionsRole
   };
 };
