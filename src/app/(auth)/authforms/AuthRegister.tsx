@@ -20,7 +20,7 @@ const axiosService = new AxiosService();
 
 const AuthRegister = () => {
   // const { data: DataRuangLingkup } = useFetch<RuangLingkupDB>('ruang_lingkup');
-  const {optionsRuangLingkup} = useOptions()
+  const { optionsRuangLingkup } = useOptions();
   const {
     register,
     handleSubmit,
@@ -50,8 +50,6 @@ const AuthRegister = () => {
   //   value: String(item.id_ruang_lingkup),
   //   title: item.ruang_lingkup,
   // }));
-
-  
 
   // const OptionsRole = [
   //   {

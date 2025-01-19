@@ -44,7 +44,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
     optionsRuangLingkup,
     optionsTingkatRisiko,
     potentialMembers,
-    potentialScopes,  
+    potentialScopes,
   } = useOptions();
 
   const {

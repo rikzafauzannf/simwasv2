@@ -18,7 +18,7 @@ import { useOptions } from '@/data/selectValue';
 
 const axiosService = new AxiosService();
 const UserManage = () => {
-  const {optionsRuangLingkup,optionsRole} = useOptions()
+  const { optionsRuangLingkup, optionsRole } = useOptions();
   const {
     data: DataPengguna,
     isLoading,
@@ -51,8 +51,6 @@ const UserManage = () => {
 
   if (isLoadingRuangLingkup) return <div>Loading...</div>;
   if (errorRuangLingkup) return <div>Error: {errorRuangLingkup.message}</div>;
-
-  
 
   const onSubmit: SubmitHandler<FormUserManage> = async (data) => {
     try {

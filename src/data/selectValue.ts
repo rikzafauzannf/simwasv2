@@ -23,7 +23,7 @@ export const useOptions = () => {
   const { data: DataUser = [] } = useFetchAll<UserManageDB>('pengguna');
   const { data: DataJenisAudit = [] } =
     useFetchAll<JenisAuditDB>('jenis_audit');
-    const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
+  const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataKodeRekomendasi } =
     useFetchAll<KodeRekomendasiData>('kode_rekomendasi');
   const { data: DataKodeReferensi } =
@@ -123,6 +123,6 @@ export const useOptions = () => {
     optionKodeTemuan,
     optionKodeReferensi,
     optionKodeRekomendasi,
-    optionsRole
+    optionsRole,
   };
 };

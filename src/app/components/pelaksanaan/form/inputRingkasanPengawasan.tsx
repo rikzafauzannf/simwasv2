@@ -26,7 +26,8 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   const { user } = useAuthStore();
   const router = useRouter();
 
-  const {optionKodeReferensi,optionKodeRekomendasi,optionKodeTemuan} = useOptions()
+  const { optionKodeReferensi, optionKodeRekomendasi, optionKodeTemuan } =
+    useOptions();
 
   const {
     register,
