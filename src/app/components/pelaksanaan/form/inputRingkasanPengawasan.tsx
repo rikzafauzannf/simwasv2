@@ -3,18 +3,17 @@ import React from 'react';
 import { CardComponents } from '../../Global/Card';
 import { InputFieldComponent, SelectInputField } from '../../Global/Input';
 import { ButtonType } from '../../Global/Button';
-import { useFetchAll } from '@/hooks/useFetchAll';
-import {
-  KodeReferensiData,
-  KodeRekomendasiData,
-  KodeTemuanDB,
-} from '@/interface/interfaceReferensi';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormTemuanHasil } from '@/interface/interfaceTemuanHasil';
+import {
+  FormTemuanHasil,
+  TemuanHasilData,
+} from '@/interface/interfaceTemuanHasil';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useOptions } from '@/data/selectValue';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import TemuanChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/form/temuanChecker';
 
 interface CompoProps {
   id_st: number;
@@ -49,7 +48,8 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   const onSubmit: SubmitHandler<FormTemuanHasil> = async (data) => {
     try {
       const FielsTemuanHasil: FormTemuanHasil = {
-        id_kode_referensi: Number(data.id_kode_referensi),
+        // id_kode_referensi: Number(data.id_kode_referensi),
+        id_kode_referensi: 0,
         id_kode_rekomendasi: Number(data.id_kode_rekomendasi),
         id_kode_temuan: Number(data.id_kode_temuan),
         id_st: Number(id_st),
@@ -146,6 +146,19 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
             />
             <div className="lg:col-span-2">
               <InputFieldComponent
+                label="Nilai Rekomendasi Rp."
+                identiti="nilaiRekomendasi"
+                name="nilaiRekomendasi"
+                placeholder="Masukan Nominal Rekomendasi"
+                type="number"
+                register={register('nilai_rekomendasi', {
+                  min: 0,
+                })}
+              />
+            </div>
+
+            <div className="lg:col-span-3">
+              <InputFieldComponent
                 label="Rekomendasi/Saran"
                 identiti="rekomendasiSaran"
                 name="rekomendasiSaran"
@@ -156,20 +169,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
                 })}
                 error={errors.rekomendasi_saran}
               />
-            </div>
-
-            <InputFieldComponent
-              label="Nilai Rekomendasi Rp."
-              identiti="nilaiRekomendasi"
-              name="nilaiRekomendasi"
-              placeholder="Masukan Nominal Rekomendasi"
-              type="number"
-              register={register('nilai_rekomendasi', {
-                min: 0,
-              })}
-            />
-            <div className="lg:col-span-2">
-              <SelectInputField
+              {/* <SelectInputField
                 label="Kode Referensi"
                 identiti="kodeReferensi"
                 options={optionKodeReferensi}
@@ -180,7 +180,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
                 placeholder="Pilih Kode Referensi"
                 type="select"
                 name="kodeReferensi"
-              />
+              /> */}
             </div>
 
             {/* <InputFieldComponent
@@ -195,6 +195,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
           <ButtonType Text="+ Buat Ringkasan Pengawasan" type="submit" />
         </form>
       </CardComponents>
+      <TemuanChecker id_st={id_st} />
     </div>
   );
 };
