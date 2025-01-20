@@ -14,7 +14,8 @@ interface propsID {
 const axiosService = new AxiosService();
 
 const TemuanChecker: React.FC<propsID> = ({ id_st }) => {
-  const { data: DataTemuanHasil, refetch } = useFetchAll<TemuanHasilData>('temuan_hasil');
+  const { data: DataTemuanHasil, refetch } =
+    useFetchAll<TemuanHasilData>('temuan_hasil');
   const TemuanFilterID = DataTemuanHasil.filter(
     (item) => item.id_st === Number(id_st)
   );
@@ -34,7 +35,9 @@ const TemuanChecker: React.FC<propsID> = ({ id_st }) => {
 
     if (result.isConfirmed) {
       try {
-        const response = await axiosService.deleteData(`/temuan_hasil/${id_tlhp}`);
+        const response = await axiosService.deleteData(
+          `/temuan_hasil/${id_tlhp}`
+        );
         if (response.success) {
           Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
           refetch(); // Refresh data setelah penghapusan
@@ -54,7 +57,10 @@ const TemuanChecker: React.FC<propsID> = ({ id_st }) => {
       {TemuanFilterID.map((item) => (
         <CardComponents key={item.id_tlhp}>
           <small>
-            tanggal dibuat - <span className="font-semibold">{formatToLocalDate(item.created_at)}</span>
+            tanggal dibuat -{' '}
+            <span className="font-semibold">
+              {formatToLocalDate(item.created_at)}
+            </span>
           </small>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             <div>

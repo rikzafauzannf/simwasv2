@@ -4,7 +4,10 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useFetch } from '@/hooks/useFetch';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { FormUserManage, UserManageDB } from '@/interface/interfaceUserManage';
-import { InputFieldComponent, SelectInputField } from '@/app/components/Global/Input';
+import {
+  InputFieldComponent,
+  SelectInputField,
+} from '@/app/components/Global/Input';
 import { CardComponents } from '@/app/components/Global/Card';
 import { ButtonType } from '@/app/components/Global/Button';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
@@ -45,18 +48,22 @@ const UserManage = () => {
     try {
       const formData = {
         username: data.username,
-  nip: data.nip,
-  no_whatsapp: data.no_whatsapp,
-  jabatan: data.jabatan,
-  id_ruang_lingkup: Number(data.id_ruang_lingkup),
-  role: data.role,
-      }
+        nip: data.nip,
+        no_whatsapp: data.no_whatsapp,
+        jabatan: data.jabatan,
+        id_ruang_lingkup: Number(data.id_ruang_lingkup),
+        role: data.role,
+      };
       const result = isEditing
         ? await axiosService.updateData(`/pengguna/${currentEditId}`, formData)
         : await axiosService.addData('/pengguna', formData);
 
       if (result.success) {
-        alert(isEditing ? 'Data User berhasil diperbarui' : 'Data User berhasil disimpan');
+        alert(
+          isEditing
+            ? 'Data User berhasil diperbarui'
+            : 'Data User berhasil disimpan'
+        );
         reset();
         refetch();
         if (isEditing) setIsEditing(false);
@@ -65,7 +72,9 @@ const UserManage = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert(isEditing ? 'Gagal memperbarui data User' : 'Gagal menyimpan data User');
+      alert(
+        isEditing ? 'Gagal memperbarui data User' : 'Gagal menyimpan data User'
+      );
     }
   };
 
@@ -92,9 +101,10 @@ const UserManage = () => {
     }
   };
 
-  const filteredData = DataPengguna.filter((item) =>
-    item.username.toLowerCase().includes(searchQuery.toLowerCase())||
-  item.jabatan.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredData = DataPengguna.filter(
+    (item) =>
+      item.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.jabatan.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const paginatedData = filteredData.slice(
@@ -110,10 +120,7 @@ const UserManage = () => {
         <h3 className="text-xl"># UserManage</h3>
 
         <CardComponents>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="grid gap-3"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3">
             <section className="grid md:grid-cols-4 gap-3 w-full">
               <InputFieldComponent
                 label="Nama Lengkap"
@@ -128,8 +135,8 @@ const UserManage = () => {
               />
 
               <SelectInputField
-                type='select'
-                name='role'
+                type="select"
+                name="role"
                 label="Role"
                 identiti="role"
                 options={optionsRole}
@@ -141,8 +148,8 @@ const UserManage = () => {
               />
 
               <SelectInputField
-                type='select'
-                name='id_ruang_lingkup'
+                type="select"
+                name="id_ruang_lingkup"
                 label="Asal Dinas"
                 identiti="id_ruang_lingkup"
                 options={optionsRuangLingkup}
@@ -223,7 +230,9 @@ const UserManage = () => {
           {paginatedData.map((item) => (
             <CardComponents key={item.id_user}>
               <p className="text-gray-600">@ {item.role}</p>
-              <h3 className="text-xl font-bold text-blue-800">{item.username}</h3>
+              <h3 className="text-xl font-bold text-blue-800">
+                {item.username}
+              </h3>
               <p className="text-gray-700">{item.jabatan}</p>
               <p className="text-gray-500">NIP: {item.nip}</p>
               <p className="text-gray-500">WA: {item.no_whatsapp}</p>
