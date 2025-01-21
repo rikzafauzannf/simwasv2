@@ -246,6 +246,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
     Pelaksana: [
       'Dashboard',
       'PKPT',
+      'Surat Tugas',
       'Kendali Mutu',
       'Nota Hasil',
       'Lembar Hasil',
@@ -256,6 +257,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
     Auditor: [
       'Dashboard',
       'PKPT',
+      'Surat Tugas',
       'Kendali Mutu',
       'Nota Hasil',
       'Lembar Hasil',
