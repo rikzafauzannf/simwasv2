@@ -12,9 +12,11 @@ const LembarHasilPage = () => {
       <div className="space-y-3">
         <h3 className="text-xl">Lembar Hasil Pengawasan</h3>
         <MapDataNHP todo="pelaporan/lembarhasil/form" />
-        <CardComponents>
-          <TableLHP />
-        </CardComponents>
+        <div className="grid w-full gap-3">
+          <CardComponents>
+            <TableLHP />
+          </CardComponents>
+        </div>
       </div>
     </AuthRoleWrapper>
   );

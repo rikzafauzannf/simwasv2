@@ -8,7 +8,7 @@ const SuratTugasPage = () => {
   return (
     <AuthRoleWrapper allowedRoles={['Admin', 'Perencana', 'Pimpinan']}>
       <div className="space-y-3">
-        <h3>Surat Tugas</h3>
+        <h3 className="text-xl">Surat Tugas</h3>
         {/* <CollapseComponents title="+ Buat Rekap Surat Tugas">
         <MapDataPkpt todo="perencanaan/surattugas/form" />
       </CollapseComponents> */}
