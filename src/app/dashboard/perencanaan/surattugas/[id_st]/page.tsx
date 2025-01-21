@@ -204,7 +204,7 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
                 </div>
                 <ul className="list-disc pl-6 space-y-1 mt-2">
                   <li className="text-gray-600 hover:text-gray-800 transition">
-                    <small className='font-semibold'>
+                    <small className="font-semibold">
                       {' '}
                       Jumlah Data LHP -{' '}
                       {

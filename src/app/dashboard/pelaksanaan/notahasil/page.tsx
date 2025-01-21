@@ -8,9 +8,11 @@ const NotaHasilPengawasanPage = () => {
     <div className="space-y-3">
       <h3 className="text-xl">Nota Hasil Pengawasan</h3>
       <MapDataST title="Upload NHP" todo="pelaksanaan/notahasil/form" />
-      <CardComponents>
-        <TableNHP />
-      </CardComponents>
+      <div className="grid w-full gap-3">
+        <CardComponents>
+          <TableNHP />
+        </CardComponents>
+      </div>
     </div>
   );
 };

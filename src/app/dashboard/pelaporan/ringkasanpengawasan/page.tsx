@@ -15,9 +15,11 @@ const RingkasanPengawasanPage = () => {
           title="Buat Temuan Hasil"
           todo="pelaporan/ringkasanpengawasan/form"
         />
-        <CardComponents>
-          <TableTemuanHasil />
-        </CardComponents>
+        <div className="grid w-full gap-3">
+          <CardComponents>
+            <TableTemuanHasil />
+          </CardComponents>
+        </div>
       </div>
     </AuthRoleWrapper>
   );
