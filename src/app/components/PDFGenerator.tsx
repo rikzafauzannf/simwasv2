@@ -50,42 +50,13 @@ const PdfGenerator: React.FC<PropsComponent> = ({ children }) => {
       <div
         ref={printRef}
         style={{
-          padding: '20px',
+          // padding: '20px',
           backgroundColor: 'white',
-          border: '1px solid #ddd',
-          borderRadius: '5px',
+          // border: '1px solid #ddd',
+          // borderRadius: '5px',
         }}
       >
         {children}
-        {/* <h1>Judul Tabel</h1>
-        <table
-          border={1}
-          style={{
-            borderCollapse: "collapse",
-            width: "100%",
-            textAlign: "left",
-          }}
-        >
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Nama</th>
-              <th>Alamat</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>John Doe</td>
-              <td>Jakarta</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jane Smith</td>
-              <td>Bandung</td>
-            </tr>
-          </tbody>
-        </table> */}
       </div>
     </div>
   );
