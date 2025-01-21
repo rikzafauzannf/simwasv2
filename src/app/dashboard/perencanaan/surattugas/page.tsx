@@ -6,7 +6,9 @@ import React from 'react';
 
 const SuratTugasPage = () => {
   return (
-    <AuthRoleWrapper allowedRoles={['Admin', 'Perencana', 'Pimpinan','Pelaksana','Auditor']}>
+    <AuthRoleWrapper
+      allowedRoles={['Admin', 'Perencana', 'Pimpinan', 'Pelaksana', 'Auditor']}
+    >
       <div className="space-y-3">
         <h3 className="text-xl">Surat Tugas</h3>
         {/* <CollapseComponents title="+ Buat Rekap Surat Tugas">

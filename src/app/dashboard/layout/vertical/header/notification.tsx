@@ -15,7 +15,10 @@ const Notification = () => {
   // Filter dan urutkan data notifikasi
   const latestNotifications = DataNotifikasi
     ? [...DataNotifikasi]
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) // Urutkan berdasarkan created_at (terbaru dulu)
+        .sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        ) // Urutkan berdasarkan created_at (terbaru dulu)
         .slice(0, 4) // Ambil 5 teratas
     : [];
 
@@ -62,7 +65,9 @@ const Notification = () => {
         ))}
 
         {latestNotifications.length === 0 && (
-          <p className="text-center text-gray-500 py-2">No notifications available</p>
+          <p className="text-center text-gray-500 py-2">
+            No notifications available
+          </p>
         )}
 
         {/* Add View All link */}

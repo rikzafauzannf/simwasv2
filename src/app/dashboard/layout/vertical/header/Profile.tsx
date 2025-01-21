@@ -32,18 +32,34 @@ const Profile = () => {
           </span>
         )}
       >
-        <Dropdown.Item className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark">
+        <Dropdown.Item className="px-3 py-3 flex  bg-hover group/link w-full gap-3 text-dark">
           <Icon icon="solar:user-circle-outline" height={20} />
           {getNameUser(Number(user?.id_user)) || 'Guest'}
         </Dropdown.Item>
-        <Dropdown.Item
-          as={Link}
-          href="/dashboard/usermanage"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark"
-        >
-          <Icon icon="solar:letter-linear" height={20} />
-          Account
-        </Dropdown.Item>
+        {user?.role === 'Admin' ? (
+          <Dropdown.Item
+            as={Link}
+            href="/dashboard/usermanage"
+            className="px-3 py-3 flex  bg-hover group/link w-full gap-3 text-dark"
+          >
+            <Icon
+              icon="solar:shield-user-broken"
+              height={20}
+              className="text-green-500"
+            />
+            Manage Account
+          </Dropdown.Item>
+        ) : (
+          <Dropdown.Item className="px-3 py-3 flex  bg-hover group/link w-full gap-3 text-dark">
+            <Icon
+              icon="solar:verified-check-broken"
+              height={20}
+              className="text-green-500"
+            />
+            {user?.role}
+          </Dropdown.Item>
+        )}
+
         <div className="p-3 pt-0">
           <Button
             as={Link}
