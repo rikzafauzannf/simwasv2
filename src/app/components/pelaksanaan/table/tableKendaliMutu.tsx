@@ -33,6 +33,7 @@ const TableKendaliMutu = () => {
           <Link
             // onClick={() => handleView(row)}
             href={row.link_google_drive}
+            target='blank'
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />

@@ -8,17 +8,14 @@ import Swal from 'sweetalert2';
 import React from 'react';
 
 interface propsID {
-  id_st: number;
+  DataTemuanHasil:TemuanHasilData[];
+  refetchData:any
+
 }
 
 const axiosService = new AxiosService();
 
-const TemuanChecker: React.FC<propsID> = ({ id_st }) => {
-  const { data: DataTemuanHasil, refetch } =
-    useFetchAll<TemuanHasilData>('temuan_hasil');
-  const TemuanFilterID = DataTemuanHasil.filter(
-    (item) => item.id_st === Number(id_st)
-  );
+const TemuanChecker: React.FC<propsID> = ({ DataTemuanHasil ,refetchData}) => {  
   const { getNameKodeRekomendasi, getNameKodeTemuan } = useGetNameKode();
 
   const handleDelete = async (id_tlhp: number) => {
@@ -40,10 +37,11 @@ const TemuanChecker: React.FC<propsID> = ({ id_st }) => {
         );
         if (response.success) {
           Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
-          refetch(); // Refresh data setelah penghapusan
+          
         } else {
           throw new Error(response.message);
         }
+        refetchData()
       } catch (error) {
         console.error('Gagal menghapus data:', error);
         Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
@@ -53,8 +51,8 @@ const TemuanChecker: React.FC<propsID> = ({ id_st }) => {
 
   return (
     <div className="space-y-3">
-      <h3>Data Temuan ({TemuanFilterID.length})</h3>
-      {TemuanFilterID.map((item) => (
+      <h3>Data Temuan ({DataTemuanHasil.length})</h3>
+      {DataTemuanHasil.map((item) => (
         <CardComponents key={item.id_tlhp}>
           <small>
             tanggal dibuat -{' '}

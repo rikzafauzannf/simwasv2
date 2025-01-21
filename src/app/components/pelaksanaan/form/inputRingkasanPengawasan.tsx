@@ -12,8 +12,9 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useOptions } from '@/data/selectValue';
-import { useFetchAll } from '@/hooks/useFetchAll';
 import TemuanChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/form/temuanChecker';
+import Swal from 'sweetalert2';
+import { useFetchAll } from '@/hooks/useFetchAll';
 
 interface CompoProps {
   id_st: number;
@@ -24,6 +25,13 @@ const axiosSecvice = new AxiosService();
 const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   const { user } = useAuthStore();
   const router = useRouter();
+  const { data: DataTemuanHasil, refetch } =
+    useFetchAll<TemuanHasilData>('temuan_hasil');
+  
+
+  const TemuanFilterID = DataTemuanHasil.filter(
+    (item) => item.id_st === Number(id_st)
+  );
 
   const { optionKodeReferensi, optionKodeRekomendasi, optionKodeTemuan } =
     useOptions();
@@ -69,9 +77,21 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
 
       if (result.success) {
         console.log('Jenis Pengawasan berhasil disimpan:', result);
-        reset();
-        alert('Data Jenis Pengawasan berhasil disimpan');
-        router.push('/dashboard/pelaporan/ringkasanpengawasan');
+        Swal.fire({
+          title: 'Berhasil!',
+          text: 'Data Jenis Pengawasan berhasil disimpan. Apakah Anda ingin menginput data lagi?',
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonText: 'Input Lagi',
+          cancelButtonText: 'Selesai',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            reset(); // Reset the form to allow new input
+          } else {
+            router.push('/dashboard/pelaporan/ringkasanpengawasan');
+          }
+        });
+        refetch()
       } else {
         throw new Error(result.message);
       }
@@ -195,7 +215,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
           <ButtonType Text="+ Buat Ringkasan Pengawasan" type="submit" />
         </form>
       </CardComponents>
-      <TemuanChecker id_st={id_st} />
+      <TemuanChecker DataTemuanHasil={TemuanFilterID} refetchData={() => refetch()}/>
     </div>
   );
 };
