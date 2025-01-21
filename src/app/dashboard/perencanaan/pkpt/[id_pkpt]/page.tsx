@@ -10,6 +10,7 @@ import KendaliMutu from '@/app/components/pelaksanaan/view/KendaliMutu';
 import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
 import TableSuratTugas from '@/app/components/perencanaan/table/TableSuratTugas';
 import DetailPengawasan from '@/app/components/perencanaan/view/detailPengawasan';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
 interface PageProps {
@@ -59,41 +60,45 @@ const ViewPkptPage = ({ params }: PageProps) => {
   ];
 
   return (
-    <section className="grid md:grid-cols-4 w-full gap-3">
-      <div className="md:col-span-3">
-        <TabGroup>
-          <TabList className={'flex gap-3 mb-4 w-full overflow-x-auto'}>
-            {tabs_list.map((item, index) => (
-              <Tab
-                className={
-                  'data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md'
-                }
-                key={index}
-              >
-                {item.label}
-              </Tab>
-            ))}
+    <AuthRoleWrapper
+      allowedRoles={['Admin', 'Perencana', 'Pimpinan', 'Pelaksana', 'Auditor']}
+    >
+      <section className="grid md:grid-cols-4 w-full gap-3">
+        <div className="md:col-span-3">
+          <TabGroup>
+            <TabList className={'flex gap-3 mb-4 w-full overflow-x-auto'}>
+              {tabs_list.map((item, index) => (
+                <Tab
+                  className={
+                    'data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md'
+                  }
+                  key={index}
+                >
+                  {item.label}
+                </Tab>
+              ))}
 
-            {/* <Tab className={"data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md"}>Tab 2</Tab>
+              {/* <Tab className={"data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md"}>Tab 2</Tab>
             <Tab className={"data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md"}>Tab 3</Tab> */}
-          </TabList>
-          <TabPanels>
-            {tabs_list.map((item, index) => (
-              <TabPanel key={index}>{item.component}</TabPanel>
-            ))}
+            </TabList>
+            <TabPanels>
+              {tabs_list.map((item, index) => (
+                <TabPanel key={index}>{item.component}</TabPanel>
+              ))}
 
-            {/* <TabPanel>Content 2</TabPanel>
+              {/* <TabPanel>Content 2</TabPanel>
             <TabPanel>Content 3</TabPanel> */}
-          </TabPanels>
-        </TabGroup>
-        {/* <CardComponents>
+            </TabPanels>
+          </TabGroup>
+          {/* <CardComponents>
           <h1>test</h1>
         </CardComponents> */}
-      </div>
-      <div className="w-full">
-        <DailyActivity id_pkpt={id_pkpt} />
-      </div>
-    </section>
+        </div>
+        <div className="w-full">
+          <DailyActivity id_pkpt={id_pkpt} />
+        </div>
+      </section>
+    </AuthRoleWrapper>
   );
 };
 

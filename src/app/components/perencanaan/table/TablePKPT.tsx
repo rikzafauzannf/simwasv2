@@ -15,7 +15,7 @@ import {
 } from '@/hooks/useGetName';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency, formatToLocalDate } from '@/data/formatData';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosService = new AxiosService();
@@ -86,35 +86,48 @@ const TablePKPT: React.FC = () => {
           >
             <FaEye />
           </Link>
-          <Link
-            href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-          >
-            Act
-          </Link>
-          <button
-            onClick={() => handleCreateReport(row.id_pkpt)}
-            className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-          >
-            <FaPaperclip />
-          </button>
+          {user?.role === 'Perencana' ? (
+            <>
+              <Link
+                href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
+                className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+              >
+                Act
+              </Link>
+              <button
+                onClick={() => handleCreateReport(row.id_pkpt)}
+                className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              >
+                <FaPaperclip />
+              </button>
+            </>
+          ) : ['Pelaksana', 'Auditor'].includes(user?.role as string) ? (
+            <button
+              onClick={() => handleCreateReport(row.id_pkpt)}
+              className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+            >
+              <FaPaperclip />
+            </button>
+          ) : null}
         </div>
       ),
-      grow: 1.5,
+      // grow: 0.2,
     },
     {
       name: 'Status',
       selector: (row) => row.status,
       sortable: true,
+      grow: 0.2,
     },
     {
       name: 'Create At',
-      selector: (row) => row.created_at,
+      selector: (row) => formatToLocalDate(row.created_at),
       sortable: true,
+      // grow: 0.5,
     },
     {
       name: 'Jenis Pengawasan',
-      selector: (row) => getNameJenisPengawasan(row.id_jenis_laporan),
+      selector: (row) => getNameJenisPengawasan(row.id_jenis_pengawasan),
       sortable: true,
     },
     {
@@ -134,32 +147,32 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Rencana Penugasan',
-      selector: (row) => row.rmp_pkpt,
+      selector: (row) => formatToLocalDate(row.rmp_pkpt),
       sortable: true,
     },
     {
       name: 'Rencana Penerbitan',
-      selector: (row) => row.rpl_pkpt,
+      selector: (row) => formatToLocalDate(row.rpl_pkpt),
       sortable: true,
     },
     {
       name: 'Penanggung Jawab',
-      selector: (row) => row.penanggung_jawab,
+      selector: (row) => getNameUser(Number(row.penanggung_jawab)),
       sortable: true,
     },
     {
       name: 'Wakil Penanggung Jawab',
-      selector: (row) => row.wakil_penanggung_jawab,
+      selector: (row) => getNameUser(Number(row.wakil_penanggung_jawab)),
       sortable: true,
     },
     {
       name: 'Pengendali Teknis / Supervisor',
-      selector: (row) => row.pengendali_teknis,
+      selector: (row) => getNameUser(Number(row.pengendali_teknis)),
       sortable: true,
     },
     {
       name: 'Ketua TIM',
-      selector: (row) => row.ketua_tim,
+      selector: (row) => getNameUser(Number(row.ketua_tim)),
       sortable: true,
     },
     {
@@ -200,6 +213,7 @@ const TablePKPT: React.FC = () => {
       name: 'Keterangan',
       selector: (row) => row.keterangan,
       sortable: true,
+      maxWidth: '170px',
     },
   ];
 
@@ -315,6 +329,7 @@ const TablePKPT: React.FC = () => {
           fixedHeader
           fixedHeaderScrollHeight="300px"
           responsive
+          style={{ tableLayout: 'auto' }}
         />
       </div>
     </>

@@ -10,7 +10,7 @@ import {
   useGetNameTingkatResiko,
   useGetNameUser,
 } from '@/hooks/useGetName';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency, formatToLocalDate } from '@/data/formatData';
 
 interface Props {
   id_pkpt: number;
@@ -90,14 +90,75 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       <CardComponents>
         <p>Jadwal Penugasan</p>
         <hr />
-        <section className="grid ld:grid-cols-2 gap-3">
+        <section className="grid md:grid-cols-2 gap-3">
           <div>
             <p>Rencana Mulai Penugasan</p>
-            <h3>{DataPKPT ? DataPKPT.rmp_pkpt : 'No data available'}</h3>
+            <h3>
+              {DataPKPT
+                ? formatToLocalDate(DataPKPT.rmp_pkpt)
+                : 'No data available'}
+            </h3>
           </div>
           <div>
             <p>Rencana Penerbitan Laporan</p>
-            <h3>{DataPKPT ? DataPKPT.rpl_pkpt : 'No data available'}</h3>
+            <h3>
+              {DataPKPT
+                ? formatToLocalDate(DataPKPT.rpl_pkpt)
+                : 'No data available'}
+            </h3>
+          </div>
+        </section>
+      </CardComponents>
+
+      {/* section hari kerja */}
+      <CardComponents>
+        <p>Hari Penugasan</p>
+        <section className="flex justify-start items-start gap-3">
+          <div className="w-1/5">
+            <small>Jumlah</small>
+            <h2 className="text-2xl font-extrabold">
+              {DataPKPT ? DataPKPT.jumlah : 'No data available'}
+            </h2>
+          </div>
+          <div className="flex-1">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div>
+                <small>Penanggung Jawab</small>
+                <h3>
+                  {DataPKPT
+                    ? getNameUser(Number(DataPKPT.penanggung_jawab))
+                    : 'No data available'}
+                </h3>
+              </div>
+              <div>
+                <small>Wakil Penanggung Jawab</small>
+                <h3>
+                  {DataPKPT
+                    ? getNameUser(Number(DataPKPT.wakil_penanggung_jawab))
+                    : 'No data available'}
+                </h3>
+              </div>
+              <div>
+                <small>Dalnis/Supervisor</small>
+                <h3>
+                  {DataPKPT
+                    ? getNameUser(Number(DataPKPT.pengendali_teknis))
+                    : 'No data available'}
+                </h3>
+              </div>
+              <div>
+                <small>Ketua Tim</small>
+                <h3>
+                  {DataPKPT
+                    ? getNameUser(Number(DataPKPT.ketua_tim))
+                    : 'No data available'}
+                </h3>
+              </div>
+              {/* <div>
+                <small>Anggota Tim</small>
+                <h3>{DataPKPT ? DataPKPT.anggota_tim : 'No data available'}</h3>
+              </div> */}
+            </div>
           </div>
         </section>
       </CardComponents>
@@ -129,50 +190,6 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
           </div>
         </CardComponents>
       </section>
-      {/* section hari kerja */}
-      <CardComponents>
-        <p>Hari Penugasan</p>
-        <section className="flex justify-start items-start gap-3">
-          <div className="w-1/5">
-            <small>Jumlah</small>
-            <h2 className="text-2xl font-extrabold">
-              {DataPKPT ? DataPKPT.jumlah : 'No data available'}
-            </h2>
-          </div>
-          <div className="flex-1">
-            <div className="grid lg:grid-cols-3 gap-3">
-              <div>
-                <small>Penanggung Jawab</small>
-                <h3>
-                  {DataPKPT ? DataPKPT.penanggung_jawab : 'No data available'}
-                </h3>
-              </div>
-              <div>
-                <small>Wakil Penanggung Jawab</small>
-                <h3>
-                  {DataPKPT
-                    ? DataPKPT.wakil_penanggung_jawab
-                    : 'No data available'}
-                </h3>
-              </div>
-              <div>
-                <small>Dalnis/Supervisor</small>
-                <h3>
-                  {DataPKPT ? DataPKPT.pengendali_teknis : 'No data available'}
-                </h3>
-              </div>
-              <div>
-                <small>Ketua Tim</small>
-                <h3>{DataPKPT ? DataPKPT.ketua_tim : 'No data available'}</h3>
-              </div>
-              <div>
-                <small>Anggota Tim</small>
-                <h3>{DataPKPT ? DataPKPT.anggota_tim : 'No data available'}</h3>
-              </div>
-            </div>
-          </div>
-        </section>
-      </CardComponents>
       {/* data minor */}
       <section className="grid lg:grid-cols-2 gap-3">
         <CardComponents>

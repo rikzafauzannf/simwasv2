@@ -2,7 +2,6 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import React from 'react';
 import JenisPengawasan from './components/JenisPengawasan';
-import AreaPengawasan from './components/AreaPengawasan';
 import RuangLingkup from './components/RuangLingkup';
 import TingkatResiko from './components/TingkatResiko';
 import KodeTemuan from './components/KodeTemuan';

@@ -1,4 +1,5 @@
 import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
 interface PageProps {
   params: {
@@ -9,9 +10,9 @@ interface PageProps {
 const FormRekapSuratPage: React.FC<PageProps> = ({ params }) => {
   const id = params.id_pkpt;
   return (
-    <div>
+    <AuthRoleWrapper allowedRoles={['Perencana']}>
       <InputSuratTugas id_pkpt={id} />
-    </div>
+    </AuthRoleWrapper>
   );
 };
 

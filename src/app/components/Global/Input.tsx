@@ -19,7 +19,7 @@ interface InputFieldProps {
 
 interface DataProps {
   value: string;
-  title: string;
+  label: string;
 }
 
 interface SelectFieldProps extends InputFieldProps {
@@ -91,7 +91,7 @@ export const SelectInputField: React.FC<SelectFieldProps> = ({
         </option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
-            {option.title}
+            {option.label}
           </option>
         ))}
       </Select>

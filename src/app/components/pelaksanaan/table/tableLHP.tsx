@@ -16,10 +16,16 @@ import {
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();
 
 const TableLHP: React.FC = () => {
+  const { user } = useAuthStore();
+  const hashPermission = ['Pelaksana', 'Auditor'].includes(
+    user?.role as string
+  );
+
   const { data: DataLHP, isLoading, error, refetch } = useFetch<LHPData>('lhp');
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<LHPData[]>([]);
@@ -28,6 +34,8 @@ const TableLHP: React.FC = () => {
   const { getNameNoSP, getProgramAudit } = useGetNameST();
 
   const handleDelete = async (id: number) => {
+    if (!hashPermission) return;
+
     const result = await Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -56,24 +64,19 @@ const TableLHP: React.FC = () => {
       cell: (row: LHPData) => (
         <div className="flex gap-2">
           <Link
-            // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
             href={row.file_lhp}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
           </Link>
-          {/* <Link
-            href={`/dashboard/pelaporan/lembarhasil/actions/${row.id_lhp}`}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-          >
-            Act
-          </Link> */}
-          <button
-            onClick={() => handleDelete(row.id_lhp)}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button>
+          {hashPermission && (
+            <button
+              onClick={() => handleDelete(row.id_lhp)}
+              className="p-2 text-red-500 hover:text-red-700"
+            >
+              <FaTrash />
+            </button>
+          )}
         </div>
       ),
     },
@@ -149,39 +152,10 @@ const TableLHP: React.FC = () => {
     saveAs(blob, 'pkpt_data.csv');
   };
 
-  const exportToExcel = () => {
-    if (!DataLHP) return;
-
-    const headers = columns
-      .filter((col) => col.name !== 'Actions')
-      .map((col) => col.name)
-      .join('\t');
-
-    const excelData = DataLHP.map((row) =>
-      columns
-        .filter((col) => col.name !== 'Actions')
-        .map((col) => {
-          const selector = col.selector as unknown as (
-            row: LHPData
-          ) => string | number;
-          return selector(row);
-        })
-        .join('\t')
-    );
-
-    const blob = new Blob([`${headers}\n${excelData.join('\n')}`], {
-      type: 'application/vnd.ms-excel;charset=utf-8',
-    });
-    saveAs(blob, 'pkpt_data.xls');
-  };
-
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>Error: {error.message}</div>;
-
   return (
     <>
       <div className="mb-4 space-y-2">
-        <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
+        <div className="flex flex-col lg:flex-row justify-between items-center w-full gap-2">
           <h3>Data LHP</h3>
           <div className="space-x-2">
             <button
@@ -189,12 +163,6 @@ const TableLHP: React.FC = () => {
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
               Export CSV
-            </button>
-            <button
-              onClick={exportToExcel}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Export Excel
             </button>
           </div>
         </div>
@@ -204,7 +172,7 @@ const TableLHP: React.FC = () => {
           placeholder="Cari Data LHP"
           value={search}
           onChange={handleSearch}
-          className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
+          className="border rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
         />
       </div>
       <div className="overflow-x-auto">

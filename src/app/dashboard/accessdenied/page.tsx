@@ -17,7 +17,10 @@ const AccessDeniedPage = () => {
   const { user } = useAuthStore();
   const { getNameUser } = useGetNameUser();
   return (
-    <div style={gradientStyle} className="relative overflow-hidden h-screen">
+    <div
+      style={gradientStyle}
+      className="relative overflow-hidden h-screen rounded-xl"
+    >
       <div className="flex h-full justify-center items-center px-4">
         <div className="rounded-xl shadow-md bg-white dark:bg-darkgray p-6 w-full md:w-96 border-none">
           <div className="flex flex-col gap-2 p-0 w-full">

@@ -12,6 +12,7 @@ import {
 } from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface Props {
   todo: string;
@@ -45,6 +46,10 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const { user } = useAuthStore();
+  if (!user || !['Pelaksana', 'Auditor'].includes(user.role as string))
+    return null;
   return (
     <>
       <div className="mb-4">
