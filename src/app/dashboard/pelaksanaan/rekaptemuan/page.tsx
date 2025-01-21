@@ -33,7 +33,7 @@ const RekapTemuanPage = () => {
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor']}
     >
-      <div className="space-y-3">        
+      <div className="space-y-3">
         <CardComponents>
           <PdfGenerator>
             <div className="space-y-3">

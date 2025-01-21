@@ -3,8 +3,22 @@ import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { NotifikasiDB } from '@/interface/interfaceNotifikasi';
+import { formatToLocalDate } from '@/data/formatData';
+import { useGetNameUser } from '@/hooks/useGetName';
 
 const Notification = () => {
+  const { data: DataNotifikasi } = useFetchAll<NotifikasiDB>('notifikasi');
+  const { getNameUser } = useGetNameUser();
+
+  // Filter dan urutkan data notifikasi
+  const latestNotifications = DataNotifikasi
+    ? [...DataNotifikasi]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) // Urutkan berdasarkan created_at (terbaru dulu)
+        .slice(0, 4) // Ambil 5 teratas
+    : [];
+
   return (
     <div className="relative group/menu">
       <Dropdown
@@ -21,87 +35,44 @@ const Notification = () => {
           </span>
         )}
       >
+        {latestNotifications.map((item) => (
+          <Dropdown.Item
+            key={item.id_pkpt}
+            as={Link}
+            href={`/dashboard/perencanaan/pkpt/${item.id_pkpt}`}
+            className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark hover:bg-gray-100"
+          >
+            <div className="flex items-center gap-5">
+              <div>
+                <Image
+                  src="/images/profile/user-1.jpg"
+                  alt="user"
+                  width={35}
+                  height={35}
+                  className="rounded-full"
+                />
+              </div>
+              <div>
+                <small>{formatToLocalDate(item.created_at)}</small>
+                <h2>{getNameUser(item.id_user)}</h2>
+                <p>{item.notifikasi}</p>
+              </div>
+            </div>
+          </Dropdown.Item>
+        ))}
+
+        {latestNotifications.length === 0 && (
+          <p className="text-center text-gray-500 py-2">No notifications available</p>
+        )}
+
+        {/* Add View All link */}
         <Dropdown.Item
           as={Link}
-          href="#"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark hover:bg-gray-100"
+          href="/dashboard/perencanaan/pkpt"
+          className="text-center text-blue-600 hover:underline py-2 grid"
         >
-          <div className="flex items-center gap-5">
-            <div>
-              <Image
-                src="/images/profile/user-1.jpg"
-                alt="user"
-                width={35}
-                height={35}
-                className="rounded-full"
-              />
-            </div>
-            <p className="text-black text-sm font-semibold">
-              Received Order from John Doe of $385.90
-            </p>
-          </div>
+          View All
         </Dropdown.Item>
-        <Dropdown.Item
-          as={Link}
-          href="#"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark hover:bg-gray-100"
-        >
-          <div className="flex items-center gap-5">
-            <div>
-              <Image
-                src="/images/profile/user-2.jpg"
-                alt="user"
-                width={35}
-                height={35}
-                className="rounded-full"
-              />
-            </div>
-            <p className="text-black text-sm font-semibold">
-              Received Order from Jessica Williams of $249.99
-            </p>
-          </div>
-        </Dropdown.Item>
-        <Dropdown.Item
-          as={Link}
-          href="#"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark hover:bg-gray-100"
-        >
-          <div className="flex items-center gap-5">
-            <div>
-              <Image
-                src="/images/profile/user-3.jpg"
-                alt="user"
-                width={35}
-                height={35}
-                className="rounded-full"
-              />
-            </div>
-            <p className="text-black text-sm font-semibold">
-              Received Order from John Edison of $499.99
-            </p>
-          </div>
-        </Dropdown.Item>
-        <Dropdown.Item
-          as={Link}
-          href="#"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark hover:bg-gray-100"
-        >
-          <div className="flex items-center gap-5">
-            <div>
-              <Image
-                src="/images/profile/user-4.jpg"
-                alt="user"
-                width={35}
-                height={35}
-                className="rounded-full"
-              />
-            </div>
-            <p className="text-black text-sm font-semibold">
-              Received message from Nitin Chohan
-            </p>
-          </div>
-        </Dropdown.Item>
-        <div className=""></div>
       </Dropdown>
     </div>
   );
