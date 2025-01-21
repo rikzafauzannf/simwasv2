@@ -23,7 +23,7 @@ const axiosSecvice = new AxiosService();
 
 const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   const { user } = useAuthStore();
-  const hashPermission = ['Perencana'].includes(user?.role as string);
+  const hashPermission = ['Perencana','Pelaksana','Auditor'].includes(user?.role as string);
 
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
