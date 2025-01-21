@@ -361,7 +361,7 @@ const TablePKPT: React.FC = () => {
     <div className="overflow-x-auto">
       <Table
         border={1}
-        className="min-w-full border-collapse border border-gray-300 text-left"
+        className="min-w-full border-collapse border border-gray-300 text-left text-[11px]"
       >
         <TableHeader />
         <tbody>
@@ -477,7 +477,7 @@ const PKPTPage: React.FC = () => {
     >
       <div className="space-y-4 grid">
         <CardComponents>
-          <div className="flex justify-between items-center mb-4 w-full">
+          <div className="flex justify-between items-center w-full">
             <div>
               <h5 className="text-xl font-bold mb-2">
                 Program Kerja Pengawasan Tahunan (PKPT)

@@ -15,9 +15,11 @@ const TindakLajutPage = () => {
           todo="pelaksanaan/tindaklanjut/form"
           title="Buat Tindak Lanjut"
         />
-        <CardComponents>
-          <TableTindakLanjut />
-        </CardComponents>
+        <div className="grid w-full gap-3">
+          <CardComponents>
+            <TableTindakLanjut />
+          </CardComponents>
+        </div>
       </div>
     </AuthRoleWrapper>
   );
