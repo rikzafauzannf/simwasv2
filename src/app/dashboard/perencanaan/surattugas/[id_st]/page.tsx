@@ -54,11 +54,11 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
       allowedRoles={['Admin', 'Perencana', 'Pimpinan', 'Pelaksana', 'Auditor']}
     >
       <h3 className="text-xl mb-3"># Detail Surat Tugas</h3>
-      <div className="grid grid-cols-3 gap-3 mb-3">
-        <div className="col-span-2 space-y-3">
+      <div className="grid lg:grid-cols-3 gap-3 mb-3">
+        <div className="lg:col-span-2 space-y-3">
           <CardComponents>
             {/* <h2 className='text-lg'>Detail ST</h2> */}
-            <section className="grid grid-cols-3 gap-3 w-full">
+            <section className="grid md:grid-cols-3 gap-3 w-full">
               <div>
                 <p>Bulan</p>
                 <h3>{DataST?.bulan}</h3>
@@ -75,12 +75,12 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
           </CardComponents>
 
           <CardComponents>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid md:grid-cols-3 gap-3">
               <div>
                 <p>Jumlah HP</p>
                 <h3>{DataST?.jumlah_hp} - Hari</h3>
               </div>
-              <div className="col-span-2">
+              <div className="md:col-span-2">
                 <p>Waktu Penugasan Penugasan</p>
                 <h3>{DataST?.waktu_penugasan}</h3>
               </div>
@@ -127,7 +127,7 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
           </CardComponents>
 
           <CardComponents>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid sm:grid-cols-3 gap-3">
               <div>
                 <p>Jumlah Objek Pengawasan</p>
                 <h3>{DataST?.jumlah_objek}</h3>
@@ -181,18 +181,21 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
                 className="text-gray-700 hover:text-gray-900 transition shadow"
                 key={index}
               >
-                <small>{formatToLocalDate(item.created_at)}</small>
-                <div className="flex justify-between items-center gap-3">
-                  <div className="flex-1 flex gap-2">
-                    <Link href={item.file_nhp} target="blank">
-                      <Icon
-                        icon="solar:paperclip-line-duotone"
-                        width="16"
-                        height="16"
-                      />
-                    </Link>
+                <small>NHP Data - {formatToLocalDate(item.created_at)}</small>
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 md:gap-3">
+                  <Link
+                    href={item.file_nhp}
+                    target="blank"
+                    className="flex-1 flex gap-2"
+                  >
+                    <Icon
+                      icon="solar:paperclip-line-duotone"
+                      width="16"
+                      height="16"
+                    />
                     <h3>{item.keterangan_nhp}</h3>
-                  </div>
+                  </Link>
+
                   <Link href={String(getUserPhone(item.id_user))}>
                     <p>
                       {getNameUser(item.id_user)} - {getUserNIP(item.id_user)}
@@ -200,6 +203,17 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
                   </Link>
                 </div>
                 <ul className="list-disc pl-6 space-y-1 mt-2">
+                  <li className="text-gray-600 hover:text-gray-800 transition">
+                    <small className='font-semibold'>
+                      {' '}
+                      Jumlah Data LHP -{' '}
+                      {
+                        DataLHP.filter(
+                          (itemsLHP) => itemsLHP.id_nhp === item.id_nhp
+                        ).length
+                      }
+                    </small>
+                  </li>
                   {DataLHP.filter(
                     (itemsLHP) => itemsLHP.id_nhp === item.id_nhp
                   ).map((item, index) => (
@@ -207,18 +221,23 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
                       key={index}
                       className="text-gray-600 hover:text-gray-800 transition"
                     >
-                      <small>{formatToLocalDate(item.created_at)}</small>
-                      <div className="flex justify-between items-center gap-3">
-                        <div className="flex-1 flex gap-2">
-                          <Link href={item.file_lhp} target="blank">
-                            <Icon
-                              icon="solar:paperclip-line-duotone"
-                              width="16"
-                              height="16"
-                            />
-                          </Link>
+                      <small>
+                        LHP Data - {formatToLocalDate(item.created_at)}
+                      </small>
+                      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 md:gap-3">
+                        <Link
+                          href={item.file_lhp}
+                          target="blank"
+                          className="flex-1 flex gap-2"
+                        >
+                          <Icon
+                            icon="solar:paperclip-line-duotone"
+                            width="16"
+                            height="16"
+                          />
                           <h3>{item.keterangan_lhp}</h3>
-                        </div>
+                        </Link>
+
                         <Link href={String(getUserPhone(item.id_user))}>
                           <p>
                             {getNameUser(item.id_user)} -{' '}
