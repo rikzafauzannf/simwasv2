@@ -40,7 +40,7 @@ const Notification = () => {
       >
         {latestNotifications.map((item) => (
           <Dropdown.Item
-            key={item.id_pkpt}
+            key={item.id_notifikasi}
             as={Link}
             href={`/dashboard/perencanaan/pkpt/${item.id_pkpt}`}
             className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark hover:bg-gray-100"
@@ -56,9 +56,11 @@ const Notification = () => {
                 />
               </div>
               <div>
-                <small>{formatToLocalDate(item.created_at)}</small>
+                <small className="text-[8px]">
+                  {formatToLocalDate(item.created_at)}
+                </small>
                 <h2>{getNameUser(item.id_user)}</h2>
-                <p>{item.notifikasi}</p>
+                <small className="leading-none">{item.notifikasi}</small>
               </div>
             </div>
           </Dropdown.Item>

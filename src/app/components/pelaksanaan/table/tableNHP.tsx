@@ -65,7 +65,7 @@ const TableNHP: React.FC = () => {
           <Link
             // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
             href={row.file_nhp}
-            target='blank'
+            target="blank"
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />

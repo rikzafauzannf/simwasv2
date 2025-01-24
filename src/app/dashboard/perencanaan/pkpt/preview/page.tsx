@@ -102,6 +102,13 @@ const createExcelWorksheet = (
       { v: 'Hari Penugasan', s: HEADER_STYLE },
       { v: 'Hari Penugasan', s: HEADER_STYLE },
       { v: 'Hari Penugasan', s: HEADER_STYLE },
+      { v: 'Hari Penugasan', s: HEADER_STYLE },
+      { v: 'TIM', s: HEADER_STYLE },      
+      { v: 'Anggaran', s: HEADER_STYLE },
+      { v: 'Jumlah Laporan', s: HEADER_STYLE },
+      { v: 'Sarana dan Prasarana', s: HEADER_STYLE },
+      { v: 'Tingkat Resiko', s: HEADER_STYLE },
+      { v: 'Keterangan', s: HEADER_STYLE },
     ],
     [
       { v: '', s: HEADER_STYLE },
@@ -116,6 +123,13 @@ const createExcelWorksheet = (
       { v: 'Dalnis/Supervisor', s: HEADER_STYLE },
       { v: 'Ketua Tim', s: HEADER_STYLE },
       { v: 'Anggota Tim', s: HEADER_STYLE },
+      { v: 'Jumlah', s: HEADER_STYLE },
+      { v: '', s: HEADER_STYLE },
+      { v: '', s: HEADER_STYLE },
+      { v: '', s: HEADER_STYLE },
+      { v: '', s: HEADER_STYLE },
+      { v: '', s: HEADER_STYLE },
+      { v: '', s: HEADER_STYLE },
     ],
   ];
 
@@ -225,6 +239,58 @@ const createExcelWorksheet = (
             alignment: { horizontal: 'center' },
           },
         },
+        {
+          v: String(item.jumlah),
+          s: {
+            font: { bold: false, size: 11 },
+            alignment: { horizontal: 'center' },
+          },
+        },
+        {
+          v: item.tim
+            .split(',')
+            .map((id) => hooks.getNameUser(Number(id)))
+            .join(', '),
+          s: {
+            font: { bold: false, size: 11 },
+            alignment: { horizontal: 'center' },
+          },
+        },
+        {
+          v: formatCurrency(item.anggaran),
+          s: {
+            font: { bold: false, size: 11 },
+            alignment: { horizontal: 'center' },
+          },
+        },
+        {
+          v: `${item.jumlah_laporan} - ${hooks.getNameJenisLaporan(Number(item.id_jenis_laporan))}`,
+          s: {
+            font: { bold: false, size: 11 },
+            alignment: { horizontal: 'center' },
+          },
+        },
+        {
+          v: item.sarana_prasarana,
+          s: {
+            font: { bold: false, size: 11 },
+            alignment: { horizontal: 'center' },
+          },
+        },
+        {
+          v: hooks.getNameTingkatResiko(Number(item.id_tingkat_resiko)),
+          s: {
+            font: { bold: false, size: 11 },
+            alignment: { horizontal: 'center' },
+          },
+        },
+        {
+          v: item.keterangan,
+          s: {
+            font: { bold: false, size: 11 },
+            alignment: { horizontal: 'center' },
+          },
+        },
       ]);
     });
   });
@@ -232,17 +298,24 @@ const createExcelWorksheet = (
   const ws = XLSX.utils.aoa_to_sheet(wsData);
 
   ws['!merges'] = [
-    { s: { r: 0, c: 0 }, e: { r: 0, c: 11 } },
-    { s: { r: 1, c: 0 }, e: { r: 1, c: 11 } },
-    { s: { r: 2, c: 0 }, e: { r: 2, c: 11 } },
-    { s: { r: 4, c: 0 }, e: { r: 5, c: 0 } },
-    { s: { r: 4, c: 1 }, e: { r: 5, c: 1 } },
-    { s: { r: 4, c: 2 }, e: { r: 5, c: 2 } },
-    { s: { r: 4, c: 3 }, e: { r: 5, c: 3 } },
-    { s: { r: 4, c: 4 }, e: { r: 5, c: 4 } },
-    { s: { r: 4, c: 5 }, e: { r: 4, c: 6 } },
-    { s: { r: 4, c: 7 }, e: { r: 4, c: 11 } },
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }, // Merge untuk baris pertama header
+    { s: { r: 1, c: 0 }, e: { r: 1, c: 12 } }, // Merge untuk baris kedua header
+    { s: { r: 2, c: 0 }, e: { r: 2, c: 12 } }, // Merge untuk baris ketiga header
+    { s: { r: 4, c: 0 }, e: { r: 5, c: 0 } }, // NO
+    { s: { r: 4, c: 1 }, e: { r: 5, c: 1 } }, // Area Pengawasan
+    { s: { r: 4, c: 2 }, e: { r: 5, c: 2 } }, // Jenis Pengawasan
+    { s: { r: 4, c: 3 }, e: { r: 5, c: 3 } }, // Tujuan/Sasaran
+    { s: { r: 4, c: 4 }, e: { r: 5, c: 4 } }, // Ruang Lingkup
+    { s: { r: 4, c: 5 }, e: { r: 4, c: 6 } }, // Rencana Penugasan
+    { s: { r: 4, c: 7 }, e: { r: 4, c: 12 } }, // Penanggung Jawab hingga jumlah
+    { s: { r: 4, c: 13 }, e: { r: 5, c: 13 } }, // TIM
+    { s: { r: 4, c: 14 }, e: { r: 5, c: 14 } }, // Anggaran
+    { s: { r: 4, c: 15 }, e: { r: 5, c: 15 } }, // Jumlah Laporan
+    { s: { r: 4, c: 16 }, e: { r: 5, c: 16 } }, // Sarana Prasarana
+    { s: { r: 4, c: 17 }, e: { r: 5, c: 17 } }, // Tingkat Resiko
+    { s: { r: 4, c: 18 }, e: { r: 5, c: 18 } }, // Keterangan
   ];
+  
 
   ws['!cols'] = [
     { width: 5 },
@@ -257,6 +330,13 @@ const createExcelWorksheet = (
     { width: 15 },
     { width: 15 },
     { width: 15 },
+    { width: 15 },
+    { width: 20 },
+    { width: 25 },
+    { width: 25 },
+    { width: 25 },
+    { width: 25 },
+    { width: 25 },
   ];
 
   ws['!rows'] = [
@@ -264,6 +344,13 @@ const createExcelWorksheet = (
     { hpt: 30 },
     { hpt: 30 },
     { hpt: 20 },
+    { hpt: 40 },
+    { hpt: 40 },
+    { hpt: 40 },
+    { hpt: 40 },
+    { hpt: 40 },
+    { hpt: 40 },
+    { hpt: 40 },
     { hpt: 40 },
     { hpt: 40 },
   ];
@@ -405,19 +492,19 @@ const TablePKPT: React.FC = () => {
                       {item.rpl_pkpt}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {item.penanggung_jawab}
+                      {hooks.getNameUser(Number(item.penanggung_jawab))}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {item.wakil_penanggung_jawab}
+                      {hooks.getNameUser(Number(item.wakil_penanggung_jawab))}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {item.pengendali_teknis}
+                      {hooks.getNameUser(Number(item.pengendali_teknis))}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {item.ketua_tim}
+                      {hooks.getNameUser(Number(item.ketua_tim))}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {item.anggota_tim}
+                      {hooks.getNameUser(Number(item.anggota_tim))}
                     </td>
                     <td className="border border-gray-300 p-2">
                       {item.jumlah}
@@ -432,7 +519,7 @@ const TablePKPT: React.FC = () => {
                       {formatCurrency(item.anggaran)}
                     </td>
                     <td className="border border-gray-300 p-2" colSpan={3}>
-                      {item.jumlah_laporan}
+                      {item.jumlah_laporan} - {hooks.getNameJenisLaporan(Number(item.id_jenis_laporan))}
                     </td>
                     <td className="border border-gray-300 p-2">
                       {item.sarana_prasarana}
