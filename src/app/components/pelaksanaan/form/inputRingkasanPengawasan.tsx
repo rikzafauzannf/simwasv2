@@ -27,7 +27,6 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   const router = useRouter();
   const { data: DataTemuanHasil, refetch } =
     useFetchAll<TemuanHasilData>('temuan_hasil');
-  
 
   const TemuanFilterID = DataTemuanHasil.filter(
     (item) => item.id_st === Number(id_st)
@@ -91,7 +90,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
             router.push('/dashboard/pelaporan/ringkasanpengawasan');
           }
         });
-        refetch()
+        refetch();
       } else {
         throw new Error(result.message);
       }
@@ -215,7 +214,10 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
           <ButtonType Text="+ Buat Ringkasan Pengawasan" type="submit" />
         </form>
       </CardComponents>
-      <TemuanChecker DataTemuanHasil={TemuanFilterID} refetchData={() => refetch()}/>
+      <TemuanChecker
+        DataTemuanHasil={TemuanFilterID}
+        refetchData={() => refetch()}
+      />
     </div>
   );
 };

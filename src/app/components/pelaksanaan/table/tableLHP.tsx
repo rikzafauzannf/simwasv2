@@ -65,7 +65,7 @@ const TableLHP: React.FC = () => {
         <div className="flex gap-2">
           <Link
             href={row.file_lhp}
-            target='blank'
+            target="blank"
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />

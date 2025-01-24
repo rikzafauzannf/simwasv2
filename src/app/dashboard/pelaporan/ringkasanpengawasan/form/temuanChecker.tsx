@@ -8,14 +8,13 @@ import Swal from 'sweetalert2';
 import React from 'react';
 
 interface propsID {
-  DataTemuanHasil:TemuanHasilData[];
-  refetchData:any
-
+  DataTemuanHasil: TemuanHasilData[];
+  refetchData: any;
 }
 
 const axiosService = new AxiosService();
 
-const TemuanChecker: React.FC<propsID> = ({ DataTemuanHasil ,refetchData}) => {  
+const TemuanChecker: React.FC<propsID> = ({ DataTemuanHasil, refetchData }) => {
   const { getNameKodeRekomendasi, getNameKodeTemuan } = useGetNameKode();
 
   const handleDelete = async (id_tlhp: number) => {
@@ -37,11 +36,10 @@ const TemuanChecker: React.FC<propsID> = ({ DataTemuanHasil ,refetchData}) => {
         );
         if (response.success) {
           Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
-          
         } else {
           throw new Error(response.message);
         }
-        refetchData()
+        refetchData();
       } catch (error) {
         console.error('Gagal menghapus data:', error);
         Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
