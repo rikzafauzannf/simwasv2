@@ -103,7 +103,7 @@ const createExcelWorksheet = (
       { v: 'Hari Penugasan', s: HEADER_STYLE },
       { v: 'Hari Penugasan', s: HEADER_STYLE },
       { v: 'Hari Penugasan', s: HEADER_STYLE },
-      { v: 'TIM', s: HEADER_STYLE },      
+      { v: 'TIM', s: HEADER_STYLE },
       { v: 'Anggaran', s: HEADER_STYLE },
       { v: 'Jumlah Laporan', s: HEADER_STYLE },
       { v: 'Sarana dan Prasarana', s: HEADER_STYLE },
@@ -298,9 +298,9 @@ const createExcelWorksheet = (
   const ws = XLSX.utils.aoa_to_sheet(wsData);
 
   ws['!merges'] = [
-    { s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }, // Merge untuk baris pertama header
-    { s: { r: 1, c: 0 }, e: { r: 1, c: 12 } }, // Merge untuk baris kedua header
-    { s: { r: 2, c: 0 }, e: { r: 2, c: 12 } }, // Merge untuk baris ketiga header
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 18 } }, // Merge untuk baris pertama header
+    { s: { r: 1, c: 0 }, e: { r: 1, c: 18 } }, // Merge untuk baris kedua header
+    { s: { r: 2, c: 0 }, e: { r: 2, c: 18 } }, // Merge untuk baris ketiga header
     { s: { r: 4, c: 0 }, e: { r: 5, c: 0 } }, // NO
     { s: { r: 4, c: 1 }, e: { r: 5, c: 1 } }, // Area Pengawasan
     { s: { r: 4, c: 2 }, e: { r: 5, c: 2 } }, // Jenis Pengawasan
@@ -315,7 +315,6 @@ const createExcelWorksheet = (
     { s: { r: 4, c: 17 }, e: { r: 5, c: 17 } }, // Tingkat Resiko
     { s: { r: 4, c: 18 }, e: { r: 5, c: 18 } }, // Keterangan
   ];
-  
 
   ws['!cols'] = [
     { width: 5 },
@@ -519,7 +518,8 @@ const TablePKPT: React.FC = () => {
                       {formatCurrency(item.anggaran)}
                     </td>
                     <td className="border border-gray-300 p-2" colSpan={3}>
-                      {item.jumlah_laporan} - {hooks.getNameJenisLaporan(Number(item.id_jenis_laporan))}
+                      {item.jumlah_laporan} -{' '}
+                      {hooks.getNameJenisLaporan(Number(item.id_jenis_laporan))}
                     </td>
                     <td className="border border-gray-300 p-2">
                       {item.sarana_prasarana}
