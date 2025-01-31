@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   simwastasik-app:
-    image: rikzafrontenddev/simwastasik:latest
+    image: rikzafrontenddev/simwastasik:v1.0.1
     container_name: simwastasik-app
     ports:
       - '3000:3000'

@@ -4,14 +4,19 @@ import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
 import Image from 'next/image';
 import IconsJenisPengawasan from '/public/images/products/jenis_pengawasn_bg.svg';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { DataChartJenisPengawasan } from '@/interface/interfaceChartData';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const ChartJenisPengawasan = () => {
+
+  const {data:DataJenisPengawasan} = useFetchAll<DataChartJenisPengawasan>('dashboardpkptjenispengawasan')
+
   const options: ApexOptions = {
     chart: {
       type: 'bar',
-      height: 350,
+      height: 250,
       toolbar: {
         show: false,
       },
@@ -23,15 +28,7 @@ const ChartJenisPengawasan = () => {
       curve: 'smooth',
     },
     xaxis: {
-      categories: [
-        'Audit Kinerja',
-        'Audit Ketaatan',
-        'Audit Tujuan tertentu',
-        'Reviu',
-        'Evaluasi',
-        'Monitoring',
-        'Pengawasan Lainya',
-      ],
+      categories: DataJenisPengawasan.map((item)=>item.jenis_pengawasan)
     },
     tooltip: {
       x: {
@@ -53,7 +50,7 @@ const ChartJenisPengawasan = () => {
   const series = [
     {
       name: 'Jenis Pengawasan',
-      data: [10, 15, 5, 20, 11, 18, 4],
+      data: DataJenisPengawasan.map((item)=>item.jumlah_data),
     },
   ];
 
@@ -73,7 +70,7 @@ const ChartJenisPengawasan = () => {
           Jenis Pengawasan
         </h3>
       </div>
-      <Chart options={options} series={series} type="bar" height={250} />
+      <Chart options={options} series={series} type="bar" height={400} />
     </div>
   );
 };
