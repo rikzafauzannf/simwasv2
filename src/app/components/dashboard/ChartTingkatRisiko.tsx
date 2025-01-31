@@ -4,15 +4,20 @@ import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
 import Image from 'next/image';
 import iconsTingkatResiko from '/public/images/products/tingkat_resiko_bg.svg';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { DataChartTingkatPengawasan } from '@/interface/interfaceChartData';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const ChartTingkatRisiko = () => {
+
+  const {data:DataChartTingkatResiko} = useFetchAll<DataChartTingkatPengawasan>('dashboardpkptbytingkatresiko')
+
   const options: ApexOptions = {
     chart: {
       type: 'donut',
     },
-    labels: ['Tinggi', 'Sedang', 'Rendah', 'Non-PBR'],
+    labels: DataChartTingkatResiko.map((item)=>item.tingkat_resiko),
     // colors: ['#FF4560', '#FEB019', '#00E396'],
     legend: {
       position: 'bottom',
@@ -24,7 +29,7 @@ const ChartTingkatRisiko = () => {
             show: true,
             total: {
               show: true,
-              label: 'Total',
+              label: 'Total Resiko',
               formatter: function (w) {
                 return w.globals.seriesTotals
                   .reduce((a: number, b: number) => a + b, 0)
@@ -55,7 +60,7 @@ const ChartTingkatRisiko = () => {
     ],
   };
 
-  const series = [44, 55, 13, 10]; // Sample data - replace with actual risk level data
+  const series = DataChartTingkatResiko.map((item)=>item.jumlah_data)
 
   return (
     <div className="w-full">

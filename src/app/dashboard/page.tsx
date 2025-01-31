@@ -24,37 +24,41 @@ const page = () => {
     >
       <div className="space-y-8">
         {/* top */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
-          <div className="lg:col-span-2">
+        {/* <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
+          <div className="lg:col-span-2"> */}
             <CardAkumulasiDataALL />
-          </div>
-          <CardComponents>
+          {/* </div> */}
+          {/* <CardComponents>
             <ChartTingkatRisiko />
-          </CardComponents>
-        </section>
+          </CardComponents> */}
+        {/* </section> */}
+
         {/* data chart */}
         <CardComponents>
-          <ChartPengawasan />
+        <ChartJenisPengawasan />
+          
         </CardComponents>
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
           <CardComponents>
-            <ChartRuangLingkup />
+            {/* <ChartRuangLingkup /> */}
+            <ChartTingkatRisiko />
           </CardComponents>
           <div className="lg:col-span-2">
             <CardComponents>
-              <ChartJenisPengawasan />
+            {/* <ChartPengawasan />     */}
+            <Chartlaporan />
             </CardComponents>
           </div>
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <CardComponents>
               <ChartAnggaran />
             </CardComponents>
           </div>
-          <CardComponents>
+          {/* <CardComponents>
             <Chartlaporan />
-          </CardComponents>
+          </CardComponents> */}
         </section>
-        <RevenueForecast />
+        {/* <RevenueForecast /> */}
       </div>
     </AuthRoleWrapper>
   );
