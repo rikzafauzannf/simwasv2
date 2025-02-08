@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { CardComponents } from '../components/Global/Card';
 import CardAkumulasiDataALL from '../components/dashboard/CardAkumulasiDataALL';
@@ -9,6 +10,9 @@ import ChartAnggaran from '../components/dashboard/ChartAnggaran';
 import Chartlaporan from '../components/dashboard/ChartLaporan';
 import RevenueForecast from '../components/dashboard/RevenueForecast';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { Accordion, AccordionContent, AccordionPanel, AccordionTitle, Card } from 'flowbite-react';
+import Breadcrumbs from '../components/Breadcumb';
 // import SalesProfit from '../components/dashboard/RevenueForecast';
 // import NewCustomers from '../components/dashboard/NewCustomers';
 // import TotalIncome from '../components/dashboard/TotalIncome';
@@ -21,22 +25,21 @@ const page = () => {
   return (
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Perencana', 'Pelaksana', 'Auditor']}
-    >
+    >            
       <div className="space-y-8">
         {/* top */}
         {/* <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
           <div className="lg:col-span-2"> */}
-            <CardAkumulasiDataALL />
-          {/* </div> */}
-          {/* <CardComponents>
+        <CardAkumulasiDataALL />
+        {/* </div> */}
+        {/* <CardComponents>
             <ChartTingkatRisiko />
           </CardComponents> */}
         {/* </section> */}
 
         {/* data chart */}
         <CardComponents>
-        <ChartJenisPengawasan />
-          
+          <ChartJenisPengawasan />
         </CardComponents>
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
           <CardComponents>
@@ -45,8 +48,8 @@ const page = () => {
           </CardComponents>
           <div className="lg:col-span-2">
             <CardComponents>
-            {/* <ChartPengawasan />     */}
-            <Chartlaporan />
+              {/* <ChartPengawasan />     */}
+              <Chartlaporan />
             </CardComponents>
           </div>
           <div className="lg:col-span-3">

@@ -10,8 +10,9 @@ import { DataChartJenisPengawasan } from '@/interface/interfaceChartData';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const ChartJenisPengawasan = () => {
-
-  const {data:DataJenisPengawasan} = useFetchAll<DataChartJenisPengawasan>('dashboardpkptjenispengawasan')
+  const { data: DataJenisPengawasan } = useFetchAll<DataChartJenisPengawasan>(
+    'dashboardpkptjenispengawasan'
+  );
 
   const options: ApexOptions = {
     chart: {
@@ -28,7 +29,7 @@ const ChartJenisPengawasan = () => {
       curve: 'smooth',
     },
     xaxis: {
-      categories: DataJenisPengawasan.map((item)=>item.jenis_pengawasan)
+      categories: DataJenisPengawasan.map((item) => item.jenis_pengawasan),
     },
     tooltip: {
       x: {
@@ -50,7 +51,7 @@ const ChartJenisPengawasan = () => {
   const series = [
     {
       name: 'Jenis Pengawasan',
-      data: DataJenisPengawasan.map((item)=>item.jumlah_data),
+      data: DataJenisPengawasan.map((item) => item.jumlah_data),
     },
   ];
 

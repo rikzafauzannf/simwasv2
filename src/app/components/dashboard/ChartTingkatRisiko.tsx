@@ -10,14 +10,14 @@ import { DataChartTingkatPengawasan } from '@/interface/interfaceChartData';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const ChartTingkatRisiko = () => {
-
-  const {data:DataChartTingkatResiko} = useFetchAll<DataChartTingkatPengawasan>('dashboardpkptbytingkatresiko')
+  const { data: DataChartTingkatResiko } =
+    useFetchAll<DataChartTingkatPengawasan>('dashboardpkptbytingkatresiko');
 
   const options: ApexOptions = {
     chart: {
       type: 'donut',
     },
-    labels: DataChartTingkatResiko.map((item)=>item.tingkat_resiko),
+    labels: DataChartTingkatResiko.map((item) => item.tingkat_resiko),
     // colors: ['#FF4560', '#FEB019', '#00E396'],
     legend: {
       position: 'bottom',
@@ -60,7 +60,7 @@ const ChartTingkatRisiko = () => {
     ],
   };
 
-  const series = DataChartTingkatResiko.map((item)=>item.jumlah_data)
+  const series = DataChartTingkatResiko.map((item) => item.jumlah_data);
 
   return (
     <div className="w-full">
