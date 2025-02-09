@@ -10,8 +10,9 @@ import { DataChartJenisLaporan } from '@/interface/interfaceChartData';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const Chartlaporan = () => {
-
-  const {data: DataJenisLaporan} = useFetchAll<DataChartJenisLaporan>('dashboardstjenislaporan')
+  const { data: DataJenisLaporan } = useFetchAll<DataChartJenisLaporan>(
+    'dashboardstjenislaporan'
+  );
 
   const options: ApexOptions = {
     chart: {
@@ -28,7 +29,7 @@ const Chartlaporan = () => {
       curve: 'smooth',
     },
     xaxis: {
-      categories: DataJenisLaporan.map((item)=>item.jenis_laporan),
+      categories: DataJenisLaporan.map((item) => item.jenis_laporan),
     },
     tooltip: {
       x: {
@@ -50,7 +51,7 @@ const Chartlaporan = () => {
   const series = [
     {
       name: 'Jenis Laporan',
-      data: DataJenisLaporan.map((item)=>item.jumlah_data)
+      data: DataJenisLaporan.map((item) => item.jumlah_data),
     },
   ];
 

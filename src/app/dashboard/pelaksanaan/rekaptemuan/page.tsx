@@ -29,6 +29,19 @@ const RekapTemuanPage = () => {
     return groups;
   }, [DataTemuanHasil, getNameNoSP]);
 
+  const mergedDataTemuan = React.useMemo(() => {
+    return DataTemuanHasil.map((item) => {
+      const kodeTemuan = DataKodeTemuan.find(
+        (kode) => kode.id_kode_temuan === item.id_kode_temuan
+      );
+  
+      return {
+        ...item,
+        kode_temuan: kodeTemuan ? kodeTemuan.kode_temuan : null, // Gabungkan kode_temuan
+      };
+    }).filter((item) => item.kode_temuan !== null); // Hanya ambil yang memiliki pasangan
+  }, [DataTemuanHasil, DataKodeTemuan]);
+  
   return (
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor']}
@@ -142,7 +155,7 @@ const RekapTemuanPage = () => {
                       }
                     )}
                     {/* Kode Temuan Summary Section */}
-                    {DataKodeTemuan.map((item, index) => (
+                    {DataKodeTemuan.filter((itemsfilter)=>itemsfilter.kode_temuan?.split('.')[1] === "00").map((item, index) => (
                       <tr
                         key={index}
                         className="hover:bg-gray-100 text-center align-middle"
@@ -155,18 +168,18 @@ const RekapTemuanPage = () => {
                         </td>
                         <td className="border border-gray-300 p-2 text-center">
                           {
-                            DataTemuanHasil.filter(
+                            mergedDataTemuan.filter(
                               (filterby) =>
-                                filterby.id_kode_temuan === item.id_kode_temuan
+                                filterby.kode_temuan?.split('.')[0] === item.kode_temuan?.split('.')[0]
                             ).length
                           }
                         </td>
                         <td className="border border-gray-300 p-2 text-center"></td>
                         <td className="border border-gray-300 p-2 text-center">
                           {
-                            DataTemuanHasil.filter(
+                            mergedDataTemuan.filter(
                               (filterby) =>
-                                filterby.id_kode_temuan === item.id_kode_temuan
+                                filterby.kode_temuan?.split('.')[0] === item.kode_temuan?.split('.')[0]
                             ).length
                           }
                         </td>

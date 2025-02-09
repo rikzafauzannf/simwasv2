@@ -1,5 +1,6 @@
 'use client';
 
+import { Card } from 'flowbite-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -19,9 +20,9 @@ interface PropsHeading {
 
 export const CardComponents: React.FC<PropsComponent> = ({ children }) => {
   return (
-    <div className="w-full rounded-md shadow-md p-6 bg-white space-y-2 overflow-hidden">
+    <Card className="w-full shadow-md bg-white space-y-2 overflow-hidden">
       {children}
-    </div>
+    </Card>
   );
 };
 
