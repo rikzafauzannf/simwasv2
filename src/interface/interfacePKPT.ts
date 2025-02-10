@@ -76,4 +76,9 @@ export interface PKPTFormData {
   keterangan: string;
   status: string;
   id_user: number;
+  //  nama bagian
+  namaPenanggungJawab: number;
+  namaWakilPenanggungJawab: number;
+  namaPengendaliTeknis: number;
+  namaKetuaTim: number;
 }

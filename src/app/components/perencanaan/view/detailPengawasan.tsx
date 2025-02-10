@@ -45,7 +45,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       </div>
       <p>Ruang Lingkup:</p>
       <section className="grid lg:grid-cols-4 gap-3">
-        <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
+        <div className="bg-white p-2 rounded-md shadow-md text-center font-semibold">
           {DataPKPT
             ? getNameRuangLingkup(DataPKPT.id_ruang_lingkup)
             : 'No data available'}
@@ -125,39 +125,31 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
               <div>
                 <small>Penanggung Jawab</small>
                 <h3>
-                  {DataPKPT
-                    ? getNameUser(Number(DataPKPT.penanggung_jawab))
-                    : 'No data available'}
+                  {DataPKPT ? DataPKPT.penanggung_jawab : 'No data available'}
                 </h3>
               </div>
               <div>
                 <small>Wakil Penanggung Jawab</small>
                 <h3>
                   {DataPKPT
-                    ? getNameUser(Number(DataPKPT.wakil_penanggung_jawab))
+                    ? DataPKPT.wakil_penanggung_jawab
                     : 'No data available'}
                 </h3>
               </div>
               <div>
                 <small>Dalnis/Supervisor</small>
                 <h3>
-                  {DataPKPT
-                    ? getNameUser(Number(DataPKPT.pengendali_teknis))
-                    : 'No data available'}
+                  {DataPKPT ? DataPKPT.pengendali_teknis : 'No data available'}
                 </h3>
               </div>
               <div>
                 <small>Ketua Tim</small>
-                <h3>
-                  {DataPKPT
-                    ? getNameUser(Number(DataPKPT.ketua_tim))
-                    : 'No data available'}
-                </h3>
+                <h3>{DataPKPT ? DataPKPT.ketua_tim : 'No data available'}</h3>
               </div>
-              {/* <div>
+              <div>
                 <small>Anggota Tim</small>
                 <h3>{DataPKPT ? DataPKPT.anggota_tim : 'No data available'}</h3>
-              </div> */}
+              </div>
             </div>
           </div>
         </section>
@@ -174,12 +166,12 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
           <p className="font-medium">Tim</p>
           <div className="flex flex-col gap-2">
             {DataPKPT
-              ? DataPKPT?.tim.split(',').map((item, index) => (
+              ? DataPKPT?.tim.split('|').map((item, index) => (
                   <div
                     key={index}
                     className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950"
                   >
-                    {getNameUser(Number(item))}
+                    {item}
                   </div>
                 ))
               : 'No data available'}

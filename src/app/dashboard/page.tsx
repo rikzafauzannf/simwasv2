@@ -11,7 +11,13 @@ import Chartlaporan from '../components/dashboard/ChartLaporan';
 import RevenueForecast from '../components/dashboard/RevenueForecast';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
-import { Accordion, AccordionContent, AccordionPanel, AccordionTitle, Card } from 'flowbite-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionPanel,
+  AccordionTitle,
+  Card,
+} from 'flowbite-react';
 import Breadcrumbs from '../components/Breadcumb';
 // import SalesProfit from '../components/dashboard/RevenueForecast';
 // import NewCustomers from '../components/dashboard/NewCustomers';
@@ -25,7 +31,7 @@ const page = () => {
   return (
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Perencana', 'Pelaksana', 'Auditor']}
-    >            
+    >
       <div className="space-y-8">
         {/* top */}
         {/* <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
