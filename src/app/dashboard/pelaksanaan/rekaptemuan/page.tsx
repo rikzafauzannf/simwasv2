@@ -34,14 +34,13 @@ const RekapTemuanPage = () => {
       const kodeTemuan = DataKodeTemuan.find(
         (kode) => kode.id_kode_temuan === item.id_kode_temuan
       );
-
       return {
         ...item,
         kode_temuan: kodeTemuan ? kodeTemuan.kode_temuan : null, // Gabungkan kode_temuan
       };
     }).filter((item) => item.kode_temuan !== null); // Hanya ambil yang memiliki pasangan
   }, [DataTemuanHasil, DataKodeTemuan]);
-
+  
   return (
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor']}
@@ -155,6 +154,7 @@ const RekapTemuanPage = () => {
                       }
                     )}
                     {/* Kode Temuan Summary Section */}
+
                     {DataKodeTemuan.filter(
                       (itemsfilter) =>
                         itemsfilter.kode_temuan?.split('.')[1] === '00'

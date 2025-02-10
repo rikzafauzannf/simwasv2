@@ -23,9 +23,11 @@ export default function Layout({
             {/* Body Content  */}
             <div className="bg-lightgray mr-3 rounded-page min-h-[90vh]">
               <div className={`container mx-auto  py-30`}>
+
                 <Breadcrumbs />
                 {children}
               </div>
+
             </div>
           </div>
         </div>
