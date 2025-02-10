@@ -12,12 +12,14 @@ import { useScopeStore } from '@/middleware/Store/useScopeStore';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useOptions } from '@/data/selectValue';
+import { useGetNameUser } from '@/hooks/useGetName';
 
 const axiosSecvice = new AxiosService();
 
 const InputNonPKPT = () => {
   const { user } = useAuthStore();
   const router = useRouter();
+  const { getNameUser } = useGetNameUser();
 
   const {
     optionsDataUser,
@@ -59,12 +61,13 @@ const InputNonPKPT = () => {
 
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
+      const dataTim = `PT: ${getNameUser(Number(data.namaPengendaliTeknis))} | KT: ${getNameUser(Number(data.namaKetuaTim))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')} `;
       const pkptData = {
         status: 'non-pkpt',
         id_user: Number(user?.id_user),
         anggaran: String(data.anggaran),
         // anggota_tim: String(data.anggota_tim),
-        anggota_tim: null,
+        anggota_tim: data.anggota_tim,
         area_pengawasan: data.area_pengawasan,
         id_jenis_laporan: Number(data.id_jenis_laporan),
         id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
@@ -79,7 +82,8 @@ const InputNonPKPT = () => {
         rmp_pkpt: data.rmp_pkpt,
         rpl_pkpt: data.rpl_pkpt,
         sarana_prasarana: data.sarana_prasarana,
-        tim: teamMembers.map((item) => String(item.id)).join(','),
+        // tim: teamMembers.map((item) => String(item.id)).join(','),
+        tim: dataTim,
         tujuan_sasaran: data.tujuan_sasaran,
         wakil_penanggung_jawab: String(data.wakil_penanggung_jawab),
       };
@@ -137,32 +141,32 @@ const InputNonPKPT = () => {
   const aTim = watch('anggota_tim');
 
   // Effect untuk menghitung jumlah otomatis
-  // React.useEffect(() => {
-  //   let total = 0;
+  React.useEffect(() => {
+    let total = 0;
 
-  //   // Hitung jumlah berdasarkan nilai yang diinput
-  //   if (penanggungJawab) total += Number(penanggungJawab) || 0;
-  //   if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
-  //   if (supervisor) total += Number(supervisor) || 0;
-  //   if (ketuaTim) total += Number(ketuaTim) || 0;
-  //   if (aTim) total += Number(aTim) || 0;
+    // Hitung jumlah berdasarkan nilai yang diinput
+    if (penanggungJawab) total += Number(penanggungJawab) || 0;
+    if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
+    if (supervisor) total += Number(supervisor) || 0;
+    if (ketuaTim) total += Number(ketuaTim) || 0;
+    if (aTim) total += Number(aTim) || 0;
 
-  //   // Set nilai jumlah
-  //   setValue('jumlah', total);
-  // }, [
-  //   penanggungJawab,
-  //   wakilPenanggungJawab,
-  //   supervisor,
-  //   ketuaTim,
-  //   aTim,
-  //   setValue,
-  // ]);
+    // Set nilai jumlah
+    setValue('jumlah', total);
+  }, [
+    penanggungJawab,
+    wakilPenanggungJawab,
+    supervisor,
+    ketuaTim,
+    aTim,
+    setValue,
+  ]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Data PKPT */}
       <CardComponents>
-        <h3>Data NonPKPT</h3>
+        <h3>Data Non-PKPT</h3>
         <section className="grid md:grid-cols-2 w-full gap-3">
           <InputFieldComponent
             label="Area Pengawasan"
@@ -290,120 +294,209 @@ const InputNonPKPT = () => {
 
       {/* Hari Penugasan */}
       <CardComponents>
-        <h3>Hari Penugasan</h3>
+        <div className="flex justify-between items-center gap-3">
+          <h3>Hari Penugasan</h3>
+          <InputFieldComponent
+            label="Total Hari"
+            identiti="Jumlah"
+            type="number"
+            name="Jumlah"
+            placeholder="Total Jumlah"
+            register={register('jumlah')}
+            error={errors.jumlah}
+            disabled={true}
+          />
+        </div>
+
         <section className="grid md:grid-cols-2 gap-3 w-full">
-          {/* <InputFieldComponent
-            label="Penanggung Jawab"
-            identiti="penganggungJawab"
-            type="number"
-            name="PenanggungJawab"
-            placeholder="Masukkan jumlah penanggung jawab"
-            register={register('penanggung_jawab', {
-              required: 'Penanggung Jawab wajib diisi',
-              min: { value: 0, message: 'Tidak boleh negatif' },
-            })}
-            error={errors.penanggung_jawab}
-          /> */}
-          <SelectInputField
-            label="Penanggung Jawab"
-            identiti="penanggung_jawab"
-            options={optionsDataUser}
-            register={register('penanggung_jawab')}
-            placeholder="Pilih Penanggung Jawab"
-            error={errors.penanggung_jawab}
-            type="select"
-            name="penanggung_jawab"
-          />
-          {/* <InputFieldComponent
-            label="Wakil Penanggung Jawab"
-            identiti="wPenanggungJawab"
-            type="number"
-            name="WakilPenanggungJawab"
-            placeholder="Masukkan jumlah wakil penanggung jawab"
-            register={register('wakil_penanggung_jawab', {
-              required: 'Wakil Penanggung Jawab wajib diisi',
-              min: { value: 0, message: 'Tidak boleh negatif' },
-            })}
-            error={errors.wakil_penanggung_jawab}
-          /> */}
-          <SelectInputField
-            label="Wakil Penanggung Jawab"
-            identiti="wakil_penanggung_jawab"
-            options={optionsDataUser}
-            register={register('wakil_penanggung_jawab')}
-            placeholder="Pilih Wakil Penanggung Jawab"
-            error={errors.wakil_penanggung_jawab}
-            type="select"
-            name="wakil_penanggung_jawab"
-          />
-          {/* <InputFieldComponent
-            label="Pengendali Teknis/Supervisor"
-            identiti="pengendaliTeknis"
-            type="number"
-            name="Supervisor"
-            placeholder="Tentukan pengendali teknis"
-            register={register('pengendali_teknis', {
-              required: 'Supervisor wajib diisi',
-              min: { value: 0, message: 'Tidak boleh negatif' },
-              // pattern: {
-              //   value: /^[a-zA-Z\s]*$/,
-              //   message: 'Hanya boleh berisi huruf dan spasi',
-              // },
-            })}
-            error={errors.pengendali_teknis}
-          /> */}
-          <SelectInputField
-            label="Pengendali Teknis/Supervisor"
-            identiti="pengendali_teknis"
-            options={optionsDataUser}
-            register={register('pengendali_teknis')}
-            placeholder="Pilih Pengendali Teknis/Supervisor"
-            error={errors.pengendali_teknis}
-            type="select"
-            name="pengendali_teknis"
-          />
-          {/* <InputFieldComponent
-            label="Ketua TIM"
-            identiti="ketuaTim"
-            type="number"
-            name="KetuaTIM"
-            placeholder="Tentukan ketua tim"
-            register={register('ketua_tim', {
-              required: 'Ketua TIM wajib diisi',
-              min: { value: 0, message: 'Tidak boleh negatif' },
-              // pattern: {
-              //   value: /^[a-zA-Z\s]*$/,
-              //   message: 'Hanya boleh berisi huruf dan spasi',
-              // },
-            })}
-            error={errors.ketua_tim}
-          /> */}
-          <SelectInputField
-            label="Ketua TIM"
-            identiti="ketua_tim"
-            options={optionsDataUser}
-            register={register('ketua_tim')}
-            placeholder="Pilih Ketua TIM"
-            error={errors.ketua_tim}
-            type="select"
-            name="ketua_tim"
-          />
-          {/* <InputFieldComponent
-            label="AnggotaTIM"
-            identiti="ATim"
-            type="number"
-            name="ATim"
-            placeholder="Masukan Anggota Tim"
-            register={register('anggota_tim', {
-              required: 'Anggota TIM wajib diisi',
-              min: { value: 0, message: 'Tidak boleh negatif' },
-              // pattern: {
-              //   value: /^[a-zA-Z\s]*$/,
-              //   message: 'Hanya boleh berisi huruf dan spasi',
-              // },
-            })}
-            error={errors.anggota_tim}
-          /> */}
+          <div className="flex justify-start items-start gap-2 flex-nowrap w-full">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="penganggungJawab"
+                type="number"
+                name="PenanggungJawab"
+                placeholder="^"
+                register={register('penanggung_jawab', {
+                  required: 'Penanggung Jawab wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                })}
+                error={errors.penanggung_jawab}
+              />
+            </div>
+
+            <div className="basis-auto">
+              <SelectInputField
+                label="Penanggung Jawab"
+                identiti="namaPenanggungJawab"
+                options={optionsDataUser}
+                register={register('namaPenanggungJawab')}
+                placeholder="Pilih Penanggung Jawab"
+                error={errors.namaPenanggungJawab}
+                type="select"
+                name="penanggung_jawab"
+              />
+            </div>
+          </div>
+          <div className="flex justify-start items-start gap-2 flex-nowrap w-full">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="wPenanggungJawab"
+                type="number"
+                name="WakilPenanggungJawab"
+                placeholder="^"
+                register={register('wakil_penanggung_jawab', {
+                  required: 'Wakil Penanggung Jawab wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                })}
+                error={errors.wakil_penanggung_jawab}
+              />
+            </div>
+
+            <div className="basis-auto">
+              <SelectInputField
+                label="Wakil Penanggung Jawab"
+                identiti="wakil_penanggung_jawab"
+                options={optionsDataUser}
+                register={register('namaWakilPenanggungJawab')}
+                placeholder="Pilih Wakil Penanggung Jawab"
+                error={errors.namaWakilPenanggungJawab}
+                type="select"
+                name="wakil_penanggung_jawab"
+              />
+            </div>
+          </div>
+          <div className="flex justify-start items-start gap-2 flex-nowrap w-full">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="pengendaliTeknis"
+                type="number"
+                name="Supervisor"
+                placeholder="^"
+                register={register('pengendali_teknis', {
+                  required: 'Pengendali Teknis Jawab wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                })}
+                error={errors.pengendali_teknis}
+              />
+            </div>
+
+            <div className="basis-auto">
+              <SelectInputField
+                label="Pengendali Teknis/Supervisor"
+                identiti="pengendali_teknis"
+                options={optionsDataUser}
+                register={register('namaPengendaliTeknis')}
+                placeholder="Pilih Pengendali Teknis/Supervisor"
+                error={errors.namaPengendaliTeknis}
+                type="select"
+                name="pengendali_teknis"
+              />
+            </div>
+          </div>
+          <div className="flex justify-start items-start gap-2">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="ketuaTim"
+                type="number"
+                name="KetuaTIM"
+                placeholder="^"
+                register={register('ketua_tim', {
+                  required: 'Ketua TIM wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                })}
+                error={errors.ketua_tim}
+              />
+            </div>
+            <div className="basis-auto">
+              <SelectInputField
+                label="Ketua TIM"
+                identiti="ketua_tim"
+                options={optionsDataUser}
+                register={register('namaKetuaTim')}
+                placeholder="Pilih Ketua TIM"
+                error={errors.ketua_tim}
+                type="select"
+                name="ketua_tim"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-start items-start gap-2 col-span-2">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="ATim"
+                type="number"
+                name="ATim"
+                placeholder="^"
+                register={register('anggota_tim', {
+                  required: 'Anggota TIM wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                  // pattern: {
+                  //   value: /^[a-zA-Z\s]*$/,
+                  //   message: 'Hanya boleh berisi huruf dan spasi',
+                  // },
+                })}
+                error={errors.anggota_tim}
+              />
+            </div>
+            <div className="flex-1">
+              <div className="flex flex-col space-y-2 w-full">
+                <label
+                  htmlFor="Tim"
+                  className="text-slate-800 text-sm sm:text-base"
+                >
+                  TIM [{teamMembers.length}]
+                </label>
+                <div className="flex flex-col sm:flex-row w-full space-y-2 sm:space-y-0 sm:space-x-2">
+                  <select
+                    value={newMemberId}
+                    onChange={(e) => setNewMemberId(e.target.value)}
+                    className="border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1 px-2 py-1 text-sm sm:text-base"
+                  >
+                    <option value="" disabled>
+                      Select a team member
+                    </option>
+                    {potentialMembers.map((member) => (
+                      <option key={member.id} value={member.id}>
+                        {member.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={handleAddMember}
+                    type="button"
+                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary text-sm sm:text-base"
+                  >
+                    Tambah
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-4 space-y-2 w-full">
+                {teamMembers.map((member, index) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
+                  >
+                    <span className="text-slate-800">{member.name}</span>
+                    <button
+                      onClick={() => removeTeamMember(index)}
+                      type="button"
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* <InputFieldComponent
             label="Total Hari"
             identiti="Jumlah"
@@ -414,7 +507,7 @@ const InputNonPKPT = () => {
             error={errors.jumlah}
             disabled={false}
           /> */}
-          <div className="md:col-span-2 w-full">
+          {/* <div className="md:col-span-2 w-full">
             <div className="grid lg:grid-cols-3 gap-3 w-full">
               <InputFieldComponent
                 label="Total Hari Penugasan"
@@ -478,7 +571,7 @@ const InputNonPKPT = () => {
                 </div>
               </section>
             </div>
-          </div>
+          </div> */}
         </section>
       </CardComponents>
 

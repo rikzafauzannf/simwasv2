@@ -156,36 +156,39 @@ const TablePKPT: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'Penanggung Jawab',
-      selector: (row) => getNameUser(Number(row.penanggung_jawab)),
+      name: 'HP Penanggung Jawab',
+      selector: (row) => row.penanggung_jawab,
       sortable: true,
     },
     {
-      name: 'Wakil Penanggung Jawab',
-      selector: (row) => getNameUser(Number(row.wakil_penanggung_jawab)),
+      name: 'HP Wakil Penanggung Jawab',
+      selector: (row) => row.wakil_penanggung_jawab,
       sortable: true,
     },
     {
-      name: 'Pengendali Teknis / Supervisor',
-      selector: (row) => getNameUser(Number(row.pengendali_teknis)),
+      name: 'HP Pengendali Teknis / Supervisor',
+      selector: (row) => row.pengendali_teknis,
       sortable: true,
     },
     {
-      name: 'Ketua TIM',
-      selector: (row) => getNameUser(Number(row.ketua_tim)),
+      name: 'HP Ketua TIM',
+      selector: (row) => row.ketua_tim,
       sortable: true,
     },
+    {
+      name: 'HP Anggota TIM',
+      selector: (row) => row.anggota_tim,
+      sortable: true,
+    },
+    {
+      name: 'Total HP',
+      selector: (row) => row.jumlah,
+      sortable: true,
+    },
+
     {
       name: 'TIM',
-      selector: (row) =>
-        row.tim
-          .split(',')
-          .map((id) => getNameUser(Number(id)))
-          .join(', '),
-      // selector: (row) => {
-      //   if (!row.tim || !Array.isArray(row.tim)) return '';
-      //   return row.tim.map((member) => member.name).join(', ');
-      // },
+      selector: (row) => row.tim.split('|').join('\n'),
       sortable: true,
     },
     {
