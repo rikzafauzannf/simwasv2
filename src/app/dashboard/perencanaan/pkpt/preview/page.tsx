@@ -509,9 +509,9 @@ const TablePKPT: React.FC = () => {
                       {item.jumlah}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {item.tim.split('|').map((id) => (
-                        <p>{id}</p>
-                      ))}
+                      {item.tim
+                        .split('|')
+                        .map((id,index) => (<p key={index}>{id}</p>) )}
                     </td>
                     <td className="border border-gray-300 p-2">
                       {formatCurrency(item.anggaran)}
