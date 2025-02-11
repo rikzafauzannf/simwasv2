@@ -40,7 +40,7 @@ const RekapTemuanPage = () => {
       };
     }).filter((item) => item.kode_temuan !== null); // Hanya ambil yang memiliki pasangan
   }, [DataTemuanHasil, DataKodeTemuan]);
-  
+
   return (
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor']}

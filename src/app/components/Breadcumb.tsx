@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Breadcrumb } from 'flowbite-react';
@@ -12,7 +11,6 @@ const Breadcrumbs = () => {
   return (
     <Breadcrumb className="mb-4">
       <Breadcrumb.Item>
-
         <Link href="/" className="font-semibold text-blue-700">
           Home
         </Link>
@@ -25,7 +23,6 @@ const Breadcrumbs = () => {
         return (
           <Breadcrumb.Item key={href}>
             {isLast ? (
-
               <span className="font-bold">
                 {label.charAt(0).toUpperCase() + label.slice(1)}
               </span>

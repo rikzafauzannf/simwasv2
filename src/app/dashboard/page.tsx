@@ -32,7 +32,7 @@ const page = () => {
   return (
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Perencana', 'Pelaksana', 'Auditor']}
-    >            
+    >
       <div className="space-y-8">
         {/* top */}
         {/* <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
