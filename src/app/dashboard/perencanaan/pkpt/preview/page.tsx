@@ -249,8 +249,8 @@ const createExcelWorksheet = (
         {
           v: item.tim
             .split(',')
-            .map((id) => hooks.getNameUser(Number(id)))
-            .join(', '),
+            .map((id) => id)
+            .join(`\n`),
           s: {
             font: { bold: false, size: 11 },
             alignment: { horizontal: 'center' },
@@ -491,19 +491,19 @@ const TablePKPT: React.FC = () => {
                       {item.rpl_pkpt}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {hooks.getNameUser(Number(item.penanggung_jawab))}
+                      {item.penanggung_jawab}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {hooks.getNameUser(Number(item.wakil_penanggung_jawab))}
+                      {item.wakil_penanggung_jawab}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {hooks.getNameUser(Number(item.pengendali_teknis))}
+                      {item.pengendali_teknis}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {hooks.getNameUser(Number(item.ketua_tim))}
+                      {item.ketua_tim}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {hooks.getNameUser(Number(item.anggota_tim))}
+                      {item.anggota_tim}
                     </td>
                     <td className="border border-gray-300 p-2">
                       {item.jumlah}

@@ -176,6 +176,7 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
                           {title}
                         </Link>
                         </Card>                        
+
                       </li>
                     ))}
                   </ul>
