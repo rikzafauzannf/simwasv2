@@ -103,7 +103,7 @@ const TableTindakLanjut: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'Uraian',
+      name: 'Uraian TL',
       selector: (row) => row.uraian,
       sortable: true,
     },
@@ -113,20 +113,17 @@ const TableTindakLanjut: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'Kondisi Temuan',
-      selector: (row) => row.kondisi_temuan,
-      sortable: true,
-    },
-    {
-      name: 'Kondisi Rekomendasi',
-      selector: (row) => row.kondisi_rekomendasi,
-      sortable: true,
-    },
-    {
       name: 'Sisa Nominal',
       selector: (row) => formatCurrency(row.sisa_nominal),
       sortable: true,
     },
+
+    // {
+    //   name: 'Kondisi Rekomendasi',
+    //   selector: (row) => row.kondisi_rekomendasi,
+    //   sortable: true,
+    // },
+
     {
       name: 'Tanggal Pengiriman',
       selector: (row) => row.tanggal_pengiriman,
@@ -135,6 +132,11 @@ const TableTindakLanjut: React.FC = () => {
     {
       name: 'Batas Akhir TL',
       selector: (row) => row.batas_akhir_tl,
+      sortable: true,
+    },
+    {
+      name: 'Status TL',
+      selector: (row) => row.kondisi_temuan,
       sortable: true,
     },
     {

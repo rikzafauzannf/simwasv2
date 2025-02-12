@@ -90,7 +90,7 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
       <section className="grid gap-8">
         {/* {currentItems.map((group, index) => (
           <> */}
-        <Accordion>
+        <Accordion className="bg-white shadow-md">
           {currentItems.map((group, index) => (
             <Accordion.Panel key={index}>
               <Accordion.Title>
@@ -110,8 +110,8 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
                       <li key={idx} className="border-b-2 py-3">
                         <Card>
                           <div>
-                          <small>Uraian</small>
-                          <h1>{temuan.uraian}</h1>
+                            <small>Uraian</small>
+                            <h1>{temuan.uraian}</h1>
                           </div>
                           <div className="grid grid-cols-3 gap-3 w-full">
                             <div>
@@ -142,9 +142,7 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
                             </div>
                             <div>
                               <p>Rekomendasi/Saran</p>
-                              <h1>
-                                {temuan.rekomendasi_saran}
-                              </h1>
+                              <h1>{temuan.rekomendasi_saran}</h1>
                             </div>
                             <div>
                               <p>Nilai Rekomendasi</p>
@@ -170,12 +168,13 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
                             <p>{formatToLocalDate(temuan.created_at)}</p>
                           </div>
                           <Link
-                          href={`/dashboard/${todo}/${temuan.id_tlhp}`}
-                          className="py-1 px-2 border border-violet-600 text-slate-900 rounded-md text-center text-sm font-medium hover:bg-violet-700 hover:text-white inline-block mt-1 w-full"
-                        >
-                          {title}
-                        </Link>
-                        </Card>                        
+
+                            href={`/dashboard/${todo}/${temuan.id_tlhp}`}
+                            className="py-1 px-2 border border-violet-600 text-slate-900 rounded-md text-center text-sm font-medium hover:bg-violet-700 hover:text-white inline-block mt-1 w-full"
+                          >
+                            {title}
+                          </Link>
+                        </Card>
 
                       </li>
                     ))}
