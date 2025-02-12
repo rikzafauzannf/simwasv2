@@ -168,14 +168,12 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
                             <p>{formatToLocalDate(temuan.created_at)}</p>
                           </div>
                           <Link
-
                             href={`/dashboard/${todo}/${temuan.id_tlhp}`}
                             className="py-1 px-2 border border-violet-600 text-slate-900 rounded-md text-center text-sm font-medium hover:bg-violet-700 hover:text-white inline-block mt-1 w-full"
                           >
                             {title}
                           </Link>
                         </Card>
-
                       </li>
                     ))}
                   </ul>
