@@ -111,6 +111,25 @@ export const useOptions = () => {
     },
   ];
 
+  const OptionsStatusTL = [
+    {
+      value: 'sesuai',
+      label: 'Sesuai',
+    },
+    {
+      value: 'dalam proses',
+      label: 'Dalam Proses',
+    },
+    {
+      value: 'belum ditindak lanjut',
+      label: 'Belum Ditindak Lanjut',
+    },
+    {
+      value: 'tidak dapat ditindak lanjut',
+      label: 'Tidak Dapat Ditindak Lanjut',
+    },
+  ];
+
   return {
     optionsJenisLaporan,
     optionsJenisPengawasan,
@@ -124,5 +143,6 @@ export const useOptions = () => {
     optionKodeReferensi,
     optionKodeRekomendasi,
     optionsRole,
+    OptionsStatusTL,
   };
 };

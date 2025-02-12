@@ -5,10 +5,13 @@ export const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-export const formatToLocalDate = (isoString: string) => {
+export const formatToLocalDate = (isoString?: string) => {
+  if (!isoString) return 'Invalid date';
+
   const date = new Date(isoString);
+  if (isNaN(date.getTime())) return 'Invalid date';
+
   return new Intl.DateTimeFormat('id-ID', {
     dateStyle: 'long',
-    // timeStyle: 'long',
   }).format(date);
 };
