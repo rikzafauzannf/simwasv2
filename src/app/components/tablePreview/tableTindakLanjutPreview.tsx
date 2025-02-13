@@ -465,6 +465,7 @@ const TableTindakLanjutPreview = () => {
                       <td className="border border-gray-300 p-2 text-center"></td>
                       <td className="border border-gray-300 p-2 text-center"></td>
                     </tr>
+
                   </tbody>
                 </Table>
               </div>
