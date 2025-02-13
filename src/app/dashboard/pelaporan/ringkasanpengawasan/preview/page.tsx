@@ -1,3 +1,4 @@
+
 import TableTemuanPreview from '@/app/components/tablePreview/tableTemuanPreview';
 import React from 'react';
 
