@@ -1,8 +1,9 @@
-import TableTemuanPreview from '@/app/components/tablePreview/tableTemuanPreview'
-import React from 'react'
+import TableTemuanPreview from '@/app/components/tablePreview/tableTemuanPreview';
+import TableTindakLanjutPreview from '@/app/components/tablePreview/tableTindakLanjutPreview';
+import React from 'react';
 
 const PreviewTemuan = () => {
-  return <TableTemuanPreview/>
-}
+  return <TableTindakLanjutPreview />;
+};
 
-export default PreviewTemuan
+export default PreviewTemuan;
