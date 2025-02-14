@@ -73,6 +73,7 @@ export const exportToExcel = (
       'Sisa Rp',
       'Tanggal Pengiriman',
       'Batas Akhir TL',
+
       'Ket',
     ],
   ];
@@ -114,6 +115,7 @@ export const exportToExcel = (
         formatCurrency(item.nilai_rekomendasi),
         getNameKodeRekomendasi(item.id_kode_rekomendasi).split('.')[0],
         getNameKodeRekomendasi(item.id_kode_rekomendasi),
+
         tindakLanjut.map((tl) => tl.uraian).join('\n'),
         tindakLanjut
           .map((amount) => formatCurrency(amount.nilai_setor))

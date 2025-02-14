@@ -1,3 +1,4 @@
+
 import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 import * as XLSX from 'xlsx';
@@ -33,6 +34,7 @@ const createExcelWorksheet = (
   const HEADER_STYLE = {
     font: { bold: true, size: 11 },
     alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+
     border: {
       top: { style: 'thin' },
       bottom: { style: 'thin' },
