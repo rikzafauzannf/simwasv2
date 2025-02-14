@@ -20,8 +20,6 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { exportToExcel } from './exportPKPT';
 
-
-
 // Table Components
 const TableHeader: React.FC = () => (
   <thead className="bg-gray-200">

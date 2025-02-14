@@ -17,7 +17,7 @@ const KendaliMutuPage = () => {
         title="Buat Kendalimutu / laporan"
         todo="pelaksanaan/kendalimutu/form"
       /> */}
-        <MapDataPkpt
+        <MapDataST
           title="Buat Kendalimutu"
           todo="pelaksanaan/kendalimutu/form"
         />

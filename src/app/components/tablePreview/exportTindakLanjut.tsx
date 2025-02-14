@@ -20,10 +20,10 @@ export const exportToExcel = (
 
   // Set column widths
   const colWidths = [
-    { wch: 5 },  // NO
+    { wch: 5 }, // NO
     { wch: 20 }, // NOMOR DAN TANGGAL SP
     { wch: 30 }, // URAIAN
-    { wch: 5 },  // NO
+    { wch: 5 }, // NO
     { wch: 25 }, // KONDISI/TEMUAN
     { wch: 15 }, // KODE TEMUAN
     { wch: 10 }, // KODE NUMBER
@@ -73,8 +73,9 @@ export const exportToExcel = (
       'Sisa Rp',
       'Tanggal Pengiriman',
       'Batas Akhir TL',
-      'Ket'
-    ]
+
+      'Ket',
+    ],
   ];
 
   // Group data
@@ -114,55 +115,87 @@ export const exportToExcel = (
         formatCurrency(item.nilai_rekomendasi),
         getNameKodeRekomendasi(item.id_kode_rekomendasi).split('.')[0],
         getNameKodeRekomendasi(item.id_kode_rekomendasi),
-        tindakLanjut.map(tl => tl.uraian).join('\n'),
-        tindakLanjut.map(amount => formatCurrency(amount.nilai_setor)).join('\n'),
-        tindakLanjut.filter(tl => tl.kondisi_temuan === 'sesuai').length || '',
-        tindakLanjut.filter(tl => tl.kondisi_temuan === 'dalam proses').length || '',
-        tindakLanjut.filter(tl => tl.kondisi_temuan === 'belum ditindak lanjut').length || '',
-        tindakLanjut.filter(tl => tl.kondisi_temuan === 'tidak dapat ditindak lanjut').length || '',
-        tindakLanjut.map(amount => formatCurrency(amount.sisa_nominal)).join('\n'),
-        tindakLanjut.map(tl => formatToLocalDate(tl.tanggal_pengiriman)).join('\n'),
-        tindakLanjut.map(tl => formatToLocalDate(tl.batas_akhir_tl)).join('\n'),
-        tindakLanjut.map(tl => tl.keterangan).join('\n')
+
+        tindakLanjut.map((tl) => tl.uraian).join('\n'),
+        tindakLanjut
+          .map((amount) => formatCurrency(amount.nilai_setor))
+          .join('\n'),
+        tindakLanjut.filter((tl) => tl.kondisi_temuan === 'sesuai').length ||
+          '',
+        tindakLanjut.filter((tl) => tl.kondisi_temuan === 'dalam proses')
+          .length || '',
+        tindakLanjut.filter(
+          (tl) => tl.kondisi_temuan === 'belum ditindak lanjut'
+        ).length || '',
+        tindakLanjut.filter(
+          (tl) => tl.kondisi_temuan === 'tidak dapat ditindak lanjut'
+        ).length || '',
+        tindakLanjut
+          .map((amount) => formatCurrency(amount.sisa_nominal))
+          .join('\n'),
+        tindakLanjut
+          .map((tl) => formatToLocalDate(tl.tanggal_pengiriman))
+          .join('\n'),
+        tindakLanjut
+          .map((tl) => formatToLocalDate(tl.batas_akhir_tl))
+          .join('\n'),
+        tindakLanjut.map((tl) => tl.keterangan).join('\n'),
       ];
       rows.push(row);
     });
   });
 
   // Add summary rows
-  const summaryRows = DataKodeTemuan
-    .filter(item => item.kode_temuan?.split('.')[1] === '00')
-    .map(item => {
-      const relatedTemuan = DataTemuanHasil.filter(
-        temuan => getNameKodeTemuan(Number(temuan.id_kode_temuan)).split('.')[0] === item.kode_temuan?.split('.')[0]
-      );
-      const relatedTL = relatedTemuan.flatMap(temuan => groupedTL[temuan.id_tlhp] || []);
-      
-      return [
+  const summaryRows = DataKodeTemuan.filter(
+    (item) => item.kode_temuan?.split('.')[1] === '00'
+  ).map((item) => {
+    const relatedTemuan = DataTemuanHasil.filter(
+      (temuan) =>
+        getNameKodeTemuan(Number(temuan.id_kode_temuan)).split('.')[0] ===
+        item.kode_temuan?.split('.')[0]
+    );
+    const relatedTL = relatedTemuan.flatMap(
+      (temuan) => groupedTL[temuan.id_tlhp] || []
+    );
+
+    return [
+      '',
+      '',
+      '',
+      '',
+      '',
+      item.keterangan_kode,
+      relatedTemuan.length,
+      '',
+      relatedTemuan.length,
+      formatCurrency(
+        relatedTemuan.reduce(
+          (sum, current) => sum + (current.nilai_rekomendasi || 0),
+          0
+        )
+      ),
+      '',
+      '',
+      '',
+      formatCurrency(
+        relatedTL.reduce((sum, tl) => sum + (tl.nilai_setor || 0), 0)
+      ),
+      relatedTL.filter((tl) => tl.kondisi_temuan === 'sesuai').length || '',
+      relatedTL.filter((tl) => tl.kondisi_temuan === 'dalam proses').length ||
         '',
-        '',
-        '',
-        '',
-        '',
-        item.keterangan_kode,
-        relatedTemuan.length,
-        '',
-        relatedTemuan.length,
-        formatCurrency(relatedTemuan.reduce((sum, current) => sum + (current.nilai_rekomendasi || 0), 0)),
-        '',
-        '',
-        '',
-        formatCurrency(relatedTL.reduce((sum, tl) => sum + (tl.nilai_setor || 0), 0)),
-        relatedTL.filter(tl => tl.kondisi_temuan === 'sesuai').length || '',
-        relatedTL.filter(tl => tl.kondisi_temuan === 'dalam proses').length || '',
-        relatedTL.filter(tl => tl.kondisi_temuan === 'belum ditindak lanjut').length || '',
-        relatedTL.filter(tl => tl.kondisi_temuan === 'tidak dapat ditindak lanjut').length || '',
-        formatCurrency(relatedTL.reduce((sum, tl) => sum + (tl.sisa_nominal || 0), 0)),
-        '',
-        '',
-        ''
-      ];
-    });
+      relatedTL.filter((tl) => tl.kondisi_temuan === 'belum ditindak lanjut')
+        .length || '',
+      relatedTL.filter(
+        (tl) => tl.kondisi_temuan === 'tidak dapat ditindak lanjut'
+      ).length || '',
+      formatCurrency(
+        relatedTL.reduce((sum, tl) => sum + (tl.sisa_nominal || 0), 0)
+      ),
+      '',
+      '',
+      '',
+    ];
+  });
 
   // Calculate totals
   const totals = [
@@ -175,19 +208,26 @@ export const exportToExcel = (
     DataTemuanHasil.length,
     '',
     DataTemuanHasil.length,
-    formatCurrency(DataTemuanHasil.reduce((sum, item) => sum + (item.nilai_rekomendasi || 0), 0)),
+    formatCurrency(
+      DataTemuanHasil.reduce(
+        (sum, item) => sum + (item.nilai_rekomendasi || 0),
+        0
+      )
+    ),
     '',
     '',
     '',
     formatCurrency(DataTL.reduce((sum, tl) => sum + (tl.nilai_setor || 0), 0)),
-    DataTL.filter(tl => tl.kondisi_temuan === 'sesuai').length || '',
-    DataTL.filter(tl => tl.kondisi_temuan === 'dalam proses').length || '',
-    DataTL.filter(tl => tl.kondisi_temuan === 'belum ditindak lanjut').length || '',
-    DataTL.filter(tl => tl.kondisi_temuan === 'tidak dapat ditindak lanjut').length || '',
+    DataTL.filter((tl) => tl.kondisi_temuan === 'sesuai').length || '',
+    DataTL.filter((tl) => tl.kondisi_temuan === 'dalam proses').length || '',
+    DataTL.filter((tl) => tl.kondisi_temuan === 'belum ditindak lanjut')
+      .length || '',
+    DataTL.filter((tl) => tl.kondisi_temuan === 'tidak dapat ditindak lanjut')
+      .length || '',
     formatCurrency(DataTL.reduce((sum, tl) => sum + (tl.sisa_nominal || 0), 0)),
     '',
     '',
-    ''
+    '',
   ];
 
   // Combine all rows
@@ -197,7 +237,7 @@ export const exportToExcel = (
   // Add styling
   const headerStyle = {
     font: { bold: true },
-    alignment: { horizontal: 'center', vertical: 'center' }
+    alignment: { horizontal: 'center', vertical: 'center' },
   };
 
   // Apply styles
