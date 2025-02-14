@@ -112,12 +112,10 @@ const TableTindakLanjutPreview = () => {
       formatToLocalDate
     );
   };
-
   return (
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor']}
     >
-
       <div className="space-y-3 w-full">
       <CardComponents>
           <div className="flex justify-between items-center w-full">
