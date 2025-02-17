@@ -26,6 +26,7 @@ const TableKendaliMutu = () => {
   const { getNameAreaPengawasan, getNameStatusPKPT } = useGetNamePKPT();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
 
+
   const columns: TableColumn<KendaliMutuData>[] = [
     {
       name: 'Actions',
