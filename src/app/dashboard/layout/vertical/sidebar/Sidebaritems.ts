@@ -242,6 +242,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Hasil Temuan',
       'Rekap Temuan',
       'Tindak Lanjut',
+      'User Account',
     ],
     Pimpinan: [
       'Dashboard',
