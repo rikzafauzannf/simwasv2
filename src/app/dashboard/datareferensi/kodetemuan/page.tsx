@@ -94,7 +94,7 @@ const KodeTemuan = () => {
   };
 
   return (
-    <AuthRoleWrapper allowedRoles={['Admin', 'Perencana']}>
+    <AuthRoleWrapper allowedRoles={['Admin', 'Perencana', 'Developer']}>
       <div className="space-y-3">
         <h3 className="text-xl"># Kode Temuan</h3>
         <CardComponents>

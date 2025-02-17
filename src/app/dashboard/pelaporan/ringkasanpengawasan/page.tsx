@@ -7,7 +7,7 @@ import React from 'react';
 const RingkasanPengawasanPage = () => {
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
       <div className="space-y-3">
         <h3 className="text-xl">Ringkasan Pengawasan</h3>

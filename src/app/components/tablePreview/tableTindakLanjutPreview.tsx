@@ -114,14 +114,14 @@ const TableTindakLanjutPreview = () => {
   };
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
       <div className="space-y-3 w-full">
-      <CardComponents>
+        <CardComponents>
           <div className="flex justify-between items-center w-full">
             <div>
               <h5 className="text-xl font-bold mb-2">
-              STATUS TEMUAN HASIL PEMERIKSAAN/AUDIT DAN TINDAK LANJUTNYA 
+                STATUS TEMUAN HASIL PEMERIKSAAN/AUDIT DAN TINDAK LANJUTNYA
               </h5>
               <p className="text-gray-600">
                 Inspektorat Daerah Kota Tasikmalaya

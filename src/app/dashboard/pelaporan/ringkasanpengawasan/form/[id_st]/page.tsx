@@ -11,7 +11,7 @@ interface PageProps {
 const FormRingkasanPengawasanPage: React.FC<PageProps> = ({ params }) => {
   console.log('params data page props: ', params.id_st);
   return (
-    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor']}>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer']}>
       <div className="space-y-3">
         <InputRingkasanPengawasan id_st={params.id_st} />
       </div>

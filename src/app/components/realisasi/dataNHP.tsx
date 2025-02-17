@@ -48,7 +48,10 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   const { user } = useAuthStore();
-  if (!user || !['Pelaksana', 'Auditor'].includes(user.role as string))
+  if (
+    !user ||
+    !['Pelaksana', 'Auditor', 'Developer'].includes(user.role as string)
+  )
     return null;
   return (
     <>

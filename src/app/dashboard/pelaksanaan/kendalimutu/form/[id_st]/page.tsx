@@ -16,7 +16,7 @@ const FormKendaliMutuPage: React.FC<PageProps> = ({ params }) => {
   const id_pkpt = params.id_st;
 
   return (
-    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor']}>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer']}>
       <div className="space-y-3">
         <InputKendaliMutu id_pkpt={id_pkpt} />
       </div>

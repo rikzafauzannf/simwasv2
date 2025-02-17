@@ -212,7 +212,7 @@ const ActionPkptPage: React.FC<PropsID> = ({ params }) => {
   };
 
   return (
-    <AuthRoleWrapper allowedRoles={['Perencana']}>
+    <AuthRoleWrapper allowedRoles={['Perencana', 'Developer']}>
       <div className="flex justify-between items-center">
         <h3>Data PKPT</h3>
         <div className="space-x-3">

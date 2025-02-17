@@ -61,7 +61,14 @@ const ViewPkptPage = ({ params }: PageProps) => {
 
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Perencana', 'Pimpinan', 'Pelaksana', 'Auditor']}
+      allowedRoles={[
+        'Admin',
+        'Perencana',
+        'Pimpinan',
+        'Pelaksana',
+        'Auditor',
+        'Developer',
+      ]}
     >
       <section className="grid md:grid-cols-4 w-full gap-3">
         <div className="md:col-span-3">

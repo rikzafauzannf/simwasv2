@@ -100,7 +100,7 @@ const TingkatResiko = () => {
   };
 
   return (
-    <AuthRoleWrapper allowedRoles={['Admin', 'Perencana']}>
+    <AuthRoleWrapper allowedRoles={['Admin', 'Perencana', 'Developer']}>
       <div className="space-y-3">
         <h3 className="text-xl"># Tingkat Resiko</h3>
         <CardComponents>

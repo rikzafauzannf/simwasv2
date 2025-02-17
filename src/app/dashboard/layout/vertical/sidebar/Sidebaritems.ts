@@ -42,12 +42,12 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         url: '/dashboard/datareferensi',
       },
-      {
-        name: 'Data Jenis Audit',
-        icon: 'solar:shield-plus-line-duotone',
-        id: uniqueId(),
-        url: '/dashboard/datareferensi/jenisaudit',
-      },
+      // {
+      //   name: 'Data Jenis Audit',
+      //   icon: 'solar:shield-plus-line-duotone',
+      //   id: uniqueId(),
+      //   url: '/dashboard/datareferensi/jenisaudit',
+      // },
       {
         name: 'Data Jenis Laporan',
         icon: 'solar:shield-plus-line-duotone',
@@ -60,12 +60,12 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         url: '/dashboard/datareferensi/jenispengawasan',
       },
-      {
-        name: 'Data Kode Referensi',
-        icon: 'solar:shield-plus-line-duotone',
-        id: uniqueId(),
-        url: '/dashboard/datareferensi/kodereferensi',
-      },
+      // {
+      //   name: 'Data Kode Referensi',
+      //   icon: 'solar:shield-plus-line-duotone',
+      //   id: uniqueId(),
+      //   url: '/dashboard/datareferensi/kodereferensi',
+      // },
       {
         name: 'Data Kode Rekomendasi',
         icon: 'solar:shield-plus-line-duotone',
@@ -231,6 +231,18 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Tindak Lanjut',
       'User Account',
     ],
+    Developer: [
+      'Dashboard',
+      ...dataReferensi,
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+    ],
     Pimpinan: [
       'Dashboard',
       'PKPT',
@@ -241,7 +253,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Hasil Temuan',
       'Rekap Temuan',
       'Tindak Lanjut',
-    ],
+    ],    
     Perencana: ['Dashboard', ...dataReferensi, 'PKPT', 'Surat Tugas'],
     Pelaksana: [
       'Dashboard',

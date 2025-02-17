@@ -31,7 +31,14 @@ import Breadcrumbs from '../components/Breadcumb';
 const page = () => {
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Perencana', 'Pelaksana', 'Auditor']}
+      allowedRoles={[
+        'Admin',
+        'Pimpinan',
+        'Perencana',
+        'Pelaksana',
+        'Auditor',
+        'Developer',
+      ]}
     >
       <div className="space-y-8">
         {/* top */}
