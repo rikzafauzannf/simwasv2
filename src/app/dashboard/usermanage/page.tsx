@@ -115,7 +115,7 @@ const UserManage = () => {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   return (
-    <AuthRoleWrapper allowedRoles={['Admin']}>
+    <AuthRoleWrapper allowedRoles={['Admin', 'Developer']}>
       <div className="space-y-3">
         <h3 className="text-xl"># UserManage</h3>
 

@@ -51,7 +51,14 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
 
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Perencana', 'Pimpinan', 'Pelaksana', 'Auditor']}
+      allowedRoles={[
+        'Admin',
+        'Perencana',
+        'Pimpinan',
+        'Pelaksana',
+        'Auditor',
+        'Developer',
+      ]}
     >
       <h3 className="text-xl mb-3"># Detail Surat Tugas</h3>
       <div className="grid lg:grid-cols-3 gap-3 mb-3">

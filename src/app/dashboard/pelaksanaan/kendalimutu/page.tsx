@@ -9,7 +9,7 @@ import React from 'react';
 const KendaliMutuPage = () => {
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
       <div className="space-y-3">
         <h3 className="text-xl">Kendali Mutu</h3>

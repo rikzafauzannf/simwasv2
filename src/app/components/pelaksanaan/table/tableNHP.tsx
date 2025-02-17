@@ -22,7 +22,7 @@ const axiosSecvice = new AxiosService();
 
 const TableNHP: React.FC = () => {
   const { user } = useAuthStore();
-  const hashPermission = ['Pelaksana', 'Auditor'].includes(
+  const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
     user?.role as string
   );
 

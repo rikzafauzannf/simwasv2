@@ -31,7 +31,19 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
   const filteredData = DataST.filter(
     (item) =>
       item.program_audit.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.no_tglsp.toLowerCase().includes(searchTerm.toLowerCase())
+      item.no_tglsp.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.keterangan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      getNameStatusPKPT(item.id_pkpt)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      getNameAreaPengawasan(item.id_pkpt)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      item.bulan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.program_audit.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      getNameUser(Number(item.id_user))
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic
@@ -41,7 +53,10 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   const { user } = useAuthStore();
-  if (!user || !['Pelaksana', 'Auditor'].includes(user.role as string))
+  if (
+    !user ||
+    !['Pelaksana', 'Auditor', 'Developer'].includes(user.role as string)
+  )
     return null;
 
   return (

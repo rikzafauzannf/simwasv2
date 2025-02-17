@@ -10,7 +10,9 @@ interface PageProps {
 const FormRekapSuratPage: React.FC<PageProps> = ({ params }) => {
   const id = params.id_pkpt;
   return (
-    <AuthRoleWrapper allowedRoles={['Perencana', 'Pelaksana', 'Auditor']}>
+    <AuthRoleWrapper
+      allowedRoles={['Perencana', 'Pelaksana', 'Auditor', 'Developer']}
+    >
       <InputSuratTugas id_pkpt={id} />
     </AuthRoleWrapper>
   );

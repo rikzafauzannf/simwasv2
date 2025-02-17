@@ -9,7 +9,7 @@ import React from 'react';
 
 const InputPKPTPage = () => {
   return (
-    <AuthRoleWrapper allowedRoles={['Perencana']}>
+    <AuthRoleWrapper allowedRoles={['Perencana', 'Developer']}>
       <div className="space-y-4">
         <h1 className="text-xl font-semibold">
           <IconComponents iconField="text-field-focus-line-duotone" />

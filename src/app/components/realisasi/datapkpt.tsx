@@ -44,7 +44,9 @@ const MapDataPkpt: React.FC<Props> = ({ todo, title }) => {
   const { user } = useAuthStore();
   if (
     !user ||
-    !['Perencana', 'Pelaksana', 'Audotor'].includes(user.role as string)
+    !['Perencana', 'Pelaksana', 'Audotor', 'Developer'].includes(
+      user.role as string
+    )
   )
     return null;
 

@@ -1,4 +1,3 @@
-
 import { PKPTDataBase } from '@/interface/interfacePKPT';
 import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 import * as XLSX from 'xlsx';

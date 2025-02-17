@@ -16,7 +16,7 @@ const axiosService = new AxiosService();
 
 const TableKendaliMutu = () => {
   const { user } = useAuthStore();
-  const hashPermission = ['Pelaksana', 'Auditor'].includes(
+  const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
     user?.role as string
   );
 
@@ -24,7 +24,7 @@ const TableKendaliMutu = () => {
   const [filteredData, setFilteredData] = useState<KendaliMutuData[]>([]);
 
   const { getNameAreaPengawasan, getNameStatusPKPT } = useGetNamePKPT();
-  const {getNameNoSP,getProgramAudit} = useGetNameST()
+  const { getNameNoSP, getProgramAudit } = useGetNameST();
 
   const columns: TableColumn<KendaliMutuData>[] = [
     {

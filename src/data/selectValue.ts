@@ -109,6 +109,10 @@ export const useOptions = () => {
       value: 'Auditor',
       label: 'Auditor',
     },
+    {
+      value: 'Developer',
+      label: 'Developer',
+    },
   ];
 
   const OptionsStatusTL = [

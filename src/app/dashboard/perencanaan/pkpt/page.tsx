@@ -11,7 +11,14 @@ const PkptPage = () => {
   const { user } = useAuthStore();
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Perencana', 'Pimpinan', 'Pelaksana', 'Auditor']}
+      allowedRoles={[
+        'Admin',
+        'Perencana',
+        'Pimpinan',
+        'Pelaksana',
+        'Auditor',
+        'Developer',
+      ]}
     >
       <div className="space-y-4">
         <AkumulasiDataPKPT />
