@@ -8,7 +8,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install --legacy-peer-deps
+#RUN npm install --legacy-peer-deps
+RUN npm i -g pnpm
+RUN pnpm i 
 
 # Copy application files
 COPY . .
@@ -16,13 +18,14 @@ COPY . .
 # Build the application
 ARG NEXT_PUBLIC_API_BASE_URL
 ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
-RUN npm run build
+RUN pnpm build
 
 # Production stage
 FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
+RUN npm i -g pnpm 
 
 # Copy built application from builder
 COPY --from=builder /app .
@@ -34,4 +37,4 @@ ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 EXPOSE 3000
 
 # Run the application
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]

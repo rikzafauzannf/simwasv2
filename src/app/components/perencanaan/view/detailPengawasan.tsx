@@ -82,7 +82,9 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         <CardComponents>
           <p className="text-sm">Anggaran</p>
           <h3 className="text-xl">
-            {DataPKPT ? formatCurrency(DataPKPT.anggaran) : 'No data available'}
+            {DataPKPT
+              ? formatCurrency(Number(DataPKPT.anggaran))
+              : 'No data available'}
           </h3>
         </CardComponents>
       </section>

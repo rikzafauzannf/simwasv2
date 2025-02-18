@@ -16,7 +16,11 @@ import { useGetNameUser } from '@/hooks/useGetName';
 
 const axiosSecvice = new AxiosService();
 
-const InputNonPKPT = () => {
+interface StatusProps {
+  status?: string;
+}
+
+const InputNonPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
   const { user } = useAuthStore();
   const router = useRouter();
   const { getNameUser } = useGetNameUser();
@@ -61,31 +65,34 @@ const InputNonPKPT = () => {
 
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
-      const dataTim = `PT: ${getNameUser(Number(data.namaPengendaliTeknis))} | KT: ${getNameUser(Number(data.namaKetuaTim))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')} `;
-      const pkptData = {
-        status: 'non-pkpt',
-        id_user: Number(user?.id_user),
-        anggaran: String(data.anggaran),
-        // anggota_tim: String(data.anggota_tim),
-        anggota_tim: data.anggota_tim,
-        area_pengawasan: data.area_pengawasan,
-        id_jenis_laporan: Number(data.id_jenis_laporan),
+      const dataTim = `PT: ${getNameUser(Number(data.nama_pengendali_teknis))} | KT: ${getNameUser(Number(data.nama_ketua_tim))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')} `;
+      const pkptData: PKPTFormData = {
         id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
+        tujuan_sasaran: data.tujuan_sasaran,
+        area_pengawasan: data.area_pengawasan,
         id_ruang_lingkup: Number(data.id_ruang_lingkup),
-        id_tingkat_resiko: Number(data.id_tingkat_resiko),
-        jumlah: data.jumlah,
-        jumlah_laporan: Number(data.jumlah_laporan),
-        keterangan: data.keterangan,
-        ketua_tim: String(data.ketua_tim),
-        penanggung_jawab: String(data.penanggung_jawab),
-        pengendali_teknis: String(data.pengendali_teknis),
         rmp_pkpt: data.rmp_pkpt,
         rpl_pkpt: data.rpl_pkpt,
-        sarana_prasarana: data.sarana_prasarana,
-        // tim: teamMembers.map((item) => String(item.id)).join(','),
+        penanggung_jawab: data.penanggung_jawab,
+        wakil_penanggung_jawab: data.wakil_penanggung_jawab,
+        pengendali_teknis: data.pengendali_teknis,
+        ketua_tim: data.ketua_tim,
+        anggota_tim: data.anggota_tim,
+        nama_penanggung_jawab: data.nama_penanggung_jawab,
+        nama_wakil_penanggung_jawab: data.nama_wakil_penanggung_jawab,
+        nama_pengendali_teknis: data.nama_pengendali_teknis,
+        nama_ketua_tim: data.nama_ketua_tim,
+        nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
         tim: dataTim,
-        tujuan_sasaran: data.tujuan_sasaran,
-        wakil_penanggung_jawab: String(data.wakil_penanggung_jawab),
+        jumlah: Number(data.jumlah),
+        anggaran: data.anggaran,
+        jumlah_laporan: Number(data.jumlah_laporan),
+        id_jenis_laporan: Number(data.id_jenis_laporan),
+        sarana_prasarana: data.sarana_prasarana,
+        id_tingkat_resiko: Number(data.id_tingkat_resiko),
+        keterangan: data.keterangan,
+        status: status,
+        id_user: Number(user?.id_user),
       };
       console.log('Data yang dikirim:', pkptData);
       const result = await axiosSecvice.addData('/pkpt', pkptData);
@@ -93,9 +100,9 @@ const InputNonPKPT = () => {
       console.log('Respons dari server:', result);
 
       if (result.success) {
-        console.log('PKPT berhasil disimpan:', result);
+        console.log(`${status} berhasil disimpan:`, result);
         reset();
-        alert('Data PKPT berhasil disimpan');
+        alert(`Data ${status} berhasil disimpan`);
         resetTeamMembers();
         router.push('/dashboard/perencanaan/pkpt');
       } else {
@@ -103,7 +110,7 @@ const InputNonPKPT = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Gagal menyimpan data PKPT');
+      alert(`Gagal menyimpan data ${status}`);
     }
   };
 
@@ -166,7 +173,7 @@ const InputNonPKPT = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Data PKPT */}
       <CardComponents>
-        <h3>Data Non-PKPT</h3>
+        <h3 className="capitalize">Data {status}</h3>
         <section className="grid md:grid-cols-2 w-full gap-3">
           <InputFieldComponent
             label="Area Pengawasan"
@@ -328,11 +335,11 @@ const InputNonPKPT = () => {
             <div className="basis-auto">
               <SelectInputField
                 label="Penanggung Jawab"
-                identiti="namaPenanggungJawab"
+                identiti="nama_penanggung_jawab"
                 options={optionsDataUser}
-                register={register('namaPenanggungJawab')}
+                register={register('nama_penanggung_jawab')}
                 placeholder="Pilih Penanggung Jawab"
-                error={errors.namaPenanggungJawab}
+                error={errors.nama_penanggung_jawab}
                 type="select"
                 name="penanggung_jawab"
               />
@@ -359,9 +366,9 @@ const InputNonPKPT = () => {
                 label="Wakil Penanggung Jawab"
                 identiti="wakil_penanggung_jawab"
                 options={optionsDataUser}
-                register={register('namaWakilPenanggungJawab')}
+                register={register('nama_wakil_penanggung_jawab')}
                 placeholder="Pilih Wakil Penanggung Jawab"
-                error={errors.namaWakilPenanggungJawab}
+                error={errors.nama_wakil_penanggung_jawab}
                 type="select"
                 name="wakil_penanggung_jawab"
               />
@@ -386,11 +393,11 @@ const InputNonPKPT = () => {
             <div className="basis-auto">
               <SelectInputField
                 label="Pengendali Teknis/Supervisor"
-                identiti="pengendali_teknis"
+                identiti="nama_pengendali_teknis"
                 options={optionsDataUser}
-                register={register('namaPengendaliTeknis')}
+                register={register('nama_pengendali_teknis')}
                 placeholder="Pilih Pengendali Teknis/Supervisor"
-                error={errors.namaPengendaliTeknis}
+                error={errors.nama_pengendali_teknis}
                 type="select"
                 name="pengendali_teknis"
               />
@@ -414,11 +421,11 @@ const InputNonPKPT = () => {
             <div className="basis-auto">
               <SelectInputField
                 label="Ketua TIM"
-                identiti="ketua_tim"
+                identiti="nama_ketua_tim"
                 options={optionsDataUser}
-                register={register('namaKetuaTim')}
+                register={register('nama_ketua_tim')}
                 placeholder="Pilih Ketua TIM"
-                error={errors.ketua_tim}
+                error={errors.nama_ketua_tim}
                 type="select"
                 name="ketua_tim"
               />

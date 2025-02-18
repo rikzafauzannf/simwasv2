@@ -12,7 +12,14 @@ export default function Layout({
 }>) {
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Perencana', 'Pelaksana', 'Auditor','Developer']}
+      allowedRoles={[
+        'Admin',
+        'Pimpinan',
+        'Perencana',
+        'Pelaksana',
+        'Auditor',
+        'Developer',
+      ]}
     >
       <div className="flex w-full min-h-screen">
         <div className="page-wrapper flex w-full">

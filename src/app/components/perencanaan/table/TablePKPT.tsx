@@ -20,9 +20,17 @@ import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosService = new AxiosService();
 
-const TablePKPT: React.FC = () => {
+interface PropsStatus {
+  status?: string;
+}
+
+const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
   const { user } = useAuthStore();
   const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
+  const dataPKPTStatus = DataPKPT.filter(
+    (itemsFilter) => itemsFilter.status === status
+  );
+
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<PKPTDataBase[]>([]);
 
@@ -86,7 +94,7 @@ const TablePKPT: React.FC = () => {
           >
             <FaEye />
           </Link>
-          {user?.role === 'Perencana' ? (
+          {user?.role === 'Perencana' || user?.role === 'Developer' ? (
             <>
               <Link
                 href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
@@ -204,7 +212,7 @@ const TablePKPT: React.FC = () => {
     },
     {
       name: 'Anggaran',
-      selector: (row) => formatCurrency(row.anggaran),
+      selector: (row) => formatCurrency(Number(row.anggaran)),
       sortable: true,
     },
     {
@@ -224,8 +232,8 @@ const TablePKPT: React.FC = () => {
     const value = e.target.value;
     setSearch(value);
 
-    if (DataPKPT) {
-      const filtered = DataPKPT.filter(
+    if (dataPKPTStatus) {
+      const filtered = dataPKPTStatus.filter(
         (item) =>
           item.area_pengawasan.toLowerCase().includes(value.toLowerCase()) ||
           item.status.toLowerCase().includes(value.toLowerCase())
@@ -235,14 +243,14 @@ const TablePKPT: React.FC = () => {
   };
 
   const exportToCSV = () => {
-    if (!DataPKPT) return;
+    if (!dataPKPTStatus) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join(',');
 
-    const csvData = DataPKPT.map((row) =>
+    const csvData = dataPKPTStatus.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
@@ -261,14 +269,14 @@ const TablePKPT: React.FC = () => {
   };
 
   const exportToExcel = () => {
-    if (!DataPKPT) return;
+    if (!dataPKPTStatus) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = DataPKPT.map((row) =>
+    const excelData = dataPKPTStatus.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
@@ -293,10 +301,10 @@ const TablePKPT: React.FC = () => {
     <>
       <div className="mb-4 space-y-2">
         <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
-          <h3>Data PKPT</h3>
+          <h3 className="capitalize">Data {status}</h3>
           <div className="space-x-2">
             <Link
-              href={'/dashboard/perencanaan/pkpt/preview'}
+              href={`/dashboard/perencanaan/pkpt/preview/${status}`}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
               Preview Table
@@ -327,7 +335,7 @@ const TablePKPT: React.FC = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : DataPKPT}
+          data={search ? filteredData : dataPKPTStatus}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"
