@@ -181,7 +181,7 @@ const TableToPrint: React.FC<TableToPrintProps> = ({ DataPKPT }) => {
                 .join(', ')}
             </td>
             <td className="border border-gray-300 p-2">
-              {formatCurrency(item.anggaran)}
+              {formatCurrency(Number(item.anggaran))}
             </td>
             <td className="border border-gray-300 p-2" colSpan={2}>
               {item.jumlah_laporan}
