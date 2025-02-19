@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export interface TeamMember {
+interface TeamMember {
   id: number;
   name: string;
 }
@@ -22,5 +22,8 @@ export const useTeamStore = create<TeamStore>((set) => ({
     set((state) => ({
       teamMembers: state.teamMembers.filter((_, i) => i !== index),
     })),
-  resetTeamMembers: () => set({ teamMembers: [] }),
+  resetTeamMembers: () =>
+    set((state) =>
+      state.teamMembers.length > 0 ? { teamMembers: [] } : state
+    ),
 }));
