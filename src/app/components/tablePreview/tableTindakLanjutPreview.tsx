@@ -118,6 +118,7 @@ const TableTindakLanjutPreview = () => {
     >
       <div className="space-y-3 w-full">
         <CardComponents>
+
           <div className="flex justify-between items-center w-full">
             <div>
               <h5 className="text-xl font-bold mb-2">

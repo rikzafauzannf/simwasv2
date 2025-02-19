@@ -32,6 +32,7 @@ const PkptPage = () => {
         )}
 
         {/* <AkumulasiDataPKPT /> */}
+
         <div className="grid w-full gap-3">
           <CardComponents>
             <TablePKPT />
@@ -45,7 +46,6 @@ const PkptPage = () => {
             />
           </div>
         )}
-
         <div className="grid w-full gap-3">
           <CardComponents>
             <TablePKPT status="non-pkpt" />

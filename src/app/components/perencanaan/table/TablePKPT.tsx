@@ -40,6 +40,7 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
     error,
     refetch,
   } = useFetch<PKPTDataBase>('pkpt');
+
   const dataPKPTStatus = DataPKPT.filter(
     (itemsFilter) => itemsFilter.status === status
   );
@@ -120,6 +121,7 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
                 </button>
 
                 {/* <button
+
                 onClick={() => handleCreateReport(row.id_pkpt)}
                 className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
               >

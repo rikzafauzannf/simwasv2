@@ -5123,7 +5123,6 @@ packages:
         type: git,
       }
     version: 0.0.0
-
   run-parallel@1.2.0:
     resolution:
       {
@@ -8049,6 +8048,7 @@ snapshots:
       - supports-color
 
   eslint-import-resolver-typescript@3.8.2(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.24.1(eslint@8.57.1)(typescript@5.7.3))(eslint@8.57.1))(eslint@8.57.1):
+
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0(supports-color@8.1.1)
@@ -9553,7 +9553,6 @@ snapshots:
 
   root@git+https://github.com/tanstack/react-query.git#d07a3db968f9d836a1b658c043bc723ac424b304:
     {}
-
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3

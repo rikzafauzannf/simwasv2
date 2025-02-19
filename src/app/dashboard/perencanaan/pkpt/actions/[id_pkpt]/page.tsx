@@ -25,6 +25,7 @@ import { Button } from 'flowbite-react';
 import Swal from 'sweetalert2';
 // import { useQuery } from '@tanstack/react-query';
 
+
 const axiosSecvice = new AxiosService();
 
 interface PageProps {
@@ -209,6 +210,8 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
         nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
         tim: dataTim,
         id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
+        tujuan_sasaran: data.tujuan_sasaran,
+        area_pengawasan: data.area_pengawasan,
         id_ruang_lingkup: Number(data.id_ruang_lingkup),
         id_jenis_laporan: Number(data.id_jenis_laporan),
         id_tingkat_resiko: Number(data.id_tingkat_resiko),
@@ -582,22 +585,189 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     </div>
                   </div>
 
-                  <div className="mt-4 space-y-2 w-full">
-                    {teamMembers.map((member, index) => (
-                      <div
-                        key={member.id}
-                        className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
-                      >
-                        <span className="text-slate-800">{member.name}</span>
-                        <button
-                          onClick={() => removeTeamMember(index)}
-                          type="button"
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
+        <section className="grid md:grid-cols-2 gap-3 w-full">
+          <div className="flex justify-start items-start gap-2 flex-nowrap w-full">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="penganggungJawab"
+                type="number"
+                name="PenanggungJawab"
+                placeholder="^"
+                register={register('penanggung_jawab', {
+                  required: 'Penanggung Jawab wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                })}
+                error={errors.penanggung_jawab}
+              />
+            </div>
+
+            <div className="basis-auto">
+              <SelectInputField
+                label="Penanggung Jawab"
+                identiti="nama_penanggung_jawab"
+                options={optionsDataUser}
+                register={register('nama_penanggung_jawab')}
+                placeholder="Pilih Penanggung Jawab"
+                error={errors.nama_penanggung_jawab}
+                type="select"
+                name="penanggung_jawab"
+              />
+            </div>
+          </div>
+          <div className="flex justify-start items-start gap-2 flex-nowrap w-full">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="wPenanggungJawab"
+                type="number"
+                name="WakilPenanggungJawab"
+                placeholder="^"
+                register={register('wakil_penanggung_jawab', {
+                  required: 'Wakil Penanggung Jawab wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                })}
+                error={errors.wakil_penanggung_jawab}
+              />
+            </div>
+
+            <div className="basis-auto">
+              <SelectInputField
+                label="Wakil Penanggung Jawab"
+                identiti="wakil_penanggung_jawab"
+                options={optionsDataUser}
+                register={register('nama_wakil_penanggung_jawab')}
+                placeholder="Pilih Wakil Penanggung Jawab"
+                error={errors.nama_wakil_penanggung_jawab}
+                type="select"
+                name="wakil_penanggung_jawab"
+              />
+            </div>
+          </div>
+          <div className="flex justify-start items-start gap-2 flex-nowrap w-full">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="pengendaliTeknis"
+                type="number"
+                name="Supervisor"
+                placeholder="^"
+                register={register('pengendali_teknis', {
+                  required: 'Pengendali Teknis Jawab wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                })}
+                error={errors.pengendali_teknis}
+              />
+            </div>
+
+            <div className="basis-auto">
+              <SelectInputField
+                label="Pengendali Teknis/Supervisor"
+                identiti="nama_pengendali_teknis"
+                options={optionsDataUser}
+                register={register('nama_pengendali_teknis')}
+                placeholder="Pilih Pengendali Teknis/Supervisor"
+                error={errors.nama_pengendali_teknis}
+                type="select"
+                name="pengendali_teknis"
+              />
+            </div>
+          </div>
+          <div className="flex justify-start items-start gap-2">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="ketuaTim"
+                type="number"
+                name="KetuaTIM"
+                placeholder="^"
+                register={register('ketua_tim', {
+                  required: 'Ketua TIM wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                })}
+                error={errors.ketua_tim}
+              />
+            </div>
+            <div className="basis-auto">
+              <SelectInputField
+                label="Ketua TIM"
+                identiti="nama_ketua_tim"
+                options={optionsDataUser}
+                register={register('nama_ketua_tim')}
+                placeholder="Pilih Ketua TIM"
+                error={errors.nama_ketua_tim}
+                type="select"
+                name="ketua_tim"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-start items-start gap-2 col-span-2">
+            <div className="basis-20">
+              <InputFieldComponent
+                label="HP"
+                identiti="ATim"
+                type="number"
+                name="ATim"
+                placeholder="^"
+                register={register('anggota_tim', {
+                  required: 'Anggota TIM wajib diisi',
+                  min: { value: 0, message: 'Tidak boleh negatif' },
+                  // pattern: {
+                  //   value: /^[a-zA-Z\s]*$/,
+                  //   message: 'Hanya boleh berisi huruf dan spasi',
+                  // },
+                })}
+                error={errors.anggota_tim}
+              />
+            </div>
+            <div className="flex-1">
+              <div className="flex flex-col space-y-2 w-full">
+                <label
+                  htmlFor="Tim"
+                  className="text-slate-800 text-sm sm:text-base"
+                >
+                  TIM [{teamMembers.length}]
+                </label>
+                <div className="flex flex-col sm:flex-row w-full space-y-2 sm:space-y-0 sm:space-x-2">
+                  <select
+                    value={newMemberId}
+                    onChange={(e) => setNewMemberId(e.target.value)}
+                    className="border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1 px-2 py-1 text-sm sm:text-base"
+                  >
+                    <option value="" disabled>
+                      Select a team member
+                    </option>
+                    {potentialMembers.map((member) => (
+                      <option key={member.id} value={member.id}>
+                        {member.name}
+                      </option>
                     ))}
+                  </select>
+                  <button
+                    onClick={handleAddMember}
+                    type="button"
+                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-lightprimary text-sm sm:text-base"
+                  >
+                    Tambah
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-4 space-y-2 w-full">
+                {teamMembers.map((member, index) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between bg-slate-100 p-2 rounded-md"
+                  >
+                    <span className="text-slate-800">{member.name}</span>
+                    <button
+                      onClick={() => removeTeamMember(index)}
+                      type="button"
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <FaTrash />
+                    </button>
                   </div>
                 </div>
               </div>
