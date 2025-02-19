@@ -64,12 +64,12 @@ const TableKendaliMutu = () => {
     },
     {
       name: 'No SP',
-      selector: (row) => getNameNoSP(row.id_pkpt),
+      selector: (row) => getNameNoSP(row.id_st),
       sortable: true,
     },
     {
       name: 'Program Audit',
-      selector: (row) => getProgramAudit(row.id_pkpt),
+      selector: (row) => getProgramAudit(row.id_st),
       sortable: true,
     },
     {

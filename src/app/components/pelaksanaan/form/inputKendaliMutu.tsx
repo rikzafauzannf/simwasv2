@@ -7,16 +7,18 @@ import { ButtonType } from '../../Global/Button';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { FormKendaliMutu } from '@/interface/interfaceKendaliMutu';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 interface PropsID {
-  id_pkpt: number;
+  id_st: number;
 }
 
 const axiosService = new AxiosService();
 
-const InputKendaliMutu: React.FC<PropsID> = ({ id_pkpt }) => {
-  console.log('id_pkpt data: ', id_pkpt);
+const InputKendaliMutu: React.FC<PropsID> = ({ id_st }) => {
+  console.log('id_st data: ', id_st);
   const router = useRouter();
+  const { user } = useAuthStore();
 
   const {
     register,
@@ -45,7 +47,7 @@ const InputKendaliMutu: React.FC<PropsID> = ({ id_pkpt }) => {
     console.log('Data Kendali Mutu:', {
       ...data,
       // selectedCheckboxes,
-      id_pkpt_data: id_pkpt,
+      id_pkpt_data: id_st,
     });
     try {
       console.log('Data Laporan Mingguan:', data);
@@ -59,7 +61,8 @@ const InputKendaliMutu: React.FC<PropsID> = ({ id_pkpt }) => {
         reviu_supervisi: String(data.reviu_supervisi),
         link_google_drive: data.link_google_drive,
         id_no_tg: data.id_no_tg,
-        id_pkpt: Number(id_pkpt),
+        id_user: Number(user?.id_user),
+        id_st: Number(id_st),
       });
 
       console.log('Respons dari server:', result);

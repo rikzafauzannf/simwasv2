@@ -2,7 +2,15 @@
 
 import React, { useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { FaEdit, FaTrash, FaEye, FaPen, FaPaperclip } from 'react-icons/fa';
+import {
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaPen,
+  FaPaperclip,
+  FaPenFancy,
+  FaTrashRestore,
+} from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { PKPTDataBase } from '@/interface/interfacePKPT';
@@ -26,7 +34,12 @@ interface PropsStatus {
 
 const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
   const { user } = useAuthStore();
-  const { data: DataPKPT, isLoading, error } = useFetch<PKPTDataBase>('pkpt');
+  const {
+    data: DataPKPT,
+    isLoading,
+    error,
+    refetch,
+  } = useFetch<PKPTDataBase>('pkpt');
   const dataPKPTStatus = DataPKPT.filter(
     (itemsFilter) => itemsFilter.status === status
   );
@@ -39,49 +52,44 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
   const { getNameUser } = useGetNameUser();
   const { getNameJenisLaporan } = useGetNameJenisLaporan();
 
-  const handleCreateReport = async (id_pkpt: number) => {
-    Swal.fire({
-      title: 'Buat Laporan Mingguan',
-      html: `
-        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
-        <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
-      `,
-      focusConfirm: false,
-      preConfirm: async () => {
-        const nomor = (document.getElementById('nomor') as HTMLInputElement)
-          .value;
-        const content = (
-          document.getElementById('reportContent') as HTMLTextAreaElement
-        ).value;
-        if (!content || !nomor) {
-          Swal.showValidationMessage('Silakan isi semua field');
-          return;
-        }
-        return { content, id_pkpt, nomor };
-      },
-    }).then(async (result) => {
+  async function handleDelete(id: number) {
+    try {
+      const result = await Swal.fire({
+        title: 'Apakah anda yakin?',
+        text: 'Data yang dihapus tidak dapat dikembalikan!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal',
+      });
+
       if (result.isConfirmed) {
-        // Logika untuk menyimpan laporan
-        const dataForm = {
-          id_pkpt: id_pkpt,
-          id_user: String(user?.id_user),
-          id_no: String(result.value.nomor),
-          laporan_mingguan: String(result.value.content),
-        };
-        try {
-          const response = await axiosService.addData(
-            '/laporan_mingguan',
-            dataForm
-          );
-          console.log('Laporan:', response);
-          Swal.fire('Laporan berhasil dibuat!', '', 'success');
-        } catch (error) {
-          console.error('Error creating report:', error);
-          Swal.fire('Gagal membuat laporan!', '', 'error');
-        }
+        Swal.fire({
+          title: 'Menghapus...',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        await axiosService.deleteData(`/pkpt/${id}`);
+
+        await Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success');
+
+        await refetch();
       }
-    });
-  };
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Terjadi kesalahan saat menghapus data.';
+
+      await Swal.fire('Error!', errorMessage, 'error');
+      console.error('Error deleting data:', error);
+    }
+  }
 
   const columns: TableColumn<PKPTDataBase>[] = [
     {
@@ -94,29 +102,31 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
           >
             <FaEye />
           </Link>
-          {user?.role === 'Perencana' || user?.role === 'Developer' ? (
-            <>
-              <Link
-                href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
-                className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-              >
-                Act
-              </Link>
-              <button
+          {user?.role === 'Perencana' ||
+            (user?.role === 'Developer' && (
+              <>
+                <Link
+                  href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
+                  className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                  <FaPenFancy />
+                </Link>
+
+                <button
+                  onClick={() => handleDelete(row.id_pkpt)}
+                  className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                >
+                  <FaTrashRestore />
+                </button>
+
+                {/* <button
                 onClick={() => handleCreateReport(row.id_pkpt)}
                 className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 <FaPaperclip />
-              </button>
-            </>
-          ) : ['Pelaksana', 'Auditor'].includes(user?.role as string) ? (
-            <button
-              onClick={() => handleCreateReport(row.id_pkpt)}
-              className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-            >
-              <FaPaperclip />
-            </button>
-          ) : null}
+              </button> */}
+              </>
+            ))}
         </div>
       ),
       // grow: 0.2,

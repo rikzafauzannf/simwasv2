@@ -10,6 +10,7 @@ interface TeamStore {
   addTeamMember: (member: TeamMember) => void;
   removeTeamMember: (index: number) => void;
   resetTeamMembers: () => void;
+  setTeamMembers: (members: TeamMember[]) => void;
 }
 
 export const useTeamStore = create<TeamStore>((set) => ({
@@ -23,7 +24,9 @@ export const useTeamStore = create<TeamStore>((set) => ({
       teamMembers: state.teamMembers.filter((_, i) => i !== index),
     })),
   resetTeamMembers: () =>
-    set((state) =>
-      state.teamMembers.length > 0 ? { teamMembers: [] } : state
-    ),
+    set((state) => {
+      if (state.teamMembers.length === 0) return state;
+      return { teamMembers: [] };
+    }),
+  setTeamMembers: (members) => set({ teamMembers: members }),
 }));

@@ -21,6 +21,9 @@ import {
   SelectInputField,
 } from '@/app/components/Global/Input';
 import { useFetchById } from '@/hooks/useFetchById';
+import { Button } from 'flowbite-react';
+import Swal from 'sweetalert2';
+// import { useQuery } from '@tanstack/react-query';
 
 const axiosSecvice = new AxiosService();
 
@@ -34,7 +37,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
   const { user } = useAuthStore();
   const router = useRouter();
   const { getNameUser } = useGetNameUser();
-  const { data: DataPKPT } = useFetchById<PKPTDataBase>(
+  const { data: DataPKPT, isLoading } = useFetchById<PKPTDataBase>(
     'pkpt',
     Number(params.id_pkpt)
   );
@@ -51,7 +54,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
     potentialScopes,
   } = useOptions();
 
-  const [isLoading, setIsLoading] = React.useState(true);
+  // const [isLoading, setIsLoading] = React.useState(true);
   const [isDataLoaded, setIsDataLoaded] = React.useState(false);
 
   const {
@@ -62,78 +65,126 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
     watch,
     formState: { errors },
   } = useForm<PKPTFormData>({
-    defaultValues: {},
+    defaultValues: {
+      area_pengawasan: DataPKPT?.area_pengawasan || '',
+      id_jenis_pengawasan: DataPKPT?.id_jenis_pengawasan
+        ? Number(DataPKPT.id_jenis_pengawasan)
+        : undefined,
+      id_ruang_lingkup: DataPKPT?.id_ruang_lingkup
+        ? Number(DataPKPT.id_ruang_lingkup)
+        : undefined,
+      tujuan_sasaran: DataPKPT?.tujuan_sasaran || '',
+      rmp_pkpt: DataPKPT?.rmp_pkpt || '',
+      rpl_pkpt: DataPKPT?.rpl_pkpt || '',
+      penanggung_jawab: DataPKPT?.penanggung_jawab || '',
+      wakil_penanggung_jawab: DataPKPT?.wakil_penanggung_jawab || '',
+      pengendali_teknis: DataPKPT?.pengendali_teknis || '',
+      ketua_tim: DataPKPT?.ketua_tim || '',
+      anggota_tim: DataPKPT?.anggota_tim || '',
+      nama_penanggung_jawab: DataPKPT?.nama_penanggung_jawab || '',
+      nama_wakil_penanggung_jawab: DataPKPT?.nama_wakil_penanggung_jawab || '',
+      nama_pengendali_teknis: DataPKPT?.nama_pengendali_teknis || '',
+      nama_ketua_tim: DataPKPT?.nama_ketua_tim || '',
+      jumlah: DataPKPT?.jumlah || 0,
+      anggaran: DataPKPT?.anggaran || '',
+      jumlah_laporan: DataPKPT?.jumlah_laporan || 0,
+      id_jenis_laporan: DataPKPT?.id_jenis_laporan
+        ? Number(DataPKPT.id_jenis_laporan)
+        : undefined,
+      sarana_prasarana: DataPKPT?.sarana_prasarana || '',
+      id_tingkat_resiko: DataPKPT?.id_tingkat_resiko
+        ? Number(DataPKPT.id_tingkat_resiko)
+        : undefined,
+      keterangan: DataPKPT?.keterangan || '',
+    },
     mode: 'onBlur',
   });
 
-  const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
+  const { teamMembers, resetTeamMembers, addTeamMember, removeTeamMember } =
     useTeamStore();
   const [newMemberId, setNewMemberId] = React.useState<number | string>('');
 
+  // Effect untuk form data
+  // React.useEffect(() => {
+  //   if (DataPKPT && !isDataLoaded) {
+  //     setIsDataLoaded(true);
+
+  //     // Reset team members before adding new ones
+  //     resetTeamMembers();
+
+  //     // Parse and set team members from nama_anggota_tim
+  //     if (DataPKPT.nama_anggota_tim) {
+  //       const memberIds = DataPKPT.nama_anggota_tim
+  //         .split(',')
+  //         .map(id => id.trim())
+  //         .filter(Boolean);
+
+  //       memberIds.forEach(id => {
+  //         const member = potentialMembers.find(m => m.id === Number(id));
+  //         if (member) {
+  //           addTeamMember({ id: member.id, name: member.name });
+  //         }
+  //       });
+  //     }
+
+  //     // Reset form with data from API
+  //     reset({
+  //       ...DataPKPT,
+  //       id_jenis_pengawasan: Number(DataPKPT.id_jenis_pengawasan),
+  //       id_ruang_lingkup: Number(DataPKPT.id_ruang_lingkup),
+  //       id_jenis_laporan: Number(DataPKPT.id_jenis_laporan),
+  //       id_tingkat_resiko: Number(DataPKPT.id_tingkat_resiko),
+  //       nama_penanggung_jawab: String(DataPKPT.nama_penanggung_jawab),
+  //       nama_wakil_penanggung_jawab: String(DataPKPT.nama_wakil_penanggung_jawab),
+  //       nama_pengendali_teknis: String(DataPKPT.nama_pengendali_teknis),
+  //       nama_ketua_tim: String(DataPKPT.nama_ketua_tim),
+  //     });
+  //   }
+  // }, [DataPKPT, reset, isDataLoaded, addTeamMember, potentialMembers, resetTeamMembers]);
+
+  React.useEffect(() => {
+    if (DataPKPT?.nama_anggota_tim && !isDataLoaded) {
+      resetTeamMembers();
+
+      const memberIds = DataPKPT.nama_anggota_tim
+        .split(',')
+        .map((id) => id.trim())
+        .filter(Boolean);
+
+      memberIds.forEach((id) => {
+        const member = potentialMembers.find((m) => m.id === Number(id));
+        if (member) {
+          addTeamMember({ id: member.id, name: member.name });
+        }
+      });
+    }
+  }, [
+    DataPKPT?.nama_anggota_tim,
+    isDataLoaded,
+    resetTeamMembers,
+    potentialMembers,
+    addTeamMember,
+  ]);
+
+  // Effect terpisah untuk form reset
   React.useEffect(() => {
     if (DataPKPT && !isDataLoaded) {
       setIsDataLoaded(true);
-
       reset({
-        area_pengawasan: DataPKPT.area_pengawasan || '',
-        id_jenis_pengawasan: DataPKPT.id_jenis_pengawasan
-          ? Number(DataPKPT.id_jenis_pengawasan)
-          : undefined,
-        id_ruang_lingkup: DataPKPT.id_ruang_lingkup
-          ? Number(DataPKPT.id_ruang_lingkup)
-          : undefined,
-        tujuan_sasaran: DataPKPT.tujuan_sasaran || '',
-        rmp_pkpt: DataPKPT.rmp_pkpt || '',
-        rpl_pkpt: DataPKPT.rpl_pkpt || '',
-        penanggung_jawab: DataPKPT.penanggung_jawab || '',
-        wakil_penanggung_jawab: DataPKPT.wakil_penanggung_jawab || '',
-        pengendali_teknis: DataPKPT.pengendali_teknis || '',
-        ketua_tim: DataPKPT.ketua_tim || '',
-        anggota_tim: DataPKPT.anggota_tim || '',
-        nama_penanggung_jawab: DataPKPT.nama_penanggung_jawab || '',
-        nama_wakil_penanggung_jawab: DataPKPT.nama_wakil_penanggung_jawab || '',
-        nama_pengendali_teknis: DataPKPT.nama_pengendali_teknis || '',
-        nama_ketua_tim: DataPKPT.nama_ketua_tim || '',
-        jumlah: DataPKPT.jumlah || 0,
-        anggaran: DataPKPT.anggaran || '',
-        jumlah_laporan: DataPKPT.jumlah_laporan || 0,
-        id_jenis_laporan: DataPKPT.id_jenis_laporan
-          ? Number(DataPKPT.id_jenis_laporan)
-          : undefined,
-        sarana_prasarana: DataPKPT.sarana_prasarana || '',
-        id_tingkat_resiko: DataPKPT.id_tingkat_resiko
-          ? Number(DataPKPT.id_tingkat_resiko)
-          : undefined,
-        keterangan: DataPKPT.keterangan || '',
+        ...DataPKPT,
+        id_jenis_pengawasan: Number(DataPKPT.id_jenis_pengawasan),
+        id_ruang_lingkup: Number(DataPKPT.id_ruang_lingkup),
+        id_jenis_laporan: Number(DataPKPT.id_jenis_laporan),
+        id_tingkat_resiko: Number(DataPKPT.id_tingkat_resiko),
+        nama_penanggung_jawab: String(DataPKPT.nama_penanggung_jawab),
+        nama_wakil_penanggung_jawab: String(
+          DataPKPT.nama_wakil_penanggung_jawab
+        ),
+        nama_pengendali_teknis: String(DataPKPT.nama_pengendali_teknis),
+        nama_ketua_tim: String(DataPKPT.nama_ketua_tim),
       });
-
-      setIsLoading(false);
     }
   }, [DataPKPT, reset, isDataLoaded]);
-
-  React.useEffect(() => {
-    if (DataPKPT && isDataLoaded) {
-      resetTeamMembers();
-      if (DataPKPT.nama_anggota_tim) {
-        const memberIds = DataPKPT.nama_anggota_tim
-          .split(',')
-          .map((id) => id.trim())
-          .filter(Boolean);
-        memberIds.forEach((id) => {
-          const member = potentialMembers.find((m) => m.id === Number(id));
-          if (member) {
-            addTeamMember({ id: member.id, name: member.name });
-          }
-        });
-      }
-    }
-  }, [
-    DataPKPT,
-    isDataLoaded,
-    resetTeamMembers,
-    addTeamMember,
-    potentialMembers,
-  ]);
 
   console.log('data dari team: ', teamMembers);
 
@@ -144,53 +195,46 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
 
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
-      const dataTim = `PT: ${getNameUser(Number(data.nama_pengendali_teknis))} | KT: ${getNameUser(Number(data.nama_ketua_tim))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')} `;
-      const pkptData: PKPTFormData = {
-        id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
-        tujuan_sasaran: data.tujuan_sasaran,
-        area_pengawasan: data.area_pengawasan,
-        id_ruang_lingkup: Number(data.id_ruang_lingkup),
-        rmp_pkpt: data.rmp_pkpt,
-        rpl_pkpt: data.rpl_pkpt,
-        penanggung_jawab: data.penanggung_jawab,
-        wakil_penanggung_jawab: data.wakil_penanggung_jawab,
-        pengendali_teknis: data.pengendali_teknis,
-        ketua_tim: data.ketua_tim,
-        anggota_tim: data.anggota_tim,
-        nama_penanggung_jawab: data.nama_penanggung_jawab,
-        nama_wakil_penanggung_jawab: data.nama_wakil_penanggung_jawab,
-        nama_pengendali_teknis: data.nama_pengendali_teknis,
-        nama_ketua_tim: data.nama_ketua_tim,
+      // Construct dataTim with proper formatting
+      const dataTim = [
+        `PJ: ${getNameUser(Number(data.nama_penanggung_jawab))}`,
+        `WPJ: ${getNameUser(Number(data.nama_wakil_penanggung_jawab))}`,
+        `PT: ${getNameUser(Number(data.nama_pengendali_teknis))}`,
+        `KT: ${getNameUser(Number(data.nama_ketua_tim))}`,
+        `AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')}`,
+      ].join(' | ');
+
+      const pkptDataForm: PKPTFormData = {
+        ...data,
         nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
         tim: dataTim,
-        jumlah: Number(data.jumlah),
-        anggaran: data.anggaran,
-        jumlah_laporan: Number(data.jumlah_laporan),
+        id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
+        id_ruang_lingkup: Number(data.id_ruang_lingkup),
         id_jenis_laporan: Number(data.id_jenis_laporan),
-        sarana_prasarana: data.sarana_prasarana,
         id_tingkat_resiko: Number(data.id_tingkat_resiko),
-        keterangan: data.keterangan,
+        jumlah: Number(data.jumlah),
+        jumlah_laporan: Number(data.jumlah_laporan),
         status: String(DataPKPT?.status),
         id_user: Number(user?.id_user),
       };
 
-      if (!pkptData.nama_penanggung_jawab || !pkptData.nama_ketua_tim) {
+      if (!pkptDataForm.nama_penanggung_jawab || !pkptDataForm.nama_ketua_tim) {
         throw new Error('Data nama penanggung jawab dan ketua tim harus diisi');
       }
 
-      console.log('Data yang dikirim:', pkptData);
+      console.log('Data to be submitted:', pkptDataForm);
       const result = await axiosSecvice.updateData(
         `/pkpt/${params.id_pkpt}`,
-        pkptData
+        pkptDataForm
       );
 
       console.log('Respons dari server:', result);
 
       if (result.success) {
-        console.log(`${String(DataPKPT?.status)} berhasil disimpan:`, result);
+        console.log(`${String(DataPKPT?.status)} berhasil diedit:`, result);
         reset();
-        alert(`Data ${String(DataPKPT?.status)} berhasil disimpan`);
         resetTeamMembers();
+        alert(`Data ${String(DataPKPT?.status)} berhasil diedit`);
         router.push('/dashboard/perencanaan/pkpt');
       } else {
         throw new Error(result.message);
@@ -214,7 +258,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
         );
         if (!memberExists) {
           addTeamMember({ id: selectedMember.id, name: selectedMember.name });
-          setNewMemberId('');
+          setNewMemberId(''); // Reset selected member after adding
         } else {
           alert('Anggota tim sudah ada dalam daftar');
         }
@@ -641,8 +685,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
           </CardComponents>
 
           <section className="flex">
-            {/* <ButtonType Text="Ulangi" type="reset" /> */}
-            <ButtonType Text="Simpan Data" type="submit" />
+            <ButtonType Text="Edit Data" type="submit" />
           </section>
         </form>
       )}

@@ -88,7 +88,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
         keterangan: data.keterangan,
         ketua_tim: data.ketua_tim,
         link_st: data.link_st,
-        no_tgllh: data.no_tgllh,
+        // no_tgllh: data.no_tgllh,
         no_tglsp: data.no_tglsp,
         pengendali_teknis: data.pengendali_teknis,
         program_audit: data.program_audit,
@@ -214,7 +214,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               </div>
               {/* </div> */}
             </section>
-            <h3>Tim Audit</h3>
+            <h3>Tim Pemeriksa</h3>
             <section className="grid lg:grid-cols-2 gap-3">
               {/* <InputFieldComponent
                 label="Tim Pemeriksa/Pelaksana Kegiatan"
@@ -349,7 +349,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               </div>
             </section>
             <h3>Audit</h3>
-            <section className="grid lg:grid-cols-2 gap-3">
+            <section className="grid lg:grid-cols-3 gap-3">
               <InputFieldComponent
                 label="Jumlah Objek Pengawasan"
                 identiti="jumlahObjek"
@@ -373,7 +373,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   required: 'Masukan Jumlah Laporan',
                 })}
               />
-              <InputFieldComponent
+              {/* <InputFieldComponent
                 label="No.Tgl.LHP/LHE/LHR"
                 identiti="noTglLh"
                 name="noTglLh"
@@ -382,7 +382,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 register={register('no_tgllh', {
                   required: 'Masukan No.TGL/LH....',
                 })}
-              />
+              /> */}
               {/* <InputFieldComponent
                 label="Jenis Audit"
                 identiti="jenisAudit"
@@ -403,17 +403,19 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 error={errors.id_jenis_audit}
                 type="select"
               />
-              <TextAreaFieldComponent
-                rows={5}
-                label="Keterangan"
-                identiti="keterangan"
-                name="keterangan"
-                placeholder="Masukan Keterangan ST"
-                type="text"
-                register={register('keterangan', {
-                  required: 'Masukan Keterangan',
-                })}
-              />
+              <div className="lg:col-span-2">
+                <TextAreaFieldComponent
+                  rows={5}
+                  label="Keterangan"
+                  identiti="keterangan"
+                  name="keterangan"
+                  placeholder="Masukan Keterangan ST"
+                  type="text"
+                  register={register('keterangan', {
+                    required: 'Masukan Keterangan',
+                  })}
+                />
+              </div>
               <div className="space-y-2">
                 <label htmlFor="" className="text-slate-800">
                   Upload Surat Tugas

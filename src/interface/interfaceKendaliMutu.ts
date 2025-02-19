@@ -1,5 +1,6 @@
 export interface FormKendaliMutu {
-  id_pkpt: number;
+  id_st: number;
+  id_user: number;
   id_no_tg: string;
   kartu_penugasan: boolean;
   kertas_kerja_pengawasan: boolean;
@@ -13,7 +14,8 @@ export interface FormKendaliMutu {
 
 export interface KendaliMutuData {
   id: number;
-  id_pkpt: number;
+  id_st: number;
+  id_user: number;
   id_no_tg: string;
   kartu_penugasan: boolean;
   kertas_kerja_pengawasan: boolean;
@@ -28,7 +30,7 @@ export interface KendaliMutuData {
 export type LaporanMingguan = {
   id: number;
   id_user: string;
-  id_pkpt: number;
+  id_st: number;
   id_no: string;
   laporan_mingguan: string;
 };
