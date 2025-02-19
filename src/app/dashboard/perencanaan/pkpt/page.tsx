@@ -22,36 +22,30 @@ const PkptPage = () => {
     >
       <div className="space-y-4">
         <AkumulasiDataPKPT />
-        {user?.role === 'Perencana' ||
-          (user?.role === 'Developer' && (
-            <div>
-              <ButtonLinkComponent
-                Text="Input PKPT"
-                linkTo="/dashboard/perencanaan/pkpt/create/pkpt"
-              />
-            </div>
-          ))}
+        {(user?.role === 'Perencana' || user?.role === 'Developer') && (
+          <div>
+            <ButtonLinkComponent
+              Text="Input PKPT"
+              linkTo="/dashboard/perencanaan/pkpt/create/pkpt"
+            />
+          </div>
+        )}
+
         {/* <AkumulasiDataPKPT /> */}
-        {/* <div>
-          <ButtonLinkComponent
-            Text="Input PKPT"
-            linkTo="/dashboard/perencanaan/pkpt/create/pkpt"
-          />
-        </div> */}
+
         <div className="grid w-full gap-3">
           <CardComponents>
             <TablePKPT />
           </CardComponents>
         </div>
-        {user?.role === 'Perencana' ||
-          (user?.role === 'Developer' && (
-            <div>
-              <ButtonLinkComponent
-                Text="Input Non-PKPT"
-                linkTo="/dashboard/perencanaan/pkpt/create/non-pkpt"
-              />
-            </div>
-          ))}
+        {(user?.role === 'Perencana' || user?.role === 'Developer') && (
+          <div>
+            <ButtonLinkComponent
+              Text="Input PKPT"
+              linkTo="/dashboard/perencanaan/pkpt/create/non-pkpt"
+            />
+          </div>
+        )}
         <div className="grid w-full gap-3">
           <CardComponents>
             <TablePKPT status="non-pkpt" />

@@ -39,10 +39,10 @@ const ViewPkptPage = ({ params }: PageProps) => {
         </div>
       ),
     },
-    {
-      label: 'Laporan Mingguan',
-      component: <LaporanMingguanComponent id_pkpt={id_pkpt} />,
-    },
+    // {
+    //   label: 'Laporan Mingguan',
+    //   component: <LaporanMingguanComponent id_pkpt={id_pkpt} />,
+    // },
     // {
     //   label: 'Kendali Mutu',
     //   component: <KendaliMutu />,

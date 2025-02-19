@@ -121,8 +121,16 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
         (member) => member.id === Number(newMemberId)
       );
       if (selectedMember) {
-        addTeamMember({ id: selectedMember.id, name: selectedMember.name });
-        setNewMemberId('');
+        // Check if member already exists in the team
+        const memberExists = teamMembers.some(
+          (member) => member.id === selectedMember.id
+        );
+        if (!memberExists) {
+          addTeamMember({ id: selectedMember.id, name: selectedMember.name });
+          setNewMemberId(''); // Reset selected member after adding
+        } else {
+          alert('Anggota tim sudah ada dalam daftar');
+        }
       }
     }
   };
@@ -462,7 +470,10 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
                 <div className="flex flex-col sm:flex-row w-full space-y-2 sm:space-y-0 sm:space-x-2">
                   <select
                     value={newMemberId}
-                    onChange={(e) => setNewMemberId(e.target.value)}
+                    onChange={(e) => {
+                      console.log('Selected value:', e.target.value);
+                      setNewMemberId(e.target.value);
+                    }}
                     className="border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1 px-2 py-1 text-sm sm:text-base"
                   >
                     <option value="" disabled>
