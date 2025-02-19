@@ -116,7 +116,7 @@ const TableTindakLanjutPreview = () => {
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
-      <div className="space-y-3 w-full">        
+      <div className="space-y-3 w-full">
         <CardComponents>
           <PdfGenerator>
             <div className="space-y-3 w-full">

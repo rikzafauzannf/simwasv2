@@ -29,7 +29,7 @@ const createExcelWorksheet = (
   data: PKPTDataBase[],
   jenisPengawasanData: JenisPengawasanDB[],
   hooks: TableHooks,
-  status:string,
+  status: string
 ): XLSX.WorkSheet => {
   const HEADER_STYLE = {
     font: { bold: true, size: 11 },
@@ -347,9 +347,9 @@ export const exportToExcel = (
   data: PKPTDataBase[],
   jenisPengawasanData: JenisPengawasanDB[],
   hooks: TableHooks,
-  status:string,
+  status: string
 ) => {
-  const ws = createExcelWorksheet(data, jenisPengawasanData, hooks,status);
+  const ws = createExcelWorksheet(data, jenisPengawasanData, hooks, status);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'PKPT Data');
 

@@ -5,22 +5,29 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { ButtonType } from '@/app/components/Global/Button';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash } from 'react-icons/fa';
-import { PKPTData, PKPTDataBase, PKPTFormData } from '@/interface/interfacePKPT';
+import {
+  PKPTData,
+  PKPTDataBase,
+  PKPTFormData,
+} from '@/interface/interfacePKPT';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useScopeStore } from '@/middleware/Store/useScopeStore';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useOptions } from '@/data/selectValue';
 import { useGetNameUser } from '@/hooks/useGetName';
-import { InputFieldComponent, SelectInputField } from '@/app/components/Global/Input';
+import {
+  InputFieldComponent,
+  SelectInputField,
+} from '@/app/components/Global/Input';
 import { useFetchById } from '@/hooks/useFetchById';
 
 const axiosSecvice = new AxiosService();
 
 interface PageProps {
-  params:{
+  params: {
     id_pkpt?: number;
-  }
+  };
 }
 
 const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
@@ -76,8 +83,6 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
       }
     }
   }, [DataPKPT, reset, addTeamMember, potentialMembers]); // Tambahkan potentialMembers
-  
-
 
   console.log('data dari team: ', teamMembers);
 
@@ -118,7 +123,10 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
         id_user: Number(user?.id_user),
       };
       console.log('Data yang dikirim:', pkptData);
-      const result = await axiosSecvice.updateData(`/pkpt/${params.id_pkpt}`, pkptData);
+      const result = await axiosSecvice.updateData(
+        `/pkpt/${params.id_pkpt}`,
+        pkptData
+      );
 
       console.log('Respons dari server:', result);
 
@@ -240,7 +248,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
             placeholder="Masukan Tujuan / Sasaran pengawasan"
             register={register('tujuan_sasaran')}
             error={errors.tujuan_sasaran}
-          />          
+          />
         </section>
       </CardComponents>
 

@@ -200,7 +200,9 @@ const TablePKPT = ({
 
 const TablePKPTPreview: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
   const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
-  const dataPKPTFilter = DataPKPT.filter((itemsFilter)=>itemsFilter.status === status)
+  const dataPKPTFilter = DataPKPT.filter(
+    (itemsFilter) => itemsFilter.status === status
+  );
   const { data: DataJenisPengawasan } =
     useFetchAll<JenisPengawasanDB>('jenis_pengawasan');
 
@@ -213,7 +215,7 @@ const TablePKPTPreview: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
   };
 
   const handleExportExcel = () => {
-    exportToExcel(dataPKPTFilter, DataJenisPengawasan, hooks,status);
+    exportToExcel(dataPKPTFilter, DataJenisPengawasan, hooks, status);
   };
 
   return (
