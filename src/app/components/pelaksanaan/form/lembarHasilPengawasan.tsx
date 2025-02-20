@@ -54,6 +54,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
       const result = await axiosService.addData('lhp', {
         file_lhp: data.file_lhp,
         keterangan_lhp: data.keterangan_lhp,
+        no_lhp: data.no_lhp,
         id_nhp: Number(id_nhp),
         id_st: Number(id_st),
         id_user: Number(user?.id_user),
@@ -136,6 +137,17 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
             )}
             {/* </section> */}
             {/* <hr className='my-4 border-4'/> */}
+            <InputFieldComponent
+              label="Nomor LHP"
+              identiti="no_lhp"
+              name="no_lhp"
+              placeholder="Masukan Nomor LHP"
+              type="text"
+              register={register('no_lhp', {
+                required: 'Masukan Nomor LHP',
+              })}
+              error={errors.no_lhp}
+            />
             <TextAreaFieldComponent
               rows={5}
               label="Keterangan"

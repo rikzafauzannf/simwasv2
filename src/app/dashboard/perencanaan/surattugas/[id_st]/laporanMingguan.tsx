@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
-import { CardComponents } from '../Global/Card';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { LaporanMingguan } from '@/interface/interfaceKendaliMutu';
 import { useGetNameUser } from '@/hooks/useGetName';
+import { CardComponents } from '@/app/components/Global/Card';
 
 interface PropsID {
   id_st: number;
