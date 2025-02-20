@@ -103,6 +103,11 @@ const TableNHP: React.FC = () => {
       sortable: true,
     },
     {
+      name: 'Nomor NHP',
+      selector: (row) => row.no_nhp,
+      sortable: true,
+    },
+    {
       name: 'Keterangan NHP',
       selector: (row) => row.keterangan_nhp,
       sortable: true,

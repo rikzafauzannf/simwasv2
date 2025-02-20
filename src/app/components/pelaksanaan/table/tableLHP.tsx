@@ -97,6 +97,11 @@ const TableLHP: React.FC = () => {
       sortable: true,
     },
     {
+      name: 'Nomor LHP',
+      selector: (row) => row.no_lhp,
+      sortable: true,
+    },
+    {
       name: 'Keterangan LHP',
       selector: (row) => row.keterangan_lhp,
       sortable: true,

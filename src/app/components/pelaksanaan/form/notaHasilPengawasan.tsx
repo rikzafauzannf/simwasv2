@@ -46,6 +46,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
       const result = await axiosService.addData('nhp', {
         id_st: Number(id_st),
         id_user: Number(user?.id_user),
+        no_nhp: data.no_nhp,
         file_nhp: data.file_nhp,
         keterangan_nhp: data.keterangan_nhp,
       });
@@ -107,7 +108,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
                   label="Upload File"
                   identiti="uploadFile"
                   name="uploadFile"
-                  placeholder="Upload File ST"
+                  placeholder="Upload File NHP"
                   type="file"
                   register={'uploadFile'}
                 />
@@ -117,7 +118,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
                   label="Masukan Link Suresman"
                   identiti="linkStSuresman"
                   name="linkStSuresman"
-                  placeholder="Masukan Link Suresman ST"
+                  placeholder="Masukan link dokumen nhp"
                   type="link"
                   register={register('file_nhp', {
                     required: 'harap masukan link NHP',
@@ -139,12 +140,23 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
             </div>
             {/* </section> */}
             {/* <hr className='my-4 border-4'/> */}
+            <InputFieldComponent
+              label="Nomor NHP"
+              identiti="no_nhp"
+              name="no_nhp"
+              placeholder="Masukan nomor nhp"
+              type="text"
+              register={register('no_nhp', {
+                required: 'masukan no_nhp',
+              })}
+              error={errors.no_nhp}
+            />
             <TextAreaFieldComponent
               rows={5}
               label="Keterangan"
               identiti="keterangan"
               name="keterangan"
-              placeholder="Masukan Keterangan ST"
+              placeholder="Masukan Keterangan NHP"
               type="text"
               register={register('keterangan_nhp', {
                 required: 'Pastikan anda menyertakan keterangan untuk nhp',
