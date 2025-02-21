@@ -41,7 +41,7 @@
     "sharp": "0.32.6",
     "simplebar-react": "^3.3.0",
     "styled-components": "^6.1.14",
-    "sweetalert2": "^11.15.10",
+    "sweetalert2": "^11.17.2",
     "three": "^0.169.0",
     "three.js": "^0.77.1",
     "xlsx": "^0.18.5",

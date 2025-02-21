@@ -8,6 +8,7 @@ import { JenisPengawasanDB } from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
+import Swal from 'sweetalert2';
 
 const axiosService = new AxiosService();
 
@@ -35,14 +36,24 @@ const JenisPengawasan = () => {
     try {
       const result = await axiosService.addData('/jenis_pengawasan', data);
       if (result.success) {
-        alert('Data Jenis Pengawasan berhasil disimpan');
+         Swal.fire({
+          title: 'Berhasil!',
+          text: 'Data Jenis Pengawasan berhasil ditambahkan.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
         reset();
         refetch();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
-      alert('Gagal menyimpan data Jenis Pengawasan');
+      Swal.fire({
+      title: 'Gagal!',
+      text: 'Data Jenis Pengawasan gagal disimpan',
+      icon: 'error',
+      confirmButtonText: 'OK',
+    });
     }
   };
 
@@ -55,7 +66,12 @@ const JenisPengawasan = () => {
         data
       );
       if (result.success) {
-        alert('Data Jenis Pengawasan berhasil diperbarui');
+         Swal.fire({
+          title: 'Berhasil!',
+          text: 'Data Jenis Pengawasan berhasil diperbaharui.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
         reset();
         refetch();
         handleCancelEdit();
@@ -63,24 +79,48 @@ const JenisPengawasan = () => {
         throw new Error(result.message);
       }
     } catch (error) {
-      alert('Gagal memperbarui data Jenis Pengawasan');
+      Swal.fire({
+      title: 'Gagal!',
+      text: 'Data Jenis Pengawasan gagal diperbaharui',
+      icon: 'error',
+      confirmButtonText: 'OK',
+    });
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (
-      window.confirm('Apakah Anda yakin ingin menghapus jenis pengawasan ini?')
-    ) {
+    const result = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+    text: 'Anda tidak dapat mengembalikan data ini!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, hapus!',
+    cancelButtonText: 'Batal',
+    })
+    
+    if ( result.isConfirmed) {
       try {
         const result = await axiosService.deleteData(`/jenis_pengawasan/${id}`);
         if (result.success) {
-          alert('Jenis Pengawasan berhasil dihapus');
-          refetch();
+          Swal.fire({
+          title: 'Dihapus!',
+          text: 'Data Jenis Pengawasan berhasil dihapus.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
+        refetch();
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
-        alert('Gagal menghapus jenis pengawasan');
+        Swal.fire({
+        title: 'Gagal!',
+        text: 'Data Jenis Pengawasan gagal dihapus.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
       }
     }
   };

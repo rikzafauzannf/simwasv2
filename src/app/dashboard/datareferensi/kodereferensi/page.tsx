@@ -15,6 +15,7 @@ import {
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetch } from '@/hooks/useFetch';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
+import Swal from 'sweetalert2'; 
 
 const axiosService = new AxiosService();
 
@@ -41,7 +42,12 @@ const KodeReferensi = () => {
     try {
       const result = await axiosService.addData('/kode_referensi', data);
       if (result.success) {
-        alert('Data Kode Referensi berhasil disimpan');
+        Swal.fire({
+          title: 'Berhasil!',
+          text: 'Data Kode Referensi berhasil ditambahkan.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
         reset();
         refetch();
       } else {
