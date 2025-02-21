@@ -28,7 +28,8 @@ const EXCEL_HEADER_STYLE = {
 const createExcelWorksheet = (
   data: PKPTDataBase[],
   jenisPengawasanData: JenisPengawasanDB[],
-  hooks: TableHooks
+  hooks: TableHooks,
+  status: string
 ): XLSX.WorkSheet => {
   const HEADER_STYLE = {
     font: { bold: true, size: 11 },
@@ -45,7 +46,7 @@ const createExcelWorksheet = (
   const title = [
     [
       {
-        v: 'PROGRAM KERJA PENGAWASAN TAHUNAN (PKPT)',
+        v: `PROGRAM KERJA PENGAWASAN TAHUNAN (${status})`,
         s: {
           font: { bold: true, size: 14 },
           alignment: { horizontal: 'center' },
@@ -242,7 +243,7 @@ const createExcelWorksheet = (
           },
         },
         {
-          v: formatCurrency(item.anggaran),
+          v: item.anggaran,
           s: {
             font: { bold: false, size: 11 },
             alignment: { horizontal: 'center' },
@@ -345,9 +346,10 @@ const createExcelWorksheet = (
 export const exportToExcel = (
   data: PKPTDataBase[],
   jenisPengawasanData: JenisPengawasanDB[],
-  hooks: TableHooks
+  hooks: TableHooks,
+  status: string
 ) => {
-  const ws = createExcelWorksheet(data, jenisPengawasanData, hooks);
+  const ws = createExcelWorksheet(data, jenisPengawasanData, hooks, status);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'PKPT Data');
 
@@ -355,5 +357,5 @@ export const exportToExcel = (
   const blob = new Blob([excelBuffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
-  saveAs(blob, `PKPT_Report_${new Date().getFullYear()}.xlsx`);
+  saveAs(blob, `PKPT_Report_${status}_${new Date().getFullYear()}.xlsx`);
 };

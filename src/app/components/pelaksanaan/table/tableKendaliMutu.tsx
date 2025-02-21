@@ -26,7 +26,6 @@ const TableKendaliMutu = () => {
   const { getNameAreaPengawasan, getNameStatusPKPT } = useGetNamePKPT();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
 
-
   const columns: TableColumn<KendaliMutuData>[] = [
     {
       name: 'Actions',
@@ -65,12 +64,12 @@ const TableKendaliMutu = () => {
     },
     {
       name: 'No SP',
-      selector: (row) => getNameNoSP(row.id_pkpt),
+      selector: (row) => getNameNoSP(row.id_st),
       sortable: true,
     },
     {
       name: 'Program Audit',
-      selector: (row) => getProgramAudit(row.id_pkpt),
+      selector: (row) => getProgramAudit(row.id_st),
       sortable: true,
     },
     {

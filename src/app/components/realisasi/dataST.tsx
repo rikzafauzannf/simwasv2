@@ -7,11 +7,16 @@ import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { useGetNamePKPT, useGetNameUser } from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import Swal from 'sweetalert2';
+import { AxiosService } from '@/services/axiosInstance.service';
+import { HiPaperAirplane } from 'react-icons/hi';
 
 interface PropsComponent {
   title: string;
   todo: string;
 }
+
+const axiosSecvice = new AxiosService();
 
 const MapDataST = ({ title, todo }: PropsComponent) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -51,6 +56,50 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const handleCreateReport = async (id_st: number) => {
+    Swal.fire({
+      title: 'Buat Laporan Mingguan',
+      html: `
+        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
+        <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
+      `,
+      focusConfirm: false,
+      preConfirm: async () => {
+        const nomor = (document.getElementById('nomor') as HTMLInputElement)
+          .value;
+        const content = (
+          document.getElementById('reportContent') as HTMLTextAreaElement
+        ).value;
+        if (!content || !nomor) {
+          Swal.showValidationMessage('Silakan isi semua field');
+          return;
+        }
+        return { content, id_st, nomor };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Logika untuk menyimpan laporan
+        const dataForm = {
+          id_st: id_st,
+          id_user: String(user?.id_user),
+          id_no: String(result.value.nomor),
+          laporan_mingguan: String(result.value.content),
+        };
+        try {
+          const response = await axiosSecvice.addData(
+            '/laporan_mingguan',
+            dataForm
+          );
+          console.log('Laporan:', response);
+          Swal.fire('Laporan berhasil dibuat!', '', 'success');
+        } catch (error) {
+          console.error('Error creating report:', error);
+          Swal.fire('Gagal membuat laporan!', '', 'error');
+        }
+      }
+    });
+  };
 
   const { user } = useAuthStore();
   if (
@@ -100,6 +149,12 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
               <p>{item.created_at}</p>
               <hr className="mb-3" />
               <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => handleCreateReport(item.id_st)}
+                  className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex gap-3 justify-start items-center"
+                >
+                  <HiPaperAirplane /> <p>|| Buat laporan</p>
+                </button>
                 <Link
                   href={`/dashboard/${todo}/${item.id_st}`}
                   className="py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50"

@@ -20,6 +20,10 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { exportToExcel } from './exportPKPT';
 
+interface StatusProps {
+  status?: string;
+}
+
 // Table Components
 const TableHeader: React.FC = () => (
   <thead className="bg-gray-200">
@@ -49,7 +53,8 @@ const TableHeader: React.FC = () => (
         TIM
       </th>
       <th className="border border-gray-300 p-2" rowSpan={2}>
-        Anggaran
+        Anggaran <br />
+        Rp.
       </th>
       <th className="border border-gray-300 p-2" rowSpan={2} colSpan={3}>
         Jumlah Laporan
@@ -77,10 +82,16 @@ const TableHeader: React.FC = () => (
   </thead>
 );
 
-const TablePKPT: React.FC = () => {
-  const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
-  const { data: DataJenisPengawasan } =
-    useFetchAll<JenisPengawasanDB>('jenis_pengawasan');
+const TablePKPT = ({
+  DataPKPT,
+  DataJenisPengawasan,
+}: {
+  DataPKPT: PKPTDataBase[];
+  DataJenisPengawasan: JenisPengawasanDB[];
+}) => {
+  // const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
+  // const { data: DataJenisPengawasan } =
+  //   useFetchAll<JenisPengawasanDB>('jenis_pengawasan');
 
   const hooks = {
     getNameUser: useGetNameUser().getNameUser,
@@ -161,7 +172,7 @@ const TablePKPT: React.FC = () => {
                       ))}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {formatCurrency(item.anggaran)}
+                      {item.anggaran}
                     </td>
                     <td className="border border-gray-300 p-2" colSpan={3}>
                       {item.jumlah_laporan} -{' '}
@@ -187,8 +198,11 @@ const TablePKPT: React.FC = () => {
   );
 };
 
-const TablePKPTPreview: React.FC = () => {
+const TablePKPTPreview: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
   const { data: DataPKPT } = useFetchAll<PKPTDataBase>('pkpt');
+  const dataPKPTFilter = DataPKPT.filter(
+    (itemsFilter) => itemsFilter.status === status
+  );
   const { data: DataJenisPengawasan } =
     useFetchAll<JenisPengawasanDB>('jenis_pengawasan');
 
@@ -201,7 +215,7 @@ const TablePKPTPreview: React.FC = () => {
   };
 
   const handleExportExcel = () => {
-    exportToExcel(DataPKPT, DataJenisPengawasan, hooks);
+    exportToExcel(dataPKPTFilter, DataJenisPengawasan, hooks, status);
   };
 
   return (
@@ -220,7 +234,8 @@ const TablePKPTPreview: React.FC = () => {
           <div className="flex justify-between items-center w-full">
             <div>
               <h5 className="text-xl font-bold mb-2">
-                Program Kerja Pengawasan Tahunan (PKPT)
+                Program Kerja Pengawasan Tahunan (
+                <span className="uppercase">{status}</span>)
               </h5>
               <p className="text-gray-600">
                 Inspektorat Daerah Kota Tasikmalaya
@@ -254,7 +269,8 @@ const TablePKPTPreview: React.FC = () => {
             <div className="space-y-4">
               <div className="text-center">
                 <h1 className="text-2xl font-bold">
-                  PROGRAM KERJA PENGAWASAN TAHUNAN (PKPT)
+                  PROGRAM KERJA PENGAWASAN TAHUNAN (
+                  <span className="uppercase">{status}</span>)
                 </h1>
                 <h2 className="text-xl font-bold">
                   INSPEKTORAT DAERAH KOTA TASIKMALAYA
@@ -263,7 +279,10 @@ const TablePKPTPreview: React.FC = () => {
                   TAHUN {new Date().getFullYear()}
                 </h3>
               </div>
-              <TablePKPT />
+              <TablePKPT
+                DataPKPT={dataPKPTFilter}
+                DataJenisPengawasan={DataJenisPengawasan}
+              />
             </div>
           </PdfGenerator>
         </CardComponents>

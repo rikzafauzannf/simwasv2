@@ -142,11 +142,11 @@ const TableTemuanHasil: React.FC = () => {
       selector: (row) => formatCurrency(row.nilai_rekomendasi),
       sortable: true,
     },
-    {
-      name: 'Kode Referensi',
-      selector: (row) => getNameKodeReferensi(row.id_kode_referensi),
-      sortable: true,
-    },
+    // {
+    //   name: 'Kode Referensi',
+    //   selector: (row) => getNameKodeReferensi(row.id_kode_referensi),
+    //   sortable: true,
+    // },
     {
       name: 'Perancang Temuan Hasil',
       selector: (row) => getNameUser(row.id_user),

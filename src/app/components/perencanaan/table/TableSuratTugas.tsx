@@ -13,6 +13,7 @@ import { useGetNameJenisAudit, useGetNameUser } from '@/hooks/useGetName';
 import { AxiosService } from '@/services/axiosInstance.service';
 import Swal from 'sweetalert2';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { HiPaperAirplane } from 'react-icons/hi';
 
 interface PropsOptions {
   id_pkpt?: number;
@@ -23,9 +24,12 @@ const axiosSecvice = new AxiosService();
 
 const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
   const { user } = useAuthStore();
-  const hashPermission = ['Perencana', 'Pelaksana', 'Auditor'].includes(
-    user?.role as string
-  );
+  const hashPermission = [
+    'Perencana',
+    'Pelaksana',
+    'Auditor',
+    'Developer',
+  ].includes(user?.role as string);
 
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
@@ -64,6 +68,49 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     }
   };
 
+  const handleCreateReport = async (id_st: number) => {
+    Swal.fire({
+      title: 'Buat Laporan Mingguan',
+      html: `
+        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
+        <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
+      `,
+      focusConfirm: false,
+      preConfirm: async () => {
+        const nomor = (document.getElementById('nomor') as HTMLInputElement)
+          .value;
+        const content = (
+          document.getElementById('reportContent') as HTMLTextAreaElement
+        ).value;
+        if (!content || !nomor) {
+          Swal.showValidationMessage('Silakan isi semua field');
+          return;
+        }
+        return { content, id_st, nomor };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Logika untuk menyimpan laporan
+        const dataForm = {
+          id_st: id_st,
+          id_user: String(user?.id_user),
+          id_no: String(result.value.nomor),
+          laporan_mingguan: String(result.value.content),
+        };
+        try {
+          const response = await axiosSecvice.addData(
+            '/laporan_mingguan',
+            dataForm
+          );
+          console.log('Laporan:', response);
+          Swal.fire('Laporan berhasil dibuat!', '', 'success');
+        } catch (error) {
+          console.error('Error creating report:', error);
+          Swal.fire('Gagal membuat laporan!', '', 'error');
+        }
+      }
+    });
+  };
   const columns = [
     {
       name: 'Actions',
@@ -89,12 +136,20 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
             <FaEdit />
           </button> */}
           {hashPermission && (
-            <button
-              onClick={() => handleDelete(row.id_st)}
-              className="p-2 text-red-500 hover:text-red-700"
-            >
-              <FaTrash />
-            </button>
+            <>
+              <button
+                onClick={() => handleDelete(row.id_st)}
+                className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+              >
+                <FaTrash />
+              </button>
+              <button
+                onClick={() => handleCreateReport(row.id_st)}
+                className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                <HiPaperAirplane />
+              </button>
+            </>
           )}
         </div>
       ),
@@ -155,11 +210,11 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
       selector: (row: SuratTugasData) => row.jumlah_laporan,
       sortable: true,
     },
-    {
-      name: 'No.Tgl.LHP/LHE/LHR',
-      selector: (row: SuratTugasData) => row.no_tgllh,
-      sortable: true,
-    },
+    // {
+    //   name: 'No.Tgl.LHP/LHE/LHR',
+    //   selector: (row: SuratTugasData) => row.no_tgllh,
+    //   sortable: true,
+    // },
     {
       name: 'Jenis Audit',
       selector: (row: SuratTugasData) =>
@@ -189,8 +244,8 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     const filtered = DataST.filter(
       (item) =>
         item.no_tglsp.toLowerCase().includes(value.toLowerCase()) ||
-        item.program_audit.toLowerCase().includes(value.toLowerCase()) ||
-        item.no_tgllh.toLowerCase().includes(value.toLowerCase())
+        item.program_audit.toLowerCase().includes(value.toLowerCase())
+      // item.no_tgllh.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredData(filtered);
   };

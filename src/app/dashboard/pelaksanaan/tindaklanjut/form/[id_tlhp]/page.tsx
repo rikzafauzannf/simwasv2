@@ -180,7 +180,7 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
               error={errors.tanggal_pengiriman}
             />
             <InputFieldComponent
-              label="Batas Akhir Tl"
+              label="Batas Akhir TL"
               identiti="batas_akhir_tl"
               type="date"
               name="batas_akhir_tl"

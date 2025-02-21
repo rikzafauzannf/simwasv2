@@ -1,6 +1,6 @@
 'use client';
 
-import { Select, TextInput } from 'flowbite-react';
+import { FileInput, Select, Textarea, TextInput } from 'flowbite-react';
 import React from 'react';
 import { FieldError } from 'react-hook-form';
 
@@ -43,24 +43,42 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
   defaultValue,
 }) => {
   return (
-    <div className="flex flex-col space-y-2">
-      <label htmlFor={identiti} className="text-slate-800">
-        {label}
-      </label>
-      <TextInput
-        id={identiti}
-        type={type}
-        placeholder={placeholder}
-        {...register}
-        disabled={disabled}
-        defaultValue={defaultValue}
-        // className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600
-        //   ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}
-        //   ${error ? 'border-red-500' : ''}`}
-        className="form-control form-rounded-xl flex-1"
-      />
-      {error && <span className="text-red-500 text-sm">{error.message}</span>}
-    </div>
+    <>
+      <div className="flex flex-col space-y-2">
+        <label htmlFor={identiti} className="text-slate-800">
+          {label}
+        </label>
+        {type === 'file' ? (
+          <FileInput
+            id={identiti}
+            type={type}
+            placeholder={placeholder}
+            {...register}
+            disabled={disabled}
+            defaultValue={defaultValue}
+            // className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600
+            //   ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}
+            //   ${error ? 'border-red-500' : ''}`}
+            className="form-control form-rounded-xl flex-1"
+          />
+        ) : (
+          <TextInput
+            id={identiti}
+            type={type}
+            placeholder={placeholder}
+            {...register}
+            disabled={disabled}
+            defaultValue={defaultValue}
+            // className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600
+            //   ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}
+            //   ${error ? 'border-red-500' : ''}`}
+            className="form-control form-rounded-xl flex-1"
+          />
+        )}
+
+        {error && <span className="text-red-500 text-sm">{error.message}</span>}
+      </div>
+    </>
   );
 };
 
@@ -116,13 +134,13 @@ export const TextAreaFieldComponent: React.FC<TextAreaFieldProps> = ({
       <label htmlFor={identiti} className="text-slate-800">
         {label}
       </label>
-      <textarea
+      <Textarea
         id={identiti}
         placeholder={placeholder}
         {...register}
         disabled={disabled}
         rows={rows}
-        className={`border border-b-2 rounded-[8px] shadow-md border-slate-600  
+        className={`shadow-md
           ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'} 
           ${error ? 'border-red-500' : ''}`}
       />

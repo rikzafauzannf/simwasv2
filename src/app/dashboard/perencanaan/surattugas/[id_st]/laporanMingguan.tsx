@@ -1,15 +1,15 @@
 'use client';
 import React from 'react';
-import { CardComponents } from '../Global/Card';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { LaporanMingguan } from '@/interface/interfaceKendaliMutu';
 import { useGetNameUser } from '@/hooks/useGetName';
+import { CardComponents } from '@/app/components/Global/Card';
 
 interface PropsID {
-  id_pkpt: number;
+  id_st: number;
 }
 
-const LaporanMingguanComponent = ({ id_pkpt }: PropsID) => {
+const LaporanMingguanComponent = ({ id_st }: PropsID) => {
   const {
     data: DataLaporanMingguan,
     isLoading,
@@ -17,13 +17,13 @@ const LaporanMingguanComponent = ({ id_pkpt }: PropsID) => {
     refetch,
   } = useFetchAll<LaporanMingguan>('/laporan_mingguan');
 
-  console.log('id_pkpt data: ', id_pkpt);
+  console.log('id_st data: ', id_st);
   console.log('Data: ', DataLaporanMingguan);
 
   const { getNameUser } = useGetNameUser();
 
   const dataLaporanMaps = DataLaporanMingguan.filter(
-    (data) => data.id_pkpt === Number(id_pkpt)
+    (data) => data.id_st === Number(id_st)
   );
 
   console.log('data Laporan Maps: ', dataLaporanMaps);
