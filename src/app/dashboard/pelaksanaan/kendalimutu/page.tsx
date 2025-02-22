@@ -5,7 +5,7 @@ import MapDataPkpt from '@/app/components/realisasi/datapkpt';
 import MapDataST from '@/app/components/realisasi/dataST';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
-
+//test
 const KendaliMutuPage = () => {
   return (
     <AuthRoleWrapper
