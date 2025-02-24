@@ -1,1 +1,0 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/home/rikza/Documents/DEV/simwasv2/src/app/layout\":[\"static/media/3534416bbfdcc9be-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"

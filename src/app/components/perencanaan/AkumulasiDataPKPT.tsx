@@ -21,7 +21,7 @@ const AkumulasiDataPKPT = () => {
   const data_pkpt = DataPKPT.filter((item) => item.status === 'pkpt');
   const data_nonpkpt = DataPKPT.filter((item) => item.status === 'non-pkpt');
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 w-full gap-10">
+    <section className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
       <CardAccumulate
         Header="Jumlah PKPT"
         Count={data_pkpt.length}

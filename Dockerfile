@@ -1,40 +1,45 @@
 # Build stage
 FROM node:18-alpine AS builder
 
-# Set working directory
+# Install pnpm
+RUN npm install -g pnpm
+
+# Install git
+RUN apk add --no-cache git
+
 WORKDIR /app
 
-# Copy dependency definitions
-COPY package.json package-lock.json ./
+# Copy package files
+COPY package.json ./
 
-# Install dependencies
-#RUN npm install --legacy-peer-deps
-RUN npm i -g pnpm
-RUN pnpm i 
+# Install dependencies (tanpa --frozen-lockfile karena tidak ada pnpm-lock.yaml)
+RUN pnpm install
 
-# Copy application files
+# Copy source files
 COPY . .
 
 # Build the application
 ARG NEXT_PUBLIC_API_BASE_URL
 ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+ENV NODE_ENV=production
 RUN pnpm build
 
 # Production stage
-FROM node:18-alpine
+FROM node:18-alpine AS runner
 
-# Set working directory
 WORKDIR /app
-RUN npm i -g pnpm 
 
-# Copy built application from builder
-COPY --from=builder /app .
-
-# Set runtime environment variable
+# Set environment variables
+ENV NODE_ENV=production
 ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+
+# Copy necessary files from builder
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./
 
 # Expose port
 EXPOSE 3000
 
 # Run the application
-CMD ["pnpm", "start"]
+CMD ["node", "server.js"]
