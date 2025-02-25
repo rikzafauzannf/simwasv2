@@ -23,6 +23,6 @@ export type DataChartJenisPengawasan = {
 export type DataSumaryPkpt = {
   total_non_pkpt: number;
   total_pkpt: number;
-  total_st_non_pkpt:number;
-  total_st_pkpt:number;
-}
+  total_st_non_pkpt: number;
+  total_st_pkpt: number;
+};

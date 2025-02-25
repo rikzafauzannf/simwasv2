@@ -187,7 +187,7 @@ const SidebarContent: MenuItem[] = [
         name: 'Realisasi PKPT',
         icon: 'solar:book-bookmark-line-duotone',
         id: uniqueId(),
-        url: '/dashboard/perencanaan/realisasipkpt',
+        url: '/dashboard/pelaksanaan/realisasi',
       },
     ],
   },
@@ -243,6 +243,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Rekap Temuan',
       'Tindak Lanjut',
       'User Account',
+      'Realisasi PKPT',
     ],
     Pimpinan: [
       'Dashboard',

@@ -8,11 +8,16 @@ import { CardComponents } from '../../Global/Card';
 
 import { ButtonType } from '../../Global/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormLHP, NHPData } from '@/interface/interfaceHasilPengawasan';
+import {
+  FormLHP,
+  LHPData,
+  NHPData,
+} from '@/interface/interfaceHasilPengawasan';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetchById } from '@/hooks/useFetchById';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import { useFetchAll } from '@/hooks/useFetchAll';
 
 interface PropsID {
   id_nhp: number;
@@ -75,96 +80,118 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
     }
   };
 
+  const { data: DataLHP } = useFetchAll<LHPData>('lhp');
+  const detectLHP = DataLHP.filter(
+    (itemsFilter) =>
+      itemsFilter.id_nhp === Number(id_nhp) &&
+      itemsFilter.id_st === Number(id_st)
+  );
+
+  console.log('jumlah data Detect: ', detectLHP.length);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      <h3 className="text-xl">Upload LHP (Lembar Hasil Pengawasan)</h3>
-      <CardComponents>
-        <div className="space-y-3">
-          <div className="space-y-2">
-            <label htmlFor="" className="text-slate-800">
-              Upload Surat Tugas
-            </label>
-            <br />
-            <small>
-              Max file size is ... mb. File Support .pdf .xlcl .docx
-            </small>
-            <div className="flex justify-start gap-3">
-              <label>
-                <input
-                  type="radio"
-                  name="uploadOption"
-                  value="link"
-                  checked={uploadOption === 'link'}
-                  onChange={handleUploadOptionChange}
-                />
-                Masukkan Link
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        <h3 className="text-xl">Upload LHP (Lembar Hasil Pengawasan)</h3>
+        <CardComponents>
+          <div className="space-y-3">
+            <div className="space-y-2">
+              <label htmlFor="" className="text-slate-800">
+                Upload Surat Tugas
               </label>
-              <label>
-                <input
-                  type="radio"
-                  name="uploadOption"
-                  value="file"
-                  checked={uploadOption === 'file'}
-                  onChange={handleUploadOptionChange}
+              <br />
+              <small>
+                Max file size is ... mb. File Support .pdf .xlcl .docx
+              </small>
+              <div className="flex justify-start gap-3">
+                <label>
+                  <input
+                    type="radio"
+                    name="uploadOption"
+                    value="link"
+                    checked={uploadOption === 'link'}
+                    onChange={handleUploadOptionChange}
+                  />
+                  Masukkan Link
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="uploadOption"
+                    value="file"
+                    checked={uploadOption === 'file'}
+                    onChange={handleUploadOptionChange}
+                  />
+                  Unggah File
+                </label>
+              </div>
+              {/* <section className="flex gap-2 w-full"> */}
+              {uploadOption === 'file' ? (
+                // <input type="file" name="fileUpload" />
+                <InputFieldComponent
+                  label="Upload File"
+                  identiti="uploadFile"
+                  name="uploadFile"
+                  placeholder="Upload File ST"
+                  type="file"
+                  register={'uploadFile'}
                 />
-                Unggah File
-              </label>
-            </div>
-            {/* <section className="flex gap-2 w-full"> */}
-            {uploadOption === 'file' ? (
-              // <input type="file" name="fileUpload" />
+              ) : (
+                // <input type="text" name="linkInput" placeholder="Masukkan Link" />
+                <InputFieldComponent
+                  label="Masukan Link Suresman"
+                  identiti="linkStSuresman"
+                  name="linkStSuresman"
+                  placeholder="Masukan Link Suresman ST"
+                  type="link"
+                  register={register('file_lhp', {
+                    required: 'Masukan Link Laporan Hasil Pengawasan',
+                  })}
+                  error={errors.file_lhp}
+                />
+              )}
+              {/* </section> */}
+              {/* <hr className='my-4 border-4'/> */}
               <InputFieldComponent
-                label="Upload File"
-                identiti="uploadFile"
-                name="uploadFile"
-                placeholder="Upload File ST"
-                type="file"
-                register={'uploadFile'}
-              />
-            ) : (
-              // <input type="text" name="linkInput" placeholder="Masukkan Link" />
-              <InputFieldComponent
-                label="Masukan Link Suresman"
-                identiti="linkStSuresman"
-                name="linkStSuresman"
-                placeholder="Masukan Link Suresman ST"
-                type="link"
-                register={register('file_lhp', {
-                  required: 'Masukan Link Laporan Hasil Pengawasan',
+                label="Nomor LHP"
+                identiti="no_lhp"
+                name="no_lhp"
+                placeholder="Masukan Nomor LHP"
+                type="text"
+                register={register('no_lhp', {
+                  required: 'Masukan Nomor LHP',
                 })}
-                error={errors.file_lhp}
+                error={errors.no_lhp}
               />
-            )}
-            {/* </section> */}
-            {/* <hr className='my-4 border-4'/> */}
-            <InputFieldComponent
-              label="Nomor LHP"
-              identiti="no_lhp"
-              name="no_lhp"
-              placeholder="Masukan Nomor LHP"
-              type="text"
-              register={register('no_lhp', {
-                required: 'Masukan Nomor LHP',
-              })}
-              error={errors.no_lhp}
-            />
-            <TextAreaFieldComponent
-              rows={5}
-              label="Keterangan"
-              identiti="keterangan"
-              name="keterangan"
-              placeholder="Masukan Keterangan ST"
-              type="text"
-              register={register('keterangan_lhp', {
-                required: 'Masukan Keterangan terkait Laporan HasilPengawasan',
-              })}
-              error={errors.keterangan_lhp}
-            />
+              <TextAreaFieldComponent
+                rows={5}
+                label="Keterangan"
+                identiti="keterangan"
+                name="keterangan"
+                placeholder="Masukan Keterangan ST"
+                type="text"
+                register={register('keterangan_lhp', {
+                  required:
+                    'Masukan Keterangan terkait Laporan HasilPengawasan',
+                })}
+                error={errors.keterangan_lhp}
+              />
+            </div>
           </div>
-        </div>
-      </CardComponents>
-      <ButtonType Text="+ Submit Data LHP" type="submit" />
-    </form>
+        </CardComponents>
+        <ButtonType Text="+ Submit Data LHP" type="submit" />
+      </form>
+      {/* <div className='grid gap-4 mt-4'>
+      {detectLHP.length > 0 && 'Data Sudah Ada!'}
+      {detectLHP.map((items, index) => {
+        return (
+          <React.Fragment key={index}>
+            <iframe src={items.file_lhp} className="w-full rounded-md shadow-md"/>
+          </React.Fragment>
+        );
+      })}
+      </div> */}
+    </>
   );
 };
 
