@@ -8,19 +8,26 @@ import { useFetchAll } from '@/hooks/useFetchAll';
 import { DataSumaryPkpt } from '@/interface/interfaceChartData';
 
 const CardAkumulasiDataALL = () => {
-  const { data: dataSummary } = useFetchAll<DataSumaryPkpt>('dashboartotalpkpt');
-  const totalStPkpt = dataSummary[0]?.total_st_pkpt ;
+  const { data: dataSummary } =
+    useFetchAll<DataSumaryPkpt>('dashboartotalpkpt');
+  const totalStPkpt = dataSummary[0]?.total_st_pkpt;
   const totalStNonPkpt = dataSummary[0]?.total_st_non_pkpt;
-
-  // console.log('data st : ',dataSummary )
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="md:col-span-2">
         <AkumulasiDataPKPT />
       </div>
-      <CardAccumulate Header="Surat Tugas PKPT" Count={Number(totalStPkpt)} imgurl={imgST} />
-      <CardAccumulate Header="Surat Tugas Non-PKPT" Count={Number(totalStNonPkpt)} imgurl={imgLHP} />
+      <CardAccumulate
+        Header="Surat Tugas PKPT"
+        Count={Number(totalStPkpt)}
+        imgurl={imgST}
+      />
+      <CardAccumulate
+        Header="Surat Tugas Non-PKPT"
+        Count={Number(totalStNonPkpt)}
+        imgurl={imgLHP}
+      />
     </section>
   );
 };
