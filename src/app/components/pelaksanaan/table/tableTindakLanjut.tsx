@@ -20,11 +20,17 @@ import {
   FormTindakLanjut,
   TindakLanjutDB,
 } from '@/interface/interfaceTindakLanjut';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency } from '@/data/formatData';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();
 
 const TableTindakLanjut: React.FC = () => {
+  const { user } = useAuthStore();
+  const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
+    user?.role as string
+  );
+
   const {
     data: DataTindakLanjut,
     isLoading,
@@ -61,39 +67,43 @@ const TableTindakLanjut: React.FC = () => {
   };
 
   const columns: TableColumn<TindakLanjutDB>[] = [
-    {
-      name: 'Actions',
-      cell: (row) => (
-        <div className="flex gap-2">
-          {/* <Link
-            // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
-            href={row.file_nhp}
-            className="p-2 text-blue-500 hover:text-blue-700"
-          >
-            <FaEye />
-          </Link> */}
-          {/* <Link
-            href={`/dashboard/pelaksanaan/actions/${row.id_nhp}`}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-          >
-            Act
-          </Link> */}
-          <button
-            onClick={() => handleDelete(row.id_tindak_lanjut)}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button>
-        </div>
-      ),
-    },
+    ...(hashPermission
+      ? [
+          {
+            name: 'Actions',
+            cell: (row: TindakLanjutDB) => (
+              <div className="flex gap-2">
+                {/* <Link
+              // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
+              href={row.file_nhp}
+              className="p-2 text-blue-500 hover:text-blue-700"
+            >
+              <FaEye />
+            </Link> */}
+                {/* <Link
+              href={`/dashboard/pelaksanaan/actions/${row.id_nhp}`}
+              className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+            >
+              Act
+            </Link> */}
+                <button
+                  onClick={() => handleDelete(row.id_tindak_lanjut)}
+                  className="p-2 text-red-500 hover:text-red-700"
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            ),
+          },
+        ]
+      : []),
     {
       name: 'Create At',
       selector: (row) => row.created_at,
       sortable: true,
     },
     {
-      name: 'Uraian',
+      name: 'Uraian TL',
       selector: (row) => row.uraian,
       sortable: true,
     },
@@ -103,20 +113,17 @@ const TableTindakLanjut: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'Kondisi Temuan',
-      selector: (row) => row.kondisi_temuan,
-      sortable: true,
-    },
-    {
-      name: 'Kondisi Rekomendasi',
-      selector: (row) => row.kondisi_rekomendasi,
-      sortable: true,
-    },
-    {
       name: 'Sisa Nominal',
       selector: (row) => formatCurrency(row.sisa_nominal),
       sortable: true,
     },
+
+    // {
+    //   name: 'Kondisi Rekomendasi',
+    //   selector: (row) => row.kondisi_rekomendasi,
+    //   sortable: true,
+    // },
+
     {
       name: 'Tanggal Pengiriman',
       selector: (row) => row.tanggal_pengiriman,
@@ -125,6 +132,11 @@ const TableTindakLanjut: React.FC = () => {
     {
       name: 'Batas Akhir TL',
       selector: (row) => row.batas_akhir_tl,
+      sortable: true,
+    },
+    {
+      name: 'Status TL',
+      selector: (row) => row.kondisi_temuan,
       sortable: true,
     },
     {
@@ -216,7 +228,7 @@ const TableTindakLanjut: React.FC = () => {
   return (
     <>
       <div className="mb-4 space-y-2">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
           <h3>Data Tindak Lanjut</h3>
           <div className="space-x-2">
             <button

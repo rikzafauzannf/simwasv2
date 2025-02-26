@@ -27,7 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "build/types/**/*.ts"
+    "build/types/**/*.ts",
+    "src/app/components/NeatGradient.jsx",
+    "src/app/components/NeatGradient.js"
   ],
   "exclude": ["node_modules"],
   "baseUrl": "."

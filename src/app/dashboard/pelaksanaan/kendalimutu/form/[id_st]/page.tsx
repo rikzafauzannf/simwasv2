@@ -1,7 +1,8 @@
 import { CardComponents } from '@/app/components/Global/Card';
 import InputKendaliMutu from '@/app/components/pelaksanaan/form/inputKendaliMutu';
-import LaporanMingguanComponent from '@/app/components/pelaksanaan/laporanMingguan';
+import LaporanMingguanComponent from '@/app/dashboard/perencanaan/surattugas/[id_st]/laporanMingguan';
 import TableKendaliMutu from '@/app/components/pelaksanaan/table/tableKendaliMutu';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
 
 interface PageProps {
@@ -12,12 +13,14 @@ interface PageProps {
 
 const FormKendaliMutuPage: React.FC<PageProps> = ({ params }) => {
   console.log('data params: ', params);
-  const id_pkpt = params.id_st;
+  const id_st = params.id_st;
 
   return (
-    <div className="space-y-3">
-      <InputKendaliMutu id_pkpt={id_pkpt} />
-    </div>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer']}>
+      <div className="space-y-3">
+        <InputKendaliMutu id_st={id_st} />
+      </div>
+    </AuthRoleWrapper>
   );
 };
 

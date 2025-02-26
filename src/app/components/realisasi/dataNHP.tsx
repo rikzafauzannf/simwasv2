@@ -12,11 +12,15 @@ import {
 } from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { HiPaperAirplane } from 'react-icons/hi';
+import Swal from 'sweetalert2';
+import { AxiosService } from '@/services/axiosInstance.service';
 
 interface Props {
   todo: string;
 }
-
+const axiosSecvice = new AxiosService();
 const MapDataNHP: React.FC<Props> = ({ todo }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,6 +49,56 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const { user } = useAuthStore();
+  const handleCreateReport = async (id_st: number) => {
+    Swal.fire({
+      title: 'Buat Laporan Mingguan',
+      html: `
+        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
+        <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
+      `,
+      focusConfirm: false,
+      preConfirm: async () => {
+        const nomor = (document.getElementById('nomor') as HTMLInputElement)
+          .value;
+        const content = (
+          document.getElementById('reportContent') as HTMLTextAreaElement
+        ).value;
+        if (!content || !nomor) {
+          Swal.showValidationMessage('Silakan isi semua field');
+          return;
+        }
+        return { content, id_st, nomor };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Logika untuk menyimpan laporan
+        const dataForm = {
+          id_st: id_st,
+          id_user: String(user?.id_user),
+          id_no: String(result.value.nomor),
+          laporan_mingguan: String(result.value.content),
+        };
+        try {
+          const response = await axiosSecvice.addData(
+            '/laporan_mingguan',
+            dataForm
+          );
+          console.log('Laporan:', response);
+          Swal.fire('Laporan berhasil dibuat!', '', 'success');
+        } catch (error) {
+          console.error('Error creating report:', error);
+          Swal.fire('Gagal membuat laporan!', '', 'error');
+        }
+      }
+    });
+  };
+
+  if (
+    !user ||
+    !['Pelaksana', 'Auditor', 'Developer'].includes(user.role as string)
+  )
+    return null;
   return (
     <>
       <div className="mb-4">
@@ -81,6 +135,12 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
             <p>{item.created_at}</p>
             <hr className="mb-3" />
             <div className="flex flex-col gap-2">
+              <button
+                onClick={() => handleCreateReport(item.id_st)}
+                className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex gap-3 justify-start items-center"
+              >
+                <HiPaperAirplane /> <p>|| Buat laporan</p>
+              </button>
               <Link
                 href={`/dashboard/${todo}/${item.id_nhp}`}
                 className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"

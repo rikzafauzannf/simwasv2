@@ -7,17 +7,24 @@ import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { KendaliMutuData } from '@/interface/interfaceKendaliMutu';
 import { useFetchAll } from '@/hooks/useFetchAll';
-import { useGetNamePKPT } from '@/hooks/useGetName';
+import { useGetNamePKPT, useGetNameST } from '@/hooks/useGetName';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosService = new AxiosService();
 
 const TableKendaliMutu = () => {
+  const { user } = useAuthStore();
+  const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
+    user?.role as string
+  );
+
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<KendaliMutuData[]>([]);
 
   const { getNameAreaPengawasan, getNameStatusPKPT } = useGetNamePKPT();
+  const { getNameNoSP, getProgramAudit } = useGetNameST();
 
   const columns: TableColumn<KendaliMutuData>[] = [
     {
@@ -27,6 +34,7 @@ const TableKendaliMutu = () => {
           <Link
             // onClick={() => handleView(row)}
             href={row.link_google_drive}
+            target="blank"
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
@@ -43,23 +51,25 @@ const TableKendaliMutu = () => {
           >
             <FaEdit />
           </button> */}
-          <button
-            onClick={() => handleDelete(row.id)}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button>
+          {hashPermission && (
+            <button
+              onClick={() => handleDelete(row.id)}
+              className="p-2 text-red-500 hover:text-red-700"
+            >
+              <FaTrash />
+            </button>
+          )}
         </div>
       ),
     },
     {
-      name: 'Status PKPT',
-      selector: (row) => getNameStatusPKPT(row.id_pkpt),
+      name: 'No SP',
+      selector: (row) => getNameNoSP(row.id_st),
       sortable: true,
     },
     {
-      name: 'Area Pengawasan',
-      selector: (row) => getNameAreaPengawasan(row.id_pkpt),
+      name: 'Program Audit',
+      selector: (row) => getProgramAudit(row.id_st),
       sortable: true,
     },
     {

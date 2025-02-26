@@ -18,11 +18,16 @@ import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { RekapTemuanDB } from '@/interface/interfaceRekapTemuan';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency } from '@/data/formatData';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();
 
 const TableRekapTemuan: React.FC = () => {
+  const { user } = useAuthStore();
+  const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
+    user?.role as string
+  );
   const {
     data: DataRekapTemuan,
     isLoading,
@@ -60,32 +65,36 @@ const TableRekapTemuan: React.FC = () => {
   };
 
   const columns: TableColumn<RekapTemuanDB>[] = [
-    {
-      name: 'Actions',
-      cell: (row) => (
-        <div className="flex gap-2">
-          {/* <Link
-            // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
-            href={row.file_lhp}
-            className="p-2 text-blue-500 hover:text-blue-700"
-          >
-            <FaEye />
-          </Link> */}
-          {/* <Link
-            href={`/dashboard/pelaporan/lembarhasil/actions/${row.id_lhp}`}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
-          >
-            Act
-          </Link> */}
-          <button
-            onClick={() => handleDelete(row.id_rekap_temuan)}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
-          </button>
-        </div>
-      ),
-    },
+    ...(hashPermission
+      ? [
+          {
+            name: 'Actions',
+            cell: (row: RekapTemuanDB) => (
+              <div className="flex gap-2">
+                {/* <Link
+              // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
+              href={row.file_lhp}
+              className="p-2 text-blue-500 hover:text-blue-700"
+            >
+              <FaEye />
+            </Link> */}
+                {/* <Link
+              href={`/dashboard/pelaporan/lembarhasil/actions/${row.id_lhp}`}
+              className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+            >
+              Act
+            </Link> */}
+                <button
+                  onClick={() => handleDelete(row.id_rekap_temuan)}
+                  className="p-2 text-red-500 hover:text-red-700"
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            ),
+          },
+        ]
+      : []),
     {
       name: 'Create At',
       selector: (row) => row.created_at,

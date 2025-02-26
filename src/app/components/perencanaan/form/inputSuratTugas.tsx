@@ -20,6 +20,8 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { UserManageDB } from '@/interface/interfaceUserManage';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import { useOptions } from '@/data/selectValue';
+import { formatToLocalDate } from '@/data/formatData';
 
 interface PropsID {
   id_pkpt: number;
@@ -31,9 +33,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
   const { user } = useAuthStore();
   const router = useRouter();
 
-  const { data: DataJenisAudit } = useFetch<JenisAuditDB>('jenis_audit');
-  const { data: DataUser } = useFetch<UserManageDB>('pengguna');
   const [uploadOption, setUploadOption] = useState('link');
+
+  const { optionsDataUser, optionsJenisAudit, potentialMembers } = useOptions();
 
   const handleUploadOptionChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -44,16 +46,6 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
   const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
     useTeamStore();
   const [newMemberId, setNewMemberId] = React.useState<number | string>('');
-
-  const potentialMembers = DataUser.map((item) => ({
-    id: item.id_user,
-    name: `${item.username} - ${item.jabatan}`,
-  }));
-
-  const optionsDataUser = DataUser.map((item) => ({
-    value: String(item.id_user),
-    title: `${item.username} - ${item.jabatan}`,
-  }));
 
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,14 +75,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
     mode: 'onBlur',
   });
 
-  const optionsJenisAudit = DataJenisAudit.map((item) => ({
-    value: String(item.id_jenis_audit),
-    title: `${item.jenis_audit} - ${item.keterangan}`,
-  }));
-
   const onSubmit: SubmitHandler<FormSuratTugas> = async (data) => {
     try {
-      const dataST: FormSuratTugas = {
+      const dataST = {
         id_user: Number(user?.id_user),
         id_pkpt: Number(id_pkpt),
         anggota_tim: teamMembers.map((item) => String(item.id)).join(','),
@@ -101,13 +88,14 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
         keterangan: data.keterangan,
         ketua_tim: data.ketua_tim,
         link_st: data.link_st,
-        no_tgllh: data.no_tgllh,
+        // no_tgllh: data.no_tgllh,
         no_tglsp: data.no_tglsp,
         pengendali_teknis: data.pengendali_teknis,
         program_audit: data.program_audit,
         tim_pemeriksa: data.tim_pemeriksa,
-        waktu_penugasan: data.waktu_penugasan,
+        waktu_penugasan: `${formatToLocalDate(data.waktu_awal)} - ${formatToLocalDate(data.waktu_akhir)}`,
         wk_penanggung_jawab: data.wk_penanggung_jawab,
+        jumlah_hp: Number(data.jumlah_hp),
       };
 
       console.log('Send on porgress... ', dataST);
@@ -187,19 +175,46 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 error={errors.program_audit}
               />
               <InputFieldComponent
-                label="Waktu Penugasan"
-                identiti="waktuPenugasan"
-                name="waktuPenugasan"
-                placeholder="Tentukan Waktu Penugasan"
-                type="text"
-                register={register('waktu_penugasan', {
-                  required: 'wajib di isi berapa lama hari penugasan',
+                label="Jumlah HP"
+                identiti="jumlahHP"
+                name="jumlahHP"
+                placeholder="Tentukan jumlah HP"
+                type="number"
+                register={register('jumlah_hp', {
+                  required: 'Jumlah Hari Penugasan wajib di isi',
                 })}
-                error={errors.waktu_penugasan}
+                error={errors.jumlah_hp}
               />
+              <div className="col-span-2 w-full space-y-2">
+                <h1>Waktu Penugasan</h1>
+                <div className="grid grid-cols-2 gap-3">
+                  <InputFieldComponent
+                    label="Tanggal Mulai"
+                    identiti="waktumulai"
+                    name="waktumulai"
+                    placeholder="Tentukan tanggal mulai"
+                    type="date"
+                    register={register('waktu_awal', {
+                      required: 'Tanggal Mulai wajib di isi',
+                    })}
+                    error={errors.waktu_awal}
+                  />
+                  <InputFieldComponent
+                    label="Tanggal Berakhir"
+                    identiti="waktu_akhir"
+                    name="waktu_akhir"
+                    placeholder="Tentukan Tanggal Berakhir"
+                    type="date"
+                    register={register('waktu_akhir', {
+                      required: 'Tanggal Akhir wajib di isi',
+                    })}
+                    error={errors.waktu_akhir}
+                  />
+                </div>
+              </div>
               {/* </div> */}
             </section>
-            <h3>Tim Audit</h3>
+            <h3>Tim Pemeriksa</h3>
             <section className="grid lg:grid-cols-2 gap-3">
               {/* <InputFieldComponent
                 label="Tim Pemeriksa/Pelaksana Kegiatan"
@@ -334,7 +349,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               </div>
             </section>
             <h3>Audit</h3>
-            <section className="grid lg:grid-cols-2 gap-3">
+            <section className="grid lg:grid-cols-3 gap-3">
               <InputFieldComponent
                 label="Jumlah Objek Pengawasan"
                 identiti="jumlahObjek"
@@ -358,7 +373,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   required: 'Masukan Jumlah Laporan',
                 })}
               />
-              <InputFieldComponent
+              {/* <InputFieldComponent
                 label="No.Tgl.LHP/LHE/LHR"
                 identiti="noTglLh"
                 name="noTglLh"
@@ -367,7 +382,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 register={register('no_tgllh', {
                   required: 'Masukan No.TGL/LH....',
                 })}
-              />
+              /> */}
               {/* <InputFieldComponent
                 label="Jenis Audit"
                 identiti="jenisAudit"
@@ -388,17 +403,19 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 error={errors.id_jenis_audit}
                 type="select"
               />
-              <TextAreaFieldComponent
-                rows={5}
-                label="Keterangan"
-                identiti="keterangan"
-                name="keterangan"
-                placeholder="Masukan Keterangan ST"
-                type="text"
-                register={register('keterangan', {
-                  required: 'Masukan Keterangan',
-                })}
-              />
+              <div className="lg:col-span-2">
+                <TextAreaFieldComponent
+                  rows={5}
+                  label="Keterangan"
+                  identiti="keterangan"
+                  name="keterangan"
+                  placeholder="Masukan Keterangan ST"
+                  type="text"
+                  register={register('keterangan', {
+                    required: 'Masukan Keterangan',
+                  })}
+                />
+              </div>
               <div className="space-y-2">
                 <label htmlFor="" className="text-slate-800">
                   Upload Surat Tugas

@@ -1,5 +1,6 @@
 export interface FormNHP {
   id_st: number;
+  no_nhp: string;
   file_nhp: string;
   id_user: number;
   keterangan_nhp: string;
@@ -8,6 +9,7 @@ export interface FormNHP {
 export type NHPData = {
   id_nhp: number;
   id_st: number;
+  no_nhp: string;
   file_nhp: string;
   id_user: number;
   keterangan_nhp: string;
@@ -16,6 +18,7 @@ export type NHPData = {
 
 export interface FormLHP {
   id_st: number;
+  no_lhp: string;
   file_lhp: string;
   id_user: number;
   keterangan_lhp: string;
@@ -25,6 +28,7 @@ export interface FormLHP {
 export type LHPData = {
   id_lhp: number;
   id_st: number;
+  no_lhp: string;
   file_lhp: string;
   id_user: number;
   keterangan_lhp: string;

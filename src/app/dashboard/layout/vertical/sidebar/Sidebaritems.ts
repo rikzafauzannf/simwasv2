@@ -1,3 +1,5 @@
+import { uniqueId } from 'lodash';
+
 export interface ChildItem {
   id?: number | string;
   name?: string;
@@ -19,8 +21,6 @@ export interface MenuItem {
   url?: any;
 }
 
-import { uniqueId } from 'lodash';
-
 const SidebarContent: MenuItem[] = [
   {
     heading: 'Resume',
@@ -37,10 +37,58 @@ const SidebarContent: MenuItem[] = [
     heading: 'Referensi',
     children: [
       {
-        name: 'Buat Data Referensi',
+        name: 'Data Referensi',
         icon: 'solar:shield-plus-line-duotone',
         id: uniqueId(),
         url: '/dashboard/datareferensi',
+      },
+      // {
+      //   name: 'Data Jenis Audit',
+      //   icon: 'solar:shield-plus-line-duotone',
+      //   id: uniqueId(),
+      //   url: '/dashboard/datareferensi/jenisaudit',
+      // },
+      {
+        name: 'Data Jenis Laporan',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/jenislaporan',
+      },
+      {
+        name: 'Data Jenis Pengawasan',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/jenispengawasan',
+      },
+      // {
+      //   name: 'Data Kode Referensi',
+      //   icon: 'solar:shield-plus-line-duotone',
+      //   id: uniqueId(),
+      //   url: '/dashboard/datareferensi/kodereferensi',
+      // },
+      {
+        name: 'Data Kode Rekomendasi',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/koderekomendasi',
+      },
+      {
+        name: 'Data Kode Temuan',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/kodetemuan',
+      },
+      {
+        name: 'Data Ruang Lingkup',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/ruanglingkup',
+      },
+      {
+        name: 'Data Tingkat Resiko',
+        icon: 'solar:shield-plus-line-duotone',
+        id: uniqueId(),
+        url: '/dashboard/datareferensi/tingkatresiko',
       },
     ],
   },
@@ -59,17 +107,23 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         url: '/dashboard/perencanaan/pkpt',
       },
+      // {
+      //   name: 'Surat Tugas',
+      //   icon: 'solar:file-send-line-duotone',
+      //   id: uniqueId(),
+      //   url: '/dashboard/perencanaan/surattugas',
+      // },
+    ],
+  },
+  {
+    heading: 'Pelaksanaan',
+    children: [
       {
         name: 'Surat Tugas',
         icon: 'solar:file-send-line-duotone',
         id: uniqueId(),
         url: '/dashboard/perencanaan/surattugas',
       },
-    ],
-  },
-  {
-    heading: 'Pelaksanaan',
-    children: [
       {
         name: 'Kendali Mutu',
         icon: 'solar:checklist-minimalistic-line-duotone',
@@ -133,7 +187,7 @@ const SidebarContent: MenuItem[] = [
         name: 'Realisasi PKPT',
         icon: 'solar:book-bookmark-line-duotone',
         id: uniqueId(),
-        url: '/dashboard/perencanaan/realisasipkpt',
+        url: '/dashboard/pelaksanaan/realisasi',
       },
     ],
   },
@@ -150,4 +204,96 @@ const SidebarContent: MenuItem[] = [
   },
 ];
 
-export default SidebarContent;
+export function filterSidebarByRole(role: string): MenuItem[] {
+  const dataReferensi = [
+    'Data Jenis Audit',
+    'Data Jenis Laporan',
+    'Data Jenis Pengawasan',
+    'Data Kode Referensi',
+    'Data Kode Rekomendasi',
+    'Data Kode Temuan',
+    'Data Ruang Lingkup',
+    'Data Tingkat Resiko',
+  ];
+  const roleBasedFilter = {
+    Admin: [
+      'Dashboard',
+      ...dataReferensi,
+      // 'Data Referensi',
+      'Dashboard',
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+      'User Account',
+    ],
+    Developer: [
+      'Dashboard',
+      ...dataReferensi,
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+      'User Account',
+      'Realisasi PKPT',
+    ],
+    Pimpinan: [
+      'Dashboard',
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+    ],
+    Perencana: ['Dashboard', ...dataReferensi, 'PKPT', 'Surat Tugas'],
+    Pelaksana: [
+      'Dashboard',
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+    ],
+    Auditor: [
+      'Dashboard',
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Lembar Hasil',
+      'Hasil Temuan',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+    ],
+  };
+
+  return SidebarContent.map((item) => {
+    const filteredChildren = item.children?.filter((child) => {
+      // const allowedNames = roleBasedFilter[role as keyof typeof roleBasedFilter];
+      const allowedNames =
+        roleBasedFilter[role as keyof typeof roleBasedFilter];
+
+      return allowedNames ? allowedNames.includes(child.name as string) : false;
+    });
+
+    return { ...item, children: filteredChildren };
+  }).filter((item) => item.children && item.children.length > 0);
+}
+
+// const filteredSidebarContent = filterSidebarByRole(SidebarContent, userRole);
+
+// Gunakan `filteredSidebarContent` untuk menampilkan sidebar

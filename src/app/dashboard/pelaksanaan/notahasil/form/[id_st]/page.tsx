@@ -1,4 +1,5 @@
 import NotaHasilPengawasan from '@/app/components/pelaksanaan/form/notaHasilPengawasan';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
 
 interface PageProps {
@@ -11,9 +12,11 @@ const FormNotaHasilPage = ({ params }: PageProps) => {
   const id_st = params.id_st;
 
   return (
-    <div>
+    <AuthRoleWrapper
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
+    >
       <NotaHasilPengawasan id_st={id_st} />
-    </div>
+    </AuthRoleWrapper>
   );
 };
 

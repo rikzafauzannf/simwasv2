@@ -2,6 +2,8 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
+import Image from 'next/image';
+import iconsRuangLingkup from '/public/images/products/ruang_lingkup_bg.svg';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -109,8 +111,13 @@ const ChartRuangLingkup = () => {
   return (
     <div className="w-full">
       <div className="flex gap-2 items-center">
-        <img
+        {/* <img
           src="/images/products/ruang_lingkup_bg.svg"
+          className="w-8 md:w-10"
+        /> */}
+        <Image
+          src={iconsRuangLingkup}
+          alt="icon-ruang-lingkup"
           className="w-8 md:w-10"
         />
         <h3 className="font-bold text-sm md:text-lg text-neutral-700">

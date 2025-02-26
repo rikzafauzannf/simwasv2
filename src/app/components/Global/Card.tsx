@@ -1,5 +1,6 @@
 'use client';
 
+import { Card } from 'flowbite-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -19,9 +20,9 @@ interface PropsHeading {
 
 export const CardComponents: React.FC<PropsComponent> = ({ children }) => {
   return (
-    <div className="w-full rounded-md shadow-md p-6 bg-white space-y-2 overflow-hidden">
+    <Card className="w-full shadow-md bg-white space-y-2 overflow-hidden">
       {children}
-    </div>
+    </Card>
   );
 };
 
@@ -31,11 +32,11 @@ export const CardHeaderContent: React.FC<PropsHeading> = ({
 }) => {
   return (
     <>
-      <div className="w-full rounded-md shadow-md p-6 bg-white space-y-2">
+      <Card className="w-full shadow-md bg-white space-y-2">
         <p>{Header}</p>
         <hr />
         {children}
-      </div>
+      </Card>
     </>
   );
 };
@@ -43,7 +44,7 @@ export const CardHeaderContent: React.FC<PropsHeading> = ({
 export const CardAccumulate: React.FC<Props> = ({ Header, Count, imgurl }) => {
   return (
     <>
-      <div className="w-full rounded-md shadow-md p-6 bg-white space-y-2">
+      <Card className="w-full  shadow-md  bg-white space-y-2">
         <div className="flex items-center">
           {imgurl && (
             <Image
@@ -62,7 +63,7 @@ export const CardAccumulate: React.FC<Props> = ({ Header, Count, imgurl }) => {
             <h3 className="text-neutral-500 text-sm md:text-base">{Header}</h3>
           </div>
         </div>
-      </div>
+      </Card>
     </>
   );
 };

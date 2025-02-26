@@ -10,7 +10,7 @@ import {
   useGetNameTingkatResiko,
   useGetNameUser,
 } from '@/hooks/useGetName';
-import { formatCurrency } from '@/hooks/formatCurrency';
+import { formatCurrency, formatToLocalDate } from '@/data/formatData';
 
 interface Props {
   id_pkpt: number;
@@ -45,7 +45,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       </div>
       <p>Ruang Lingkup:</p>
       <section className="grid lg:grid-cols-4 gap-3">
-        <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
+        <div className="bg-white p-2 rounded-md shadow-md text-center font-semibold">
           {DataPKPT
             ? getNameRuangLingkup(DataPKPT.id_ruang_lingkup)
             : 'No data available'}
@@ -82,7 +82,9 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         <CardComponents>
           <p className="text-sm">Anggaran</p>
           <h3 className="text-xl">
-            {DataPKPT ? formatCurrency(DataPKPT.anggaran) : 'No data available'}
+            {DataPKPT
+              ? formatCurrency(Number(DataPKPT.anggaran))
+              : 'No data available'}
           </h3>
         </CardComponents>
       </section>
@@ -90,45 +92,26 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       <CardComponents>
         <p>Jadwal Penugasan</p>
         <hr />
-        <section className="grid ld:grid-cols-2 gap-3">
+        <section className="grid md:grid-cols-2 gap-3">
           <div>
             <p>Rencana Mulai Penugasan</p>
-            <h3>{DataPKPT ? DataPKPT.rmp_pkpt : 'No data available'}</h3>
+            <h3>
+              {DataPKPT
+                ? formatToLocalDate(DataPKPT.rmp_pkpt)
+                : 'No data available'}
+            </h3>
           </div>
           <div>
             <p>Rencana Penerbitan Laporan</p>
-            <h3>{DataPKPT ? DataPKPT.rpl_pkpt : 'No data available'}</h3>
+            <h3>
+              {DataPKPT
+                ? formatToLocalDate(DataPKPT.rpl_pkpt)
+                : 'No data available'}
+            </h3>
           </div>
         </section>
       </CardComponents>
-      {/* section tujuan dan tim */}
-      <section className="grid lg:grid-cols-2 gap-3">
-        <CardComponents>
-          <p className="font-medium">Tujuan/Sasaran</p>
-          <p className="text-slate-950">
-            {DataPKPT ? DataPKPT.tujuan_sasaran : 'No data available'}
-          </p>
-        </CardComponents>
-        <CardComponents>
-          <p className="font-medium">Tim</p>
-          <div className="flex flex-col gap-2">
-            {DataPKPT
-              ? DataPKPT?.tim.split(',').map((item, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950"
-                  >
-                    {getNameUser(Number(item))}
-                  </div>
-                ))
-              : 'No data available'}
-            {/* {DataPKPT?.tim
-              .split(',')
-              .map((id) => getNameUser(Number(id)))
-              .join(', ')} */}
-          </div>
-        </CardComponents>
-      </section>
+
       {/* section hari kerja */}
       <CardComponents>
         <p>Hari Penugasan</p>
@@ -140,7 +123,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
             </h2>
           </div>
           <div className="flex-1">
-            <div className="grid lg:grid-cols-3 gap-3">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
               <div>
                 <small>Penanggung Jawab</small>
                 <h3>
@@ -173,6 +156,34 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
           </div>
         </section>
       </CardComponents>
+      {/* section tujuan dan tim */}
+      <section className="grid lg:grid-cols-2 gap-3">
+        <CardComponents>
+          <p className="font-medium">Tujuan/Sasaran</p>
+          <p className="text-slate-950">
+            {DataPKPT ? DataPKPT.tujuan_sasaran : 'No data available'}
+          </p>
+        </CardComponents>
+        <CardComponents>
+          <p className="font-medium">Tim</p>
+          <div className="flex flex-col gap-2">
+            {DataPKPT
+              ? DataPKPT?.tim.split('|').map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950"
+                  >
+                    {item}
+                  </div>
+                ))
+              : 'No data available'}
+            {/* {DataPKPT?.tim
+              .split(',')
+              .map((id) => getNameUser(Number(id)))
+              .join(', ')} */}
+          </div>
+        </CardComponents>
+      </section>
       {/* data minor */}
       <section className="grid lg:grid-cols-2 gap-3">
         <CardComponents>

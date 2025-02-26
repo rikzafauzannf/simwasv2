@@ -188,6 +188,13 @@ export const useGetNameKode = () => {
     return data.length > 0 ? data[0].kode_rekomendasi : '';
   };
 
+  const getFieldKodeRekomendasi = (id: number) => {
+    const data = DataKodeRekomendasi.filter(
+      (item) => item.id_kode_rekomendasi === id
+    );
+    return data.length > 0 ? data[0].keterangan_kode : '';
+  };
+
   const getNameKodeReferensi = (id: number) => {
     const data = DataKodeReferensi.filter(
       (item) => item.id_kode_referensi === id
@@ -195,12 +202,30 @@ export const useGetNameKode = () => {
     return data.length > 0 ? data[0].kode_referensi : '';
   };
 
+  const getFieldKodeReferensi = (id: number) => {
+    const data = DataKodeReferensi.filter(
+      (item) => item.id_kode_referensi === id
+    );
+    return data.length > 0 ? data[0].keterangan_kode : '';
+  };
+
   const getNameKodeTemuan = (id: number) => {
     const data = DataKodeTemuan.filter((item) => item.id_kode_temuan === id);
     return data.length > 0 ? data[0].kode_temuan : '';
   };
+  const getFieldKodeTemuan = (id: number) => {
+    const data = DataKodeTemuan.filter((item) => item.id_kode_temuan === id);
+    return data.length > 0 ? data[0].keterangan_kode : '';
+  };
 
-  return { getNameKodeRekomendasi, getNameKodeReferensi, getNameKodeTemuan };
+  return {
+    getNameKodeRekomendasi,
+    getNameKodeReferensi,
+    getNameKodeTemuan,
+    getFieldKodeRekomendasi,
+    getFieldKodeReferensi,
+    getFieldKodeTemuan,
+  };
 };
 
 // ======TLHP Temuan Hasil======

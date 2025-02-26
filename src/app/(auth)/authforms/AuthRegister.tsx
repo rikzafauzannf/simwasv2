@@ -3,6 +3,7 @@ import {
   InputFieldComponent,
   SelectInputField,
 } from '@/app/components/Global/Input';
+import { useOptions } from '@/data/selectValue';
 import { useFetch } from '@/hooks/useFetch';
 import { useGetNameRuangLingkup } from '@/hooks/useGetName';
 import { RuangLingkupDB } from '@/interface/interfaceReferensi';
@@ -18,7 +19,8 @@ import Swal from 'sweetalert2';
 const axiosService = new AxiosService();
 
 const AuthRegister = () => {
-  const { data: DataRuangLingkup } = useFetch<RuangLingkupDB>('ruang_lingkup');
+  // const { data: DataRuangLingkup } = useFetch<RuangLingkupDB>('ruang_lingkup');
+  const { optionsRuangLingkup } = useOptions();
   const {
     register,
     handleSubmit,
@@ -44,33 +46,33 @@ const AuthRegister = () => {
   if (isLoadingRuangLingkup) return <div>Loading...</div>;
   if (errorRuangLingkup) return <div>Error: {errorRuangLingkup.message}</div>;
 
-  const optionRuangLingkup = DataRuangLingkup.map((item) => ({
-    value: String(item.id_ruang_lingkup),
-    title: item.ruang_lingkup,
-  }));
+  // const optionRuangLingkup = DataRuangLingkup.map((item) => ({
+  //   value: String(item.id_ruang_lingkup),
+  //   title: item.ruang_lingkup,
+  // }));
 
-  const OptionsRole = [
-    {
-      value: 'Admin',
-      title: 'Admin',
-    },
-    {
-      value: 'Pimpinan',
-      title: 'Pimpinan',
-    },
-    {
-      value: 'Perencana',
-      title: 'Perencana',
-    },
-    {
-      value: 'Pelaksana',
-      title: 'Pelaksana',
-    },
-    {
-      value: 'Auditor',
-      title: 'Auditor',
-    },
-  ];
+  // const OptionsRole = [
+  //   {
+  //     value: 'Admin',
+  //     title: 'Admin',
+  //   },
+  //   {
+  //     value: 'Pimpinan',
+  //     title: 'Pimpinan',
+  //   },
+  //   {
+  //     value: 'Perencana',
+  //     title: 'Perencana',
+  //   },
+  //   {
+  //     value: 'Pelaksana',
+  //     title: 'Pelaksana',
+  //   },
+  //   {
+  //     value: 'Auditor',
+  //     title: 'Auditor',
+  //   },
+  // ];
 
   const onSubmit: SubmitHandler<FormUserManage> = async (data) => {
     try {
@@ -146,7 +148,7 @@ const AuthRegister = () => {
           <SelectInputField
             label="Asal Dinas"
             identiti="select-field-asal"
-            options={optionRuangLingkup}
+            options={optionsRuangLingkup}
             register={register('id_ruang_lingkup')}
             placeholder="Pilih Ruang Lingkup Anda"
             error={errors.id_ruang_lingkup}

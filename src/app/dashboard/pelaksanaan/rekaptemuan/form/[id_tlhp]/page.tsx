@@ -7,6 +7,7 @@ import { useFetchById } from '@/hooks/useFetchById';
 import { FormRekapTemuan } from '@/interface/interfaceRekapTemuan';
 import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
 import { FormTindakLanjut } from '@/interface/interfaceTindakLanjut';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useRouter } from 'next/navigation';
@@ -72,79 +73,81 @@ const RekapTemuanFormPage: React.FC<PageProps> = ({ params }) => {
     }
   };
   return (
-    <div className="space-y-3">
-      <h3 className="text-xl">Rekap Temuan</h3>
-      <CardComponents>
-        <h1>#{DataTemuanHasil?.kondisi_temuan}</h1>
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <p>Rekomendasi dan Saran</p>
-            <h3>{DataTemuanHasil?.rekomendasi_saran}</h3>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor']}>
+      <div className="space-y-3">
+        <h3 className="text-xl">Rekap Temuan</h3>
+        <CardComponents>
+          <h1>#{DataTemuanHasil?.kondisi_temuan}</h1>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <p>Rekomendasi dan Saran</p>
+              <h3>{DataTemuanHasil?.rekomendasi_saran}</h3>
+            </div>
+            <div>
+              <p>Nilai Rekomendasi</p>
+              <h3>{DataTemuanHasil?.nilai_rekomendasi}</h3>
+            </div>
           </div>
-          <div>
-            <p>Nilai Rekomendasi</p>
-            <h3>{DataTemuanHasil?.nilai_rekomendasi}</h3>
-          </div>
-        </div>
-        <hr />
-        <h2>
-          {'>>'} {DataTemuanHasil?.uraian}
-        </h2>
-      </CardComponents>
-      <CardComponents>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid md:grid-cols-2 gap-3 w-full"
-        >
-          <InputFieldComponent
-            label="Jumlah Kejadian"
-            identiti="jumlah_kejadian"
-            type="text"
-            name="jumlah_kejadian"
-            placeholder="Tentukan Jumlah Kejadian"
-            register={register('jumlah_kejadian', {
-              required: 'Jumlah Kejadian Wajib diisi',
-            })}
-            error={errors.jumlah_kejadian}
-          />
+          <hr />
+          <h2>
+            {'>>'} {DataTemuanHasil?.uraian}
+          </h2>
+        </CardComponents>
+        <CardComponents>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid md:grid-cols-2 gap-3 w-full"
+          >
+            <InputFieldComponent
+              label="Jumlah Kejadian"
+              identiti="jumlah_kejadian"
+              type="text"
+              name="jumlah_kejadian"
+              placeholder="Tentukan Jumlah Kejadian"
+              register={register('jumlah_kejadian', {
+                required: 'Jumlah Kejadian Wajib diisi',
+              })}
+              error={errors.jumlah_kejadian}
+            />
 
-          <div className="flex justify-start items-center gap-3 w-full">
-            <div className="flex-1">
+            <div className="flex justify-start items-center gap-3 w-full">
+              <div className="flex-1">
+                <InputFieldComponent
+                  label="Persentase"
+                  identiti="persentase"
+                  type="range"
+                  name="persentase"
+                  placeholder="Masukan Persentase"
+                  register={register('persentase', {
+                    required: 'Tentuka Range persentase temuan',
+                    valueAsNumber: true,
+                  })}
+                  error={errors.persentase}
+                />
+              </div>
+              <h1>{watch('persentase')}%</h1>
+            </div>
+
+            <div className="col-span-2">
               <InputFieldComponent
-                label="Persentase"
-                identiti="persentase"
-                type="range"
-                name="persentase"
-                placeholder="Masukan Persentase"
-                register={register('persentase', {
-                  required: 'Tentuka Range persentase temuan',
-                  valueAsNumber: true,
+                label="Nilai Rupiah"
+                identiti="nilai_rp"
+                type="text"
+                name="nilai_rp"
+                placeholder="Masukan Nilai Rupiaj yang ditemukan"
+                register={register('nilai_rp', {
+                  required: 'NIlai Rupiah wajib diisi',
                 })}
-                error={errors.persentase}
+                error={errors.nilai_rp}
               />
             </div>
-            <h1>{watch('persentase')}%</h1>
-          </div>
-
-          <div className="col-span-2">
-            <InputFieldComponent
-              label="Nilai Rupiah"
-              identiti="nilai_rp"
-              type="text"
-              name="nilai_rp"
-              placeholder="Masukan Nilai Rupiaj yang ditemukan"
-              register={register('nilai_rp', {
-                required: 'NIlai Rupiah wajib diisi',
-              })}
-              error={errors.nilai_rp}
-            />
-          </div>
-          <div className="md:col-span-2">
-            <ButtonType type="submit" Text="Buat Rekap Temuan" />
-          </div>
-        </form>
-      </CardComponents>
-    </div>
+            <div className="md:col-span-2">
+              <ButtonType type="submit" Text="Buat Rekap Temuan" />
+            </div>
+          </form>
+        </CardComponents>
+      </div>
+    </AuthRoleWrapper>
   );
 };
 

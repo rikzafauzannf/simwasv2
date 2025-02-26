@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Select } from 'flowbite-react';
 import { ApexOptions } from 'apexcharts';
+import Image from 'next/image';
+import IconsPerbandinganAnggaran from '/public/images/products/comparasi_bg.svg';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -154,7 +156,12 @@ const RevenueForecast = () => {
       <div className=" md:flex justify-between items-center">
         <h5 className="flex gap-2 items-center text-sm md:text-lg">
           {' '}
-          <img src="images/products/comparasi_bg.svg" className="md:w-10 w-8" />
+          {/* <img src="/images/products/comparasi_bg.svg" className="md:w-10 w-8" /> */}
+          <Image
+            src={IconsPerbandinganAnggaran}
+            alt="icons-perbandingan-anggaran"
+            className="md:w-10 w-8"
+          />
           Anggaran Awal - Rekomendasi
         </h5>
         <Select
