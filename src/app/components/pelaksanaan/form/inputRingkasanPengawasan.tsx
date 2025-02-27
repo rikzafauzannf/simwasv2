@@ -45,9 +45,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   } = useForm<FormTemuanHasil>({
     defaultValues: {
       kondisi_temuan: '',
-      rekomendasi_saran: '',
       uraian: '',
-      nilai_rekomendasi: 0,
     },
     mode: 'onBlur',
   });
@@ -56,14 +54,13 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
     try {
       const FielsTemuanHasil: FormTemuanHasil = {
         // id_kode_referensi: Number(data.id_kode_referensi),
-        id_kode_referensi: 0,
-        id_kode_rekomendasi: Number(data.id_kode_rekomendasi),
+        // id_kode_rekomendasi: Number(data.id_kode_rekomendasi),
         id_kode_temuan: Number(data.id_kode_temuan),
         id_st: Number(id_st),
         id_user: Number(user?.id_user),
-        nilai_rekomendasi: Number(data.nilai_rekomendasi),
+        // nilai_rekomendasi: Number(data.nilai_rekomendasi),
         kondisi_temuan: data.kondisi_temuan,
-        rekomendasi_saran: data.rekomendasi_saran,
+        // rekomendasi_saran: data.rekomendasi_saran,
         uraian: data.uraian,
       };
       console.log('Data yang dikirim:', FielsTemuanHasil);
@@ -75,10 +72,10 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
       console.log('Respons dari server:', result);
 
       if (result.success) {
-        console.log('Jenis Pengawasan berhasil disimpan:', result);
+        console.log('Temuan Hasil berhasil disimpan:', result);
         Swal.fire({
           title: 'Berhasil!',
-          text: 'Data Jenis Pengawasan berhasil disimpan. Apakah Anda ingin menginput data lagi?',
+          text: 'Data Temuan Hasil berhasil disimpan. Apakah Anda ingin menginput data lagi?',
           icon: 'success',
           showCancelButton: true,
           confirmButtonText: 'Input Lagi',
@@ -147,69 +144,6 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
                 error={errors.kondisi_temuan}
               />
             </div>
-          </section>
-          <h3>Rekomendasi dan Sasaran</h3>
-          <section className="grid lg:grid-cols-3 gap-3">
-            <SelectInputField
-              label="Kode Rekomendasi"
-              identiti="kodeRekomendasi"
-              options={optionKodeRekomendasi}
-              register={register('id_kode_rekomendasi', {
-                required: 'Pilih Kode Rekomendasi',
-              })}
-              placeholder="Pilih Kode Rekomendasi"
-              // error={errors.JenisPengawasan}
-              type="select"
-              name="kodeRekomendasi"
-              error={errors.id_kode_rekomendasi}
-            />
-            <div className="lg:col-span-2">
-              <InputFieldComponent
-                label="Nilai Rekomendasi Rp."
-                identiti="nilaiRekomendasi"
-                name="nilaiRekomendasi"
-                placeholder="Masukan Nominal Rekomendasi"
-                type="number"
-                register={register('nilai_rekomendasi', {
-                  min: 0,
-                })}
-              />
-            </div>
-
-            <div className="lg:col-span-3">
-              <InputFieldComponent
-                label="Rekomendasi/Saran"
-                identiti="rekomendasiSaran"
-                name="rekomendasiSaran"
-                placeholder="Masukan Rekomendasi/Saran"
-                type="text"
-                register={register('rekomendasi_saran', {
-                  required: 'Masukan Rekomendasi dan Saran',
-                })}
-                error={errors.rekomendasi_saran}
-              />
-              {/* <SelectInputField
-                label="Kode Referensi"
-                identiti="kodeReferensi"
-                options={optionKodeReferensi}
-                register={register('id_kode_referensi', {
-                  required: 'Pilih Kode Referensi',
-                })}
-                error={errors.id_kode_referensi}
-                placeholder="Pilih Kode Referensi"
-                type="select"
-                name="kodeReferensi"
-              /> */}
-            </div>
-
-            {/* <InputFieldComponent
-              label="Link Google Drive"
-              identiti="link"
-              name="link"
-              placeholder="Masukan Nominal Rekomendasi"
-              type="number"
-              register={'link'}
-            /> */}
           </section>
           <ButtonType Text="+ Buat Ringkasan Pengawasan" type="submit" />
         </form>
