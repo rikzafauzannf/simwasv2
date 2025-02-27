@@ -127,21 +127,21 @@ const TableTemuanHasil: React.FC = () => {
       selector: (row) => row.kondisi_temuan,
       sortable: true,
     },
-    {
-      name: 'Kode Rekomendasi',
-      selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
-      sortable: true,
-    },
-    {
-      name: 'Rekomendasi/Saran',
-      selector: (row) => row.rekomendasi_saran,
-      sortable: true,
-    },
-    {
-      name: 'Nilai Rekomendasi',
-      selector: (row) => formatCurrency(row.nilai_rekomendasi),
-      sortable: true,
-    },
+    // {
+    //   name: 'Kode Rekomendasi',
+    //   selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Rekomendasi/Saran',
+    //   selector: (row) => row.rekomendasi_saran,
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Nilai Rekomendasi',
+    //   selector: (row) => formatCurrency(row.nilai_rekomendasi),
+    //   sortable: true,
+    // },
     // {
     //   name: 'Kode Referensi',
     //   selector: (row) => getNameKodeReferensi(row.id_kode_referensi),
