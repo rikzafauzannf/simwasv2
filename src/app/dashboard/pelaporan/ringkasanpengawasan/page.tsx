@@ -17,7 +17,7 @@ const RingkasanPengawasanPage = () => {
           todo="pelaporan/ringkasanpengawasan"
         />
         <div className="grid min-w-full gap-3">
-          {/* <CardComponents> */}
+          {/* <CardCompo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nents> */}
             <TableTemuanHasil />
           {/* </CardComponents> */}
 
