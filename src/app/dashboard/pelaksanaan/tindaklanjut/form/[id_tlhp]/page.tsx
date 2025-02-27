@@ -112,13 +112,13 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
         });
       }
     }
-    if (
-      TemuanHasilData?.nilai_rekomendasi !== undefined &&
-      !isNaN(Number(nilai_setor))
-    ) {
-      const sisa = TemuanHasilData.nilai_rekomendasi - Number(nilai_setor);
-      setValue('sisa_nominal', sisa, { shouldValidate: true });
-    }
+    // if (
+    //   TemuanHasilData?.nilai_rekomendasi !== undefined &&
+    //   !isNaN(Number(nilai_setor))
+    // ) {
+    //   const sisa = TemuanHasilData.nilai_rekomendasi - Number(nilai_setor);
+    //   setValue('sisa_nominal', sisa, { shouldValidate: true });
+    // }
   }, [TemuanHasilData, nilai_setor, tanggal_pengiriman, setValue]);
 
   const { OptionsStatusTL } = useOptions();

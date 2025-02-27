@@ -79,14 +79,14 @@ const RekapTemuanFormPage: React.FC<PageProps> = ({ params }) => {
         <CardComponents>
           <h1>#{DataTemuanHasil?.kondisi_temuan}</h1>
           <div className="grid grid-cols-2 gap-2">
-            <div>
+            {/* <div>
               <p>Rekomendasi dan Saran</p>
               <h3>{DataTemuanHasil?.rekomendasi_saran}</h3>
             </div>
             <div>
               <p>Nilai Rekomendasi</p>
               <h3>{DataTemuanHasil?.nilai_rekomendasi}</h3>
-            </div>
+            </div> */}
           </div>
           <hr />
           <h2>

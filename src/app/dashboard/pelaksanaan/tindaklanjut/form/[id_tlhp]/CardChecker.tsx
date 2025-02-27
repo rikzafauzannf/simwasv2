@@ -37,7 +37,7 @@ const CardChecker = ({ id_tlhp }: { id_tlhp: number }) => {
           <p>Kondisi Temuan</p>
           <h1>{DataTemuan?.kondisi_temuan}</h1>
         </div>
-        <div>
+        {/* <div>
           <p>Kode Rekomendasi</p>
           <h1>
             {getNameKodeRekomendasi(Number(DataTemuan?.id_kode_rekomendasi))}
@@ -53,7 +53,7 @@ const CardChecker = ({ id_tlhp }: { id_tlhp: number }) => {
         <div>
           <p>Nilai Rekomendasi</p>
           <h1>{formatCurrency(Number(DataTemuan?.nilai_rekomendasi))}</h1>
-        </div>
+        </div> */}
       </div>
       <div className="flex justify-between items-baseline gap-3">
         <Link

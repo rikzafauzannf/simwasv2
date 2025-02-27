@@ -130,7 +130,7 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
                               <p>kode temuan</p>
                               <h1>{temuan.kondisi_temuan}</h1>
                             </div>
-                            <div>
+                            {/* <div>
                               <p>kode Rekomendasi</p>
                               <h1>
                                 {getNameKodeRekomendasi(
@@ -152,7 +152,7 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
                               <h1>
                                 {formatCurrency(temuan.nilai_rekomendasi)}
                               </h1>
-                            </div>
+                            </div> */}
                           </div>
                           <div className="flex justify-between items-baseline gap-3">
                             <Link

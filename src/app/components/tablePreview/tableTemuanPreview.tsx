@@ -4,7 +4,7 @@ import PdfGenerator from '@/app/components/PDFGenerator';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useGetNameKode, useGetNameST } from '@/hooks/useGetName';
 import { KodeTemuanDB } from '@/interface/interfaceReferensi';
-import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import { RekomendasiData, TemuanHasilData } from '@/interface/interfaceTemuanHasil';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { Table } from 'flowbite-react';
 import React from 'react';
@@ -15,6 +15,7 @@ const TableTemuanPreview = () => {
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { getNameNoSP } = useGetNameST();
   const { getNameKodeTemuan, getNameKodeRekomendasi } = useGetNameKode();
+  const { data: RekomendasiData } = useFetchAll<RekomendasiData>('rekomendasi');
 
   // Group data by SP number
   const groupedData = React.useMemo(() => {
@@ -29,6 +30,26 @@ const TableTemuanPreview = () => {
     return groups;
   }, [DataTemuanHasil, getNameNoSP]);
 
+  // Map temuan with their associated recommendations
+  const temuanWithRekomendasi = React.useMemo(() => {
+    return Object.entries(groupedData).map(([spNumber, temuans]) => {
+      return {
+        spNumber,
+        temuans: temuans.map(temuan => {
+          // Get all recommendations for this temuan
+          const rekomendasiList = RekomendasiData.filter(
+            rek => rek.id_tlhp === temuan.id_tlhp
+          );
+          
+          return {
+            ...temuan,
+            rekomendasiList: rekomendasiList.length > 0 ? rekomendasiList : []
+          };
+        })
+      };
+    });
+  }, [groupedData, RekomendasiData]);
+
   const mergedDataTemuan = React.useMemo(() => {
     return DataTemuanHasil.map((item) => {
       const kodeTemuan = DataKodeTemuan.find(
@@ -36,10 +57,23 @@ const TableTemuanPreview = () => {
       );
       return {
         ...item,
-        kode_temuan: kodeTemuan ? kodeTemuan.kode_temuan : null, // Gabungkan kode_temuan
+        kode_temuan: kodeTemuan ? kodeTemuan.kode_temuan : null,
       };
-    }).filter((item) => item.kode_temuan !== null); // Hanya ambil yang memiliki pasangan
+    }).filter((item) => item.kode_temuan !== null);
   }, [DataTemuanHasil, DataKodeTemuan]);
+
+  // Calculate total recommendations
+  const totalRekomendasi = React.useMemo(() => {
+    return RekomendasiData.length;
+  }, [RekomendasiData]);
+
+  // Calculate total nilai rekomendasi
+  const totalNilaiRekomendasi = React.useMemo(() => {
+    return RekomendasiData.reduce(
+      (sum, current) => sum + (Number(current.rekomendasi_nilai) || 0),
+      0
+    );
+  }, [RekomendasiData]);
 
   return (
     <AuthRoleWrapper
@@ -84,123 +118,237 @@ const TableTemuanPreview = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {Object.entries(groupedData).map(
-                      ([spNumber, items], groupIndex) => {
-                        return items.map((item, itemIndex) => (
-                          <tr
-                            key={item.id_tlhp}
-                            className="hover:bg-gray-100 text-center align-middle"
-                          >
-                            {itemIndex === 0 && (
-                              <>
-                                <td
-                                  className="border border-gray-300 p-2"
-                                  rowSpan={items.length}
-                                >
-                                  {groupIndex + 1}
+                    {temuanWithRekomendasi.map(
+                      ({ spNumber, temuans }, groupIndex) => {
+                        let rowCount = 0;
+                        temuans.forEach(temuan => {
+                          // Count how many rows each temuan will need
+                          rowCount += temuan.rekomendasiList.length > 0 
+                            ? temuan.rekomendasiList.length 
+                            : 1;
+                        });
+                        
+                        return temuans.flatMap((temuan, temuanIndex) => {
+                          // If no recommendations, show one row with empty recommendation
+                          if (temuan.rekomendasiList.length === 0) {
+                            return (
+                              <tr
+                                key={`${temuan.id_tlhp}-empty`}
+                                className="hover:bg-gray-100 text-center align-middle"
+                              >
+                                {temuanIndex === 0 && (
+                                  <>
+                                    <td
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={rowCount}
+                                    >
+                                      {groupIndex + 1}
+                                    </td>
+                                    <td
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={rowCount}
+                                    >
+                                      {spNumber}
+                                    </td>
+                                  </>
+                                )}
+                                <td className="border border-gray-300 p-2">
+                                  {temuan.uraian}
                                 </td>
-                                <td
-                                  className="border border-gray-300 p-2"
-                                  rowSpan={items.length}
-                                >
-                                  {spNumber}
+                                <td className="border border-gray-300 p-2">
+                                  T{temuanIndex + 1}
                                 </td>
-                              </>
-                            )}
-                            <td className="border border-gray-300 p-2">
-                              {item.uraian}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              T{itemIndex + 1}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {item.kondisi_temuan}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {getNameKodeTemuan(Number(item.id_kode_temuan))}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {
-                                getNameKodeTemuan(
-                                  Number(item.id_kode_temuan)
-                                ).split('.')[0]
-                              }
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {item.rekomendasi_saran}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {
-                                getNameKodeRekomendasi(
-                                  item.id_kode_rekomendasi
-                                ).split('.')[0]
-                              }
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {item.nilai_rekomendasi}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {
-                                getNameKodeRekomendasi(
-                                  item.id_kode_rekomendasi
-                                ).split('.')[0]
-                              }
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {getNameKodeRekomendasi(item.id_kode_rekomendasi)}
-                            </td>
-                          </tr>
-                        ));
+                                <td className="border border-gray-300 p-2">
+                                  {temuan.kondisi_temuan}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {getNameKodeTemuan(Number(temuan.id_kode_temuan))}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {
+                                    getNameKodeTemuan(
+                                      Number(temuan.id_kode_temuan)
+                                    ).split('.')[0]
+                                  }
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {/* Empty rekomendasi cell */}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {/* Empty kode rekomendasi prefix cell */}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {/* Empty nilai rekomendasi cell */}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {/* Empty kode rekomendasi prefix cell */}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {/* Empty kode rekomendasi cell */}
+                                </td>
+                              </tr>
+                            );
+                          }
+                          
+                          // For temuans with recommendations
+                          return temuan.rekomendasiList.map((rekomendasi, rekIndex) => {
+                            const isFirstRow = temuanIndex === 0 && rekIndex === 0;
+                            const isFirstRekForTemuan = rekIndex === 0;
+                            
+                            return (
+                              <tr
+                                key={`${temuan.id_tlhp}-${rekomendasi.id_rekomendasi}-${rekIndex}`}
+                                className="hover:bg-gray-100 text-center align-middle"
+                              >
+                                {isFirstRow && (
+                                  <>
+                                    <td
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={rowCount}
+                                    >
+                                      {groupIndex + 1}
+                                    </td>
+                                    <td
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={rowCount}
+                                    >
+                                      {spNumber}
+                                    </td>
+                                  </>
+                                )}
+                                
+                                {isFirstRekForTemuan && (
+                                  <>
+                                    <td 
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={temuan.rekomendasiList.length}
+                                    >
+                                      {temuan.uraian}
+                                    </td>
+                                    <td 
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={temuan.rekomendasiList.length}
+                                    >
+                                      T{temuanIndex + 1}
+                                    </td>
+                                    <td 
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={temuan.rekomendasiList.length}
+                                    >
+                                      {temuan.kondisi_temuan}
+                                    </td>
+                                    <td 
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={temuan.rekomendasiList.length}
+                                    >
+                                      {getNameKodeTemuan(Number(temuan.id_kode_temuan))}
+                                    </td>
+                                    <td 
+                                      className="border border-gray-300 p-2"
+                                      rowSpan={temuan.rekomendasiList.length}
+                                    >
+                                      {
+                                        getNameKodeTemuan(
+                                          Number(temuan.id_kode_temuan)
+                                        ).split('.')[0]
+                                      }
+                                    </td>
+                                  </>
+                                )}
+                                
+                                <td className="border border-gray-300 p-2">
+                                  {rekomendasi.rekomendasi_saran}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {
+                                    getNameKodeRekomendasi(
+                                      rekomendasi.id_kode_rekomendasi
+                                    ).split('.')[0]
+                                  }
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {rekomendasi.rekomendasi_nilai}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {
+                                    getNameKodeRekomendasi(
+                                      rekomendasi.id_kode_rekomendasi
+                                    ).split('.')[0]
+                                  }
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {getNameKodeRekomendasi(
+                                    rekomendasi.id_kode_rekomendasi
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          });
+                        });
                       }
                     )}
+                    
                     {/* Kode Temuan Summary Section */}
-
                     {DataKodeTemuan.filter(
                       (itemsfilter) =>
                         itemsfilter.kode_temuan?.split('.')[1] === '00'
-                    ).map((item, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-gray-100 text-center align-middle"
-                      >
-                        <td
-                          className="border border-gray-300 p-2 text-center"
-                          colSpan={6}
+                    ).map((item, index) => {
+                      // Count temuans with this kode_temuan
+                      const temuanCount = mergedDataTemuan.filter(
+                        (filterby) =>
+                          filterby.kode_temuan?.split('.')[0] ===
+                          item.kode_temuan?.split('.')[0]
+                      ).length;
+                      
+                      // Get temuans with this kode_temuan prefix
+                      const relatedTemuans = mergedDataTemuan.filter(
+                        (filterby) =>
+                          filterby.kode_temuan?.split('.')[0] ===
+                          item.kode_temuan?.split('.')[0]
+                      );
+                      
+                      // Get all id_tlhp values from filtered temuans
+                      const relatedTlhpIds = relatedTemuans.map(temuan => temuan.id_tlhp);
+                      
+                      // Count rekomendasi associated with these temuan
+                      const rekomendasiCount = RekomendasiData.filter(rek => 
+                        relatedTlhpIds.includes(rek.id_tlhp)
+                      ).length;
+                      
+                      // Calculate total nilai for this kode_temuan
+                      const totalNilai = RekomendasiData.filter(rek => 
+                        relatedTlhpIds.includes(rek.id_tlhp)
+                      ).reduce((sum, rek) => 
+                        sum + (Number(rek.rekomendasi_nilai) || 0), 0
+                      );
+                      
+                      return (
+                        <tr
+                          key={`summary-${index}`}
+                          className="hover:bg-gray-100 text-center align-middle"
                         >
-                          {item.keterangan_kode}
-                        </td>
-                        <td className="border border-gray-300 p-2 text-center">
-                          {
-                            mergedDataTemuan.filter(
-                              (filterby) =>
-                                filterby.kode_temuan?.split('.')[0] ===
-                                item.kode_temuan?.split('.')[0]
-                            ).length
-                          }
-                        </td>
-                        <td className="border border-gray-300 p-2 text-center"></td>
-                        <td className="border border-gray-300 p-2 text-center">
-                          {
-                            mergedDataTemuan.filter(
-                              (filterby) =>
-                                filterby.kode_temuan?.split('.')[0] ===
-                                item.kode_temuan?.split('.')[0]
-                            ).length
-                          }
-                        </td>
-                        <td className="border border-gray-300 p-2 text-center">
-                          {DataTemuanHasil.filter(
-                            (filterby) =>
-                              filterby.id_kode_temuan === item.id_kode_temuan
-                          ).reduce(
-                            (sum, current) => sum + current.nilai_rekomendasi,
-                            0
-                          )}
-                        </td>
-                        <td className="border border-gray-300 p-2 text-center"></td>
-                        <td className="border border-gray-300 p-2 text-center"></td>
-                      </tr>
-                    ))}
+                          <td
+                            className="border border-gray-300 p-2 text-center"
+                            colSpan={6}
+                          >
+                            {item.keterangan_kode}
+                          </td>
+                          <td className="border border-gray-300 p-2 text-center">
+                            {temuanCount}
+                          </td>
+                          <td className="border border-gray-300 p-2 text-center"></td>
+                          <td className="border border-gray-300 p-2 text-center">
+                            {rekomendasiCount}
+                          </td>
+                          <td className="border border-gray-300 p-2 text-center">
+                            {totalNilai}
+                          </td>
+                          <td className="border border-gray-300 p-2 text-center"></td>
+                          <td className="border border-gray-300 p-2 text-center"></td>
+                        </tr>
+                      );
+                    })}
+                    
                     {/* Total Row */}
                     <tr className="hover:bg-gray-100 text-center align-middle">
                       <td
@@ -214,13 +362,10 @@ const TableTemuanPreview = () => {
                       </td>
                       <td className="border border-gray-300 p-2 text-center"></td>
                       <td className="border border-gray-300 p-2 text-center">
-                        {DataTemuanHasil.length}
+                        {RekomendasiData.length}
                       </td>
                       <td className="border border-gray-300 p-2 text-center">
-                        {DataTemuanHasil.reduce(
-                          (sum, current) => sum + current.nilai_rekomendasi,
-                          0
-                        )}
+                        {totalNilaiRekomendasi}
                       </td>
                       <td className="border border-gray-300 p-2 text-center"></td>
                       <td className="border border-gray-300 p-2 text-center"></td>

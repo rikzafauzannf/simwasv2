@@ -58,10 +58,10 @@ const TableTindakLanjutPreview = () => {
   }, [DataTemuanHasil, DataKodeTemuan]);
 
   const totals = React.useMemo(() => {
-    const totalNilaiRekomendasi = DataTemuanHasil.reduce(
-      (sum, item) => sum + (item.nilai_rekomendasi || 0),
-      0
-    );
+    // const totalNilaiRekomendasi = DataTemuanHasil.reduce(
+    //   (sum, item) => sum + (item.nilai_rekomendasi || 0),
+    //   0
+    // );
 
     const totalNilaiSetor = DataTL.reduce(
       (sum, tl) => sum + (tl.nilai_setor || 0),
@@ -90,7 +90,7 @@ const TableTindakLanjutPreview = () => {
     );
 
     return {
-      totalNilaiRekomendasi,
+      // totalNilaiRekomendasi,
       totalNilaiSetor,
       totalSesuai,
       totalDalamProses,
@@ -286,29 +286,29 @@ const TableTindakLanjutPreview = () => {
                                 }
                               </td>
                               <td className="border border-gray-300 p-2">
-                                {item.rekomendasi_saran}
+                                {/* {item.rekomendasi_saran} */}
                               </td>
                               <td className="border border-gray-300 p-2">
-                                {
+                                {/* {
                                   getNameKodeRekomendasi(
                                     item.id_kode_rekomendasi
                                   ).split('.')[0]
-                                }
+                                } */}
                               </td>
                               <td className="border border-gray-300 p-2">
-                                {formatCurrency(item.nilai_rekomendasi)}
+                                {/* {formatCurrency(item.nilai_rekomendasi)} */}
                               </td>
                               <td className="border border-gray-300 p-2">
-                                {
+                                {/* {
                                   getNameKodeRekomendasi(
                                     item.id_kode_rekomendasi
                                   ).split('.')[0]
-                                }
+                                } */}
                               </td>
                               <td className="border border-gray-300 p-2">
-                                {getNameKodeRekomendasi(
+                                {/* {getNameKodeRekomendasi(
                                   item.id_kode_rekomendasi
-                                )}
+                                )} */}
                               </td>
                               {/* Tindak Lanjut cells */}
                               <td className="border border-gray-300 p-2">
@@ -412,13 +412,13 @@ const TableTindakLanjutPreview = () => {
                             {relatedTemuan.length}
                           </td>
                           <td className="border border-gray-300 p-2 text-center">
-                            {formatCurrency(
+                            {/* {formatCurrency(
                               relatedTemuan.reduce(
                                 (sum, current) =>
                                   sum + (current.nilai_rekomendasi || 0),
                                 0
                               )
-                            )}
+                            )} */}
                           </td>
                           <td className="border border-gray-300 p-2 text-center"></td>
                           <td className="border border-gray-300 p-2 text-center"></td>
@@ -483,7 +483,7 @@ const TableTindakLanjutPreview = () => {
                         {DataTemuanHasil.length}
                       </td>
                       <td className="border border-gray-300 p-2 text-center">
-                        {formatCurrency(totals.totalNilaiRekomendasi)}
+                        {/* {formatCurrency(totals.totalNilaiRekomendasi)} */}
                       </td>
                       <td className="border border-gray-300 p-2 text-center"></td>
                       <td className="border border-gray-300 p-2 text-center"></td>
