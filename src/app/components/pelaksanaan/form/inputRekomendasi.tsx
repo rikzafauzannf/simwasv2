@@ -17,7 +17,8 @@ import { useOptions } from '@/data/selectValue';
 import Swal from 'sweetalert2';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
-import RekomendasiChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/form/[id_st]/[id_temuan]/rekomendasiChecker';
+import RekomendasiChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/[id_st]/[id_temuan]/rekomendasiChecker';
+import { useGetNameKode } from '@/hooks/useGetName';
 
 interface CompoProps {
   id_temuan: number;
@@ -28,13 +29,20 @@ const axiosSecvice = new AxiosService();
 const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
   const { user } = useAuthStore();
   const router = useRouter();
-  const { data: DataByIdTemuan, refetch } = useFetchAll<RekomendasiData>(
-    'rekomendasi',  
+  const { data: DataByIdTemuan, refetch } =
+    useFetchAll<RekomendasiData>('rekomendasi');
+  const dataFilter = DataByIdTemuan.filter(
+    (itemFilter) => itemFilter.id_tlhp === Number(id_temuan)
   );
-  const dataFilter = DataByIdTemuan.filter((itemFilter)=>itemFilter.id_tlhp === Number(id_temuan))
-  console.log("Data Rekomendasi By Temuan: ",dataFilter)
+  console.log('Data Rekomendasi By Temuan: ', dataFilter);
+
+  const { data: DataTemuanCheck } = useFetchById<TemuanHasilData>(
+    'temuan_hasil',
+    id_temuan
+  );
 
   const { optionKodeRekomendasi, optionKodeTemuan } = useOptions();
+  const {getFieldKodeTemuan,getNameKodeTemuan} = useGetNameKode()
 
   const {
     register,
@@ -93,7 +101,29 @@ const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-xl">Input Temuan Hasil.</h3>
+      <h3 className="text-xl">Input Rekomendasi Temuan</h3>
+      <CardComponents>
+        <h3>Data Temuan</h3>
+        <section className="grid lg:grid-cols-3 w-full">
+          <div>
+            <small>Kode Temuan</small>
+            <p className="font-semibold text-dark">
+              {getNameKodeTemuan(Number(DataTemuanCheck?.id_kode_temuan))}
+            </p>
+            <small>{getFieldKodeTemuan(Number(DataTemuanCheck?.id_kode_temuan))}</small>
+          </div>
+          <div>
+            <small>Kondisi Temuan</small>
+            <p className="font-semibold text-dark">
+              {DataTemuanCheck?.kondisi_temuan}
+            </p>
+          </div>
+          <div>
+            <small>Uraian Temuan</small>
+            <p className="font-semibold text-dark">{DataTemuanCheck?.uraian}</p>
+          </div>
+        </section>
+      </CardComponents>
       <CardComponents>
         <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
           <h3>Form Ringkasan Temuan</h3>
@@ -137,7 +167,10 @@ const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
           <ButtonType Text="+ Buat Rekomendasi" type="submit" />
         </form>
       </CardComponents>
-      <RekomendasiChecker RekomendasiData={dataFilter} refetchData={() => refetch()}/>
+      <RekomendasiChecker
+        RekomendasiData={dataFilter}
+        refetchData={() => refetch()}
+      />
     </div>
   );
 };

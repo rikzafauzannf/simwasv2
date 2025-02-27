@@ -12,10 +12,11 @@ import {
   useGetNameKode,
   useGetNameRuangLingkup,
   useGetNameST,
+  useGetNameTemuanHasil,
   useGetNameUser,
 } from '@/hooks/useGetName';
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
-import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import { RekomendasiData } from '@/interface/interfaceTemuanHasil';
 import { formatCurrency } from '@/data/formatData';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
@@ -23,24 +24,25 @@ import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const axiosSecvice = new AxiosService();
 
-const TableTemuanHasil: React.FC = () => {
+const TableRekomendasiTemuan: React.FC = () => {
   const { user } = useAuthStore();
   const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
     user?.role as string
   );
   const {
-    data: DataTemuanHasil,
+    data: DataRekomendasi,
     isLoading,
     error,
     refetch,
-  } = useFetch<TemuanHasilData>('temuan_hasil');
+  } = useFetch<RekomendasiData>('rekomendasi');
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<TemuanHasilData[]>([]);
+  const [filteredData, setFilteredData] = useState<RekomendasiData[]>([]);
 
   const { getNameUser } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
   const { getNameKodeReferensi, getNameKodeRekomendasi, getNameKodeTemuan } =
     useGetNameKode();
+const {getNameKondisiTemuan,getUraianTemuan,getiIdSTTemuan} = useGetNameTemuanHasil()
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
@@ -55,7 +57,7 @@ const TableTemuanHasil: React.FC = () => {
 
     if (result.isConfirmed) {
       try {
-        await axiosSecvice.deleteData(`temuan_hasil/${id}`);
+        await axiosSecvice.deleteData(`rekomendasi/${id}`);
         refetch();
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       } catch (error) {
@@ -65,12 +67,12 @@ const TableTemuanHasil: React.FC = () => {
     }
   };
 
-  const columns: TableColumn<TemuanHasilData>[] = [
+  const columns: TableColumn<RekomendasiData>[] = [
     ...(hashPermission
       ? [
           {
             name: 'Actions',
-            cell: (row: TemuanHasilData) => (
+            cell: (row: RekomendasiData) => (
               <div className="flex gap-2">
                 {/* <Link
               // href={`/dashboard/perencanaan/pkpt/${row.id_nhp}`}
@@ -86,7 +88,7 @@ const TableTemuanHasil: React.FC = () => {
               Act
             </Link> */}
                 <button
-                  onClick={() => handleDelete(row.id_tlhp)}
+                  onClick={() => handleDelete(row.id_rekomendasi)}
                   className="p-2 text-red-500 hover:text-red-700"
                 >
                   <FaTrash />
@@ -99,54 +101,39 @@ const TableTemuanHasil: React.FC = () => {
 
     {
       name: 'Create At',
-      selector: (row) => row.created_at,
+      selector: (row) => row.created,
       sortable: true,
     },
     {
-      name: 'No/Tgl SP',
-      selector: (row) => getNameNoSP(row.id_st),
+        name: 'No/Tgl SP',
+        selector: (row) => getNameNoSP(Number(getiIdSTTemuan(row.id_tlhp))),
+        sortable: true,
+      },
+      {
+        name: 'Program Audit',
+        selector: (row) => getProgramAudit(Number(getiIdSTTemuan(row.id_tlhp))),
+        sortable: true,
+      },
+      {
+        name: 'Kondisi Temuan',
+        selector: (row) => getNameKondisiTemuan(Number(getiIdSTTemuan(row.id_tlhp))),
+        sortable: true,
+      },
+    {
+      name: 'Kode Rekomendasi',
+      selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
       sortable: true,
     },
     {
-      name: 'Program Audit',
-      selector: (row) => getProgramAudit(row.id_st),
+      name: 'Rekomendasi/Saran',
+      selector: (row) => row.rekomendasi_saran,
       sortable: true,
     },
     {
-      name: 'Uraian',
-      selector: (row) => row.uraian,
+      name: 'Nilai Rekomendasi',
+      selector: (row) => formatCurrency(row.rekomendasi_nilai),
       sortable: true,
-    },
-    {
-      name: 'Kode Temuan',
-      selector: (row) => getNameKodeTemuan(row.id_kode_temuan),
-      sortable: true,
-    },
-    {
-      name: 'Kondisi Temuan',
-      selector: (row) => row.kondisi_temuan,
-      sortable: true,
-    },
-    // {
-    //   name: 'Kode Rekomendasi',
-    //   selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
-    //   sortable: true,
-    // },
-    // {
-    //   name: 'Rekomendasi/Saran',
-    //   selector: (row) => row.rekomendasi_saran,
-    //   sortable: true,
-    // },
-    // {
-    //   name: 'Nilai Rekomendasi',
-    //   selector: (row) => formatCurrency(row.nilai_rekomendasi),
-    //   sortable: true,
-    // },
-    // {
-    //   name: 'Kode Referensi',
-    //   selector: (row) => getNameKodeReferensi(row.id_kode_referensi),
-    //   sortable: true,
-    // },
+    },    
     {
       name: 'Perancang Temuan Hasil',
       selector: (row) => getNameUser(row.id_user),
@@ -158,36 +145,33 @@ const TableTemuanHasil: React.FC = () => {
     const value = e.target.value;
     setSearch(value);
 
-    if (DataTemuanHasil) {
-      const filtered = DataTemuanHasil.filter(
+    if (DataRekomendasi) {
+      const filtered = DataRekomendasi.filter(
         (item) =>
-          item.uraian.toLowerCase().includes(value.toLowerCase()) ||
-          item.kondisi_temuan.toLowerCase().includes(value.toLowerCase()) ||
-          item.created_at.toLowerCase().includes(value.toLowerCase()) ||
-          getNameNoSP(item.id_st).toLowerCase().includes(value.toLowerCase()) ||
-          getProgramAudit(item.id_st)
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          getNameUser(item.id_user).toLowerCase().includes(value.toLowerCase())
+            formatCurrency(item.rekomendasi_nilai).toLowerCase().includes(value.toLowerCase()) ||
+        getNameUser(item.id_user).toLowerCase().includes(value.toLowerCase()) ||
+        item.rekomendasi_saran.toLowerCase().includes(value.toLowerCase()) ||
+        getNameKodeRekomendasi(item.id_kode_rekomendasi).toLowerCase().includes(value.toLowerCase()) 
+          
       );
       setFilteredData(filtered);
     }
   };
 
   const exportToCSV = () => {
-    if (!DataTemuanHasil) return;
+    if (!DataRekomendasi) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join(',');
 
-    const csvData = DataTemuanHasil.map((row) =>
+    const csvData = DataRekomendasi.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row: TemuanHasilData
+            row: RekomendasiData
           ) => string | number;
           return `"${selector(row)}"`;
         })
@@ -201,19 +185,19 @@ const TableTemuanHasil: React.FC = () => {
   };
 
   const exportToExcel = () => {
-    if (!DataTemuanHasil) return;
+    if (!DataRekomendasi) return;
 
     const headers = columns
       .filter((col) => col.name !== 'Actions')
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = DataTemuanHasil.map((row) =>
+    const excelData = DataRekomendasi.map((row) =>
       columns
         .filter((col) => col.name !== 'Actions')
         .map((col) => {
           const selector = col.selector as unknown as (
-            row: TemuanHasilData
+            row: RekomendasiData
           ) => string | number;
           return selector(row);
         })
@@ -231,9 +215,9 @@ const TableTemuanHasil: React.FC = () => {
 
   return (
     <>
-      <div className="mb-4 space-y-2 min-w-full max-w-full">
+      <div className="mb-4 space-y-2">
         <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
-          <h3>Data Temuan Hasil</h3>
+          <h3>Data Rekomendasi</h3>
           <div className="space-x-2">
             <Link
               href={'/dashboard/pelaporan/ringkasanpengawasan/preview'}
@@ -258,16 +242,16 @@ const TableTemuanHasil: React.FC = () => {
         <input
           id="search"
           type="text"
-          placeholder="Cari Data Temuan Hasil"
+          placeholder="Cari Data Rekomendasi Temuan"
           value={search}
           onChange={handleSearch}
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
         />
       </div>
-      <div className="overflow-x-auto max-w-full">
+      <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : DataTemuanHasil}
+          data={search ? filteredData : DataRekomendasi}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"
@@ -278,4 +262,4 @@ const TableTemuanHasil: React.FC = () => {
   );
 };
 
-export default TableTemuanHasil;
+export default TableRekomendasiTemuan;

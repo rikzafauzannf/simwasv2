@@ -20,7 +20,7 @@ interface PropsHeading {
 
 export const CardComponents: React.FC<PropsComponent> = ({ children }) => {
   return (
-    <Card className="w-full shadow-md bg-white space-y-2 overflow-hidden">
+    <Card className="w-full shadow-md bg-white verflow-hidden">
       {children}
     </Card>
   );
