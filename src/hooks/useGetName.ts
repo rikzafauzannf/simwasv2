@@ -241,5 +241,15 @@ export const useGetNameTemuanHasil = () => {
     return data.length > 0 ? data[0].kondisi_temuan : '';
   };
 
-  return { getNameKondisiTemuan, isLoading, error };
+  const getUraianTemuan = (id: number) => {
+    const data = DataTemuanHasil.filter((item) => item.id_tlhp === id);
+    return data.length > 0 ? data[0].uraian : '';
+  };
+
+  const getiIdSTTemuan = (id: number) => {
+    const data = DataTemuanHasil.filter((item) => item.id_tlhp === id);
+    return data.length > 0 ? data[0].id_st : null;
+  };
+
+  return { getNameKondisiTemuan,getUraianTemuan,getiIdSTTemuan, isLoading, error };
 };

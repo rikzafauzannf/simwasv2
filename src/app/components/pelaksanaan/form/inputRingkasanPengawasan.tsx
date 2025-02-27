@@ -12,9 +12,11 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useOptions } from '@/data/selectValue';
-import TemuanChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/form/temuanChecker';
+import TemuanChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/[id_st]/temuanChecker';
 import Swal from 'sweetalert2';
 import { useFetchAll } from '@/hooks/useFetchAll';
+import { useFetchById } from '@/hooks/useFetchById';
+import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 
 interface CompoProps {
   id_st: number;
@@ -31,6 +33,8 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   const TemuanFilterID = DataTemuanHasil.filter(
     (item) => item.id_st === Number(id_st)
   );
+
+  const {data:DataStCheck} =useFetchById<SuratTugasData>('surat_tugas',id_st)
 
   const { optionKodeReferensi, optionKodeRekomendasi, optionKodeTemuan } =
     useOptions();
@@ -100,6 +104,30 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
   return (
     <div className="space-y-3">
       <h3 className="text-xl">Input Temuan Hasil.</h3>
+
+      <CardComponents>
+        <h3>Data Surat Tugas</h3>
+        <section className='grid lg:grid-cols-3 w-full gap-2'>
+        {/* <div >
+            <small>Bulan</small>
+            <p className='text-dark font-semibold'>{DataStCheck?.bulan}</p>
+          </div> */}
+          <div>
+            <small>Nomor St</small>
+            <p className='text-dark font-semibold'>{DataStCheck?.no_tglsp}</p>
+          </div>
+          <div>
+            <small>Program Audit</small>
+            <p className='text-dark font-semibold'>{DataStCheck?.program_audit}</p>
+          </div>
+          <div>
+            <small>Keterangan</small>
+            <p className='text-dark font-semibold'>{DataStCheck?.keterangan}</p>
+          </div>
+          
+        </section>
+      </CardComponents>
+
       <CardComponents>
         <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
           <h3>Form Ringkasan Temuan</h3>

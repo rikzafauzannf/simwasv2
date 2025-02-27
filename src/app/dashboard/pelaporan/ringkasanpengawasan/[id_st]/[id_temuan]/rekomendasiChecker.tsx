@@ -2,7 +2,10 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { formatCurrency, formatToLocalDate } from '@/data/formatData';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useGetNameKode } from '@/hooks/useGetName';
-import { RekomendasiData, TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import {
+  RekomendasiData,
+  TemuanHasilData,
+} from '@/interface/interfaceTemuanHasil';
 import { AxiosService } from '@/services/axiosInstance.service';
 import Swal from 'sweetalert2';
 import React from 'react';
@@ -16,8 +19,12 @@ interface propsID {
 
 const axiosService = new AxiosService();
 
-const RekomendasiChecker: React.FC<propsID> = ({ RekomendasiData, refetchData }) => {
-  const { getNameKodeRekomendasi, getNameKodeTemuan, getFieldKodeRekomendasi } = useGetNameKode();
+const RekomendasiChecker: React.FC<propsID> = ({
+  RekomendasiData,
+  refetchData,
+}) => {
+  const { getNameKodeRekomendasi, getNameKodeTemuan, getFieldKodeRekomendasi } =
+    useGetNameKode();
 
   const handleDelete = async (id_tlhp: number) => {
     const result = await Swal.fire({
@@ -34,7 +41,7 @@ const RekomendasiChecker: React.FC<propsID> = ({ RekomendasiData, refetchData })
     if (result.isConfirmed) {
       try {
         const response = await axiosService.deleteData(
-          `/temuan_hasil/${id_tlhp}`
+          `/rekomendasi/${id_tlhp}`
         );
         if (response.success) {
           Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
@@ -75,13 +82,13 @@ const RekomendasiChecker: React.FC<propsID> = ({ RekomendasiData, refetchData })
               <small>Rekomendasi/Saran</small>
               <h3>{item.rekomendasi_saran}</h3>
             </div>
-            <div className="md:col-span-2 lg:col-span-3">            
-                <Button
-                  onClick={() => handleDelete(item.id_tlhp)}
-                  className="shadow-md bg-red-600 hover:bg-red-700  font-semibold hover:font-bold rounded-md text-white"
-                >
-                  Delete
-                </Button>
+            <div className="md:col-span-2 lg:col-span-3">
+              <Button
+                onClick={() => handleDelete(item.id_rekomendasi)}
+                className="w-full shadow-md bg-red-600 hover:bg-red-700  font-semibold hover:font-bold rounded-md text-white"
+              >
+                Delete
+              </Button>
             </div>
           </div>
         </CardComponents>

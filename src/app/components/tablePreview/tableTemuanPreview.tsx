@@ -4,7 +4,10 @@ import PdfGenerator from '@/app/components/PDFGenerator';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useGetNameKode, useGetNameST } from '@/hooks/useGetName';
 import { KodeTemuanDB } from '@/interface/interfaceReferensi';
-import { RekomendasiData, TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import {
+  RekomendasiData,
+  TemuanHasilData,
+} from '@/interface/interfaceTemuanHasil';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { Table } from 'flowbite-react';
 import React from 'react';
@@ -35,17 +38,17 @@ const TableTemuanPreview = () => {
     return Object.entries(groupedData).map(([spNumber, temuans]) => {
       return {
         spNumber,
-        temuans: temuans.map(temuan => {
+        temuans: temuans.map((temuan) => {
           // Get all recommendations for this temuan
           const rekomendasiList = RekomendasiData.filter(
-            rek => rek.id_tlhp === temuan.id_tlhp
+            (rek) => rek.id_tlhp === temuan.id_tlhp
           );
-          
+
           return {
             ...temuan,
-            rekomendasiList: rekomendasiList.length > 0 ? rekomendasiList : []
+            rekomendasiList: rekomendasiList.length > 0 ? rekomendasiList : [],
           };
-        })
+        }),
       };
     });
   }, [groupedData, RekomendasiData]);
@@ -121,13 +124,14 @@ const TableTemuanPreview = () => {
                     {temuanWithRekomendasi.map(
                       ({ spNumber, temuans }, groupIndex) => {
                         let rowCount = 0;
-                        temuans.forEach(temuan => {
+                        temuans.forEach((temuan) => {
                           // Count how many rows each temuan will need
-                          rowCount += temuan.rekomendasiList.length > 0 
-                            ? temuan.rekomendasiList.length 
-                            : 1;
+                          rowCount +=
+                            temuan.rekomendasiList.length > 0
+                              ? temuan.rekomendasiList.length
+                              : 1;
                         });
-                        
+
                         return temuans.flatMap((temuan, temuanIndex) => {
                           // If no recommendations, show one row with empty recommendation
                           if (temuan.rekomendasiList.length === 0) {
@@ -162,7 +166,9 @@ const TableTemuanPreview = () => {
                                   {temuan.kondisi_temuan}
                                 </td>
                                 <td className="border border-gray-300 p-2">
-                                  {getNameKodeTemuan(Number(temuan.id_kode_temuan))}
+                                  {getNameKodeTemuan(
+                                    Number(temuan.id_kode_temuan)
+                                  )}
                                 </td>
                                 <td className="border border-gray-300 p-2">
                                   {
@@ -189,105 +195,110 @@ const TableTemuanPreview = () => {
                               </tr>
                             );
                           }
-                          
+
                           // For temuans with recommendations
-                          return temuan.rekomendasiList.map((rekomendasi, rekIndex) => {
-                            const isFirstRow = temuanIndex === 0 && rekIndex === 0;
-                            const isFirstRekForTemuan = rekIndex === 0;
-                            
-                            return (
-                              <tr
-                                key={`${temuan.id_tlhp}-${rekomendasi.id_rekomendasi}-${rekIndex}`}
-                                className="hover:bg-gray-100 text-center align-middle"
-                              >
-                                {isFirstRow && (
-                                  <>
-                                    <td
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={rowCount}
-                                    >
-                                      {groupIndex + 1}
-                                    </td>
-                                    <td
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={rowCount}
-                                    >
-                                      {spNumber}
-                                    </td>
-                                  </>
-                                )}
-                                
-                                {isFirstRekForTemuan && (
-                                  <>
-                                    <td 
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={temuan.rekomendasiList.length}
-                                    >
-                                      {temuan.uraian}
-                                    </td>
-                                    <td 
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={temuan.rekomendasiList.length}
-                                    >
-                                      T{temuanIndex + 1}
-                                    </td>
-                                    <td 
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={temuan.rekomendasiList.length}
-                                    >
-                                      {temuan.kondisi_temuan}
-                                    </td>
-                                    <td 
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={temuan.rekomendasiList.length}
-                                    >
-                                      {getNameKodeTemuan(Number(temuan.id_kode_temuan))}
-                                    </td>
-                                    <td 
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={temuan.rekomendasiList.length}
-                                    >
-                                      {
-                                        getNameKodeTemuan(
-                                          Number(temuan.id_kode_temuan)
-                                        ).split('.')[0]
-                                      }
-                                    </td>
-                                  </>
-                                )}
-                                
-                                <td className="border border-gray-300 p-2">
-                                  {rekomendasi.rekomendasi_saran}
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {
-                                    getNameKodeRekomendasi(
-                                      rekomendasi.id_kode_rekomendasi
-                                    ).split('.')[0]
-                                  }
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {rekomendasi.rekomendasi_nilai}
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {
-                                    getNameKodeRekomendasi(
-                                      rekomendasi.id_kode_rekomendasi
-                                    ).split('.')[0]
-                                  }
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {getNameKodeRekomendasi(
-                                    rekomendasi.id_kode_rekomendasi
+                          return temuan.rekomendasiList.map(
+                            (rekomendasi, rekIndex) => {
+                              const isFirstRow =
+                                temuanIndex === 0 && rekIndex === 0;
+                              const isFirstRekForTemuan = rekIndex === 0;
+
+                              return (
+                                <tr
+                                  key={`${temuan.id_tlhp}-${rekomendasi.id_rekomendasi}-${rekIndex}`}
+                                  className="hover:bg-gray-100 text-center align-middle"
+                                >
+                                  {isFirstRow && (
+                                    <>
+                                      <td
+                                        className="border border-gray-300 p-2"
+                                        rowSpan={rowCount}
+                                      >
+                                        {groupIndex + 1}
+                                      </td>
+                                      <td
+                                        className="border border-gray-300 p-2"
+                                        rowSpan={rowCount}
+                                      >
+                                        {spNumber}
+                                      </td>
+                                    </>
                                   )}
-                                </td>
-                              </tr>
-                            );
-                          });
+
+                                  {isFirstRekForTemuan && (
+                                    <>
+                                      <td
+                                        className="border border-gray-300 p-2"
+                                        rowSpan={temuan.rekomendasiList.length}
+                                      >
+                                        {temuan.uraian}
+                                      </td>
+                                      <td
+                                        className="border border-gray-300 p-2"
+                                        rowSpan={temuan.rekomendasiList.length}
+                                      >
+                                        T{temuanIndex + 1}
+                                      </td>
+                                      <td
+                                        className="border border-gray-300 p-2"
+                                        rowSpan={temuan.rekomendasiList.length}
+                                      >
+                                        {temuan.kondisi_temuan}
+                                      </td>
+                                      <td
+                                        className="border border-gray-300 p-2"
+                                        rowSpan={temuan.rekomendasiList.length}
+                                      >
+                                        {getNameKodeTemuan(
+                                          Number(temuan.id_kode_temuan)
+                                        )}
+                                      </td>
+                                      <td
+                                        className="border border-gray-300 p-2"
+                                        rowSpan={temuan.rekomendasiList.length}
+                                      >
+                                        {
+                                          getNameKodeTemuan(
+                                            Number(temuan.id_kode_temuan)
+                                          ).split('.')[0]
+                                        }
+                                      </td>
+                                    </>
+                                  )}
+
+                                  <td className="border border-gray-300 p-2">
+                                    {rekomendasi.rekomendasi_saran}
+                                  </td>
+                                  <td className="border border-gray-300 p-2">
+                                    {
+                                      getNameKodeRekomendasi(
+                                        rekomendasi.id_kode_rekomendasi
+                                      ).split('.')[0]
+                                    }
+                                  </td>
+                                  <td className="border border-gray-300 p-2">
+                                    {rekomendasi.rekomendasi_nilai}
+                                  </td>
+                                  <td className="border border-gray-300 p-2">
+                                    {
+                                      getNameKodeRekomendasi(
+                                        rekomendasi.id_kode_rekomendasi
+                                      ).split('.')[0]
+                                    }
+                                  </td>
+                                  <td className="border border-gray-300 p-2">
+                                    {getNameKodeRekomendasi(
+                                      rekomendasi.id_kode_rekomendasi
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            }
+                          );
                         });
                       }
                     )}
-                    
+
                     {/* Kode Temuan Summary Section */}
                     {DataKodeTemuan.filter(
                       (itemsfilter) =>
@@ -299,29 +310,33 @@ const TableTemuanPreview = () => {
                           filterby.kode_temuan?.split('.')[0] ===
                           item.kode_temuan?.split('.')[0]
                       ).length;
-                      
+
                       // Get temuans with this kode_temuan prefix
                       const relatedTemuans = mergedDataTemuan.filter(
                         (filterby) =>
                           filterby.kode_temuan?.split('.')[0] ===
                           item.kode_temuan?.split('.')[0]
                       );
-                      
+
                       // Get all id_tlhp values from filtered temuans
-                      const relatedTlhpIds = relatedTemuans.map(temuan => temuan.id_tlhp);
-                      
+                      const relatedTlhpIds = relatedTemuans.map(
+                        (temuan) => temuan.id_tlhp
+                      );
+
                       // Count rekomendasi associated with these temuan
-                      const rekomendasiCount = RekomendasiData.filter(rek => 
+                      const rekomendasiCount = RekomendasiData.filter((rek) =>
                         relatedTlhpIds.includes(rek.id_tlhp)
                       ).length;
-                      
+
                       // Calculate total nilai for this kode_temuan
-                      const totalNilai = RekomendasiData.filter(rek => 
+                      const totalNilai = RekomendasiData.filter((rek) =>
                         relatedTlhpIds.includes(rek.id_tlhp)
-                      ).reduce((sum, rek) => 
-                        sum + (Number(rek.rekomendasi_nilai) || 0), 0
+                      ).reduce(
+                        (sum, rek) =>
+                          sum + (Number(rek.rekomendasi_nilai) || 0),
+                        0
                       );
-                      
+
                       return (
                         <tr
                           key={`summary-${index}`}
@@ -348,7 +363,7 @@ const TableTemuanPreview = () => {
                         </tr>
                       );
                     })}
-                    
+
                     {/* Total Row */}
                     <tr className="hover:bg-gray-100 text-center align-middle">
                       <td
