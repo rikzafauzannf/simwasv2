@@ -13,9 +13,9 @@ const LembarHasilPage = () => {
         <h3 className="text-xl">Lembar Hasil Pengawasan</h3>
         <MapDataNHP todo="pelaporan/lembarhasil/form" />
         <div className="grid w-full gap-3">
-          <CardComponents>
+          {/* <CardComponents> */}
             <TableLHP />
-          </CardComponents>
+          {/* </CardComponents> */}
         </div>
       </div>
     </AuthRoleWrapper>

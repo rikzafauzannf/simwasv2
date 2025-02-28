@@ -251,5 +251,11 @@ export const useGetNameTemuanHasil = () => {
     return data.length > 0 ? data[0].id_st : null;
   };
 
-  return { getNameKondisiTemuan,getUraianTemuan,getiIdSTTemuan, isLoading, error };
+  return {
+    getNameKondisiTemuan,
+    getUraianTemuan,
+    getiIdSTTemuan,
+    isLoading,
+    error,
+  };
 };

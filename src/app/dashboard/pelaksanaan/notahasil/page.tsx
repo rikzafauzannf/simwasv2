@@ -13,9 +13,9 @@ const NotaHasilPengawasanPage = () => {
         <h3 className="text-xl">Nota Hasil Pengawasan</h3>
         <MapDataST title="Upload NHP" todo="pelaksanaan/notahasil/form" />
         <div className="grid w-full gap-3">
-          <CardComponents>
+          {/* <CardComponents> */}
             <TableNHP />
-          </CardComponents>
+          {/* </CardComponents> */}
         </div>
       </div>
     </AuthRoleWrapper>

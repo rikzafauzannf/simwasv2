@@ -40,9 +40,14 @@ const TableRekomendasiTemuan: React.FC = () => {
 
   const { getNameUser } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
-  const { getNameKodeReferensi, getNameKodeRekomendasi, getNameKodeTemuan } =
-    useGetNameKode();
-const {getNameKondisiTemuan,getUraianTemuan,getiIdSTTemuan} = useGetNameTemuanHasil()
+  const {
+    getNameKodeReferensi,
+    getNameKodeRekomendasi,
+    getFieldKodeRekomendasi,
+    getNameKodeTemuan,
+  } = useGetNameKode();
+  const { getNameKondisiTemuan, getUraianTemuan, getiIdSTTemuan } =
+    useGetNameTemuanHasil();
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
@@ -105,23 +110,25 @@ const {getNameKondisiTemuan,getUraianTemuan,getiIdSTTemuan} = useGetNameTemuanHa
       sortable: true,
     },
     {
-        name: 'No/Tgl SP',
-        selector: (row) => getNameNoSP(Number(getiIdSTTemuan(row.id_tlhp))),
-        sortable: true,
-      },
-      {
-        name: 'Program Audit',
-        selector: (row) => getProgramAudit(Number(getiIdSTTemuan(row.id_tlhp))),
-        sortable: true,
-      },
-      {
-        name: 'Kondisi Temuan',
-        selector: (row) => getNameKondisiTemuan(Number(getiIdSTTemuan(row.id_tlhp))),
-        sortable: true,
-      },
+      name: 'No/Tgl SP',
+      selector: (row) => getNameNoSP(Number(getiIdSTTemuan(row.id_tlhp))),
+      sortable: true,
+    },
+    {
+      name: 'Program Audit',
+      selector: (row) => getProgramAudit(Number(getiIdSTTemuan(row.id_tlhp))),
+      sortable: true,
+    },
+    {
+      name: 'Kondisi Temuan',
+      selector: (row) =>
+        getNameKondisiTemuan(Number(getiIdSTTemuan(row.id_tlhp))),
+      sortable: true,
+    },
     {
       name: 'Kode Rekomendasi',
-      selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
+      selector: (row) =>
+        `${getNameKodeRekomendasi(row.id_kode_rekomendasi)} - ${getFieldKodeRekomendasi(row.id_kode_rekomendasi)}`,
       sortable: true,
     },
     {
@@ -133,7 +140,7 @@ const {getNameKondisiTemuan,getUraianTemuan,getiIdSTTemuan} = useGetNameTemuanHa
       name: 'Nilai Rekomendasi',
       selector: (row) => formatCurrency(row.rekomendasi_nilai),
       sortable: true,
-    },    
+    },
     {
       name: 'Perancang Temuan Hasil',
       selector: (row) => getNameUser(row.id_user),
@@ -148,11 +155,16 @@ const {getNameKondisiTemuan,getUraianTemuan,getiIdSTTemuan} = useGetNameTemuanHa
     if (DataRekomendasi) {
       const filtered = DataRekomendasi.filter(
         (item) =>
-            formatCurrency(item.rekomendasi_nilai).toLowerCase().includes(value.toLowerCase()) ||
-        getNameUser(item.id_user).toLowerCase().includes(value.toLowerCase()) ||
-        item.rekomendasi_saran.toLowerCase().includes(value.toLowerCase()) ||
-        getNameKodeRekomendasi(item.id_kode_rekomendasi).toLowerCase().includes(value.toLowerCase()) 
-          
+          formatCurrency(item.rekomendasi_nilai)
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          getNameUser(item.id_user)
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          item.rekomendasi_saran.toLowerCase().includes(value.toLowerCase()) ||
+          getNameKodeRekomendasi(item.id_kode_rekomendasi)
+            .toLowerCase()
+            .includes(value.toLowerCase())
       );
       setFilteredData(filtered);
     }
