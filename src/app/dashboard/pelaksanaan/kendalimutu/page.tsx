@@ -22,9 +22,9 @@ const KendaliMutuPage = () => {
           todo="pelaksanaan/kendalimutu/form"
         />
         <div className="grid w-full gap-3">
-          <CardComponents>
+          {/* <CardComponents> */}
             <TableKendaliMutu />
-          </CardComponents>
+          {/* </CardComponents> */}
         </div>
       </div>
     </AuthRoleWrapper>

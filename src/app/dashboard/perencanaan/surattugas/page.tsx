@@ -24,9 +24,9 @@ const SuratTugasPage = () => {
 
         <MapDataPkpt todo="perencanaan/surattugas/form" title="Buat ST" />
         <div className="grid w-full gap-3">
-          <CardComponents>
+          {/* <CardComponents> */}
             <TableSuratTugas />
-          </CardComponents>
+          {/* </CardComponents> */}
         </div>
       </div>
     </AuthRoleWrapper>

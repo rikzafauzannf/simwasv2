@@ -34,9 +34,9 @@ const PkptPage = () => {
         {/* <AkumulasiDataPKPT /> */}
 
         <div className="grid w-full gap-3">
-          <CardComponents>
+          {/* <CardComponents> */}
             <TablePKPT />
-          </CardComponents>
+          {/* </CardComponents> */}
         </div>
         {(user?.role === 'Perencana' || user?.role === 'Developer') && (
           <div>
@@ -47,9 +47,9 @@ const PkptPage = () => {
           </div>
         )}
         <div className="grid w-full gap-3">
-          <CardComponents>
+          {/* <CardComponents> */}
             <TablePKPT status="non-pkpt" />
-          </CardComponents>
+          {/* </CardComponents> */}
         </div>
       </div>
     </AuthRoleWrapper>

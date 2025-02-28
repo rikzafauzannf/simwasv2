@@ -18,11 +18,10 @@ const RingkasanPengawasanPage = () => {
         />
         <div className="grid min-w-full gap-3">
           {/* <CardCompo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nents> */}
-            <TableTemuanHasil />
+          <TableTemuanHasil />
           {/* </CardComponents> */}
 
-          <TableRekomendasiTemuan/>
-          
+          <TableRekomendasiTemuan />
         </div>
       </div>
     </AuthRoleWrapper>

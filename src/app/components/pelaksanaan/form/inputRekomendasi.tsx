@@ -42,7 +42,7 @@ const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
   );
 
   const { optionKodeRekomendasi, optionKodeTemuan } = useOptions();
-  const {getFieldKodeTemuan,getNameKodeTemuan} = useGetNameKode()
+  const { getFieldKodeTemuan, getNameKodeTemuan } = useGetNameKode();
 
   const {
     register,
@@ -110,7 +110,9 @@ const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
             <p className="font-semibold text-dark">
               {getNameKodeTemuan(Number(DataTemuanCheck?.id_kode_temuan))}
             </p>
-            <small>{getFieldKodeTemuan(Number(DataTemuanCheck?.id_kode_temuan))}</small>
+            <small>
+              {getFieldKodeTemuan(Number(DataTemuanCheck?.id_kode_temuan))}
+            </small>
           </div>
           <div>
             <small>Kondisi Temuan</small>

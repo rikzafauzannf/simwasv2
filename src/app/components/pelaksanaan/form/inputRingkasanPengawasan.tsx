@@ -34,7 +34,10 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
     (item) => item.id_st === Number(id_st)
   );
 
-  const {data:DataStCheck} =useFetchById<SuratTugasData>('surat_tugas',id_st)
+  const { data: DataStCheck } = useFetchById<SuratTugasData>(
+    'surat_tugas',
+    id_st
+  );
 
   const { optionKodeReferensi, optionKodeRekomendasi, optionKodeTemuan } =
     useOptions();
@@ -107,24 +110,25 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
 
       <CardComponents>
         <h3>Data Surat Tugas</h3>
-        <section className='grid lg:grid-cols-3 w-full gap-2'>
-        {/* <div >
+        <section className="grid lg:grid-cols-3 w-full gap-2">
+          {/* <div >
             <small>Bulan</small>
             <p className='text-dark font-semibold'>{DataStCheck?.bulan}</p>
           </div> */}
           <div>
             <small>Nomor St</small>
-            <p className='text-dark font-semibold'>{DataStCheck?.no_tglsp}</p>
+            <p className="text-dark font-semibold">{DataStCheck?.no_tglsp}</p>
           </div>
           <div>
             <small>Program Audit</small>
-            <p className='text-dark font-semibold'>{DataStCheck?.program_audit}</p>
+            <p className="text-dark font-semibold">
+              {DataStCheck?.program_audit}
+            </p>
           </div>
           <div>
             <small>Keterangan</small>
-            <p className='text-dark font-semibold'>{DataStCheck?.keterangan}</p>
+            <p className="text-dark font-semibold">{DataStCheck?.keterangan}</p>
           </div>
-          
         </section>
       </CardComponents>
 
