@@ -11,7 +11,7 @@ import {
   useGetNameUser,
 } from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { NHPData } from '@/interface/interfaceHasilPengawasan';
+import { LHPData, NHPData } from '@/interface/interfaceHasilPengawasan';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { HiPaperAirplane } from 'react-icons/hi';
 import Swal from 'sweetalert2';
@@ -19,22 +19,24 @@ import { AxiosService } from '@/services/axiosInstance.service';
 
 interface Props {
   todo: string;
+  title: string;
 }
 const axiosSecvice = new AxiosService();
-const MapDataNHP: React.FC<Props> = ({ todo }) => {
+const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const { data: DataNHP, isLoading, error } = useFetch<NHPData>('nhp');
+  const { data: DataLHP, isLoading, error } = useFetch<LHPData>('lhp');
   const { getNameUser, getUserPhone } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
 
   // Search filter
-  const filteredData = DataNHP.filter(
+  const filteredData = DataLHP.filter(
     (item) =>
-      item.keterangan_nhp.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.keterangan_lhp.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.created_at.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.no_lhp.toLowerCase().includes(searchTerm.toLowerCase()) ||
       getNameNoSP(item.id_st)
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
@@ -104,7 +106,7 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Cari Data NHP"
+          placeholder="Cari Data LHP"
           className="w-full p-2 border rounded-md mt-2"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -117,8 +119,8 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
             <h1>{getNameNoSP(item.id_st)}</h1>
             <p>{getProgramAudit(item.id_st)}</p>
             <hr />
-            <h1>Nomor NHP : {item.no_nhp}</h1>
-            <p>Keterangan : {item.keterangan_nhp}</p>
+            <h1>Nomor LHP : {item.no_lhp}</h1>
+            <p>Uraian : {item.keterangan_lhp}</p>
             <hr />
             <Link
               href={`https://wa.me/${getUserPhone(item.id_user)}`}
@@ -143,10 +145,10 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
                 <HiPaperAirplane /> <p>|| Buat laporan</p>
               </button>
               <Link
-                href={`/dashboard/${todo}/${item.id_nhp}`}
+                href={`/dashboard/${todo}/${item.id_lhp}`}
                 className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
               >
-                Buat LHP
+                {title}
               </Link>
               {/* <button
                 onClick={() => handleReportClick(item.tim)}
@@ -185,4 +187,4 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
   );
 };
 
-export default MapDataNHP;
+export default MapDataLHP;

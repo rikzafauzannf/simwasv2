@@ -23,7 +23,7 @@ const KendaliMutuPage = () => {
         />
         <div className="grid w-full gap-3">
           {/* <CardComponents> */}
-            <TableKendaliMutu />
+          <TableKendaliMutu />
           {/* </CardComponents> */}
         </div>
       </div>

@@ -2,7 +2,11 @@
 import { CardComponents } from '@/app/components/Global/Card';
 import PdfGenerator from '@/app/components/PDFGenerator';
 import { useFetchAll } from '@/hooks/useFetchAll';
-import { useGetNameKode, useGetNameST } from '@/hooks/useGetName';
+import {
+  useGetNameKode,
+  useGetNameLHP,
+  useGetNameST,
+} from '@/hooks/useGetName';
 import { KodeTemuanDB } from '@/interface/interfaceReferensi';
 import {
   RekomendasiData,
@@ -19,34 +23,72 @@ const TableTemuanPreview = () => {
   const { getNameNoSP } = useGetNameST();
   const { getNameKodeTemuan, getNameKodeRekomendasi } = useGetNameKode();
   const { data: RekomendasiData } = useFetchAll<RekomendasiData>('rekomendasi');
+  const { getNomorLHP, getSTLHP, getUraianLHP } = useGetNameLHP();
 
-  // Group data by SP number
+  // First group data by ST, then by LHP, then by temuan
   const groupedData = React.useMemo(() => {
-    const groups: { [key: string]: TemuanHasilData[] } = {};
-    DataTemuanHasil.forEach((item) => {
-      const spNumber = getNameNoSP(Number(item.id_st));
-      if (!groups[spNumber]) {
-        groups[spNumber] = [];
+    const stGroups: {
+      [key: string]: {
+        stNumber: string;
+        lhpGroups: {
+          [key: string]: {
+            lhpNumber: string;
+            uraianLHP: string;
+            temuans: TemuanHasilData[];
+          };
+        };
+      };
+    } = {};
+
+    DataTemuanHasil.forEach((temuan) => {
+      const idST = Number(temuan.id_st);
+      const stNumber = getNameNoSP(idST);
+
+      if (!stGroups[stNumber]) {
+        stGroups[stNumber] = {
+          stNumber,
+          lhpGroups: {},
+        };
       }
-      groups[spNumber].push(item);
+
+      const lhpNumber = getNomorLHP(idST);
+      const uraianLHP = getUraianLHP(idST);
+
+      if (!stGroups[stNumber].lhpGroups[lhpNumber]) {
+        stGroups[stNumber].lhpGroups[lhpNumber] = {
+          lhpNumber,
+          uraianLHP,
+          temuans: [],
+        };
+      }
+
+      stGroups[stNumber].lhpGroups[lhpNumber].temuans.push(temuan);
     });
-    return groups;
-  }, [DataTemuanHasil, getNameNoSP]);
+
+    return stGroups;
+  }, [DataTemuanHasil, getNameNoSP, getNomorLHP, getUraianLHP]);
 
   // Map temuan with their associated recommendations
-  const temuanWithRekomendasi = React.useMemo(() => {
-    return Object.entries(groupedData).map(([spNumber, temuans]) => {
+  const structuredData = React.useMemo(() => {
+    return Object.values(groupedData).map((stGroup) => {
       return {
-        spNumber,
-        temuans: temuans.map((temuan) => {
-          // Get all recommendations for this temuan
-          const rekomendasiList = RekomendasiData.filter(
-            (rek) => rek.id_tlhp === temuan.id_tlhp
-          );
-
+        stNumber: stGroup.stNumber,
+        lhps: Object.values(stGroup.lhpGroups).map((lhpGroup) => {
           return {
-            ...temuan,
-            rekomendasiList: rekomendasiList.length > 0 ? rekomendasiList : [],
+            lhpNumber: lhpGroup.lhpNumber,
+            uraianLHP: lhpGroup.uraianLHP,
+            temuans: lhpGroup.temuans.map((temuan) => {
+              // Get all recommendations for this temuan
+              const rekomendasiList = RekomendasiData.filter(
+                (rek) => rek.id_tlhp === temuan.id_tlhp
+              );
+
+              return {
+                ...temuan,
+                rekomendasiList:
+                  rekomendasiList.length > 0 ? rekomendasiList : [],
+              };
+            }),
           };
         }),
       };
@@ -121,44 +163,66 @@ const TableTemuanPreview = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {temuanWithRekomendasi.map(
-                      ({ spNumber, temuans }, groupIndex) => {
-                        let rowCount = 0;
-                        temuans.forEach((temuan) => {
-                          // Count how many rows each temuan will need
-                          rowCount +=
+                    {structuredData.map((stGroup, stIndex) => {
+                      // Calculate total rows for this ST group
+                      let stRowCount = 0;
+                      stGroup.lhps.forEach((lhp) => {
+                        lhp.temuans.forEach((temuan) => {
+                          stRowCount +=
+                            temuan.rekomendasiList.length > 0
+                              ? temuan.rekomendasiList.length
+                              : 1;
+                        });
+                      });
+
+                      return stGroup.lhps.flatMap((lhp, lhpIndex) => {
+                        // Calculate row count for this LHP
+                        let lhpRowCount = 0;
+                        lhp.temuans.forEach((temuan) => {
+                          lhpRowCount +=
                             temuan.rekomendasiList.length > 0
                               ? temuan.rekomendasiList.length
                               : 1;
                         });
 
-                        return temuans.flatMap((temuan, temuanIndex) => {
+                        return lhp.temuans.flatMap((temuan, temuanIndex) => {
                           // If no recommendations, show one row with empty recommendation
                           if (temuan.rekomendasiList.length === 0) {
+                            const isFirstTemuanInLHP = temuanIndex === 0;
+                            const isFirstLHPInST = lhpIndex === 0;
+
                             return (
                               <tr
                                 key={`${temuan.id_tlhp}-empty`}
                                 className="hover:bg-gray-100 text-center align-middle"
                               >
-                                {temuanIndex === 0 && (
-                                  <>
-                                    <td
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={rowCount}
-                                    >
-                                      {groupIndex + 1}
-                                    </td>
-                                    <td
-                                      className="border border-gray-300 p-2"
-                                      rowSpan={rowCount}
-                                    >
-                                      {spNumber}
-                                    </td>
-                                  </>
+                                {isFirstLHPInST && isFirstTemuanInLHP && (
+                                  <td
+                                    className="border border-gray-300 p-2"
+                                    rowSpan={stRowCount}
+                                  >
+                                    {stIndex + 1}
+                                  </td>
                                 )}
-                                <td className="border border-gray-300 p-2">
-                                  {temuan.uraian}
-                                </td>
+
+                                {isFirstLHPInST && isFirstTemuanInLHP && (
+                                  <td
+                                    className="border border-gray-300 p-2"
+                                    rowSpan={stRowCount}
+                                  >
+                                    {stGroup.stNumber}
+                                  </td>
+                                )}
+
+                                {isFirstTemuanInLHP && (
+                                  <td
+                                    className="border border-gray-300 p-2"
+                                    rowSpan={lhpRowCount}
+                                  >
+                                    {lhp.uraianLHP}
+                                  </td>
+                                )}
+
                                 <td className="border border-gray-300 p-2">
                                   T{temuanIndex + 1}
                                 </td>
@@ -199,40 +263,53 @@ const TableTemuanPreview = () => {
                           // For temuans with recommendations
                           return temuan.rekomendasiList.map(
                             (rekomendasi, rekIndex) => {
-                              const isFirstRow =
-                                temuanIndex === 0 && rekIndex === 0;
+                              const isFirstTemuanInLHP = temuanIndex === 0;
+                              const isFirstLHPInST = lhpIndex === 0;
                               const isFirstRekForTemuan = rekIndex === 0;
+                              const isFirstRow =
+                                isFirstLHPInST &&
+                                isFirstTemuanInLHP &&
+                                isFirstRekForTemuan;
 
                               return (
                                 <tr
                                   key={`${temuan.id_tlhp}-${rekomendasi.id_rekomendasi}-${rekIndex}`}
                                   className="hover:bg-gray-100 text-center align-middle"
                                 >
-                                  {isFirstRow && (
-                                    <>
+                                  {isFirstLHPInST &&
+                                    isFirstTemuanInLHP &&
+                                    isFirstRekForTemuan && (
                                       <td
                                         className="border border-gray-300 p-2"
-                                        rowSpan={rowCount}
+                                        rowSpan={stRowCount}
                                       >
-                                        {groupIndex + 1}
+                                        {stIndex + 1}
                                       </td>
+                                    )}
+
+                                  {isFirstLHPInST &&
+                                    isFirstTemuanInLHP &&
+                                    isFirstRekForTemuan && (
                                       <td
                                         className="border border-gray-300 p-2"
-                                        rowSpan={rowCount}
+                                        rowSpan={stRowCount}
                                       >
-                                        {spNumber}
+                                        {stGroup.stNumber}
                                       </td>
-                                    </>
-                                  )}
+                                    )}
+
+                                  {isFirstTemuanInLHP &&
+                                    isFirstRekForTemuan && (
+                                      <td
+                                        className="border border-gray-300 p-2"
+                                        rowSpan={lhpRowCount}
+                                      >
+                                        {lhp.uraianLHP}
+                                      </td>
+                                    )}
 
                                   {isFirstRekForTemuan && (
                                     <>
-                                      <td
-                                        className="border border-gray-300 p-2"
-                                        rowSpan={temuan.rekomendasiList.length}
-                                      >
-                                        {temuan.uraian}
-                                      </td>
                                       <td
                                         className="border border-gray-300 p-2"
                                         rowSpan={temuan.rekomendasiList.length}
@@ -296,8 +373,8 @@ const TableTemuanPreview = () => {
                             }
                           );
                         });
-                      }
-                    )}
+                      });
+                    })}
 
                     {/* Kode Temuan Summary Section */}
                     {DataKodeTemuan.filter(

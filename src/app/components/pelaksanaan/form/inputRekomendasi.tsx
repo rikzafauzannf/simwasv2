@@ -17,7 +17,7 @@ import { useOptions } from '@/data/selectValue';
 import Swal from 'sweetalert2';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
-import RekomendasiChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/[id_st]/[id_temuan]/rekomendasiChecker';
+import RekomendasiChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/[id_lhp]/[id_temuan]/rekomendasiChecker';
 import { useGetNameKode } from '@/hooks/useGetName';
 
 interface CompoProps {
@@ -104,7 +104,7 @@ const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
       <h3 className="text-xl">Input Rekomendasi Temuan</h3>
       <CardComponents>
         <h3>Data Temuan</h3>
-        <section className="grid lg:grid-cols-3 w-full">
+        <section className="grid lg:grid-cols-2 w-full">
           <div>
             <small>Kode Temuan</small>
             <p className="font-semibold text-dark">
@@ -120,10 +120,10 @@ const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
               {DataTemuanCheck?.kondisi_temuan}
             </p>
           </div>
-          <div>
+          {/* <div>
             <small>Uraian Temuan</small>
             <p className="font-semibold text-dark">{DataTemuanCheck?.uraian}</p>
-          </div>
+          </div> */}
         </section>
       </CardComponents>
       <CardComponents>

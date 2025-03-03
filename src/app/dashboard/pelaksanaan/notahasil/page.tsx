@@ -14,7 +14,7 @@ const NotaHasilPengawasanPage = () => {
         <MapDataST title="Upload NHP" todo="pelaksanaan/notahasil/form" />
         <div className="grid w-full gap-3">
           {/* <CardComponents> */}
-            <TableNHP />
+          <TableNHP />
           {/* </CardComponents> */}
         </div>
       </div>

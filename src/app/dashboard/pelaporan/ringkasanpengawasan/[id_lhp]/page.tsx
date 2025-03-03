@@ -4,16 +4,16 @@ import React from 'react';
 
 interface PageProps {
   params: {
-    id_st: number;
+    id_lhp: number;
   };
 }
 
 const FormRingkasanPengawasanPage: React.FC<PageProps> = ({ params }) => {
-  console.log('params data page props: ', params.id_st);
+  console.log('params data page props: ', params.id_lhp);
   return (
     <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer']}>
       <div className="space-y-3">
-        <InputRingkasanPengawasan id_st={params.id_st} />
+        <InputRingkasanPengawasan id_lhp={params.id_lhp} />
       </div>
     </AuthRoleWrapper>
   );

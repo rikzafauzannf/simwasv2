@@ -14,22 +14,25 @@ import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import CardChecker from './CardChecker';
 import { useFetchById } from '@/hooks/useFetchById';
-import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import {
+  RekomendasiData,
+  TemuanHasilData,
+} from '@/interface/interfaceTemuanHasil';
 import { useOptions } from '@/data/selectValue';
 
 interface PageProps {
   params: {
-    id_tlhp: number;
+    id_rekomendasi: number;
   };
 }
 
 const axiosSecvice = new AxiosService();
 
 const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
-  const id_tlhp = params.id_tlhp;
-  const { data: TemuanHasilData } = useFetchById<TemuanHasilData>(
-    'temuan_hasil',
-    id_tlhp
+  const id_rekomendasi = params.id_rekomendasi;
+  const { data: RekomendasiData } = useFetchById<RekomendasiData>(
+    'rekomendasi',
+    id_rekomendasi
   );
 
   const { user } = useAuthStore();
@@ -55,7 +58,7 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
   const onSubmit: SubmitHandler<FormTindakLanjut> = async (data) => {
     try {
       const FormDataTL = {
-        id_lhp: Number(id_tlhp),
+        id_lhp: Number(id_rekomendasi),
         id_user: Number(user?.id_user),
         uraian: data.uraian,
         keterangan: data.keterangan,
@@ -112,21 +115,21 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
         });
       }
     }
-    // if (
-    //   TemuanHasilData?.nilai_rekomendasi !== undefined &&
-    //   !isNaN(Number(nilai_setor))
-    // ) {
-    //   const sisa = TemuanHasilData.nilai_rekomendasi - Number(nilai_setor);
-    //   setValue('sisa_nominal', sisa, { shouldValidate: true });
-    // }
-  }, [TemuanHasilData, nilai_setor, tanggal_pengiriman, setValue]);
+    if (
+      RekomendasiData?.rekomendasi_nilai !== undefined &&
+      !isNaN(Number(nilai_setor))
+    ) {
+      const sisa = RekomendasiData?.rekomendasi_nilai - Number(nilai_setor);
+      setValue('sisa_nominal', sisa, { shouldValidate: true });
+    }
+  }, [RekomendasiData, nilai_setor, tanggal_pengiriman, setValue]);
 
   const { OptionsStatusTL } = useOptions();
   return (
     <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer']}>
       <div className="space-y-3">
         <h3 className="text-xl">Tindak Lanjut</h3>
-        <CardChecker id_tlhp={id_tlhp} />
+        <CardChecker id_rekomendasi={id_rekomendasi} />
         <CardComponents>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -232,7 +235,8 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
               name="keterangan"
               placeholder="Tuliskan Keterangan Tindak Lanjut"
               register={register('keterangan', {
-                required: 'Keterangan Tindak Lanjut wajib diisi',
+                // required: 'Keterangan Tindak Lanjut wajib diisi',
+                maxLength: 225,
               })}
               error={errors.keterangan}
             />

@@ -33,6 +33,32 @@ export const useGetNameRuangLingkup = () => {
   return { getNameRuangLingkup, isLoading, error };
 };
 
+// ======LHP======
+export const useGetNameLHP = () => {
+  const {
+    data: DataRuangLingkup,
+    isLoading,
+    error,
+  } = useFetchAll<LHPData>('lhp');
+
+  const getNomorLHP = (id: number) => {
+    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    return data.length > 0 ? data[0].no_lhp : '';
+  };
+
+  const getUraianLHP = (id: number) => {
+    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    return data.length > 0 ? data[0].keterangan_lhp : '';
+  };
+
+  const getSTLHP = (id: number) => {
+    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    return data.length > 0 ? data[0].id_st : '';
+  };
+
+  return { getNomorLHP, getUraianLHP, getSTLHP, isLoading, error };
+};
+
 // ======User (Pengguna)======
 export const useGetNameUser = () => {
   const {

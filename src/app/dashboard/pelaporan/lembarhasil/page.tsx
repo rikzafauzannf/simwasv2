@@ -14,7 +14,7 @@ const LembarHasilPage = () => {
         <MapDataNHP todo="pelaporan/lembarhasil/form" />
         <div className="grid w-full gap-3">
           {/* <CardComponents> */}
-            <TableLHP />
+          <TableLHP />
           {/* </CardComponents> */}
         </div>
       </div>

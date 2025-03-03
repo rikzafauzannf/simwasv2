@@ -12,32 +12,42 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useOptions } from '@/data/selectValue';
-import TemuanChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/[id_st]/temuanChecker';
+import TemuanChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/[id_lhp]/temuanChecker';
 import Swal from 'sweetalert2';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
+import { LHPData } from '@/interface/interfaceHasilPengawasan';
+import Link from 'next/link';
 
 interface CompoProps {
-  id_st: number;
+  id_lhp: number;
 }
 
 const axiosSecvice = new AxiosService();
 
-const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
+const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_lhp }) => {
   const { user } = useAuthStore();
   const router = useRouter();
   const { data: DataTemuanHasil, refetch } =
     useFetchAll<TemuanHasilData>('temuan_hasil');
 
   const TemuanFilterID = DataTemuanHasil.filter(
-    (item) => item.id_st === Number(id_st)
+    (item) => item.id_st === Number(id_lhp)
   );
 
+  console.log('id_lhp: ', id_lhp);
+
+  const { data: DataLHPCheck } = useFetchById<LHPData>(
+    'lhp_id',
+    Number(id_lhp)
+  );
   const { data: DataStCheck } = useFetchById<SuratTugasData>(
     'surat_tugas',
-    id_st
+    Number(DataLHPCheck?.id_st)
   );
+
+  console.log('dataLHP :', DataLHPCheck);
 
   const { optionKodeReferensi, optionKodeRekomendasi, optionKodeTemuan } =
     useOptions();
@@ -63,7 +73,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
         // id_kode_referensi: Number(data.id_kode_referensi),
         // id_kode_rekomendasi: Number(data.id_kode_rekomendasi),
         id_kode_temuan: Number(data.id_kode_temuan),
-        id_st: Number(id_st),
+        id_st: Number(id_lhp),
         id_user: Number(user?.id_user),
         // nilai_rekomendasi: Number(data.nilai_rekomendasi),
         kondisi_temuan: data.kondisi_temuan,
@@ -133,8 +143,39 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
       </CardComponents>
 
       <CardComponents>
+        <h3>Data LHP</h3>
+        <section className="grid lg:grid-cols-3 w-full gap-2">
+          {/* <div >
+            <small>Bulan</small>
+            <p className='text-dark font-semibold'>{DataStCheck?.bulan}</p>
+          </div> */}
+          <div>
+            <small>Nomor LHP</small>
+            <p className="text-dark font-semibold">{DataLHPCheck?.no_lhp}</p>
+          </div>
+          <div>
+            <small>Keterangan</small>
+            <p className="text-dark font-semibold">
+              {DataLHPCheck?.keterangan_lhp}
+            </p>
+          </div>
+          <div>
+            <small>File LHP</small>
+            <br />
+            <Link
+              href={String(DataLHPCheck?.file_lhp)}
+              target="blank"
+              className="text-blue-600 hover:text-blue-700 font-semibold"
+            >
+              Link LHP
+            </Link>
+          </div>
+        </section>
+      </CardComponents>
+
+      <CardComponents>
         <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
-          <h3>Form Ringkasan Temuan</h3>
+          {/* <h3>Form Ringkasan Temuan</h3>
           <section className="grid grid-cols-1 gap-3">
             <InputFieldComponent
               label="Uraian, Audit, Nomor dan Tgl LHP"
@@ -147,8 +188,8 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_st }) => {
               })}
               error={errors.uraian}
             />
-          </section>
-          <h3>Kondisi Temuan</h3>
+          </section> */}
+          <h3>Form Temuan</h3>
           <section className="grid lg:grid-cols-3 gap-3">
             <SelectInputField
               label="Kode Temuan"
