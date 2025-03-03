@@ -132,7 +132,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
                   label="Upload File"
                   identiti="uploadFile"
                   name="uploadFile"
-                  placeholder="Upload File ST"
+                  placeholder="Upload File LHP"
                   type="file"
                   register={'uploadFile'}
                 />
@@ -142,7 +142,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
                   label="Masukan Link Suresman"
                   identiti="linkStSuresman"
                   name="linkStSuresman"
-                  placeholder="Masukan Link Suresman ST"
+                  placeholder="Masukan Link Suresman LHP"
                   type="link"
                   register={register('file_lhp', {
                     required: 'Masukan Link Laporan Hasil Pengawasan',
@@ -165,10 +165,10 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
               />
               <TextAreaFieldComponent
                 rows={5}
-                label="Keterangan"
-                identiti="keterangan"
-                name="keterangan"
-                placeholder="Masukan Keterangan ST"
+                label="Uraian"
+                identiti="Uraian"
+                name="Uraian"
+                placeholder="Masukan Uraian LHP"
                 type="text"
                 register={register('keterangan_lhp', {
                   required:

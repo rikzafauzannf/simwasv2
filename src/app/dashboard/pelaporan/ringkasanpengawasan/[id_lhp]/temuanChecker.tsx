@@ -17,7 +17,8 @@ interface propsID {
 const axiosService = new AxiosService();
 
 const TemuanChecker: React.FC<propsID> = ({ DataTemuanHasil, refetchData }) => {
-  const { getNameKodeRekomendasi, getNameKodeTemuan } = useGetNameKode();
+  const { getNameKodeRekomendasi, getNameKodeTemuan, getFieldKodeTemuan } =
+    useGetNameKode();
 
   const handleDelete = async (id_tlhp: number) => {
     const result = await Swal.fire({
@@ -52,48 +53,51 @@ const TemuanChecker: React.FC<propsID> = ({ DataTemuanHasil, refetchData }) => {
   return (
     <div className="space-y-3">
       <h3>Data Temuan ({DataTemuanHasil.length})</h3>
-      {DataTemuanHasil.map((item) => (
-        <CardComponents key={item.id_tlhp}>
-          <small>
-            tanggal dibuat -{' '}
-            <span className="font-semibold">
-              {formatToLocalDate(item.created_at)}
-            </span>
-          </small>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 text-dark">
-            <div>
-              <small>Kode Temuan</small>
-              <h3>{getNameKodeTemuan(item.id_kode_temuan)}</h3>
-            </div>
-            <div>
-              <small>Kondisi Temuan</small>
-              <h3>{item.kondisi_temuan}</h3>
-            </div>
+      <section className="grid md:grid-cols-1 gap-3">
+        {DataTemuanHasil.map((item) => (
+          <CardComponents key={item.id_tlhp}>
+            <small>
+              tanggal dibuat -{' '}
+              <span className="font-semibold">
+                {formatToLocalDate(item.created_at)}
+              </span>
+            </small>
+            <div className="grid md:grid-cols-2 gap-3 text-dark">
+              <div>
+                <small>Kode Temuan</small>
+                <h3>{getNameKodeTemuan(item.id_kode_temuan)}</h3>
+                <small>{getFieldKodeTemuan(item.id_kode_temuan)}</small>
+              </div>
+              <div>
+                <small>Kondisi Temuan</small>
+                <h3>{item.kondisi_temuan}</h3>
+              </div>
 
-            <div>
+              {/* <div>
               <small>Uraian, Audit, Nomor dan Tgl LHP</small>
               <h3>{item.uraian}</h3>
+            </div> */}
+              <div className="md:col-span-2 lg:col-span-3">
+                <section className="flex justify-start items-start w-full gap-2">
+                  <Button
+                    as={Link}
+                    href={`${item.id_st}/${item.id_tlhp}`}
+                    className="shadow-md bg-blue-600 hover:bg-blue-700  font-semibold hover:font-bold rounded-md text-white flex-1"
+                  >
+                    Buat Rekomendasi
+                  </Button>
+                  <Button
+                    onClick={() => handleDelete(item.id_tlhp)}
+                    className="shadow-md bg-red-600 hover:bg-red-700  font-semibold hover:font-bold rounded-md text-white"
+                  >
+                    Delete
+                  </Button>
+                </section>
+              </div>
             </div>
-            <div className="md:col-span-2 lg:col-span-3">
-              <section className="flex justify-start items-start w-full gap-2">
-                <Button
-                  as={Link}
-                  href={`${item.id_st}/${item.id_tlhp}`}
-                  className="shadow-md bg-blue-600 hover:bg-blue-700  font-semibold hover:font-bold rounded-md text-white flex-1"
-                >
-                  Buat Rekomendasi
-                </Button>
-                <Button
-                  onClick={() => handleDelete(item.id_tlhp)}
-                  className="shadow-md bg-red-600 hover:bg-red-700  font-semibold hover:font-bold rounded-md text-white"
-                >
-                  Delete
-                </Button>
-              </section>
-            </div>
-          </div>
-        </CardComponents>
-      ))}
+          </CardComponents>
+        ))}
+      </section>
     </div>
   );
 };
