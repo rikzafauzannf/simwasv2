@@ -3,9 +3,9 @@ import { CardComponents } from '@/app/components/Global/Card';
 import PdfGenerator from '@/app/components/PDFGenerator';
 import { formatCurrency, formatToLocalDate } from '@/data/formatData';
 import { useFetchAll } from '@/hooks/useFetchAll';
-import { useGetNameKode, useGetNameST } from '@/hooks/useGetName';
+import { useGetNameKode, useGetNameLHP, useGetNameST } from '@/hooks/useGetName';
 import { KodeTemuanDB } from '@/interface/interfaceReferensi';
-import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import { RekomendasiData, TemuanHasilData } from '@/interface/interfaceTemuanHasil';
 import { TindakLanjutDB } from '@/interface/interfaceTindakLanjut';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { Table } from 'flowbite-react';
@@ -17,7 +17,11 @@ const TableTindakLanjutPreview = () => {
     useFetchAll<TemuanHasilData>('temuan_hasil');
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataTL } = useFetchAll<TindakLanjutDB>('tindak_lanjut');
-  const { getNameNoSP } = useGetNameST();
+  const { data: DataRekomendasi } = useFetchAll<RekomendasiData>(
+    'rekomendasi'
+  );
+  const { getNameNoSP} = useGetNameST();
+  const { getNomorLHP, getSTLHP, getUraianLHP } = useGetNameLHP();
   const { getNameKodeTemuan, getNameKodeRekomendasi } = useGetNameKode();
 
   // Group tindak lanjut data by id_tlhp
@@ -32,18 +36,60 @@ const TableTindakLanjutPreview = () => {
     return groups;
   }, [DataTL]);
 
-  // Group data by SP number
+  // Replace the existing groupedData memo with this new structure
   const groupedData = React.useMemo(() => {
-    const groups: { [key: string]: TemuanHasilData[] } = {};
-    DataTemuanHasil.forEach((item) => {
-      const spNumber = getNameNoSP(Number(item.id_st));
-      if (!groups[spNumber]) {
-        groups[spNumber] = [];
+    const lhpGroups: {
+      [key: string]: {
+        lhpNumber: string;
+        uraianLHP: string;
+        temuans: TemuanHasilData[];
+      };
+    } = {};
+
+    DataTemuanHasil.forEach((temuan) => {
+      const idST = Number(temuan.id_st);
+      const lhpNumber = getNomorLHP(idST);
+      const uraianLHP = getUraianLHP(idST);
+
+      if (!lhpGroups[lhpNumber]) {
+        lhpGroups[lhpNumber] = {
+          lhpNumber,
+          uraianLHP,
+          temuans: [],
+        };
       }
-      groups[spNumber].push(item);
+
+      lhpGroups[lhpNumber].temuans.push(temuan);
     });
-    return groups;
-  }, [DataTemuanHasil, getNameNoSP]);
+
+    return lhpGroups;
+  }, [DataTemuanHasil, getNomorLHP, getUraianLHP]);
+
+  // Update the structuredData memo to correctly link tindak lanjut with rekomendasi
+  const structuredData = React.useMemo(() => {
+    return Object.values(groupedData).map((lhpGroup) => {
+      return {
+        lhpNumber: lhpGroup.lhpNumber,
+        uraianLHP: lhpGroup.uraianLHP,
+        temuans: lhpGroup.temuans.map((temuan) => {
+          const rekomendasiList = DataRekomendasi.filter(
+            (rek) => rek.id_tlhp === temuan.id_tlhp
+          );
+          
+          // Map tindak lanjut to each rekomendasi
+          const rekomendasiWithTL = rekomendasiList.map(rek => ({
+            ...rek,
+            tindakLanjut: DataTL.find(tl => tl.id_lhp === rek.id_rekomendasi)
+          }));
+
+          return {
+            ...temuan,
+            rekomendasiList: rekomendasiWithTL.length > 0 ? rekomendasiWithTL : [],
+          };
+        }),
+      };
+    });
+  }, [groupedData, DataRekomendasi, DataTL]);
 
   const mergedDataTemuan = React.useMemo(() => {
     return DataTemuanHasil.map((item) => {
@@ -58,13 +104,13 @@ const TableTindakLanjutPreview = () => {
   }, [DataTemuanHasil, DataKodeTemuan]);
 
   const totals = React.useMemo(() => {
-    // const totalNilaiRekomendasi = DataTemuanHasil.reduce(
-    //   (sum, item) => sum + (item.nilai_rekomendasi || 0),
-    //   0
-    // );
+    const totalNilaiRekomendasi = DataRekomendasi.reduce(
+      (sum, item) => sum + (Number(item.rekomendasi_nilai) || 0),
+      0
+    );
 
     const totalNilaiSetor = DataTL.reduce(
-      (sum, tl) => sum + (tl.nilai_setor || 0),
+      (sum, tl) => sum + (Number(tl.nilai_setor) || 0),
       0
     );
 
@@ -85,12 +131,12 @@ const TableTindakLanjutPreview = () => {
     ).length;
 
     const totalSisaNominal = DataTL.reduce(
-      (sum, tl) => sum + (tl.sisa_nominal || 0),
+      (sum, tl) => sum + (Number(tl.sisa_nominal) || 0),
       0
     );
 
     return {
-      // totalNilaiRekomendasi,
+      totalNilaiRekomendasi,
       totalNilaiSetor,
       totalSesuai,
       totalDalamProses,
@@ -98,7 +144,7 @@ const TableTindakLanjutPreview = () => {
       totalTidakDapatTL,
       totalSisaNominal,
     };
-  }, [DataTemuanHasil, DataTL]);
+  }, [DataTemuanHasil,DataRekomendasi, DataTL]);
 
   const handleExport = () => {
     exportToExcel(
@@ -112,6 +158,19 @@ const TableTindakLanjutPreview = () => {
       formatToLocalDate
     );
   };
+
+  // Add this after other grouped data memos
+  const groupedRekomendasi = React.useMemo(() => {
+    const groups: { [key: number]: RekomendasiData[] } = {};
+    DataRekomendasi.forEach((item) => {
+      if (!groups[item.id_tlhp]) {
+        groups[item.id_tlhp] = [];
+      }
+      groups[item.id_tlhp].push(item);
+    });
+    return groups;
+  }, [DataRekomendasi]);
+
   return (
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
@@ -237,142 +296,132 @@ const TableTindakLanjutPreview = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(groupedData).map(
-                    ([spNumber, items], groupIndex) => {
-                      return items.map((item, itemIndex) => {
-                        const tindakLanjut = groupedTL[item.id_tlhp] || [];
+                  {structuredData.map((lhpGroup, lhpIndex) => {
+                    // Calculate total rows for this LHP group
+                    const totalLHPRows = lhpGroup.temuans.reduce((acc, temuan) => {
+                      return acc + Math.max(1, temuan.rekomendasiList.length);
+                    }, 0);
+
+                    return lhpGroup.temuans.flatMap((temuan, temuanIndex) => {
+                      const rekomendasi = temuan.rekomendasiList;
+                      
+                      // Calculate total rows for this temuan
+                      const temuanRows = Math.max(1, rekomendasi.length);
+                      
+                      // If no recommendations, show one row with empty cells
+                      if (rekomendasi.length === 0) {
                         return (
-                          <tr
-                            key={item.id_tlhp}
-                            className="hover:bg-gray-100 text-center align-middle"
-                          >
-                            {itemIndex === 0 && (
+                          <tr key={`${temuan.id_tlhp}-empty`} className="hover:bg-gray-100 text-center align-middle">
+                            {temuanIndex === 0 && (
                               <>
-                                <td
-                                  className="border border-gray-300 p-2"
-                                  rowSpan={items.length}
-                                >
-                                  {groupIndex + 1}
+                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                  {lhpIndex + 1}
                                 </td>
-                                <td
-                                  className="border border-gray-300 p-2"
-                                  rowSpan={items.length}
-                                >
-                                  {spNumber}
+                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                  {getNameNoSP(Number(temuan.id_st))}
+                                </td>
+                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                  {lhpGroup.uraianLHP}
                                 </td>
                               </>
                             )}
-                            <td className="border border-gray-300 p-2">
-                              {item.uraian}
+                            <td className="border border-gray-300 p-2" rowSpan={temuanRows}>T{temuanIndex + 1}</td>
+                            <td className="border border-gray-300 p-2" rowSpan={temuanRows}>{temuan.kondisi_temuan}</td>
+                            <td className="border border-gray-300 p-2" rowSpan={temuanRows}>
+                              {getNameKodeTemuan(Number(temuan.id_kode_temuan))}
                             </td>
-                            <td className="border border-gray-300 p-2">
-                              T{itemIndex + 1}
+                            <td className="border border-gray-300 p-2" rowSpan={temuanRows}>
+                              {getNameKodeTemuan(Number(temuan.id_kode_temuan)).split('.')[0]}
                             </td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                          </tr>
+                        );
+                      }
+
+                      // For temuans with recommendations
+                      return rekomendasi.map((rek, rekIndex) => {
+                        // Get tindak lanjut directly from the rekomendasi object
+                        const tindakLanjut = rek.tindakLanjut;
+                        
+                        return (
+                          <tr key={`${temuan.id_tlhp}-${rek.id_rekomendasi}`} 
+                              className="hover:bg-gray-100 text-center align-middle">
+                            {temuanIndex === 0 && rekIndex === 0 && (
+                              <>
+                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                  {lhpIndex + 1}
+                                </td>
+                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                  {getNameNoSP(Number(temuan.id_st))}
+                                </td>
+                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                  {lhpGroup.uraianLHP}
+                                </td>
+                              </>
+                            )}
+                            {rekIndex === 0 && (
+                              <>
+                                <td className="border border-gray-300 p-2" rowSpan={rekomendasi.length}>T{temuanIndex + 1}</td>
+                                <td className="border border-gray-300 p-2" rowSpan={rekomendasi.length}>{temuan.kondisi_temuan}</td>
+                                <td className="border border-gray-300 p-2" rowSpan={rekomendasi.length}>
+                                  {getNameKodeTemuan(Number(temuan.id_kode_temuan))}
+                                </td>
+                                <td className="border border-gray-300 p-2" rowSpan={rekomendasi.length}>
+                                  {getNameKodeTemuan(Number(temuan.id_kode_temuan)).split('.')[0]}
+                                </td>
+                              </>
+                            )}
+                            <td className="border border-gray-300 p-2">{rek.rekomendasi_saran}</td>
                             <td className="border border-gray-300 p-2">
-                              {item.kondisi_temuan}
+                              {getNameKodeRekomendasi(rek.id_kode_rekomendasi).split('.')[0]}
                             </td>
-                            <td className="border border-gray-300 p-2">
-                              {getNameKodeTemuan(Number(item.id_kode_temuan))}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {
-                                getNameKodeTemuan(
-                                  Number(item.id_kode_temuan)
-                                ).split('.')[0]
-                              }
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {/* {item.rekomendasi_saran} */}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {/* {
-                                  getNameKodeRekomendasi(
-                                    item.id_kode_rekomendasi
-                                  ).split('.')[0]
-                                } */}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {/* {formatCurrency(item.nilai_rekomendasi)} */}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {/* {
-                                  getNameKodeRekomendasi(
-                                    item.id_kode_rekomendasi
-                                  ).split('.')[0]
-                                } */}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {/* {getNameKodeRekomendasi(
-                                  item.id_kode_rekomendasi
-                                )} */}
-                            </td>
+                            <td className="border border-gray-300 p-2">{formatCurrency(rek.rekomendasi_nilai)}</td>
+                            <td className="border border-gray-300 p-2">{getNameKodeRekomendasi(rek.id_kode_rekomendasi)}</td>
+                            <td className="border border-gray-300 p-2">{getNameKodeRekomendasi(rek.id_kode_rekomendasi)}</td>
                             {/* Tindak Lanjut cells */}
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.map((tl, idx) => (
-                                <div key={idx}>{tl.uraian}</div>
-                              ))}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.map((amount, idx) => (
-                                <div key={idx}>
-                                  {formatCurrency(amount.nilai_setor)}
-                                </div>
-                              ))}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.filter(
-                                (tl) => tl.kondisi_temuan === 'sesuai'
-                              ).length || ''}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.filter(
-                                (tl) => tl.kondisi_temuan === 'dalam proses'
-                              ).length || ''}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.filter(
-                                (tl) =>
-                                  tl.kondisi_temuan === 'belum ditindak lanjut'
-                              ).length || ''}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.filter(
-                                (tl) =>
-                                  tl.kondisi_temuan ===
-                                  'tidak dapat ditindak lanjut'
-                              ).length || ''}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.map((amount, idx) => (
-                                <div key={idx}>
-                                  {formatCurrency(amount.sisa_nominal)}
-                                </div>
-                              ))}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.map((tl, idx) => (
-                                <div key={idx}>
-                                  {formatToLocalDate(tl.tanggal_pengiriman)}
-                                </div>
-                              ))}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.map((tl, idx) => (
-                                <div key={idx}>
-                                  {formatToLocalDate(tl.batas_akhir_tl)}
-                                </div>
-                              ))}
-                            </td>
-                            <td className="border border-gray-300 p-2">
-                              {tindakLanjut.map((tl, idx) => (
-                                <div key={idx}>{tl.keterangan}</div>
-                              ))}
-                            </td>
+                            {tindakLanjut ? (
+                              <>
+                                <td className="border border-gray-300 p-2">{tindakLanjut.uraian}</td>
+                                <td className="border border-gray-300 p-2">{formatCurrency(tindakLanjut.nilai_setor)}</td>
+                                <td className="border border-gray-300 p-2">{tindakLanjut.kondisi_temuan === 'sesuai' ? '1' : ''}</td>
+                                <td className="border border-gray-300 p-2">{tindakLanjut.kondisi_temuan === 'dalam proses' ? '1' : ''}</td>
+                                <td className="border border-gray-300 p-2">{tindakLanjut.kondisi_temuan === 'belum ditindak lanjut' ? '1' : ''}</td>
+                                <td className="border border-gray-300 p-2">{tindakLanjut.kondisi_temuan === 'tidak dapat ditindak lanjut' ? '1' : ''}</td>
+                                <td className="border border-gray-300 p-2">{formatCurrency(tindakLanjut.sisa_nominal)}</td>
+                                <td className="border border-gray-300 p-2">{formatToLocalDate(tindakLanjut.tanggal_pengiriman)}</td>
+                                <td className="border border-gray-300 p-2">{formatToLocalDate(tindakLanjut.batas_akhir_tl)}</td>
+                                <td className="border border-gray-300 p-2">{tindakLanjut.uraian}</td>
+                              </>
+                            ) : (
+                              // Empty cells if no tindak lanjut exists
+                              <>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                                <td className="border border-gray-300 p-2"></td>
+                              </>
+                            )}
                           </tr>
                         );
                       });
-                    }
-                  )}
+                    });
+                  })}
 
                   {/* Kode Temuan Summary Section */}
                   {DataKodeTemuan.filter(
@@ -384,9 +433,16 @@ const TableTindakLanjutPreview = () => {
                         filterby.kode_temuan?.split('.')[0] ===
                         item.kode_temuan?.split('.')[0]
                     );
-                    const relatedTL = relatedTemuan.flatMap(
-                      (temuan) => groupedTL[temuan.id_tlhp] || []
+
+                    // Get related rekomendasi for the temuan
+                    const relatedRekomendasi = relatedTemuan.flatMap(
+                      (temuan) => groupedRekomendasi[temuan.id_tlhp] || []
                     );
+
+                    // Get tindak lanjut based on rekomendasi
+                    const relatedTL = relatedRekomendasi.flatMap(rek => {
+                      return DataTL.filter(tl => tl.id_lhp === rek.id_rekomendasi) || [];
+                    });
 
                     return (
                       <tr
@@ -407,13 +463,12 @@ const TableTindakLanjutPreview = () => {
                           {relatedTemuan.length}
                         </td>
                         <td className="border border-gray-300 p-2 text-center">
-                          {/* {formatCurrency(
-                              relatedTemuan.reduce(
-                                (sum, current) =>
-                                  sum + (current.nilai_rekomendasi || 0),
-                                0
-                              )
-                            )} */}
+                          {formatCurrency(
+                            relatedRekomendasi.reduce(
+                              (sum, rek) => sum + (Number(rek.rekomendasi_nilai) || 0),
+                              0
+                            )
+                          )}
                         </td>
                         <td className="border border-gray-300 p-2 text-center"></td>
                         <td className="border border-gray-300 p-2 text-center"></td>
@@ -421,7 +476,7 @@ const TableTindakLanjutPreview = () => {
                         <td className="border border-gray-300 p-2 text-center">
                           {formatCurrency(
                             relatedTL.reduce(
-                              (sum, tl) => sum + (tl.nilai_setor || 0),
+                              (sum, tl) => sum + (Number(tl.nilai_setor) || 0),
                               0
                             )
                           )}
@@ -452,7 +507,7 @@ const TableTindakLanjutPreview = () => {
                         <td className="border border-gray-300 p-2 text-center">
                           {formatCurrency(
                             relatedTL.reduce(
-                              (sum, tl) => sum + (tl.sisa_nominal || 0),
+                              (sum, tl) => sum + (Number(tl.sisa_nominal) || 0),
                               0
                             )
                           )}
@@ -478,7 +533,7 @@ const TableTindakLanjutPreview = () => {
                       {DataTemuanHasil.length}
                     </td>
                     <td className="border border-gray-300 p-2 text-center">
-                      {/* {formatCurrency(totals.totalNilaiRekomendasi)} */}
+                      {formatCurrency(totals.totalNilaiRekomendasi)}
                     </td>
                     <td className="border border-gray-300 p-2 text-center"></td>
                     <td className="border border-gray-300 p-2 text-center"></td>
