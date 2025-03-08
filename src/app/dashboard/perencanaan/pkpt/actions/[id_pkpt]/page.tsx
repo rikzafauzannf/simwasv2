@@ -21,7 +21,6 @@ import {
   SelectInputField,
 } from '@/app/components/Global/Input';
 import { useFetchById } from '@/hooks/useFetchById';
-import { Button } from 'flowbite-react';
 import Swal from 'sweetalert2';
 // import { useQuery } from '@tanstack/react-query';
 
@@ -228,20 +227,28 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
         pkptDataForm
       );
 
-      console.log('Respons dari server:', result);
-
+      // Modified response handling
       if (result.success) {
-        console.log(`${String(DataPKPT?.status)} berhasil diedit:`, result);
         reset();
         resetTeamMembers();
-        alert(`Data ${String(DataPKPT?.status)} berhasil diedit`);
+        await Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: `Data ${String(DataPKPT?.status)} berhasil diedit`,
+          showConfirmButton: true,
+        });
         router.push('/dashboard/perencanaan/pkpt');
       } else {
-        throw new Error(result.message);
+        throw new Error(result.message || 'Gagal mengupdate data');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting form:', error);
-      alert(`Gagal menyimpan data ${String(DataPKPT?.status)}`);
+      await Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: error.message || `Gagal menyimpan data ${String(DataPKPT?.status)}`,
+        showConfirmButton: true,
+      });
     }
   };
 
