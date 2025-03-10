@@ -5,7 +5,7 @@ import 'simplebar-react/dist/simplebar.min.css';
 import { Flowbite, ThemeModeScript } from 'flowbite-react';
 import customTheme from '@/utils/theme/custom-theme';
 import './css/globals.css';
-import { Analytics } from '@vercel/analytics/react';
+// import { Analytics } from '@vercel/analytics/react';
 
 const manrope = Manrope({ subsets: ['latin'] });
 
@@ -26,7 +26,7 @@ export default function RootLayout({
         <ThemeModeScript />
       </head>
       <body className={`${manrope.className}`}>
-        <Analytics />
+        {/* <Analytics /> */}
         <Flowbite theme={{ theme: customTheme }}>{children}</Flowbite>
       </body>
     </html>
