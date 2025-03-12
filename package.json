@@ -71,7 +71,8 @@
   "pnpm": {
     "ignoredBuiltDependencies": [
       "root"
-    ]
+    ],
+    "git-protocol": "https"
   },
   "npmConfig": {
     "git-fetch-with-cli": true
