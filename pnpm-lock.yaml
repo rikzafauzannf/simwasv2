@@ -23,6 +23,9 @@ importers:
       '@tabler/icons-react':
         specifier: 3.5.0
         version: 3.5.0(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: ^5.67.3
+        version: 5.67.3(react@18.3.1)
       '@types/file-saver':
         specifier: ^2.0.7
         version: 2.0.7
@@ -909,6 +912,14 @@ packages:
 
   '@tanstack/query-core@4.36.1':
     resolution: {integrity: sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==}
+
+  '@tanstack/query-core@5.67.3':
+    resolution: {integrity: sha512-pq76ObpjcaspAW4OmCbpXLF6BCZP2Zr/J5ztnyizXhSlNe7fIUp0QKZsd0JMkw9aDa+vxDX/OY7N+hjNY/dCGg==}
+
+  '@tanstack/react-query@5.67.3':
+    resolution: {integrity: sha512-u/n2HsQeH1vpZIOzB/w2lqKlXUDUKo6BxTdGXSMvNzIq5MHYFckRMVuFABp+QB7RN8LFXWV6X1/oSkuDq+MPIA==}
+    peerDependencies:
+      react: ^18 || ^19
 
   '@tanstack/react-virtual@3.13.2':
     resolution: {integrity: sha512-LceSUgABBKF6HSsHK2ZqHzQ37IKV/jlaWbHm+NyTa3/WNb/JZVcThDuTainf+PixltOOcFCYXwxbLpOX9sCx+g==}
@@ -4683,6 +4694,13 @@ snapshots:
   '@tabler/icons@3.5.0': {}
 
   '@tanstack/query-core@4.36.1': {}
+
+  '@tanstack/query-core@5.67.3': {}
+
+  '@tanstack/react-query@5.67.3(react@18.3.1)':
+    dependencies:
+      '@tanstack/query-core': 5.67.3
+      react: 18.3.1
 
   '@tanstack/react-virtual@3.13.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
