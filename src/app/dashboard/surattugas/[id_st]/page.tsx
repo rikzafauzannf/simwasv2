@@ -12,7 +12,7 @@ import { LHPData, NHPData } from '@/interface/interfaceHasilPengawasan';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { formatToLocalDate } from '@/data/formatData';
-import LaporanMingguanComponent from '@/app/dashboard/perencanaan/surattugas/[id_st]/laporanMingguan';
+import LaporanMingguanComponent from '@/app/dashboard/surattugas/[id_st]/laporanMingguan';
 import DatahpCheck from './datahpCheck';
 
 interface PageProps {

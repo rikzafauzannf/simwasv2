@@ -12,7 +12,7 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useOptions } from '@/data/selectValue';
-import TemuanChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/[id_lhp]/temuanChecker';
+import TemuanChecker from '@/app/dashboard/ringkasanpengawasan/[id_lhp]/temuanChecker';
 import Swal from 'sweetalert2';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';

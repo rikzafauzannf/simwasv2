@@ -1,6 +1,6 @@
 import { CardComponents } from '@/app/components/Global/Card';
 import InputKendaliMutu from '@/app/components/pelaksanaan/form/inputKendaliMutu';
-import LaporanMingguanComponent from '@/app/dashboard/perencanaan/surattugas/[id_st]/laporanMingguan';
+import LaporanMingguanComponent from '@/app/dashboard/surattugas/[id_st]/laporanMingguan';
 import TableKendaliMutu from '@/app/components/pelaksanaan/table/tableKendaliMutu';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';

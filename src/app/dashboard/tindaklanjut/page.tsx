@@ -1,5 +1,5 @@
 import React from 'react';
-import MapDataTemuanHasil from '../../../components/realisasi/dataTemuanHasil';
+import MapDataTemuanHasil from '../../components/realisasi/dataTemuanHasil';
 import { CardComponents } from '@/app/components/Global/Card';
 import TableTindakLanjut from '@/app/components/pelaksanaan/table/tableTindakLanjut';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';

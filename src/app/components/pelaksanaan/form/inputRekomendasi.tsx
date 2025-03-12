@@ -17,7 +17,7 @@ import { useOptions } from '@/data/selectValue';
 import Swal from 'sweetalert2';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
-import RekomendasiChecker from '@/app/dashboard/pelaporan/ringkasanpengawasan/[id_lhp]/[id_temuan]/rekomendasiChecker';
+import RekomendasiChecker from '@/app/dashboard/ringkasanpengawasan/[id_lhp]/[id_temuan]/rekomendasiChecker';
 import { useGetNameKode } from '@/hooks/useGetName';
 
 interface CompoProps {

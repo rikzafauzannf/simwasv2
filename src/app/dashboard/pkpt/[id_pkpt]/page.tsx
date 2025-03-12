@@ -5,7 +5,7 @@ import { CardComponents } from '@/app/components/Global/Card';
 import InputKendaliMutu from '@/app/components/pelaksanaan/form/inputKendaliMutu';
 import LembarHasilPengawasan from '@/app/components/pelaksanaan/form/lembarHasilPengawasan';
 import NotaHasilPengawasan from '@/app/components/pelaksanaan/form/notaHasilPengawasan';
-import LaporanMingguanComponent from '@/app/dashboard/perencanaan/surattugas/[id_st]/laporanMingguan';
+import LaporanMingguanComponent from '@/app/dashboard/surattugas/[id_st]/laporanMingguan';
 import KendaliMutu from '@/app/components/pelaksanaan/view/KendaliMutu';
 import InputSuratTugas from '@/app/components/perencanaan/form/inputSuratTugas';
 import TableSuratTugas from '@/app/components/perencanaan/table/TableSuratTugas';
