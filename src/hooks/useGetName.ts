@@ -55,8 +55,19 @@ export const useGetNameLHP = () => {
     const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
     return data.length > 0 ? data[0].id_st : '';
   };
+  const getKeteranganLHP = (id: number) => {
+    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    return data.length > 0 ? data[0].keterangan_lhp : '';
+  };
 
-  return { getNomorLHP, getUraianLHP, getSTLHP, isLoading, error };
+  return {
+    getNomorLHP,
+    getUraianLHP,
+    getSTLHP,
+    getKeteranganLHP,
+    isLoading,
+    error,
+  };
 };
 
 // ======User (Pengguna)======
