@@ -3,9 +3,16 @@ import { CardComponents } from '@/app/components/Global/Card';
 import PdfGenerator from '@/app/components/PDFGenerator';
 import { formatCurrency, formatToLocalDate } from '@/data/formatData';
 import { useFetchAll } from '@/hooks/useFetchAll';
-import { useGetNameKode, useGetNameLHP, useGetNameST } from '@/hooks/useGetName';
+import {
+  useGetNameKode,
+  useGetNameLHP,
+  useGetNameST,
+} from '@/hooks/useGetName';
 import { KodeTemuanDB } from '@/interface/interfaceReferensi';
-import { RekomendasiData, TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import {
+  RekomendasiData,
+  TemuanHasilData,
+} from '@/interface/interfaceTemuanHasil';
 import { TindakLanjutDB } from '@/interface/interfaceTindakLanjut';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { Table } from 'flowbite-react';
@@ -17,10 +24,8 @@ const TableTindakLanjutPreview = () => {
     useFetchAll<TemuanHasilData>('temuan_hasil');
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataTL } = useFetchAll<TindakLanjutDB>('tindak_lanjut');
-  const { data: DataRekomendasi } = useFetchAll<RekomendasiData>(
-    'rekomendasi'
-  );
-  const { getNameNoSP} = useGetNameST();
+  const { data: DataRekomendasi } = useFetchAll<RekomendasiData>('rekomendasi');
+  const { getNameNoSP } = useGetNameST();
   const { getNomorLHP, getSTLHP, getUraianLHP } = useGetNameLHP();
   const { getNameKodeTemuan, getNameKodeRekomendasi } = useGetNameKode();
 
@@ -75,16 +80,17 @@ const TableTindakLanjutPreview = () => {
           const rekomendasiList = DataRekomendasi.filter(
             (rek) => rek.id_tlhp === temuan.id_tlhp
           );
-          
+
           // Map tindak lanjut to each rekomendasi
-          const rekomendasiWithTL = rekomendasiList.map(rek => ({
+          const rekomendasiWithTL = rekomendasiList.map((rek) => ({
             ...rek,
-            tindakLanjut: DataTL.find(tl => tl.id_lhp === rek.id_rekomendasi)
+            tindakLanjut: DataTL.find((tl) => tl.id_lhp === rek.id_rekomendasi),
           }));
 
           return {
             ...temuan,
-            rekomendasiList: rekomendasiWithTL.length > 0 ? rekomendasiWithTL : [],
+            rekomendasiList:
+              rekomendasiWithTL.length > 0 ? rekomendasiWithTL : [],
           };
         }),
       };
@@ -144,7 +150,7 @@ const TableTindakLanjutPreview = () => {
       totalTidakDapatTL,
       totalSisaNominal,
     };
-  }, [DataTemuanHasil,DataRekomendasi, DataTL]);
+  }, [DataTemuanHasil, DataRekomendasi, DataTL]);
 
   const handleExport = () => {
     exportToExcel(
@@ -298,40 +304,75 @@ const TableTindakLanjutPreview = () => {
                 <tbody>
                   {structuredData.map((lhpGroup, lhpIndex) => {
                     // Calculate total rows for this LHP group
-                    const totalLHPRows = lhpGroup.temuans.reduce((acc, temuan) => {
-                      return acc + Math.max(1, temuan.rekomendasiList.length);
-                    }, 0);
+                    const totalLHPRows = lhpGroup.temuans.reduce(
+                      (acc, temuan) => {
+                        return acc + Math.max(1, temuan.rekomendasiList.length);
+                      },
+                      0
+                    );
 
                     return lhpGroup.temuans.flatMap((temuan, temuanIndex) => {
                       const rekomendasi = temuan.rekomendasiList;
-                      
+
                       // Calculate total rows for this temuan
                       const temuanRows = Math.max(1, rekomendasi.length);
-                      
+
                       // If no recommendations, show one row with empty cells
                       if (rekomendasi.length === 0) {
                         return (
-                          <tr key={`${temuan.id_tlhp}-empty`} className="hover:bg-gray-100 text-center align-middle">
+                          <tr
+                            key={`${temuan.id_tlhp}-empty`}
+                            className="hover:bg-gray-100 text-center align-middle"
+                          >
                             {temuanIndex === 0 && (
                               <>
-                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={totalLHPRows}
+                                >
                                   {lhpIndex + 1}
                                 </td>
-                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={totalLHPRows}
+                                >
                                   {getNameNoSP(Number(temuan.id_st))}
                                 </td>
-                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={totalLHPRows}
+                                >
                                   {lhpGroup.uraianLHP}
                                 </td>
                               </>
                             )}
-                            <td className="border border-gray-300 p-2" rowSpan={temuanRows}>T{temuanIndex + 1}</td>
-                            <td className="border border-gray-300 p-2" rowSpan={temuanRows}>{temuan.kondisi_temuan}</td>
-                            <td className="border border-gray-300 p-2" rowSpan={temuanRows}>
+                            <td
+                              className="border border-gray-300 p-2"
+                              rowSpan={temuanRows}
+                            >
+                              T{temuanIndex + 1}
+                            </td>
+                            <td
+                              className="border border-gray-300 p-2"
+                              rowSpan={temuanRows}
+                            >
+                              {temuan.kondisi_temuan}
+                            </td>
+                            <td
+                              className="border border-gray-300 p-2"
+                              rowSpan={temuanRows}
+                            >
                               {getNameKodeTemuan(Number(temuan.id_kode_temuan))}
                             </td>
-                            <td className="border border-gray-300 p-2" rowSpan={temuanRows}>
-                              {getNameKodeTemuan(Number(temuan.id_kode_temuan)).split('.')[0]}
+                            <td
+                              className="border border-gray-300 p-2"
+                              rowSpan={temuanRows}
+                            >
+                              {
+                                getNameKodeTemuan(
+                                  Number(temuan.id_kode_temuan)
+                                ).split('.')[0]
+                              }
                             </td>
                             <td className="border border-gray-300 p-2"></td>
                             <td className="border border-gray-300 p-2"></td>
@@ -352,55 +393,135 @@ const TableTindakLanjutPreview = () => {
                       return rekomendasi.map((rek, rekIndex) => {
                         // Get tindak lanjut directly from the rekomendasi object
                         const tindakLanjut = rek.tindakLanjut;
-                        
+
                         return (
-                          <tr key={`${temuan.id_tlhp}-${rek.id_rekomendasi}`} 
-                              className="hover:bg-gray-100 text-center align-middle">
+                          <tr
+                            key={`${temuan.id_tlhp}-${rek.id_rekomendasi}`}
+                            className="hover:bg-gray-100 text-center align-middle"
+                          >
                             {temuanIndex === 0 && rekIndex === 0 && (
                               <>
-                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={totalLHPRows}
+                                >
                                   {lhpIndex + 1}
                                 </td>
-                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={totalLHPRows}
+                                >
                                   {getNameNoSP(Number(temuan.id_st))}
                                 </td>
-                                <td className="border border-gray-300 p-2" rowSpan={totalLHPRows}>
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={totalLHPRows}
+                                >
                                   {lhpGroup.uraianLHP}
                                 </td>
                               </>
                             )}
                             {rekIndex === 0 && (
                               <>
-                                <td className="border border-gray-300 p-2" rowSpan={rekomendasi.length}>T{temuanIndex + 1}</td>
-                                <td className="border border-gray-300 p-2" rowSpan={rekomendasi.length}>{temuan.kondisi_temuan}</td>
-                                <td className="border border-gray-300 p-2" rowSpan={rekomendasi.length}>
-                                  {getNameKodeTemuan(Number(temuan.id_kode_temuan))}
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={rekomendasi.length}
+                                >
+                                  T{temuanIndex + 1}
                                 </td>
-                                <td className="border border-gray-300 p-2" rowSpan={rekomendasi.length}>
-                                  {getNameKodeTemuan(Number(temuan.id_kode_temuan)).split('.')[0]}
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={rekomendasi.length}
+                                >
+                                  {temuan.kondisi_temuan}
+                                </td>
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={rekomendasi.length}
+                                >
+                                  {getNameKodeTemuan(
+                                    Number(temuan.id_kode_temuan)
+                                  )}
+                                </td>
+                                <td
+                                  className="border border-gray-300 p-2"
+                                  rowSpan={rekomendasi.length}
+                                >
+                                  {
+                                    getNameKodeTemuan(
+                                      Number(temuan.id_kode_temuan)
+                                    ).split('.')[0]
+                                  }
                                 </td>
                               </>
                             )}
-                            <td className="border border-gray-300 p-2">{rek.rekomendasi_saran}</td>
                             <td className="border border-gray-300 p-2">
-                              {getNameKodeRekomendasi(rek.id_kode_rekomendasi).split('.')[0]}
+                              {rek.rekomendasi_saran}
                             </td>
-                            <td className="border border-gray-300 p-2">{formatCurrency(rek.rekomendasi_nilai)}</td>
-                            <td className="border border-gray-300 p-2">{getNameKodeRekomendasi(rek.id_kode_rekomendasi)}</td>
-                            <td className="border border-gray-300 p-2">{getNameKodeRekomendasi(rek.id_kode_rekomendasi)}</td>
+                            <td className="border border-gray-300 p-2">
+                              {
+                                getNameKodeRekomendasi(
+                                  rek.id_kode_rekomendasi
+                                ).split('.')[0]
+                              }
+                            </td>
+                            <td className="border border-gray-300 p-2">
+                              {formatCurrency(rek.rekomendasi_nilai)}
+                            </td>
+                            <td className="border border-gray-300 p-2">
+                              {getNameKodeRekomendasi(rek.id_kode_rekomendasi)}
+                            </td>
+                            <td className="border border-gray-300 p-2">
+                              {getNameKodeRekomendasi(rek.id_kode_rekomendasi)}
+                            </td>
                             {/* Tindak Lanjut cells */}
                             {tindakLanjut ? (
                               <>
-                                <td className="border border-gray-300 p-2">{tindakLanjut.uraian}</td>
-                                <td className="border border-gray-300 p-2">{formatCurrency(tindakLanjut.nilai_setor)}</td>
-                                <td className="border border-gray-300 p-2">{tindakLanjut.kondisi_temuan === 'sesuai' ? '1' : ''}</td>
-                                <td className="border border-gray-300 p-2">{tindakLanjut.kondisi_temuan === 'dalam proses' ? '1' : ''}</td>
-                                <td className="border border-gray-300 p-2">{tindakLanjut.kondisi_temuan === 'belum ditindak lanjut' ? '1' : ''}</td>
-                                <td className="border border-gray-300 p-2">{tindakLanjut.kondisi_temuan === 'tidak dapat ditindak lanjut' ? '1' : ''}</td>
-                                <td className="border border-gray-300 p-2">{formatCurrency(tindakLanjut.sisa_nominal)}</td>
-                                <td className="border border-gray-300 p-2">{formatToLocalDate(tindakLanjut.tanggal_pengiriman)}</td>
-                                <td className="border border-gray-300 p-2">{formatToLocalDate(tindakLanjut.batas_akhir_tl)}</td>
-                                <td className="border border-gray-300 p-2">{tindakLanjut.uraian}</td>
+                                <td className="border border-gray-300 p-2">
+                                  {tindakLanjut.uraian}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {formatCurrency(tindakLanjut.nilai_setor)}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {tindakLanjut.kondisi_temuan === 'sesuai'
+                                    ? '1'
+                                    : ''}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {tindakLanjut.kondisi_temuan ===
+                                  'dalam proses'
+                                    ? '1'
+                                    : ''}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {tindakLanjut.kondisi_temuan ===
+                                  'belum ditindak lanjut'
+                                    ? '1'
+                                    : ''}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {tindakLanjut.kondisi_temuan ===
+                                  'tidak dapat ditindak lanjut'
+                                    ? '1'
+                                    : ''}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {formatCurrency(tindakLanjut.sisa_nominal)}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {formatToLocalDate(
+                                    tindakLanjut.tanggal_pengiriman
+                                  )}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {formatToLocalDate(
+                                    tindakLanjut.batas_akhir_tl
+                                  )}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {tindakLanjut.uraian}
+                                </td>
                               </>
                             ) : (
                               // Empty cells if no tindak lanjut exists
@@ -440,8 +561,12 @@ const TableTindakLanjutPreview = () => {
                     );
 
                     // Get tindak lanjut based on rekomendasi
-                    const relatedTL = relatedRekomendasi.flatMap(rek => {
-                      return DataTL.filter(tl => tl.id_lhp === rek.id_rekomendasi) || [];
+                    const relatedTL = relatedRekomendasi.flatMap((rek) => {
+                      return (
+                        DataTL.filter(
+                          (tl) => tl.id_lhp === rek.id_rekomendasi
+                        ) || []
+                      );
                     });
 
                     return (
@@ -465,7 +590,8 @@ const TableTindakLanjutPreview = () => {
                         <td className="border border-gray-300 p-2 text-center">
                           {formatCurrency(
                             relatedRekomendasi.reduce(
-                              (sum, rek) => sum + (Number(rek.rekomendasi_nilai) || 0),
+                              (sum, rek) =>
+                                sum + (Number(rek.rekomendasi_nilai) || 0),
                               0
                             )
                           )}

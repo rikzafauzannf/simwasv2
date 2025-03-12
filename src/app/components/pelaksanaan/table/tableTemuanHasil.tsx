@@ -10,13 +10,18 @@ import {
   useGetNameJenisLaporan,
   useGetNameJenisPengawasan,
   useGetNameKode,
+  useGetNameLHP,
   useGetNameRuangLingkup,
   useGetNameST,
   useGetNameUser,
 } from '@/hooks/useGetName';
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
-import { formatCurrency } from '@/data/formatData';
+import {
+  formatCurrency,
+  formatToLocalDate,
+  getTimeAgo,
+} from '@/data/formatData';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
@@ -41,6 +46,7 @@ const TableTemuanHasil: React.FC = () => {
   const { getNameNoSP, getProgramAudit } = useGetNameST();
   const { getNameKodeReferensi, getNameKodeRekomendasi, getNameKodeTemuan } =
     useGetNameKode();
+  const { getKeteranganLHP } = useGetNameLHP();
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
@@ -99,7 +105,7 @@ const TableTemuanHasil: React.FC = () => {
 
     {
       name: 'Create At',
-      selector: (row) => row.created_at,
+      selector: (row) => getTimeAgo(row.created_at),
       sortable: true,
     },
     {
@@ -114,7 +120,7 @@ const TableTemuanHasil: React.FC = () => {
     },
     {
       name: 'Uraian',
-      selector: (row) => row.uraian,
+      selector: (row) => getKeteranganLHP(row.id_st),
       sortable: true,
     },
     {

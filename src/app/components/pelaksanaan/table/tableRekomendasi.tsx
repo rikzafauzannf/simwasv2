@@ -17,7 +17,11 @@ import {
 } from '@/hooks/useGetName';
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import { RekomendasiData } from '@/interface/interfaceTemuanHasil';
-import { formatCurrency } from '@/data/formatData';
+import {
+  formatCurrency,
+  formatToLocalDate,
+  getTimeAgo,
+} from '@/data/formatData';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
@@ -106,7 +110,7 @@ const TableRekomendasiTemuan: React.FC = () => {
 
     {
       name: 'Create At',
-      selector: (row) => row.created,
+      selector: (row) => getTimeAgo(row.created),
       sortable: true,
     },
     {
@@ -121,8 +125,7 @@ const TableRekomendasiTemuan: React.FC = () => {
     },
     {
       name: 'Kondisi Temuan',
-      selector: (row) =>
-        getNameKondisiTemuan(Number(getiIdSTTemuan(row.id_tlhp))),
+      selector: (row) => getNameKondisiTemuan(Number(row.id_tlhp)),
       sortable: true,
     },
     {
