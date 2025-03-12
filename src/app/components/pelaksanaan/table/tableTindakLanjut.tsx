@@ -96,7 +96,7 @@ const TableTindakLanjut: React.FC = () => {
                 </button>
                 {row.sisa_nominal !== 0 && (
                   <Link
-                    href={`dashboard/pelaksanaan/tindaklanjut/form/${row.id_tindak_lanjut}`}
+                    href={`/dashboard/pelaksanaan/tindaklanjut/update/${row.id_tindak_lanjut}`}
                     className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
                   >
                     <TbArrowUpDashed />

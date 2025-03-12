@@ -15,13 +15,14 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import CardChecker from './CardChecker';
+
 import { useFetchById } from '@/hooks/useFetchById';
 import {
   RekomendasiData,
   TemuanHasilData,
 } from '@/interface/interfaceTemuanHasil';
 import { useOptions } from '@/data/selectValue';
+import CardChecker from '../../CardChecker';
 
 interface PageProps {
   params: {
@@ -55,11 +56,13 @@ const UpdateTindakLanjutForm: React.FC<PageProps> = ({ params }) => {
     formState: { errors },
   } = useForm<FormTindakLanjut>({
     defaultValues: {
-      uraian: '',
-      keterangan: '',
-      kondisi_rekomendasi: '',
-      kondisi_temuan: '',
-      batas_akhir_tl: '',
+      uraian: TindakLanjutData?.uraian || '',
+      keterangan: TindakLanjutData?.keterangan || '',
+      kondisi_temuan: TindakLanjutData?.kondisi_temuan || '',
+      batas_akhir_tl: TindakLanjutData?.batas_akhir_tl || '',
+      nilai_setor: TindakLanjutData?.nilai_setor || 0,
+      sisa_nominal: TindakLanjutData?.sisa_nominal || 0,
+      tanggal_pengiriman: TindakLanjutData?.tanggal_pengiriman || '',
     },
     mode: 'onBlur',
   });
@@ -81,14 +84,14 @@ const UpdateTindakLanjutForm: React.FC<PageProps> = ({ params }) => {
         tanggal_pengiriman: data.tanggal_pengiriman,
       };
       console.log('Data yang dikirim:', FormDataTL);
-      const result = await axiosSecvice.addData('/tindak_lanjut', FormDataTL);
+      const result = await axiosSecvice.updateData(`/tindak_lanjut/${id_tindak_lanjut}`, FormDataTL);
 
       console.log('Respons dari server:', result);
 
       if (result.success) {
-        console.log('Jenis Pengawasan berhasil disimpan:', result);
+        console.log('Tindak Lanjut berhasil diperbarui:', result);
         reset();
-        alert('Data Jenis Pengawasan berhasil disimpan');
+        alert('Data Tindak Lanjut berhasil diperbarui');
         route.push('/dashboard/pelaksanaan/tindaklanjut');
       } else {
         throw new Error(result.message);
@@ -132,6 +135,20 @@ const UpdateTindakLanjutForm: React.FC<PageProps> = ({ params }) => {
       setValue('sisa_nominal', sisa, { shouldValidate: true });
     }
   }, [RekomendasiData, nilai_setor, tanggal_pengiriman, setValue]);
+
+  useEffect(() => {
+    if (TindakLanjutData) {
+      reset({
+        uraian: TindakLanjutData.uraian,
+        keterangan: TindakLanjutData.keterangan,
+        kondisi_temuan: TindakLanjutData.kondisi_temuan,
+        batas_akhir_tl: TindakLanjutData.batas_akhir_tl,
+        nilai_setor: TindakLanjutData.nilai_setor,
+        sisa_nominal: TindakLanjutData.sisa_nominal,
+        tanggal_pengiriman: TindakLanjutData.tanggal_pengiriman,
+      });
+    }
+  }, [TindakLanjutData, reset]);
 
   const { OptionsStatusTL } = useOptions();
   return (

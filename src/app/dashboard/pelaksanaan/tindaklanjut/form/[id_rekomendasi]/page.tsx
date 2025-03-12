@@ -12,7 +12,7 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import CardChecker from './CardChecker';
+import CardChecker from '../../CardChecker';
 import { useFetchById } from '@/hooks/useFetchById';
 import {
   RekomendasiData,
