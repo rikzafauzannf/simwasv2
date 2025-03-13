@@ -108,7 +108,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
         reset();
         alert('Data Surat Tugas berhasil disimpan');
         resetTeamMembers();
-        router.push('/dashboard/perencanaan/surattugas');
+        router.push('/dashboard/surattugas');
       } else {
         throw new Error(result.message);
       }

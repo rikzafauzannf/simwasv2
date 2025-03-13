@@ -104,7 +104,7 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
         reset();
         alert(`Data ${status} berhasil disimpan`);
         resetTeamMembers();
-        router.push('/dashboard/perencanaan/pkpt');
+        router.push('/dashboard/pkpt');
       } else {
         throw new Error(result.message);
       }
