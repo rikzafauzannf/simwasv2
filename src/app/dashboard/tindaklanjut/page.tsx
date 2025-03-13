@@ -16,9 +16,9 @@ const TindakLajutPage = () => {
           title="Buat Tindak Lanjut"
         />
         <div className="grid w-full gap-3">
-          <CardComponents>
+          {/* <CardComponents> */}
             <TableTindakLanjut />
-          </CardComponents>
+          {/* </CardComponents> */}
         </div>
       </div>
     </AuthRoleWrapper>
