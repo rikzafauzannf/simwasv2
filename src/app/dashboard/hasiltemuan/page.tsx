@@ -12,7 +12,7 @@ const RingkasanPengawasanPage = () => {
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
       <div className="space-y-3 w-full">
-        <h3 className="text-xl">Ringkasan Pengawasan</h3>
+        <h3 className="text-xl">Hasil Temuan</h3>
         <MapDataLHP
           title="Buat Temuan Hasil / Rekomendasi"
           todo="hasiltemuan"
