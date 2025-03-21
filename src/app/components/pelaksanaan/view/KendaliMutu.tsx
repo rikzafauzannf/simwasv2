@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardComponents } from '../../Global/Card';
 import TableKendaliMutu from '../table/tableKendaliMutu';
-import LaporanMingguanComponent from '../laporanMingguan';
+import LaporanMingguanComponent from '../../../dashboard/surattugas/[id_st]/laporanMingguan';
 
 const KendaliMutu = () => {
   return (
@@ -12,7 +12,7 @@ const KendaliMutu = () => {
           <TableKendaliMutu />
         </CardComponents>
       </div>
-      <LaporanMingguanComponent />
+      {/* <LaporanMingguanComponent id_pkpt={1} /> */}
     </div>
   );
 };

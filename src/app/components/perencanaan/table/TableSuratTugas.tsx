@@ -6,11 +6,111 @@ import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
+import { useFetch } from '@/hooks/useFetch';
+import { useFetchAll } from '@/hooks/useFetchAll';
+import { useFetchById } from '@/hooks/useFetchById';
+import { useGetNameJenisAudit, useGetNameUser } from '@/hooks/useGetName';
+import { AxiosService } from '@/services/axiosInstance.service';
+import Swal from 'sweetalert2';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { HiPaperAirplane } from 'react-icons/hi';
 
-const TableSuratTugas = () => {
+interface PropsOptions {
+  id_pkpt?: number;
+  filterID?: string;
+}
+
+const axiosSecvice = new AxiosService();
+
+const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
+  const { user } = useAuthStore();
+  const hashPermission = [
+    'Perencana',
+    'Pelaksana',
+    'Auditor',
+    'Developer',
+  ].includes(user?.role as string);
+
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<SuratTugasData[]>([]);
+  const { data: DataSuratTugas, refetch } =
+    useFetchAll<SuratTugasData>('surat_tugas');
 
+  const { getNameUser } = useGetNameUser();
+  const { getNameJenisAudit } = useGetNameJenisAudit();
+
+  const DataST =
+    filterID === 'true'
+      ? DataSuratTugas.filter((item) => item.id_pkpt === Number(id_pkpt))
+      : DataSuratTugas;
+  console.log('data by id_pkpt : ', DataST);
+
+  const handleDelete = async (id: number) => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axiosSecvice.deleteData(`surat_tugas/${id}`);
+        refetch();
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error!', 'There was an error deleting the file.', 'error');
+      }
+    }
+  };
+
+  const handleCreateReport = async (id_st: number) => {
+    Swal.fire({
+      title: 'Buat Laporan Mingguan',
+      html: `
+        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
+        <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
+      `,
+      focusConfirm: false,
+      preConfirm: async () => {
+        const nomor = (document.getElementById('nomor') as HTMLInputElement)
+          .value;
+        const content = (
+          document.getElementById('reportContent') as HTMLTextAreaElement
+        ).value;
+        if (!content || !nomor) {
+          Swal.showValidationMessage('Silakan isi semua field');
+          return;
+        }
+        return { content, id_st, nomor };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Logika untuk menyimpan laporan
+        const dataForm = {
+          id_st: id_st,
+          id_user: String(user?.id_user),
+          id_no: String(result.value.nomor),
+          laporan_mingguan: String(result.value.content),
+        };
+        try {
+          const response = await axiosSecvice.addData(
+            '/laporan_mingguan',
+            dataForm
+          );
+          console.log('Laporan:', response);
+          Swal.fire('Laporan berhasil dibuat!', '', 'success');
+        } catch (error) {
+          console.error('Error creating report:', error);
+          Swal.fire('Gagal membuat laporan!', '', 'error');
+        }
+      }
+    });
+  };
   const columns = [
     {
       name: 'Actions',
@@ -18,13 +118,13 @@ const TableSuratTugas = () => {
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={`/dashboard/perencanaan/surattugas/${row.id}`}
+            href={`/dashboard/surattugas/${row.id_st}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
           </Link>
           {/* <Link
-            href={'/perencanaan/pkpt/actions/1'}
+            href={'/pkpt/actions/1'}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act
@@ -34,16 +134,23 @@ const TableSuratTugas = () => {
             className="p-2 text-yellow-500 hover:text-yellow-700"
           >
             <FaEdit />
-          </button>
-          <button
-             onClick={() => {
-               setSelectedRow(row);
-               setShowDeleteDialog(true);
-             }}
-            className="p-2 text-red-500 hover:text-red-700"
-          >
-            <FaTrash />
           </button> */}
+          {hashPermission && (
+            <>
+              <button
+                onClick={() => handleDelete(row.id_st)}
+                className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+              >
+                <FaTrash />
+              </button>
+              <button
+                onClick={() => handleCreateReport(row.id_st)}
+                className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                <HiPaperAirplane />
+              </button>
+            </>
+          )}
         </div>
       ),
     },
@@ -54,57 +161,64 @@ const TableSuratTugas = () => {
     },
     {
       name: 'No/Tgl.Sp',
-      selector: (row: SuratTugasData) => row.noTglSp,
+      selector: (row: SuratTugasData) => row.no_tglsp,
       sortable: true,
     },
     {
       name: 'Program Audit',
-      selector: (row: SuratTugasData) => row.programAudit,
+      selector: (row: SuratTugasData) => row.program_audit,
       sortable: true,
     },
     {
       name: 'Tim Pemeriksa',
-      selector: (row: SuratTugasData) => row.timPemeriksa,
+      selector: (row: SuratTugasData) => getNameUser(Number(row.tim_pemeriksa)),
       sortable: true,
     },
     {
       name: 'Irban',
-      selector: (row: SuratTugasData) => row.irban,
+      selector: (row: SuratTugasData) =>
+        getNameUser(Number(row.wk_penanggung_jawab)),
       sortable: true,
     },
     {
       name: 'Pengendali Teknis',
-      selector: (row: SuratTugasData) => row.pengendaliTeknis,
+      selector: (row: SuratTugasData) =>
+        getNameUser(Number(row.pengendali_teknis)),
       sortable: true,
     },
     {
       name: 'Ketua Tim',
-      selector: (row: SuratTugasData) => row.ketuaTim,
+      selector: (row: SuratTugasData) => getNameUser(Number(row.ketua_tim)),
       sortable: true,
     },
     {
-      name: 'Tim',
-      selector: (row: SuratTugasData) => row.Tim,
+      name: 'Anggota Tim',
+      selector: (row: SuratTugasData) =>
+        row.anggota_tim
+          .split(',')
+          .map((id) => getNameUser(Number(id)))
+          .join(', '),
       sortable: true,
     },
     {
       name: 'Jumlah Obejek',
-      selector: (row: SuratTugasData) => row.jumlahObjek,
+      selector: (row: SuratTugasData) => row.jumlah_objek,
       sortable: true,
     },
     {
       name: 'Jumlah Laporan',
-      selector: (row: SuratTugasData) => row.jumlahLaporan,
+      selector: (row: SuratTugasData) => row.jumlah_laporan,
       sortable: true,
     },
-    {
-      name: 'No.Tgl.LHP/LHE/LHR',
-      selector: (row: SuratTugasData) => row.noTglLhp,
-      sortable: true,
-    },
+    // {
+    //   name: 'No.Tgl.LHP/LHE/LHR',
+    //   selector: (row: SuratTugasData) => row.no_tgllh,
+    //   sortable: true,
+    // },
     {
       name: 'Jenis Audit',
-      selector: (row: SuratTugasData) => row.jenisAudit,
+      selector: (row: SuratTugasData) =>
+        getNameJenisAudit(Number(row.id_jenis_audit)),
       sortable: true,
     },
     {
@@ -112,46 +226,26 @@ const TableSuratTugas = () => {
       selector: (row: SuratTugasData) => row.keterangan,
       sortable: true,
     },
-    {
-      name: 'Link ST',
-      selector: (row: SuratTugasData) => row.linkSt,
-      sortable: true,
-    },
+    // {
+    //   name: 'Link ST',
+    //   selector: (row: SuratTugasData) => row.link_st,
+    //   sortable: true,
+    // },
     {
       name: 'File ST',
-      selector: (row: SuratTugasData) => row.fileSt,
+      selector: (row: SuratTugasData) => row.link_st,
       sortable: true,
-    },
-  ];
-
-  const data: SuratTugasData[] = [
-    {
-      id: 1,
-      bulan: 'string',
-      noTglSp: 'string',
-      programAudit: 'string',
-      timPemeriksa: 'string',
-      irban: 'string',
-      pengendaliTeknis: 'string',
-      ketuaTim: 'string',
-      Tim: 'string',
-      jumlahObjek: 12,
-      jumlahLaporan: 20,
-      noTglLhp: 'string',
-      jenisAudit: 'string',
-      keterangan: 'string',
-      fileSt: 'string',
-      linkSt: 'string',
     },
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
-    const filtered = data.filter(
+    const filtered = DataST.filter(
       (item) =>
-        item.noTglSp.toLowerCase().includes(value.toLowerCase()) ||
-        item.programAudit.toLowerCase().includes(value.toLowerCase())
+        item.no_tglsp.toLowerCase().includes(value.toLowerCase()) ||
+        item.program_audit.toLowerCase().includes(value.toLowerCase())
+      // item.no_tgllh.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -162,19 +256,17 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join(',');
 
-    const csvData = data
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (
-              row: SuratTugasData
-            ) => string | number;
-            return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
-          })
-          .join(',');
-      })
-      .join('\n');
+    const csvData = DataST.map((row) => {
+      return columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as (
+            row: SuratTugasData
+          ) => string | number;
+          return `"${selector(row)}"`; // Wrap in quotes to handle commas in content
+        })
+        .join(',');
+    }).join('\n');
 
     const blob = new Blob([`${headers}\n${csvData}`], {
       type: 'text/csv;charset=utf-8',
@@ -188,19 +280,17 @@ const TableSuratTugas = () => {
       .map((col) => col.name)
       .join('\t');
 
-    const excelData = data
-      .map((row) => {
-        return columns
-          .filter((col) => col.name !== 'Actions')
-          .map((col) => {
-            const selector = col.selector as (
-              row: SuratTugasData
-            ) => string | number;
-            return selector(row);
-          })
-          .join('\t');
-      })
-      .join('\n');
+    const excelData = DataST.map((row) => {
+      return columns
+        .filter((col) => col.name !== 'Actions')
+        .map((col) => {
+          const selector = col.selector as (
+            row: SuratTugasData
+          ) => string | number;
+          return selector(row);
+        })
+        .join('\t');
+    }).join('\n');
 
     const blob = new Blob([`${headers}\n${excelData}`], {
       type: 'application/vnd.ms-excel;charset=utf-8',
@@ -211,18 +301,18 @@ const TableSuratTugas = () => {
   return (
     <>
       <div className="mb-4 space-y-2">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
           <h3>Table Rekap Surat Tugas</h3>
           <div className="space-x-2">
             <button
               onClick={exportToCSV}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
               Export CSV
             </button>
             <button
               onClick={exportToExcel}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-4 py-2 bg-violet-500 text-white rounded hover:bg-violet-600"
             >
               Export Excel
             </button>
@@ -240,7 +330,7 @@ const TableSuratTugas = () => {
       <div className="overflow-x-auto">
         <DataTable
           columns={columns}
-          data={search ? filteredData : data}
+          data={search ? filteredData : DataST}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="300px"

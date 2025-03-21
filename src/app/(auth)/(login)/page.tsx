@@ -3,6 +3,8 @@ import FullLogo from '@/app/dashboard/layout/shared/logo/FullLogo';
 import React from 'react';
 import Link from 'next/link';
 import AuthLogin from '../authforms/AuthLogin';
+import AuthRegister from '../authforms/AuthRegister';
+import useAuthToggleStore from '@/middleware/Store/useAuthToggleStore';
 
 const gradientStyle = {
   background:
@@ -13,6 +15,8 @@ const gradientStyle = {
 };
 
 const BoxedLogin = () => {
+  const { isLogin, toggleAuth } = useAuthToggleStore();
+
   return (
     <div style={gradientStyle} className="relative overflow-hidden h-screen">
       <div className="flex h-full justify-center items-center px-4">
@@ -22,18 +26,15 @@ const BoxedLogin = () => {
               <FullLogo />
             </div>
             <p className="text-sm text-center text-dark my-3">
-              Login Menggunakan NIP
+              {isLogin ? 'Login Menggunakan NIP' : 'Register Menggunakan NIP'}
             </p>
-            <AuthLogin />
-            {/* <div className="flex gap-2 text-base text-ld font-medium mt-6 items-center justify-center">
-              <p>New to Matdash?</p>
-              <Link
-                href="/auth/register"
-                className="text-primary text-sm font-medium"
-              >
-                Create an account
-              </Link>
-            </div> */}
+            {isLogin ? <AuthLogin /> : <AuthRegister />}
+            <button
+              onClick={toggleAuth}
+              className="mt-4 text-primary text-sm font-medium"
+            >
+              {isLogin ? 'Switch to Signup' : 'Switch to Login'}
+            </button>
           </div>
         </div>
       </div>

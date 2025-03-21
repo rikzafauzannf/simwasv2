@@ -1,14 +1,19 @@
 'use client';
 import React, { useContext } from 'react';
 import { Sidebar } from 'flowbite-react';
-import SidebarContent from './Sidebaritems';
+import { filterSidebarByRole } from './Sidebaritems';
 import NavItems from './NavItems';
 import NavCollapse from './NavCollapse';
 import SimpleBar from 'simplebar-react';
 import FullLogo from '../../shared/logo/FullLogo';
 import { Icon } from '@iconify/react';
 import Upgrade from './Upgrade';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 const MobileSidebar = () => {
+  const { user } = useAuthStore();
+  const userRole = String(user?.role);
+
+  const filteredContent = filterSidebarByRole(userRole);
   return (
     <>
       <div className="flex">
@@ -23,7 +28,7 @@ const MobileSidebar = () => {
           <SimpleBar className="h-[calc(100vh_-_100px)]">
             <Sidebar.Items className="px-4">
               <Sidebar.ItemGroup className="sidebar-nav">
-                {SidebarContent.map((item, index) => (
+                {filteredContent.map((item, index) => (
                   <React.Fragment key={index}>
                     <h5 className="text-link text-xs caption">
                       <span className="hide-menu">{item.heading}</span>

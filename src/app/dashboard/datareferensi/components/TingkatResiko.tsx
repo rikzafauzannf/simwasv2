@@ -4,24 +4,20 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { InputFieldComponent } from '@/app/components/Global/Input';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { FirestoreService } from '@/services/firestore.service';
-import { useFetch } from '@/hooks/useFetch';
 import { TingkatResikoDB } from '@/interface/interfaceReferensi';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { useFetch } from '@/hooks/useFetch';
 
-const firestoreService = new FirestoreService();
-const axiosSecvice = new AxiosService();
+const axiosService = new AxiosService();
+
 const TingkatResiko = () => {
-  const {
-    data: DataTingkatResiko,
-    isLoading,
-    error,
-    refetch,
-  } = useFetch<TingkatResikoDB>('tingkat_resiko');
+  const { data: DataTingkatResiko, refetch } =
+    useFetch<TingkatResikoDB>('tingkat_resiko');
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -29,57 +25,89 @@ const TingkatResiko = () => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [currentEditId, setCurrentEditId] = React.useState<number | null>(null);
+  const [currentEditValue, setCurrentEditValue] = React.useState<string>('');
 
   const onSubmit: SubmitHandler<{ tingkat_resiko: string }> = async (data) => {
     try {
-      const result = await axiosSecvice.addData('/tingkat_resiko', {
-        tingkat_resiko: data.tingkat_resiko,
-        // createdAt: new Date(),
-      });
-
+      const result = await axiosService.addData('/tingkat_resiko', data);
       if (result.success) {
-        console.log('Ruang Lingkup berhasil disimpan:', result);
-        reset(); // Reset form after successful submission
-        alert('Data Ruang Lingkup berhasil disimpan');
-        refetch(); // Refetch data to update the list
+        alert('Data Tingkat Resiko berhasil disimpan');
+        reset();
+        refetch();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Gagal menyimpan data Jenis Pengawasan');
+      alert('Gagal menyimpan data Tingkat Resiko');
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const onEditSubmit: SubmitHandler<{ tingkat_resiko: string }> = async (
+    data
+  ) => {
+    try {
+      const result = await axiosService.updateData(
+        `/tingkat_resiko/${currentEditId}`,
+        data
+      );
+      if (result.success) {
+        alert('Data Tingkat Resiko berhasil diperbarui');
+        reset();
+        refetch();
+        handleCancelEdit();
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      alert('Gagal memperbarui data Tingkat Resiko');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
     if (
-      window.confirm('Apakah Anda yakin ingin menghapus ruang lingkup ini?')
+      window.confirm('Apakah Anda yakin ingin menghapus tingkat resiko ini?')
     ) {
       try {
-        const result = await firestoreService.deleteData(
-          'jenis_pengawasan',
-          id
+        const result = await axiosService.deleteData(
+          `/tingkat_resiko/${Number(id)}`
         );
         if (result.success) {
-          alert('Ruang Lingkup berhasil dihapus');
-          refetch(); // Refetch data to update the list
+          alert('Tingkat Resiko berhasil dihapus');
+          refetch();
         } else {
           throw new Error(result.message);
         }
       } catch (error) {
-        console.error('Error deleting ruang lingkup:', error);
-        alert('Gagal menghapus ruang lingkup');
+        alert('Gagal menghapus tingkat resiko');
       }
     }
+  };
+
+  const handleEdit = (id: number, value: string) => {
+    setIsEditing(true);
+    setCurrentEditId(Number(id));
+    setValue('tingkat_resiko', value);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setCurrentEditId(null);
+    setCurrentEditValue('');
+    reset();
   };
 
   return (
     <div className="space-y-3">
       <h3 className="text-xl"># Tingkat Resiko</h3>
       <CardComponents>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-3">
+        <form
+          onSubmit={
+            isEditing ? handleSubmit(onEditSubmit) : handleSubmit(onSubmit)
+          }
+          className="grid gap-3"
+        >
           <InputFieldComponent
             label="Tingkat Resiko"
             identiti="tingkat_resiko"
@@ -91,21 +119,46 @@ const TingkatResiko = () => {
             })}
             error={errors.tingkat_resiko}
           />
-          <ButtonType Text="+ Simpan Tingkat Resiko" type="submit" />
+          <ButtonType
+            Text={
+              isEditing
+                ? '+ Perbarui Tingkat Resiko'
+                : '+ Simpan Tingkat Resiko'
+            }
+            type="submit"
+          />
+          {isEditing && (
+            <button type="button" onClick={handleCancelEdit}>
+              Batal
+            </button>
+          )}
         </form>
       </CardComponents>
-      <section className="grid grid-cols-2 gap-3">
+      <section className="grid lg:grid-cols-2 gap-3">
         {DataTingkatResiko.map((item) => (
-          <CardComponents key={item.id}>
+          <CardComponents key={item.id_tingkat_resiko}>
             <h3 className="text-xl font-bold">
               {'>>'} {item.tingkat_resiko}
             </h3>
-            <button
-              onClick={() => handleDelete(item.id)}
-              className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
-            >
-              Hapus
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() =>
+                  handleEdit(
+                    Number(item.id_tingkat_resiko),
+                    item.tingkat_resiko
+                  )
+                }
+                className="py-2 text-center w-full rounded-md shadow-md bg-blue-500 hover:bg-blue-700 text-white font-semibold"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(item.id_tingkat_resiko)}
+                className="py-2 text-center w-full rounded-md shadow-md bg-red-500 hover:bg-red-700 text-white font-semibold"
+              >
+                Hapus
+              </button>
+            </div>
           </CardComponents>
         ))}
       </section>

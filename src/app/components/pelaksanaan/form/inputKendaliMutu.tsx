@@ -1,36 +1,87 @@
 'use client';
 import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { CardComponents } from '../../Global/Card';
-import {
-  InputFieldComponent,
-  SelectInputField,
-  TextAreaFieldComponent,
-} from '../../Global/Input';
+import { InputFieldComponent } from '../../Global/Input';
 import { ButtonType } from '../../Global/Button';
-import LaporanMingguanComponent from '../laporanMingguan';
-import TableKendaliMutu from '../table/tableKendaliMutu';
+import { AxiosService } from '@/services/axiosInstance.service';
+import { FormKendaliMutu } from '@/interface/interfaceKendaliMutu';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
-const InputKendaliMutu = () => {
-  const [KendaliMutu, setKendaliMutu] = useState(false);
-  const [LaporanMingguan, setLaporanMingguan] = useState(false);
+interface PropsID {
+  id_st: number;
+}
 
-  const optionsSuratTugas = [
-    {
-      value: 'St1',
-      title: 'ST.... - No.TGL/SP',
+const axiosService = new AxiosService();
+
+const InputKendaliMutu: React.FC<PropsID> = ({ id_st }) => {
+  console.log('id_st data: ', id_st);
+  const router = useRouter();
+  const { user } = useAuthStore();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormKendaliMutu>({
+    defaultValues: {
+      ceklis_penyelesaian: false,
+      dokumentasi_pemeriksaan: false,
+      kartu_penugasan: false,
+      kertas_kerja_pengawasan: false,
+      notulensi_kesepakatan: false,
+      program_kerja_pengawasan: false,
+      reviu_supervisi: false,
+      link_google_drive: '',
+      id_no_tg: '',
     },
-  ];
+  });
 
-  const handleKendaliMutu: React.MouseEventHandler<HTMLButtonElement> = () => {
-    setKendaliMutu(true);
-    setLaporanMingguan(false);
+  const onSubmitKendaliMutu: SubmitHandler<FormKendaliMutu> = async (data) => {
+    // const selectedCheckboxes = Object.keys(data).filter(
+    //   (key) => key !== 'linkGDrive' && key !== 'keterangan' && data[key]
+    // );
+
+    console.log('Data Kendali Mutu:', {
+      ...data,
+      // selectedCheckboxes,
+      id_pkpt_data: id_st,
+    });
+    try {
+      console.log('Data Laporan Mingguan:', data);
+      const result = await axiosService.addData('/kendali_mutu', {
+        kartu_penugasan: String(data.kartu_penugasan),
+        kertas_kerja_pengawasan: String(data.kertas_kerja_pengawasan),
+        ceklis_penyelesaian: String(data.ceklis_penyelesaian),
+        program_kerja_pengawasan: String(data.program_kerja_pengawasan),
+        dokumentasi_pemeriksaan: String(data.dokumentasi_pemeriksaan),
+        notulensi_kesepakatan: String(data.notulensi_kesepakatan),
+        reviu_supervisi: String(data.reviu_supervisi),
+        link_google_drive: data.link_google_drive,
+        id_no_tg: data.id_no_tg,
+        id_user: Number(user?.id_user),
+        id_st: Number(id_st),
+      });
+
+      console.log('Respons dari server:', result);
+
+      if (result.success) {
+        console.log('Kendali Mutu berhasil disimpan:', result);
+        reset();
+        alert('Data Kendali Mutu berhasil disimpan');
+        router.push('/dashboard/kendalimutu');
+      } else {
+        throw new Error(result.message);
+        // refetch();
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Gagal menyimpan data Kendali Mutu');
+    }
   };
-  const handleLaporanMingguan: React.MouseEventHandler<
-    HTMLButtonElement
-  > = () => {
-    setKendaliMutu(false);
-    setLaporanMingguan(true);
-  };
+
   return (
     <div className="space-y-3">
       <h3 className="text-xl">Kendali Mutu</h3>
@@ -46,137 +97,96 @@ const InputKendaliMutu = () => {
           name="pilihSuratTugas"
         />
       </CardComponents> */}
-      <section className="flex justify-start gap-3">
-        <button
-          className={`py-2 px-4 ${KendaliMutu ? 'bg-[#D9D9D9] text-slate-800' : 'bg-[#14AE5C] text-white'}  rounded-md shadow-md  font-semibold transition-all ease-in-out`}
-          onClick={handleKendaliMutu}
+
+      <CardComponents>
+        <form
+          onSubmit={handleSubmit(onSubmitKendaliMutu)}
+          className="space-y-3"
         >
-          + Input Kendali Mutu
-        </button>
-        <button
-          className={`py-2 px-4 ${LaporanMingguan ? 'bg-[#D9D9D9] text-slate-800' : 'bg-[#114CD6] text-white'}  rounded-md shadow-md font-semibold transition-all ease-in-out`}
-          onClick={handleLaporanMingguan}
-        >
-          + Input Laporan Mingguan
-        </button>
-      </section>
-      {/* section show from button */}
-      {KendaliMutu ? (
-        <CardComponents>
-          <form className="space-y-3">
-            <section className="grid grid-cols-3 gap-3">
-              <label className="text-slate-800">
-                <input
-                  type="checkbox"
-                  name="kartuPenugasan"
-                  value="ada"
-                  className="shadow-md me-2"
-                />
-                Kartu Penugasan
-              </label>
-              <label className="text-slate-800">
-                <input
-                  type="checkbox"
-                  name="programKerja"
-                  value="ada"
-                  className="shadow-md me-2"
-                />
-                Program Kerja Pengawasan
-              </label>
-              <label className="text-slate-800">
-                <input
-                  type="checkbox"
-                  name="notulensiKesepakatan"
-                  value="ada"
-                  className="shadow-md me-2"
-                />
-                Notulensi Kesepakatan
-              </label>
-              <label className="text-slate-800">
-                <input
-                  type="checkbox"
-                  name="kertasKerja"
-                  value="ada"
-                  className="shadow-md me-2"
-                />
-                Kertas Kerja Pengawasan
-              </label>
-              <label className="text-slate-800">
-                <input
-                  type="checkbox"
-                  name="dokumentasiPemeriksaan"
-                  value="ada"
-                  className="shadow-md me-2"
-                />
-                Dokumentasi Pemeriksaan
-              </label>
-              <label className="text-slate-800">
-                <input
-                  type="checkbox"
-                  name="reviuSupervisi"
-                  value="ada"
-                  className="shadow-md me-2"
-                />
-                Reviu Supervisi
-              </label>
-              <label className="text-slate-800">
-                <input
-                  type="checkbox"
-                  name="ceklisPenyelesaian"
-                  value="ada"
-                  className="shadow-md me-2"
-                />
-                Ceklis Penyelesaian
-              </label>
-            </section>
-            <hr />
-            <InputFieldComponent
-              label="Masukan Link Google Drive (Public)"
-              identiti="linkGDrive"
-              name="linkGDrive"
-              placeholder="Masukan Link GDrive"
-              type="link"
-              register={'linkGDrive'}
-            />
-            <TextAreaFieldComponent
-              rows={4}
-              label="Keterangan"
-              identiti="keterangan"
-              name="keterangan"
-              placeholder="Masukan Keterangan ST"
-              type="text"
-              register={'keterangan'}
-            />
-            <ButtonType Text="+ Buat Kendali Mutu" type="submit" />
-          </form>
-        </CardComponents>
-      ) : (
-        ''
-      )}
-      {LaporanMingguan ? (
-        <CardComponents>
-          <form className="space-y-3">
-            <TextAreaFieldComponent
-              rows={4}
-              label="Laporan Mingguan / Harian"
-              identiti="laporan"
-              name="laporan"
-              placeholder="Ketikan Laporan disini."
-              type="text"
-              register={'laporan'}
-            />
-            <ButtonType Text="+ Buat Laporan Mingguan" type="submit" />
-          </form>
-        </CardComponents>
-      ) : (
-        ''
-      )}
-      <div className="grid w-full gap-3">
-        <CardComponents>
-          <TableKendaliMutu />
-        </CardComponents>
-      </div>
-      <LaporanMingguanComponent />
+          <section className="grid md:grid-cols-3 gap-3">
+            <div className="md:col-span-3">
+              <InputFieldComponent
+                label="No.Tgl"
+                identiti="no_tgl"
+                type="text"
+                name="no_tgl"
+                placeholder="Masukan Nomor Tgl"
+                register={register('id_no_tg', {
+                  required: 'Nomor Tgl wajib diisi',
+                })}
+                error={errors.id_no_tg}
+              />
+            </div>
+            <label className="text-slate-800">
+              <input
+                type="checkbox"
+                {...register('kartu_penugasan')}
+                className="shadow-md me-2"
+              />
+              Kartu Penugasan
+            </label>
+            <label className="text-slate-800">
+              <input
+                type="checkbox"
+                {...register('program_kerja_pengawasan')}
+                className="shadow-md me-2"
+              />
+              Program Kerja Pengawasan
+            </label>
+            <label className="text-slate-800">
+              <input
+                type="checkbox"
+                {...register('notulensi_kesepakatan')}
+                className="shadow-md me-2"
+              />
+              Notulensi Kesepakatan
+            </label>
+            <label className="text-slate-800">
+              <input
+                type="checkbox"
+                {...register('kertas_kerja_pengawasan')}
+                className="shadow-md me-2"
+              />
+              Kertas Kerja Pengawasan
+            </label>
+            <label className="text-slate-800">
+              <input
+                type="checkbox"
+                {...register('dokumentasi_pemeriksaan')}
+                className="shadow-md me-2"
+              />
+              Dokumentasi Pemeriksaan
+            </label>
+            <label className="text-slate-800">
+              <input
+                type="checkbox"
+                {...register('reviu_supervisi')}
+                className="shadow-md me-2"
+              />
+              Reviu Supervisi
+            </label>
+            <label className="text-slate-800">
+              <input
+                type="checkbox"
+                {...register('ceklis_penyelesaian')}
+                className="shadow-md me-2"
+              />
+              Ceklis Penyelesaian
+            </label>
+          </section>
+          <hr />
+          <InputFieldComponent
+            label="Masukan Link Google Drive (Public)"
+            identiti="linkGDrive"
+            name="linkGDrive"
+            placeholder="Masukan Link GDrive"
+            type="link"
+            register={register('link_google_drive')}
+            error={errors.link_google_drive}
+          />
+          <ButtonType Text="+ Buat Kendali Mutu" type="submit" />
+        </form>
+      </CardComponents>
     </div>
   );
 };

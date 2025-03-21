@@ -3,7 +3,17 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { useGetNameUser } from '@/hooks/useGetName';
+
 const Profile = () => {
+  const { user, clearAuth } = useAuthStore(); // Destructure clearAuth from useAuthStore
+  const { getNameUser } = useGetNameUser();
+
+  const handleLogout = () => {
+    clearAuth(); // Call clearAuth to clear the authentication data
+  };
+
   return (
     <div className="relative group/menu">
       <Dropdown
@@ -22,35 +32,40 @@ const Profile = () => {
           </span>
         )}
       >
-        <Dropdown.Item
-          as={Link}
-          href="#"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark"
-        >
+        <Dropdown.Item className="px-3 py-3 flex  bg-hover group/link w-full gap-3 text-dark">
           <Icon icon="solar:user-circle-outline" height={20} />
-          My Profile
+          {getNameUser(Number(user?.id_user)) || 'Guest'}
         </Dropdown.Item>
-        <Dropdown.Item
-          as={Link}
-          href="#"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark"
-        >
-          <Icon icon="solar:letter-linear" height={20} />
-          My Account
-        </Dropdown.Item>
-        <Dropdown.Item
-          as={Link}
-          href="#"
-          className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark"
-        >
-          <Icon icon="solar:checklist-linear" height={20} />
-          My Task
-        </Dropdown.Item>
+        {user?.role === 'Admin' ? (
+          <Dropdown.Item
+            as={Link}
+            href="/dashboard/usermanage"
+            className="px-3 py-3 flex  bg-hover group/link w-full gap-3 text-dark"
+          >
+            <Icon
+              icon="solar:shield-user-broken"
+              height={20}
+              className="text-green-500"
+            />
+            Manage Account
+          </Dropdown.Item>
+        ) : (
+          <Dropdown.Item className="px-3 py-3 flex  bg-hover group/link w-full gap-3 text-dark">
+            <Icon
+              icon="solar:verified-check-broken"
+              height={20}
+              className="text-green-500"
+            />
+            {user?.role}
+          </Dropdown.Item>
+        )}
+
         <div className="p-3 pt-0">
           <Button
             as={Link}
             size={'sm'}
-            href="/auth/login"
+            href="/"
+            onClick={handleLogout} // Add onClick handler for logout
             className="mt-2 border border-primary text-primary bg-transparent hover:bg-lightprimary outline-none focus:outline-none"
           >
             Logout

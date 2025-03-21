@@ -1,26 +1,32 @@
 import { create } from 'zustand';
 
 interface TeamMember {
-  id: string;
+  id: number;
   name: string;
 }
 
 interface TeamStore {
   teamMembers: TeamMember[];
-  addTeamMember: (name: string) => void;
-  removeTeamMember: (id: string) => void;
+  addTeamMember: (member: TeamMember) => void;
+  removeTeamMember: (index: number) => void;
   resetTeamMembers: () => void;
+  setTeamMembers: (members: TeamMember[]) => void;
 }
 
 export const useTeamStore = create<TeamStore>((set) => ({
   teamMembers: [],
-  addTeamMember: (name) =>
+  addTeamMember: (member) =>
     set((state) => ({
-      teamMembers: [...state.teamMembers, { id: Date.now().toString(), name }],
+      teamMembers: [...state.teamMembers, member],
     })),
-  removeTeamMember: (id) =>
+  removeTeamMember: (index) =>
     set((state) => ({
-      teamMembers: state.teamMembers.filter((member) => member.id !== id),
+      teamMembers: state.teamMembers.filter((_, i) => i !== index),
     })),
-  resetTeamMembers: () => set({ teamMembers: [] }),
+  resetTeamMembers: () =>
+    set((state) => {
+      if (state.teamMembers.length === 0) return state;
+      return { teamMembers: [] };
+    }),
+  setTeamMembers: (members) => set({ teamMembers: members }),
 }));

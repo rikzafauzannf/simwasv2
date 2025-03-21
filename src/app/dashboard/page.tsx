@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { CardComponents } from '../components/Global/Card';
 import CardAkumulasiDataALL from '../components/dashboard/CardAkumulasiDataALL';
@@ -8,6 +9,17 @@ import ChartJenisPengawasan from '../components/dashboard/ChartJenisPengawasan';
 import ChartAnggaran from '../components/dashboard/ChartAnggaran';
 import Chartlaporan from '../components/dashboard/ChartLaporan';
 import RevenueForecast from '../components/dashboard/RevenueForecast';
+import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionPanel,
+  AccordionTitle,
+  Card,
+} from 'flowbite-react';
+import Breadcrumbs from '../components/Breadcumb';
 // import SalesProfit from '../components/dashboard/RevenueForecast';
 // import NewCustomers from '../components/dashboard/NewCustomers';
 // import TotalIncome from '../components/dashboard/TotalIncome';
@@ -18,40 +30,54 @@ import RevenueForecast from '../components/dashboard/RevenueForecast';
 
 const page = () => {
   return (
-    <div className="space-y-8">
-      {/* top */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
-        <div className="lg:col-span-2">
-          <CardAkumulasiDataALL />
-        </div>
+    <AuthRoleWrapper
+      allowedRoles={[
+        'Admin',
+        'Pimpinan',
+        'Perencana',
+        'Pelaksana',
+        'Auditor',
+        'Developer',
+      ]}
+    >
+      <div className="space-y-8">
+        {/* top */}
+        {/* <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
+          <div className="lg:col-span-2"> */}
+        <CardAkumulasiDataALL />
+        {/* </div> */}
+        {/* <CardComponents>
+            <ChartTingkatRisiko />
+          </CardComponents> */}
+        {/* </section> */}
+
+        {/* data chart */}
         <CardComponents>
-          <ChartTingkatRisiko />
+          <ChartJenisPengawasan />
         </CardComponents>
-      </section>
-      {/* data chart */}
-      <CardComponents>
-        <ChartPengawasan />
-      </CardComponents>
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
-        <CardComponents>
-          <ChartRuangLingkup />
-        </CardComponents>
-        <div className="lg:col-span-2">
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
           <CardComponents>
-            <ChartJenisPengawasan />
+            {/* <ChartRuangLingkup /> */}
+            <ChartTingkatRisiko />
           </CardComponents>
-        </div>
-        <div className="lg:col-span-2">
-          <CardComponents>
-            <ChartAnggaran />
-          </CardComponents>
-        </div>
-        <CardComponents>
-          <Chartlaporan />
-        </CardComponents>
-      </section>
-      <RevenueForecast />
-    </div>
+          <div className="lg:col-span-2">
+            <CardComponents>
+              {/* <ChartPengawasan />     */}
+              <Chartlaporan />
+            </CardComponents>
+          </div>
+          <div className="lg:col-span-3">
+            <CardComponents>
+              <ChartAnggaran />
+            </CardComponents>
+          </div>
+          {/* <CardComponents>
+            <Chartlaporan />
+          </CardComponents> */}
+        </section>
+        {/* <RevenueForecast /> */}
+      </div>
+    </AuthRoleWrapper>
   );
 };
 
