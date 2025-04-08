@@ -24,6 +24,15 @@ const EXCEL_HEADER_STYLE = {
   },
 };
 
+const CELL_BORDER_STYLE = {
+  border: {
+    top: { style: 'medium', color: { rgb: '000000' } },
+    bottom: { style: 'medium', color: { rgb: '000000' } },
+    left: { style: 'medium', color: { rgb: '000000' } },
+    right: { style: 'medium', color: { rgb: '000000' } },
+  },
+};
+
 // Excel Export Functions
 const createExcelWorksheet = (
   data: PKPTDataBase[],
@@ -32,14 +41,44 @@ const createExcelWorksheet = (
   status: string
 ): XLSX.WorkSheet => {
   const HEADER_STYLE = {
-    font: { bold: true, size: 11 },
-    alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+    font: {
+      bold: true,
+      size: 12, // Increased size for better visibility
+    },
+    alignment: {
+      horizontal: 'center',
+      vertical: 'center',
+      wrapText: true,
+    },
+    fill: {
+      fgColor: { rgb: 'E0E0E0' }, // Light gray background for headers
+      type: 'pattern',
+      patternType: 'solid',
+    },
+    ...CELL_BORDER_STYLE,
+  };
 
-    border: {
-      top: { style: 'thin' },
-      bottom: { style: 'thin' },
-      left: { style: 'thin' },
-      right: { style: 'thin' },
+  const CELL_STYLE = {
+    font: {
+      size: 11,
+      bold: false,
+    },
+    alignment: {
+      horizontal: 'center',
+      vertical: 'center',
+      wrapText: true,
+    },
+    ...CELL_BORDER_STYLE,
+  };
+
+  const TITLE_STYLE = {
+    font: {
+      bold: true,
+      size: 14,
+    },
+    alignment: {
+      horizontal: 'center',
+      vertical: 'center',
     },
   };
 
@@ -47,28 +86,19 @@ const createExcelWorksheet = (
     [
       {
         v: `PROGRAM KERJA PENGAWASAN TAHUNAN (${status})`,
-        s: {
-          font: { bold: true, size: 14 },
-          alignment: { horizontal: 'center' },
-        },
+        s: TITLE_STYLE,
       },
     ],
     [
       {
         v: 'INSPEKTORAT DAERAH KOTA TASIKMALAYA',
-        s: {
-          font: { bold: true, size: 14 },
-          alignment: { horizontal: 'center' },
-        },
+        s: TITLE_STYLE,
       },
     ],
     [
       {
         v: `TAHUN ${new Date().getFullYear()}`,
-        s: {
-          font: { bold: true, size: 14 },
-          alignment: { horizontal: 'center' },
-        },
+        s: TITLE_STYLE,
       },
     ],
     [''],
@@ -144,138 +174,97 @@ const createExcelWorksheet = (
         {
           v: String(idx + 1),
           s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
+            ...CELL_STYLE,
+            alignment: { horizontal: 'center', vertical: 'center' },
           },
         },
         {
           v: item.area_pengawasan,
           s: {
-            font: { bold: true, size: 12 },
-            alignment: { horizontal: 'left' },
+            ...CELL_STYLE,
+            font: { bold: true, size: 11 },
+            alignment: { horizontal: 'left', vertical: 'center' },
           },
         },
         {
           v: hooks.getNameJenisPengawasan(item.id_jenis_pengawasan),
           s: {
-            font: { bold: true, size: 12 },
-            alignment: { horizontal: 'left' },
+            ...CELL_STYLE,
+            font: { bold: true, size: 11 },
+            alignment: { horizontal: 'left', vertical: 'center' },
           },
         },
         {
           v: item.tujuan_sasaran,
-          s: {
-            font: { bold: true, size: 12 },
-            alignment: { horizontal: 'left' },
-          },
+          s: CELL_STYLE,
         },
         {
           v: hooks.getNameRuangLingkup(item.id_ruang_lingkup),
-          s: {
-            font: { bold: true, size: 12 },
-            alignment: { horizontal: 'left' },
-          },
+          s: CELL_STYLE,
         },
         {
           v: item.rmp_pkpt,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          s: CELL_STYLE,
         },
         {
           v: item.rpl_pkpt,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          s: CELL_STYLE,
         },
         {
-          v: item.penanggung_jawab,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          v: item.penanggung_jawab
+            ? hooks.getNameUser(Number(item.penanggung_jawab))
+            : '',
+          s: CELL_STYLE,
         },
         {
-          v: item.wakil_penanggung_jawab,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          v: item.wakil_penanggung_jawab
+            ? hooks.getNameUser(Number(item.wakil_penanggung_jawab))
+            : '',
+          s: CELL_STYLE,
         },
         {
-          v: item.pengendali_teknis,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          v: item.pengendali_teknis
+            ? hooks.getNameUser(Number(item.pengendali_teknis))
+            : '',
+          s: CELL_STYLE,
         },
         {
-          v: item.ketua_tim,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          v: item.ketua_tim ? hooks.getNameUser(Number(item.ketua_tim)) : '',
+          s: CELL_STYLE,
         },
         {
-          v: item.anggota_tim,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          v: item.anggota_tim
+            ? hooks.getNameUser(Number(item.anggota_tim))
+            : '',
+          s: CELL_STYLE,
         },
         {
           v: String(item.jumlah),
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          s: CELL_STYLE,
         },
         {
-          v: item.tim
-            .split(',')
-            .map((id) => id)
-            .join(`\n`),
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          v: formatTeamData(item.tim, hooks.getNameUser),
+          s: CELL_STYLE,
         },
         {
           v: item.anggaran,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          s: CELL_STYLE,
         },
         {
           v: `${item.jumlah_laporan} - ${hooks.getNameJenisLaporan(Number(item.id_jenis_laporan))}`,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          s: CELL_STYLE,
         },
         {
           v: item.sarana_prasarana,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          s: CELL_STYLE,
         },
         {
           v: hooks.getNameTingkatResiko(Number(item.id_tingkat_resiko)),
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          s: CELL_STYLE,
         },
         {
           v: item.keterangan,
-          s: {
-            font: { bold: false, size: 11 },
-            alignment: { horizontal: 'center' },
-          },
+          s: CELL_STYLE,
         },
       ]);
     });
@@ -341,6 +330,19 @@ const createExcelWorksheet = (
   ];
 
   return ws;
+};
+
+// Tambahkan fungsi untuk memformat data tim
+const formatTeamData = (
+  teamString: string,
+  getNameUser: (id: number) => string
+) => {
+  if (!teamString) return '';
+  return teamString
+    .split('|')
+    .map((id) => getNameUser(Number(id)))
+    .filter((name) => name) // Filter out any empty/null values
+    .join(', ');
 };
 
 export const exportToExcel = (

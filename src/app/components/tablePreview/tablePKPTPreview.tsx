@@ -27,7 +27,7 @@ interface StatusProps {
 // Table Components
 const TableHeader: React.FC = () => (
   <thead className="bg-gray-200">
-    <tr className="text-center align-middle">
+    <tr className="text-center align-middle text-[10px]">
       <th className="border border-gray-300 p-2" rowSpan={2}>
         NO
       </th>
@@ -69,7 +69,7 @@ const TableHeader: React.FC = () => (
         Keterangan
       </th>
     </tr>
-    <tr>
+    <tr className="text-[10px]">
       <th className="border border-gray-300 p-2">Rencana Mulai Penugasan</th>
       <th className="border border-gray-300 p-2">Rencana Penerbitan Laporan</th>
       <th className="border border-gray-300 p-2">Penanggung Jawab</th>
@@ -102,10 +102,10 @@ const TablePKPT = ({
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto max-w-[95vw]">
       <Table
         border={1}
-        className="min-w-full border-collapse border border-gray-300 text-left text-[11px]"
+        className="min-w-full border-collapse border border-gray-300 text-[10px] whitespace-normal"
       >
         <TableHeader />
         <tbody>
@@ -264,28 +264,30 @@ const TablePKPTPreview: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
           </div>
         </CardComponents>
 
-        <CardComponents>
-          <PdfGenerator>
-            <div className="space-y-4">
-              <div className="text-center">
-                <h1 className="text-2xl font-bold">
-                  PROGRAM KERJA PENGAWASAN TAHUNAN (
-                  <span className="uppercase">{status}</span>)
-                </h1>
-                <h2 className="text-xl font-bold">
-                  INSPEKTORAT DAERAH KOTA TASIKMALAYA
-                </h2>
-                <h3 className="text-lg font-bold">
-                  TAHUN {new Date().getFullYear()}
-                </h3>
-              </div>
-              <TablePKPT
-                DataPKPT={dataPKPTFilter}
-                DataJenisPengawasan={DataJenisPengawasan}
-              />
-            </div>
-          </PdfGenerator>
-        </CardComponents>
+        {/* <CardComponents> */}
+        {/* <PdfGenerator> */}
+        <div className="space-y-4 w-full">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold">
+              PROGRAM KERJA PENGAWASAN TAHUNAN (
+              <span className="uppercase">{status}</span>)
+            </h1>
+            <h2 className="text-xl font-bold">
+              INSPEKTORAT DAERAH KOTA TASIKMALAYA
+            </h2>
+            <h3 className="text-lg font-bold">
+              TAHUN {new Date().getFullYear()}
+            </h3>
+          </div>
+          <div className="overflow-x-auto max-w-[80vw] mx-auto">
+            <TablePKPT
+              DataPKPT={dataPKPTFilter}
+              DataJenisPengawasan={DataJenisPengawasan}
+            />
+          </div>
+        </div>
+        {/* </PdfGenerator> */}
+        {/* </CardComponents> */}
       </div>
     </AuthRoleWrapper>
   );

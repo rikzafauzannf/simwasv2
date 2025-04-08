@@ -10,13 +10,18 @@ import {
   useGetNameJenisLaporan,
   useGetNameJenisPengawasan,
   useGetNameKode,
+  useGetNameLHP,
   useGetNameRuangLingkup,
   useGetNameST,
   useGetNameUser,
 } from '@/hooks/useGetName';
 import { NHPData } from '@/interface/interfaceHasilPengawasan';
 import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
-import { formatCurrency } from '@/data/formatData';
+import {
+  formatCurrency,
+  formatToLocalDate,
+  getTimeAgo,
+} from '@/data/formatData';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
@@ -41,6 +46,7 @@ const TableTemuanHasil: React.FC = () => {
   const { getNameNoSP, getProgramAudit } = useGetNameST();
   const { getNameKodeReferensi, getNameKodeRekomendasi, getNameKodeTemuan } =
     useGetNameKode();
+  const { getKeteranganLHP } = useGetNameLHP();
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
@@ -99,7 +105,7 @@ const TableTemuanHasil: React.FC = () => {
 
     {
       name: 'Create At',
-      selector: (row) => row.created_at,
+      selector: (row) => getTimeAgo(row.created_at),
       sortable: true,
     },
     {
@@ -114,7 +120,7 @@ const TableTemuanHasil: React.FC = () => {
     },
     {
       name: 'Uraian',
-      selector: (row) => row.uraian,
+      selector: (row) => getKeteranganLHP(row.id_st),
       sortable: true,
     },
     {
@@ -127,21 +133,21 @@ const TableTemuanHasil: React.FC = () => {
       selector: (row) => row.kondisi_temuan,
       sortable: true,
     },
-    {
-      name: 'Kode Rekomendasi',
-      selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
-      sortable: true,
-    },
-    {
-      name: 'Rekomendasi/Saran',
-      selector: (row) => row.rekomendasi_saran,
-      sortable: true,
-    },
-    {
-      name: 'Nilai Rekomendasi',
-      selector: (row) => formatCurrency(row.nilai_rekomendasi),
-      sortable: true,
-    },
+    // {
+    //   name: 'Kode Rekomendasi',
+    //   selector: (row) => getNameKodeRekomendasi(row.id_kode_rekomendasi),
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Rekomendasi/Saran',
+    //   selector: (row) => row.rekomendasi_saran,
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Nilai Rekomendasi',
+    //   selector: (row) => formatCurrency(row.nilai_rekomendasi),
+    //   sortable: true,
+    // },
     // {
     //   name: 'Kode Referensi',
     //   selector: (row) => getNameKodeReferensi(row.id_kode_referensi),
@@ -231,12 +237,12 @@ const TableTemuanHasil: React.FC = () => {
 
   return (
     <>
-      <div className="mb-4 space-y-2">
+      <div className="mb-4 space-y-2 min-w-full max-w-full">
         <div className="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center w-full gap-2">
           <h3>Data Temuan Hasil</h3>
           <div className="space-x-2">
             <Link
-              href={'/dashboard/pelaporan/ringkasanpengawasan/preview'}
+              href={'/dashboard/hasiltemuan/preview'}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
               Preview Table
@@ -264,7 +270,7 @@ const TableTemuanHasil: React.FC = () => {
           className="border border-b-2 border-t-0 border-l-0 border-r-0 rounded-md shadow-md border-slate-600 text-black bg-slate-200/25 w-full"
         />
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto max-w-full">
         <DataTable
           columns={columns}
           data={search ? filteredData : DataTemuanHasil}

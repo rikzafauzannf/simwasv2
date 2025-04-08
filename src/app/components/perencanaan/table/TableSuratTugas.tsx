@@ -118,13 +118,13 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
         <div className="flex gap-2">
           <Link
             // onClick={() => handleView(row)}
-            href={`/dashboard/perencanaan/surattugas/${row.id_st}`}
+            href={`/dashboard/surattugas/${row.id_st}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
           </Link>
           {/* <Link
-            href={'/perencanaan/pkpt/actions/1'}
+            href={'/pkpt/actions/1'}
             className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
           >
             Act
