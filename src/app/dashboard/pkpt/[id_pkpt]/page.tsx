@@ -71,13 +71,13 @@ const ViewPkptPage = ({ params }: PageProps) => {
       ]}
     >
       <section className="grid md:grid-cols-4 w-full gap-3">
-        <div className="md:col-span-3">
+        <div className="md:col-span-3 overflow-hidden w-full">
           <TabGroup>
-            <TabList className={'flex gap-3 mb-4 w-full overflow-x-auto'}>
+            <TabList className={'w-full flex gap-2'}>
               {tabs_list.map((item, index) => (
                 <Tab
                   className={
-                    'data-[selected]:bg-primary data-[selected]:font-bold data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md'
+                    'data-[selected]:bg-primary  data-[selected]:text-white data-[selected]:font-bold data-[hover]:font-semibold px-4 py-2 rounded-md shadow-md'
                   }
                   key={index}
                 >
