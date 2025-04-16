@@ -70,7 +70,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
         reset(); // Reset form after successful submission
         alert('Data Laporan Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
-        router.push('/dashboard/pelaporan/lembarhasil');
+        router.push('/dashboard/lembarhasil');
       } else {
         throw new Error(result.message);
       }
@@ -92,7 +92,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-        <h3 className="text-xl">Upload LHP (Lembar Hasil Pengawasan)</h3>
+        <h3 className="text-xl">Upload LHP (Laporan Hasil Pengawasan)</h3>
         <CardComponents>
           <div className="space-y-3">
             <div className="space-y-2">
@@ -132,7 +132,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
                   label="Upload File"
                   identiti="uploadFile"
                   name="uploadFile"
-                  placeholder="Upload File ST"
+                  placeholder="Upload File LHP"
                   type="file"
                   register={'uploadFile'}
                 />
@@ -142,7 +142,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
                   label="Masukan Link Suresman"
                   identiti="linkStSuresman"
                   name="linkStSuresman"
-                  placeholder="Masukan Link Suresman ST"
+                  placeholder="Masukan Link Suresman LHP"
                   type="link"
                   register={register('file_lhp', {
                     required: 'Masukan Link Laporan Hasil Pengawasan',
@@ -165,10 +165,10 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
               />
               <TextAreaFieldComponent
                 rows={5}
-                label="Keterangan"
-                identiti="keterangan"
-                name="keterangan"
-                placeholder="Masukan Keterangan ST"
+                label="Uraian"
+                identiti="Uraian"
+                name="Uraian"
+                placeholder="Masukan Uraian LHP"
                 type="text"
                 register={register('keterangan_lhp', {
                   required:

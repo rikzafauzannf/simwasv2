@@ -71,7 +71,7 @@ const InputKendaliMutu: React.FC<PropsID> = ({ id_st }) => {
         console.log('Kendali Mutu berhasil disimpan:', result);
         reset();
         alert('Data Kendali Mutu berhasil disimpan');
-        router.push('/dashboard/pelaksanaan/kendalimutu');
+        router.push('/dashboard/kendalimutu');
       } else {
         throw new Error(result.message);
         // refetch();

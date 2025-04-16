@@ -33,6 +33,43 @@ export const useGetNameRuangLingkup = () => {
   return { getNameRuangLingkup, isLoading, error };
 };
 
+// ======LHP======
+export const useGetNameLHP = () => {
+  const {
+    data: DataRuangLingkup,
+    isLoading,
+    error,
+  } = useFetchAll<LHPData>('lhp');
+
+  const getNomorLHP = (id: number) => {
+    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    return data.length > 0 ? data[0].no_lhp : '';
+  };
+
+  const getUraianLHP = (id: number) => {
+    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    return data.length > 0 ? data[0].keterangan_lhp : '';
+  };
+
+  const getSTLHP = (id: number) => {
+    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    return data.length > 0 ? data[0].id_st : '';
+  };
+  const getKeteranganLHP = (id: number) => {
+    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    return data.length > 0 ? data[0].keterangan_lhp : '';
+  };
+
+  return {
+    getNomorLHP,
+    getUraianLHP,
+    getSTLHP,
+    getKeteranganLHP,
+    isLoading,
+    error,
+  };
+};
+
 // ======User (Pengguna)======
 export const useGetNameUser = () => {
   const {
@@ -241,5 +278,21 @@ export const useGetNameTemuanHasil = () => {
     return data.length > 0 ? data[0].kondisi_temuan : '';
   };
 
-  return { getNameKondisiTemuan, isLoading, error };
+  const getUraianTemuan = (id: number) => {
+    const data = DataTemuanHasil.filter((item) => item.id_tlhp === id);
+    return data.length > 0 ? data[0].uraian : '';
+  };
+
+  const getiIdSTTemuan = (id: number) => {
+    const data = DataTemuanHasil.filter((item) => item.id_tlhp === id);
+    return data.length > 0 ? data[0].id_st : null;
+  };
+
+  return {
+    getNameKondisiTemuan,
+    getUraianTemuan,
+    getiIdSTTemuan,
+    isLoading,
+    error,
+  };
 };

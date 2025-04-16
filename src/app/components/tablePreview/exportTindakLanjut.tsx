@@ -110,11 +110,11 @@ export const exportToExcel = (
         item.kondisi_temuan,
         getNameKodeTemuan(Number(item.id_kode_temuan)),
         getNameKodeTemuan(Number(item.id_kode_temuan)).split('.')[0],
-        item.rekomendasi_saran,
-        getNameKodeRekomendasi(item.id_kode_rekomendasi).split('.')[0],
-        formatCurrency(item.nilai_rekomendasi),
-        getNameKodeRekomendasi(item.id_kode_rekomendasi).split('.')[0],
-        getNameKodeRekomendasi(item.id_kode_rekomendasi),
+        // item.rekomendasi_saran,
+        // getNameKodeRekomendasi(item.id_kode_rekomendasi).split('.')[0],
+        // formatCurrency(item.nilai_rekomendasi),
+        // getNameKodeRekomendasi(item.id_kode_rekomendasi).split('.')[0],
+        // getNameKodeRekomendasi(item.id_kode_rekomendasi),
 
         tindakLanjut.map((tl) => tl.uraian).join('\n'),
         tindakLanjut
@@ -168,12 +168,12 @@ export const exportToExcel = (
       relatedTemuan.length,
       '',
       relatedTemuan.length,
-      formatCurrency(
-        relatedTemuan.reduce(
-          (sum, current) => sum + (current.nilai_rekomendasi || 0),
-          0
-        )
-      ),
+      // formatCurrency(
+      //   relatedTemuan.reduce(
+      //     (sum, current) => sum + (current.nilai_rekomendasi || 0),
+      //     0
+      //   )
+      // ),
       '',
       '',
       '',
@@ -208,12 +208,12 @@ export const exportToExcel = (
     DataTemuanHasil.length,
     '',
     DataTemuanHasil.length,
-    formatCurrency(
-      DataTemuanHasil.reduce(
-        (sum, item) => sum + (item.nilai_rekomendasi || 0),
-        0
-      )
-    ),
+    // formatCurrency(
+    //   DataTemuanHasil.reduce(
+    //     (sum, item) => sum + (item.nilai_rekomendasi || 0),
+    //     0
+    //   )
+    // ),
     '',
     '',
     '',

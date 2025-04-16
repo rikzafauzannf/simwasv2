@@ -10,6 +10,7 @@ import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { HiPaperAirplane } from 'react-icons/hi';
+import { Badge } from 'flowbite-react';
 
 interface PropsComponent {
   title: string;
@@ -61,7 +62,7 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
     Swal.fire({
       title: 'Buat Laporan Mingguan',
       html: `
-        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
+        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>
         <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
       `,
       focusConfirm: false,
@@ -125,7 +126,16 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
             <div className="grid gap-2">
               <div className="flex justify-between items-center">
                 <h1>{item.no_tglsp}</h1>
-                <p>{getNameStatusPKPT(item.id_pkpt)}</p>
+
+                <Badge
+                  color={
+                    getNameStatusPKPT(item.id_pkpt) == 'pkpt'
+                      ? 'indigo'
+                      : 'green'
+                  }
+                >
+                  {getNameStatusPKPT(item.id_pkpt)}
+                </Badge>
               </div>
               <p>{getNameAreaPengawasan(item.id_pkpt)}</p>
               <hr />
@@ -140,24 +150,23 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
                 <p className="flex justify-start items-center gap-2">
                   <Icon
                     icon="solar:user-check-line-duotone"
-                    width="24"
-                    height="24"
+                    width="16"
+                    height="16"
                   />
                   {getNameUser(Number(item.id_user))}
                 </p>
               </Link>
               <p>{item.created_at}</p>
-              <hr className="mb-3" />
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => handleCreateReport(item.id_st)}
-                  className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex gap-3 justify-start items-center"
+                  className="p-2 border border-blue-500 text-black rounded-md hover:bg-blue-600 hover:text-white flex gap-3 justify-start items-center"
                 >
                   <HiPaperAirplane /> <p>|| Buat laporan</p>
                 </button>
                 <Link
                   href={`/dashboard/${todo}/${item.id_st}`}
-                  className="py-1 px-3 w-full border border-green-600 text-slate-900 rounded-md text-center font-semibold hover:bg-slate-500/50"
+                  className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-center text-sm"
                 >
                   {title}
                 </Link>
@@ -174,15 +183,15 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
       </section>
 
       {/* Pagination Controls */}
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="flex justify-center items-center gap-4 mt-6 flex-wrap">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-4 py-2 border rounded-md disabled:opacity-50"
+          className="px-4 py-2 border rounded-md disabled:opacity-50 bg-blue-500 text-white"
         >
           Previous
         </button>
-        <span className="px-4 py-2">
+        <span className="text-sm">
           Page {currentPage} of {totalPages}
         </span>
         <button
@@ -190,7 +199,7 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="px-4 py-2 border rounded-md disabled:opacity-50"
+          className="px-4 py-2 border rounded-md disabled:opacity-50 bg-blue-500 text-white"
         >
           Next
         </button>

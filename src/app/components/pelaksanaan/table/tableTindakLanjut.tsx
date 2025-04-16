@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaPencilAlt } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
@@ -22,6 +22,7 @@ import {
 } from '@/interface/interfaceTindakLanjut';
 import { formatCurrency } from '@/data/formatData';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { TbArrowUpDashed } from 'react-icons/tb';
 
 const axiosSecvice = new AxiosService();
 
@@ -86,12 +87,21 @@ const TableTindakLanjut: React.FC = () => {
             >
               Act
             </Link> */}
+
                 <button
                   onClick={() => handleDelete(row.id_tindak_lanjut)}
                   className="p-2 text-red-500 hover:text-red-700"
                 >
                   <FaTrash />
                 </button>
+                {row.sisa_nominal !== 0 && (
+                  <Link
+                    href={`/dashboard/tindaklanjut/update/${row.id_tindak_lanjut}`}
+                    className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+                  >
+                    <TbArrowUpDashed />
+                  </Link>
+                )}
               </div>
             ),
           },

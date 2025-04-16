@@ -180,7 +180,7 @@ const AuthRegister = () => {
             />
           </div>
         </section>
-        <ButtonType Text={'Signup'} type="submit" />
+        <ButtonType Text={'Daftar Sekarang'} type="submit" />
       </form>
     </>
   );

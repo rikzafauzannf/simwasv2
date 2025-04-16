@@ -117,7 +117,8 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
             <h1>{getNameNoSP(item.id_st)}</h1>
             <p>{getProgramAudit(item.id_st)}</p>
             <hr />
-            <h1># {item.keterangan_nhp}</h1>
+            <h1>Nomor NHP : {item.no_nhp}</h1>
+            <p>Keterangan : {item.keterangan_nhp}</p>
             <hr />
             <Link
               href={`https://wa.me/${getUserPhone(item.id_user)}`}

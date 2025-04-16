@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardComponents } from '../../Global/Card';
 import TableKendaliMutu from '../table/tableKendaliMutu';
-import LaporanMingguanComponent from '../../../dashboard/perencanaan/surattugas/[id_st]/laporanMingguan';
+import LaporanMingguanComponent from '../../../dashboard/surattugas/[id_st]/laporanMingguan';
 
 const KendaliMutu = () => {
   return (
