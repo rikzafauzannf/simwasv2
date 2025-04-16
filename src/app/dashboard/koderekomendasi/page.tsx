@@ -13,7 +13,6 @@ import {
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useFetch } from '@/hooks/useFetch';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
-import Swal from 'sweetalert2'; 
 
 const axiosService = new AxiosService();
 
@@ -40,24 +39,14 @@ const KodeRekomendasi = () => {
     try {
       const result = await axiosService.addData('/kode_rekomendasi', data);
       if (result.success) {
-        Swal.fire({
-          title: 'Berhasil!',
-          text: 'Data Kode Rekomendasi berhasil ditambahkan.',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        });
+        alert('Data Kode Rekomendasi berhasil disimpan');
         reset();
         refetch();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
-      Swal.fire({
-      title: 'Gagal!',
-      text: 'Data Kode Rekomendasi gagal disimpan',
-      icon: 'error',
-      confirmButtonText: 'OK',
-    });
+      alert('Gagal menyimpan data Kode Rekomendasi');
     }
   };
 
@@ -68,12 +57,7 @@ const KodeRekomendasi = () => {
         data
       );
       if (result.success) {
-        Swal.fire({
-          title: 'Berhasil!',
-          text: 'Data Kode Rekomendasi berhasil diperbaharui.',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        });
+        alert('Data Kode Rekomendasi berhasil diperbarui');
         reset();
         refetch();
         handleCancelEdit();
@@ -81,27 +65,14 @@ const KodeRekomendasi = () => {
         throw new Error(result.message);
       }
     } catch (error) {
-      Swal.fire({
-      title: 'Gagal!',
-      text: 'Gagal memperbarui data Kode Temuan',
-      icon: 'error',
-      confirmButtonText: 'OK',
-    });
+      alert('Gagal memperbarui data Kode Temuan');
     }
   };
 
   const handleDelete = async (id: number) => {
-    const result = await Swal.fire({
-      title: 'Apakah Anda yakin?',
-    text: 'Anda tidak dapat mengembalikan data ini!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Ya, hapus!',
-    cancelButtonText: 'Batal',
-    })
-    if (result.isConfirmed ) {
+    if (
+      window.confirm('Apakah Anda yakin ingin menghapus Kode Rekomendasi ini?')
+    ) {
       try {
         const result = await axiosService.deleteData(`/kode_rekomendasi/${id}`);
         if (result.success) {

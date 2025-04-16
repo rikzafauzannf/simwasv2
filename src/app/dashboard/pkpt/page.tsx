@@ -20,7 +20,7 @@ const PkptPage = () => {
         'Developer',
       ]}
     >
-      <div className="space-y-4">
+      <div className="space-y-6">
         <AkumulasiDataPKPT />
         {(user?.role === 'Perencana' || user?.role === 'Developer') && (
           <div>

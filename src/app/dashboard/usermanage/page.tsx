@@ -12,7 +12,6 @@ import { CardComponents } from '@/app/components/Global/Card';
 import { ButtonType } from '@/app/components/Global/Button';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import { useOptions } from '@/data/selectValue';
-import Swal from 'sweetalert2';
 
 const axiosService = new AxiosService();
 
@@ -59,31 +58,24 @@ const UserManage = () => {
         ? await axiosService.updateData(`/pengguna/${currentEditId}`, formData)
         : await axiosService.addData('/pengguna', formData);
 
-if (result.success) {
-  Swal.fire({
-    title: 'Berhasil!',
-    text: isEditing
-      ? 'Data User berhasil diperbarui'
-      : 'Data User berhasil disimpan',
-    icon: 'success',
-    confirmButtonText: 'OK',
-  }).then(() => {
-    reset();
-    refetch();
-    if (isEditing) setIsEditing(false);
-  });
-} else {
-  throw new Error(result.message);
-}
-} catch (error) {
-console.error('Error submitting form:', error);
-Swal.fire({
-  title: 'Gagal!',
-  text: isEditing ? 'Gagal memperbarui data User' : 'Gagal menyimpan data User',
-  icon: 'error',
-  confirmButtonText: 'OK',
-});
-}
+      if (result.success) {
+        alert(
+          isEditing
+            ? 'Data User berhasil diperbarui'
+            : 'Data User berhasil disimpan'
+        );
+        reset();
+        refetch();
+        if (isEditing) setIsEditing(false);
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert(
+        isEditing ? 'Gagal memperbarui data User' : 'Gagal menyimpan data User'
+      );
+    }
   };
 
   const handleEdit = (user: UserManageDB) => {
@@ -92,50 +84,22 @@ Swal.fire({
     reset(user);
   };
 
- 
-const handleDelete = async (id: number) => {
-  Swal.fire({
-    title: 'Apakah Anda yakin?',
-    text: 'User ini akan dihapus secara permanen!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Ya, hapus!',
-    cancelButtonText: 'Batal',
-    // Pastikan opsi 'toast' tidak diatur atau diatur ke false
-    toast: false, // atau cukup hapus baris ini
-  }).then(async (result) => {
-    if (result.isConfirmed) {
+  const handleDelete = async (id: number) => {
+    if (window.confirm('Apakah Anda yakin ingin menghapus User ini?')) {
       try {
-        const response = await axiosService.deleteData(`/pengguna/${id}`);
-        if (response.success) {
-          Swal.fire({
-            title: 'Dihapus!',
-            text: 'User berhasil dihapus.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            // Pastikan opsi 'toast' tidak diatur atau diatur ke false
-            toast: false, // atau cukup hapus baris ini
-          });
+        const result = await axiosService.deleteData(`/pengguna/${id}`);
+        if (result.success) {
+          alert('User berhasil dihapus');
           refetch();
         } else {
-          throw new Error(response.message);
+          throw new Error(result.message);
         }
       } catch (error) {
         console.error('Error deleting User:', error);
-        Swal.fire({
-          title: 'Gagal!',
-          text: 'Gagal menghapus User.',
-          icon: 'error',
-          confirmButtonText: 'OK',
-          // Pastikan opsi 'toast' tidak diatur atau diatur ke false
-          toast: false, // atau cukup hapus baris ini
-        });
+        alert('Gagal menghapus User');
       }
     }
-  });
-};
+  };
 
   const filteredData = DataPengguna.filter(
     (item) =>

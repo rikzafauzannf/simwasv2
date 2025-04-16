@@ -229,7 +229,7 @@ const TablePKPTPreview: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
         'Developer',
       ]}
     >
-      <div className="space-y-4 grid">
+      <div className="container mx-auto px-4 max-w-screen-xl overflow-x-auto space-y-5">
         <CardComponents>
           <div className="flex justify-between items-center w-full">
             <div>
@@ -279,7 +279,7 @@ const TablePKPTPreview: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
               TAHUN {new Date().getFullYear()}
             </h3>
           </div>
-          <div className="overflow-x-auto max-w-[80vw] mx-auto">
+          <div className="container mx-auto px-4 max-w-screen-xl overflow-x-auto">
             <TablePKPT
               DataPKPT={dataPKPTFilter}
               DataJenisPengawasan={DataJenisPengawasan}

@@ -13,10 +13,7 @@ const RingkasanPengawasanPage = () => {
     >
       <div className="space-y-3 w-full">
         <h3 className="text-xl">Hasil Temuan</h3>
-        <MapDataLHP
-          title="Buat Temuan Hasil / Rekomendasi"
-          todo="hasiltemuan"
-        />
+        <MapDataLHP title="Buat TLHP & Rekomendasi" todo="hasiltemuan" />
         <div className="grid min-w-full gap-3">
           {/* <CardCompo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nents> */}
           <TableTemuanHasil />

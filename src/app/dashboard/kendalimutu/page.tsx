@@ -5,7 +5,7 @@ import MapDataPkpt from '@/app/components/realisasi/datapkpt';
 import MapDataST from '@/app/components/realisasi/dataST';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
-//test
+
 const KendaliMutuPage = () => {
   return (
     <AuthRoleWrapper
@@ -17,14 +17,11 @@ const KendaliMutuPage = () => {
         title="Buat Kendalimutu / laporan"
         todo="pelaksanaan/kendalimutu/form"
       /> */}
-        <MapDataST
-          title="Buat Kendalimutu"
-          todo="kendalimutu/form"
-        />
+        <MapDataST title="Buat Kendalimutu" todo="kendalimutu/form" />
         <div className="grid w-full gap-3">
-          {/* <CardComponents> */}
-          <TableKendaliMutu />
-          {/* </CardComponents> */}
+          <CardComponents>
+            <TableKendaliMutu />
+          </CardComponents>
         </div>
       </div>
     </AuthRoleWrapper>

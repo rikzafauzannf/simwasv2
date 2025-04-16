@@ -43,7 +43,7 @@ export const ButtonType: React.FC<Props> = ({ type, Text }) => {
   return (
     <Button
       type={type}
-      className={`w-full shadow-md ${type === 'submit' ? 'bg-[#14ae5c] hover:bg-[#267a59]' : 'bg-red-800 hover:bg-red-600'} font-semibold hover:font-bold`}
+      className={`w-full shadow-md ${type === 'submit' ? 'text-zinc-50 bg-teal-500 font-bold rounded-sm shadow-md hover:bg-teal-700' : 'bg-red-800 hover:bg-red-600'} font-semibold hover:font-bold`}
     >
       {Text}
     </Button>

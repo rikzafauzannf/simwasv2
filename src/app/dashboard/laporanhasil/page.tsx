@@ -11,7 +11,7 @@ const LembarHasilPage = () => {
     >
       <div className="space-y-3">
         <h3 className="text-xl">Laporan Hasil Pengawasan</h3>
-        <MapDataNHP todo="lembarhasil/form" />
+        <MapDataNHP todo="laporanhasil/form" />
         <div className="grid w-full gap-3">
           {/* <CardComponents> */}
           <TableLHP />

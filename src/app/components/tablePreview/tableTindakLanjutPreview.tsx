@@ -26,7 +26,7 @@ const TableTindakLanjutPreview = () => {
   const { data: DataTL } = useFetchAll<TindakLanjutDB>('tindak_lanjut');
   const { data: DataRekomendasi } = useFetchAll<RekomendasiData>('rekomendasi');
   const { getNameNoSP } = useGetNameST();
-  const { getNomorLHP, getSTLHP, getUraianLHP } = useGetNameLHP();
+  const { getNomorLHP, getUraianLHP } = useGetNameLHP();
   const { getNameKodeTemuan, getNameKodeRekomendasi } = useGetNameKode();
 
   // Group tindak lanjut data by id_tlhp
@@ -181,7 +181,7 @@ const TableTindakLanjutPreview = () => {
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
-      <div className=" grid space-y-3 max-w-full">
+      <div className=" container mx-auto px-4 max-w-screen-xl overflow-x-auto">
         <CardComponents>
           <div className="flex justify-between items-center w-full">
             <div>
@@ -216,7 +216,7 @@ const TableTindakLanjutPreview = () => {
         </CardComponents>
         {/* <CardComponents> */}
         <PdfGenerator>
-          <div className="space-y-3 w-full overflow-scroll">
+          <div className="space-y-3 w-full overflow-scroll p-4">
             <div className="text-center font-bold text-base text-[11px] lg:text-[14px]">
               <p>STATUS TEMUAN HASIL PEMERIKSAAN/AUDIT DAN TINDAK LANJUTNYA</p>
               <p>INSPEKTORAT DAERAH KOTA TASIKMALAYA</p>
