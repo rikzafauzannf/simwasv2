@@ -47,6 +47,8 @@ const AuthLogin = () => {
     }
   };
 
+  const router = useRouter()
+
   const onSubmitOTP = async () => {
     if (!NIP) {
       setError('NIP is not set');
@@ -66,6 +68,7 @@ const AuthLogin = () => {
           text: 'Anda berhasil masuk.',
         });
         localStorage.setItem('user', JSON.stringify(response.data));
+        router.push('/dashboard')
       } else {
         throw new Error('OTP tidak valid');
       }
