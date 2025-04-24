@@ -68,9 +68,10 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
       if (result.success) {
         console.log('Laporan Hasil Pengawasan berhasil disimpan:', result);
         reset(); // Reset form after successful submission
+        router.push('/dashboard/laporanhasil');
         alert('Data Laporan Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
-        router.push('/dashboard/lembarhasil');
+        
       } else {
         throw new Error(result.message);
       }

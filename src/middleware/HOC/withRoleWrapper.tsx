@@ -12,41 +12,58 @@ const AuthRoleWrapper: React.FC<AuthRoleWrapperProps> = ({
   allowedRoles,
   children,
 }) => {
-  const { user, token } = useAuthStore();
+  const { user, token, refreshAuth } = useAuthStore();
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // First effect: Check if we're on client-side
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Second effect: Real-time auth check
+  // Second effect: Real-time auth check with refresh mechanism
   useEffect(() => {
     if (!isClient) return; // Skip server-side execution
-
-    // Check for token in localStorage
-    const storedToken = localStorage.getItem('auth_token');
     
-    if (storedToken && !token) {
-      // If there's a token in localStorage but not in state,
-      // redirect to dashboard (user is authenticated but not loaded in state yet)
-      router.push('/dashboard');
-      return;
-    }
+    const checkAuth = async () => {
+      try {
+        // Check for token in localStorage
+        const storedToken = localStorage.getItem('auth_token');
+        
+        if (storedToken) {
+          // If there's a token in localStorage, try to refresh the auth state
+          if (!token || !user) {
+            await refreshAuth(); // Assuming refreshAuth is a function to reload user data from token
+          }
+          
+          // After refresh, if we have a user but wrong role
+          if (user && !allowedRoles.includes(user.role)) {
+            router.push('/dashboard/accessdenied');
+          }
+        } else if (!token) {
+          // No token in localStorage or state, redirect to unauthorized
+          router.push('/unauthorized');
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        router.push('/unauthorized');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    if (!token) {
-      // No token in state or localStorage, redirect to unauthorized
-      router.push('/unauthorized');
-    } else if (!user || !allowedRoles.includes(user.role)) {
-      // Has token but wrong role, redirect to access denied
-      router.push('/dashboard/accessdenied');
-    }
-  }, [user, token, allowedRoles, router, isClient]);
+    checkAuth();
+  }, [user, token, allowedRoles, router, isClient, refreshAuth]);
 
-  // Handle loading state or unauthorized access
-  if (!isClient || !token || !user || !allowedRoles.includes(user.role)) {
-    return null; // Optionally, show a loader or placeholder
+  // Show loading state or render children
+  if (!isClient || isLoading) {
+    return <div>Loading...</div>; // Show a loader during auth check
+  }
+
+  // After loading, if still no valid auth, render nothing (will be redirected)
+  if (!token || !user || !allowedRoles.includes(user.role)) {
+    return null;
   }
 
   return <>{children}</>;
