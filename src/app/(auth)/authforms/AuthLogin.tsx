@@ -47,7 +47,7 @@ const AuthLogin = () => {
     }
   };
 
-  const router = useRouter()
+  const router = useRouter();
 
   const onSubmitOTP = async () => {
     if (!NIP) {
@@ -68,12 +68,11 @@ const AuthLogin = () => {
           text: 'Anda berhasil masuk.',
         });
         localStorage.setItem('user', JSON.stringify(response.data));
-        router.push('/dashboard')
+
       } else {
         throw new Error('OTP tidak valid');
       }
-
-      route.push('/dashboard');
+      router.push('/dashboard');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Terjadi kesalahan');
       Swal.fire({

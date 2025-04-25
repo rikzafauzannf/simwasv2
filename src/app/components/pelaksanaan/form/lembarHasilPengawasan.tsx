@@ -71,7 +71,6 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
         router.push('/dashboard/laporanhasil');
         alert('Data Laporan Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
-        
       } else {
         throw new Error(result.message);
       }

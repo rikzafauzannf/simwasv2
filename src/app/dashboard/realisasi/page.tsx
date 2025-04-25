@@ -17,7 +17,7 @@ import React from 'react';
 import * as XLSX from 'xlsx';
 
 const TableHeader = () => {
-  return (    
+  return (
     <thead className="bg-gray-200">
       <tr className="text-center align-middle">
         <td
@@ -485,206 +485,208 @@ const RealisasiPKPTPage = () => {
     <AuthRoleWrapper
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
-    <div className="space-y-4">
-      <CardComponents>
-        <div className="flex justify-between items-center">
-          <h1>Data Realisasi</h1>
-          <Button className="bg-blue-500 text-white" onClick={exportToExcel}>
-            Export to Excel
-          </Button>
-        </div>
-      </CardComponents>
-      <CardComponents>
-        <div className="grid gap-3">
-          <div className="w-full text-center">
-            <h1>REALISASI PROGRAM KERJA PENGAWASAN TAHUNAN</h1>
-            <h2>PENYELENGGARAAN PEMERINTAHAN DAERAH</h2>
-            <p>S/D BULAN AGUSTUS 2024</p>
+      <div className="space-y-4">
+        <CardComponents>
+          <div className="flex justify-between items-center">
+            <h1>Data Realisasi</h1>
+            <Button className="bg-blue-500 text-white" onClick={exportToExcel}>
+              Export to Excel
+            </Button>
           </div>
-          <div className="w-full overflow-auto">
-            <Table className="w-full">
-              <TableHeader />
-              <tbody>
-                {structuredData.map((pkpt, pkptIndex) => {
-                  return pkpt.suratTugas.map((st, stIndex) => {
-                    const isFirstST = stIndex === 0;
-                    const lhpItems =
-                      st.lhpList.length > 0 ? st.lhpList : [null];
+        </CardComponents>
+        <CardComponents>
+          <div className="grid gap-3">
+            <div className="w-full text-center">
+              <h1>REALISASI PROGRAM KERJA PENGAWASAN TAHUNAN</h1>
+              <h2>PENYELENGGARAAN PEMERINTAHAN DAERAH</h2>
+              <p>S/D BULAN AGUSTUS 2024</p>
+            </div>
+            <div className="w-full overflow-auto">
+              <Table className="w-full">
+                <TableHeader />
+                <tbody>
+                  {structuredData.map((pkpt, pkptIndex) => {
+                    return pkpt.suratTugas.map((st, stIndex) => {
+                      const isFirstST = stIndex === 0;
+                      const lhpItems =
+                        st.lhpList.length > 0 ? st.lhpList : [null];
 
-                    return lhpItems.map((lhp, lhpIndex) => (
-                      <tr
-                        key={`${pkpt.id_pkpt}-${st.id_st}-${lhpIndex}`}
-                        className="hover:bg-gray-100"
-                      >
-                        {isFirstST && lhpIndex === 0 && (
-                          <>
-                            <td
-                              className="border border-gray-300 p-2 text-center"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {pkptIndex + 1}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {pkpt.area_pengawasan}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {getNameJenisPengawasan(pkpt.id_jenis_pengawasan)}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {pkpt.tujuan_sasaran}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {getNameRuangLingkup(pkpt.id_ruang_lingkup)}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2 text-center"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {formatToLocalDate(pkpt.rmp_pkpt)}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2 text-center"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {formatToLocalDate(pkpt.rpl_pkpt)}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {pkpt.tim.split('|').map((items, index) => (
-                                <p key={index}>{items}</p>
-                              ))}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2 text-center"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {pkpt.jumlah_laporan}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2 text-center"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {getNameJenisLaporan(pkpt.id_jenis_laporan)}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {pkpt.keterangan}
-                            </td>
-                            <td
-                              className="border border-gray-300 p-2 text-center"
-                              rowSpan={pkpt.suratTugas.reduce(
-                                (acc, st) =>
-                                  acc + Math.max(st.lhpList.length, 1),
-                                0
-                              )}
-                            >
-                              {pkpt.suratTugas.length}
-                            </td>
-                          </>
-                        )}
-                        <td className="border border-gray-300 p-2">
-                          {st.bulan}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {st.program_audit}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {st.no_tglsp}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {st.waktu_penugasan}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {getNameUser(Number(st.tim_pemeriksa))}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {getNameUser(Number(st.pengendali_teknis))}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {getNameUser(Number(st.ketua_tim))}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {st.anggota_tim
-                            .split(',')
-                            .map((items) => getNameUser(Number(items)))
-                            .join(', ')}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {st.jumlah_objek}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {st.jumlah_laporan}
-                        </td>
-                        <td className="border border-gray-300 p-2">
-                          {lhp?.no_lhp || ''}
-                        </td>
-                      </tr>
-                    ));
-                  });
-                })}
-              </tbody>
-            </Table>
-          </div>
+                      return lhpItems.map((lhp, lhpIndex) => (
+                        <tr
+                          key={`${pkpt.id_pkpt}-${st.id_st}-${lhpIndex}`}
+                          className="hover:bg-gray-100"
+                        >
+                          {isFirstST && lhpIndex === 0 && (
+                            <>
+                              <td
+                                className="border border-gray-300 p-2 text-center"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {pkptIndex + 1}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {pkpt.area_pengawasan}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {getNameJenisPengawasan(
+                                  pkpt.id_jenis_pengawasan
+                                )}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {pkpt.tujuan_sasaran}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {getNameRuangLingkup(pkpt.id_ruang_lingkup)}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2 text-center"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {formatToLocalDate(pkpt.rmp_pkpt)}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2 text-center"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {formatToLocalDate(pkpt.rpl_pkpt)}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {pkpt.tim.split('|').map((items, index) => (
+                                  <p key={index}>{items}</p>
+                                ))}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2 text-center"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {pkpt.jumlah_laporan}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2 text-center"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {getNameJenisLaporan(pkpt.id_jenis_laporan)}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {pkpt.keterangan}
+                              </td>
+                              <td
+                                className="border border-gray-300 p-2 text-center"
+                                rowSpan={pkpt.suratTugas.reduce(
+                                  (acc, st) =>
+                                    acc + Math.max(st.lhpList.length, 1),
+                                  0
+                                )}
+                              >
+                                {pkpt.suratTugas.length}
+                              </td>
+                            </>
+                          )}
+                          <td className="border border-gray-300 p-2">
+                            {st.bulan}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {st.program_audit}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {st.no_tglsp}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {st.waktu_penugasan}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {getNameUser(Number(st.tim_pemeriksa))}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {getNameUser(Number(st.pengendali_teknis))}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {getNameUser(Number(st.ketua_tim))}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {st.anggota_tim
+                              .split(',')
+                              .map((items) => getNameUser(Number(items)))
+                              .join(', ')}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {st.jumlah_objek}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {st.jumlah_laporan}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            {lhp?.no_lhp || ''}
+                          </td>
+                        </tr>
+                      ));
+                    });
+                  })}
+                </tbody>
+              </Table>
+            </div>
           </div>
         </CardComponents>
       </div>

@@ -23,20 +23,28 @@ const UnauthorizedPage = () => {
               <FullLogo />
             </div>
             <div>
-    <div className='flex justify-center items-center w-full'>
-      <Image
-        src={ilustrasi}
-        width={500}
-        height={500}
-        alt="Picture of the author"
-      />
-    </div>
+              <div className="flex justify-center items-center w-full">
+                <Image
+                  src={ilustrasi}
+                  width={500}
+                  height={500}
+                  alt="Picture of the author"
+                />
+              </div>
             </div>
             <div className="text-center space-y-4 grid">
-              <h1 className="text-2xl md:text-3xl font-extrabold">Hmm, Anda Belum Punya Akses</h1>
-              <p className="text-sm md:text-md font-reguler">Sepertinya Anda belum punya izin untuk masuk ke sini. Jangan khawatir, Anda bisa menghubungi admin untuk memeriksa status akses Anda.</p>
-              <ButtonLinkComponent Text='Login atau Daftar Terlebih Dahulu'  linkTo='/'/>
-
+              <h1 className="text-2xl md:text-3xl font-extrabold">
+                Hmm, Anda Belum Punya Akses
+              </h1>
+              <p className="text-sm md:text-md font-reguler">
+                Sepertinya Anda belum punya izin untuk masuk ke sini. Jangan
+                khawatir, Anda bisa menghubungi admin untuk memeriksa status
+                akses Anda.
+              </p>
+              <ButtonLinkComponent
+                Text="Login atau Daftar Terlebih Dahulu"
+                linkTo="/"
+              />
             </div>
           </div>
         </div>

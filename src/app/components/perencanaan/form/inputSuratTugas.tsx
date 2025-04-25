@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   InputFieldComponent,
   SelectInputField,
@@ -8,7 +8,14 @@ import {
 import { ButtonType } from '../../Global/Button';
 import { CardComponents } from '../../Global/Card';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
-import { FaTrash, FaUserPlus, FaCalendarAlt, FaClipboardList, FaUsers, FaFileAlt } from 'react-icons/fa';
+import {
+  FaTrash,
+  FaUserPlus,
+  FaCalendarAlt,
+  FaClipboardList,
+  FaUsers,
+  FaFileAlt,
+} from 'react-icons/fa';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   FormSuratTugas,
@@ -29,6 +36,11 @@ interface PropsID {
   id_pkpt: number;
 }
 
+// Extended form interface to include uploadFile field
+interface ExtendedFormSuratTugas extends FormSuratTugas {
+  uploadFile?: FileList;
+}
+
 const axiosSecvice = new AxiosService();
 
 const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
@@ -37,6 +49,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
 
   const [uploadOption, setUploadOption] = useState('link');
   const [activeTab, setActiveTab] = useState('informasi');
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const { optionsDataUser, optionsJenisAudit, potentialMembers } = useOptions();
 
@@ -69,16 +82,60 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
     reset,
     setValue,
     watch,
-    formState: { errors },
-  } = useForm<FormSuratTugas>({
+    formState: { errors, isValid, isDirty, dirtyFields, touchedFields },
+  } = useForm<ExtendedFormSuratTugas>({
     defaultValues: {
       bulan: '',
       link_st: '',
     },
-    mode: 'onBlur',
+    mode: 'all',
   });
 
-  const onSubmit: SubmitHandler<FormSuratTugas> = async (data) => {
+  // Watch all form fields to check if the form is valid
+  const formValues = watch();
+
+  // Check if all required fields are filled based on current tab
+  useEffect(() => {
+    const checkFormValidity = () => {
+      // Required fields by tab
+      const requiredFieldsByTab: Record<string, Array<keyof ExtendedFormSuratTugas | 'anggota_tim'>> = {
+        informasi: ['bulan', 'no_tglsp', 'program_audit', 'jumlah_hp', 'waktu_awal', 'waktu_akhir'],
+        tim: ['tim_pemeriksa', 'wk_penanggung_jawab', 'pengendali_teknis', 'ketua_tim'],
+        audit: ['jumlah_objek', 'jumlah_laporan', 'id_jenis_audit', 'keterangan'],
+        // dokumen: uploadOption === 'link' ? ['link_st'] : ['uploadFile'],
+        dokumen: ['link_st'],
+      };
+
+      // Get all required fields across all tabs
+      const allRequiredFields = [
+        ...requiredFieldsByTab.informasi,
+        ...requiredFieldsByTab.tim,
+        ...requiredFieldsByTab.audit,
+        ...requiredFieldsByTab.dokumen,
+      ];
+
+      // Check if all required fields are filled
+      const allFieldsValid = allRequiredFields.every(field => {
+        // if (field === 'uploadFile' && uploadOption !== 'file') return true;
+        if (field === 'link_st' && uploadOption !== 'link') return true;
+        if (field === 'anggota_tim') return teamMembers.length > 0;
+        
+        const value = formValues[field];
+        const fieldError = errors[field];
+        
+        return value !== undefined && value !== '' && !fieldError;
+      });
+
+      // Check if team members are added
+      const hasTeamMembers = teamMembers.length > 0;
+
+      setIsFormValid(allFieldsValid && hasTeamMembers && isValid);
+    };
+
+    checkFormValidity();
+  }, [formValues, errors, isValid, teamMembers, uploadOption]);
+
+  const onSubmit: SubmitHandler<ExtendedFormSuratTugas> = async (data) => {
     try {
       const dataST = {
         id_user: Number(user?.id_user),
@@ -119,17 +176,21 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
   return (
     <div className="container mx-auto px-4">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-primary">Penginputan Rekap Surat Tugas</h2>
+        <h2 className="text-2xl font-bold text-primary">
+          Penginputan Rekap Surat Tugas
+        </h2>
         <div className="h-1 bg-primary w-20 mt-2"></div>
       </div>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Navigation Tabs */}
         <div className="flex flex-wrap gap-2 mb-4">
           <button
             type="button"
             className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
-              activeTab === 'informasi' ? 'bg-primary text-white' : 'bg-gray-200 hover:bg-gray-300'
+              activeTab === 'informasi'
+                ? 'bg-primary text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => setActiveTab('informasi')}
           >
@@ -138,7 +199,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
           <button
             type="button"
             className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
-              activeTab === 'tim' ? 'bg-primary text-white' : 'bg-gray-200 hover:bg-gray-300'
+              activeTab === 'tim'
+                ? 'bg-primary text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => setActiveTab('tim')}
           >
@@ -147,7 +210,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
           <button
             type="button"
             className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
-              activeTab === 'audit' ? 'bg-primary text-white' : 'bg-gray-200 hover:bg-gray-300'
+              activeTab === 'audit'
+                ? 'bg-primary text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => setActiveTab('audit')}
           >
@@ -156,7 +221,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
           <button
             type="button"
             className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
-              activeTab === 'dokumen' ? 'bg-primary text-white' : 'bg-gray-200 hover:bg-gray-300'
+              activeTab === 'dokumen'
+                ? 'bg-primary text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => setActiveTab('dokumen')}
           >
@@ -171,10 +238,10 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 flex items-center">
                 <FaCalendarAlt className="mr-2" /> Informasi Dasar
               </h3>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 <InputFieldComponent
-                  label="Bulan"
+                  label="Bulan *"
                   identiti="Bulan"
                   name="bulan"
                   placeholder="Masukan Bulan Penugasan (Januari, Februari, dst)"
@@ -191,7 +258,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   error={errors.bulan}
                 />
                 <InputFieldComponent
-                  label="No/Tgl.SP"
+                  label="No/Tgl.SP *"
                   identiti="noTgl"
                   name="noTgl"
                   placeholder="Masukan Nomor/TGL.SP"
@@ -205,7 +272,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <InputFieldComponent
-                  label="Program Audit/Kegiatan"
+                  label="Program Audit/Kegiatan *"
                   identiti="programAudit"
                   name="programAudit"
                   placeholder="Masukan Program Audit"
@@ -216,23 +283,29 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   error={errors.program_audit}
                 />
                 <InputFieldComponent
-                  label="Jumlah Hari Penugasan"
+                  label="Jumlah Hari Penugasan *"
                   identiti="jumlahHP"
                   name="jumlahHP"
                   placeholder="Tentukan jumlah hari penugasan"
                   type="number"
                   register={register('jumlah_hp', {
                     required: 'Jumlah Hari Penugasan wajib di isi',
+                    min: {
+                      value: 1,
+                      message: 'Jumlah hari minimal 1'
+                    }
                   })}
                   error={errors.jumlah_hp}
                 />
               </div>
 
               <div className="space-y-4">
-                <h4 className="text-base font-medium text-gray-700">Waktu Penugasan</h4>
+                <h4 className="text-base font-medium text-gray-700">
+                  Waktu Penugasan *
+                </h4>
                 <div className="grid md:grid-cols-2 gap-6">
                   <InputFieldComponent
-                    label="Tanggal Mulai"
+                    label="Tanggal Mulai *"
                     identiti="waktumulai"
                     name="waktumulai"
                     placeholder="Tentukan tanggal mulai"
@@ -243,13 +316,18 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                     error={errors.waktu_awal}
                   />
                   <InputFieldComponent
-                    label="Tanggal Berakhir"
+                    label="Tanggal Berakhir *"
                     identiti="waktu_akhir"
                     name="waktu_akhir"
                     placeholder="Tentukan Tanggal Berakhir"
                     type="date"
                     register={register('waktu_akhir', {
                       required: 'Tanggal Akhir wajib di isi',
+                      validate: value => {
+                        const startDate = new Date(watch('waktu_awal'));
+                        const endDate = new Date(value);
+                        return endDate >= startDate || 'Tanggal berakhir harus setelah tanggal mulai';
+                      }
                     })}
                     error={errors.waktu_akhir}
                   />
@@ -264,10 +342,10 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 flex items-center">
                 <FaUsers className="mr-2" /> Tim Pemeriksa
               </h3>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 <SelectInputField
-                  label="Tim Pemeriksa/Pelaksana Kegiatan"
+                  label="Tim Pemeriksa/Pelaksana Kegiatan *"
                   identiti="select-field-timpemeriksa"
                   options={optionsDataUser}
                   register={register('tim_pemeriksa', {
@@ -279,7 +357,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   name="tim_pemeriksa"
                 />
                 <SelectInputField
-                  label="Irban/Wk.Penanggung Jawab"
+                  label="Irban/Wk.Penanggung Jawab *"
                   identiti="select-field-irban"
                   options={optionsDataUser}
                   register={register('wk_penanggung_jawab', {
@@ -294,7 +372,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <SelectInputField
-                  label="Pengendali Teknis/Supervisor"
+                  label="Pengendali Teknis/Supervisor *"
                   identiti="select-field-pteknis"
                   options={optionsDataUser}
                   register={register('pengendali_teknis', {
@@ -306,7 +384,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   name="pengendaliTeknis"
                 />
                 <SelectInputField
-                  label="Ketua Tim"
+                  label="Ketua Tim *"
                   identiti="select-field-ketua"
                   options={optionsDataUser}
                   register={register('ketua_tim', {
@@ -322,7 +400,10 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               <div className="space-y-4 bg-gray-50 p-4 rounded-lg">
                 <div className="flex flex-col space-y-2">
                   <label htmlFor="Tim" className="text-slate-800 font-medium">
-                    Anggota Tim <span className="bg-primary text-white px-2 py-1 rounded-full text-xs">{teamMembers.length}</span>
+                    Anggota Tim * {' '}
+                    <span className={`px-2 py-1 rounded-full text-xs ${teamMembers.length > 0 ? 'bg-primary text-white' : 'bg-red-500 text-white'}`}>
+                      {teamMembers.length}
+                    </span>
                   </label>
                   <div className="flex flex-col sm:flex-row gap-2 w-full">
                     <select
@@ -347,6 +428,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                       <FaUserPlus /> Tambah
                     </button>
                   </div>
+                  {teamMembers.length === 0 && (
+                    <p className="text-red-500 text-sm">Minimal satu anggota tim wajib ditambahkan</p>
+                  )}
                 </div>
 
                 {/* Display Team Members */}
@@ -383,34 +467,40 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 flex items-center">
                 <FaClipboardList className="mr-2" /> Detail Audit
               </h3>
-              
+
               <div className="grid md:grid-cols-3 gap-6">
                 <InputFieldComponent
-                  label="Jumlah Objek Pengawasan"
+                  label="Jumlah Objek Pengawasan *"
                   identiti="jumlahObjek"
                   name="jumlahObjek"
                   placeholder="Tentukan Jumlah Objek Pengawasan"
                   type="number"
                   register={register('jumlah_objek', {
-                    min: 0,
+                    min: {
+                      value: 1,
+                      message: 'Jumlah objek minimal 1'
+                    },
                     required: 'Masukan jumlah objek',
                   })}
                   error={errors.jumlah_objek}
                 />
                 <InputFieldComponent
-                  label="Jumlah Laporan"
+                  label="Jumlah Laporan *"
                   identiti="jumlahLaporan"
                   name="jumlahLaporan"
                   placeholder="Tentukan Jumlah Laporan"
                   type="number"
                   register={register('jumlah_laporan', {
-                    min: 0,
+                    min: {
+                      value: 1,
+                      message: 'Jumlah laporan minimal 1'
+                    },
                     required: 'Masukan Jumlah Laporan',
                   })}
                   error={errors.jumlah_laporan}
                 />
                 <SelectInputField
-                  label="Jenis Audit"
+                  label="Jenis Audit *"
                   identiti="jenisAudit"
                   name="jenisAudit"
                   options={optionsJenisAudit}
@@ -426,13 +516,17 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               <div>
                 <TextAreaFieldComponent
                   rows={5}
-                  label="Keterangan"
+                  label="Keterangan *"
                   identiti="keterangan"
                   name="keterangan"
                   placeholder="Masukan Keterangan ST"
                   type="text"
                   register={register('keterangan', {
                     required: 'Masukan Keterangan',
+                    minLength: {
+                      value: 10,
+                      message: 'Keterangan minimal 10 karakter'
+                    }
                   })}
                   error={errors.keterangan}
                 />
@@ -446,10 +540,12 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 flex items-center">
                 <FaFileAlt className="mr-2" /> Dokumen Surat Tugas
               </h3>
-              
+
               <div className="bg-gray-50 p-4 rounded-lg space-y-4">
                 <div>
-                  <label className="font-medium text-gray-700 block mb-2">Metode Upload Surat Tugas</label>
+                  <label className="font-medium text-gray-700 block mb-2">
+                    Metode Upload Surat Tugas *
+                  </label>
                   <div className="flex gap-6">
                     <label className="flex items-center cursor-pointer">
                       <input
@@ -475,34 +571,58 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                     </label>
                   </div>
                 </div>
-                
+
                 <div className="mt-4">
                   {uploadOption === 'file' ? (
                     <div className="space-y-2">
-                      <InputFieldComponent
-                        label="Upload File"
-                        identiti="uploadFile"
-                        name="uploadFile"
-                        placeholder="Upload File ST"
-                        type="file"
-                        register={'uploadFile'}
-                      />
-                      <p className="text-sm text-gray-500">Format yang didukung: PDF, DOCX, XLSX. Ukuran maksimal: 5MB</p>
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Upload File *
+                        </label>
+                        <input
+                          type="file"
+                          {...register('uploadFile', {
+                            required: 'File Surat Tugas wajib diunggah',
+                          })}
+                          className="block w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-md file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-primary file:text-white
+                            hover:file:bg-lightprimary
+                            transition-colors"
+                        />
+                        {errors.uploadFile && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.uploadFile.message}
+                          </p>
+                        )}
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        Format yang didukung: PDF, DOCX, XLSX. Ukuran maksimal:
+                        5MB
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-2">
                       <InputFieldComponent
-                        label="Masukan Link Suresman"
+                        label="Masukan Link Suresman *"
                         identiti="linkStSuresman"
                         name="linkStSuresman"
                         placeholder="Masukan Link Suresman ST"
                         type="url"
                         register={register('link_st', {
                           required: 'Masukan Link ST',
+                          pattern: {
+                            value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/,
+                            message: 'Mohon masukkan link yang valid'
+                          }
                         })}
                         error={errors.link_st}
                       />
-                      <p className="text-sm text-gray-500">Pastikan link dapat diakses oleh pihak yang berwenang</p>
+                      <p className="text-sm text-gray-500">
+                        Pastikan link dapat diakses oleh pihak yang berwenang
+                      </p>
                     </div>
                   )}
                 </div>
@@ -514,8 +634,8 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
         <div className="flex justify-between items-center mt-6">
           <div className="flex gap-3">
             {activeTab !== 'informasi' && (
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => {
                   const tabs = ['informasi', 'tim', 'audit', 'dokumen'];
                   const currentIndex = tabs.indexOf(activeTab);
@@ -526,10 +646,10 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 Kembali
               </button>
             )}
-            
+
             {activeTab !== 'dokumen' && (
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => {
                   const tabs = ['informasi', 'tim', 'audit', 'dokumen'];
                   const currentIndex = tabs.indexOf(activeTab);
@@ -541,11 +661,19 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               </button>
             )}
           </div>
-          
-          <Button             
-            type="submit"             
-            className="bg-primary text-white hover:bg-lightprimary transition-colors font-medium"
-          ><TbSend2/> Buat Surat Tugas</Button>
+
+          <Button
+            type="submit"
+            disabled={!isFormValid}
+            className={`transition-colors font-medium ${
+              isFormValid
+                ? 'bg-primary text-white hover:bg-lightprimary'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            <TbSend2 className="mr-1" /> 
+            Buat Surat Tugas
+          </Button>
         </div>
       </form>
     </div>

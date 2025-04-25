@@ -110,7 +110,11 @@ const InputTemuan: React.FC<CompoProps> = ({ id_lhp }) => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Gagal menyimpan data Jenis Pengawasan');
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed create data',
+        icon: 'error',
+      });
     }
   };
 

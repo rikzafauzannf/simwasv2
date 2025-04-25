@@ -17,7 +17,7 @@ const TindakLajutPage = () => {
         />
         <div className="grid w-full gap-3">
           {/* <CardComponents> */}
-            <TableTindakLanjut />
+          <TableTindakLanjut />
           {/* </CardComponents> */}
         </div>
       </div>

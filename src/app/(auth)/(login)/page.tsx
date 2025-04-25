@@ -33,7 +33,9 @@ const BoxedLogin = () => {
               onClick={toggleAuth}
               className="mt-4 text-primary text-sm font-medium"
             >
-              {isLogin ? 'Tidak Memiliki Akun? Daftar disini' : 'Memiliki Akun? Login disini'}
+              {isLogin
+                ? 'Tidak Memiliki Akun? Daftar disini'
+                : 'Memiliki Akun? Login disini'}
             </button>
           </div>
         </div>

@@ -25,18 +25,18 @@ const AuthRoleWrapper: React.FC<AuthRoleWrapperProps> = ({
   // Second effect: Real-time auth check with refresh mechanism
   useEffect(() => {
     if (!isClient) return; // Skip server-side execution
-    
+
     const checkAuth = async () => {
       try {
         // Check for token in localStorage
         const storedToken = localStorage.getItem('auth_token');
-        
+
         if (storedToken) {
           // If there's a token in localStorage, try to refresh the auth state
           if (!token || !user) {
             await refreshAuth(); // Assuming refreshAuth is a function to reload user data from token
           }
-          
+
           // After refresh, if we have a user but wrong role
           if (user && !allowedRoles.includes(user.role)) {
             router.push('/dashboard/accessdenied');
@@ -46,7 +46,7 @@ const AuthRoleWrapper: React.FC<AuthRoleWrapperProps> = ({
           router.push('/unauthorized');
         }
       } catch (error) {
-        console.error("Auth check failed:", error);
+        console.error('Auth check failed:', error);
         router.push('/unauthorized');
       } finally {
         setIsLoading(false);
