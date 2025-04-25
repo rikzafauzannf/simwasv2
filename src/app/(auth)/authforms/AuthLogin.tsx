@@ -68,7 +68,6 @@ const AuthLogin = () => {
           text: 'Anda berhasil masuk.',
         });
         localStorage.setItem('user', JSON.stringify(response.data));
-
       } else {
         throw new Error('OTP tidak valid');
       }

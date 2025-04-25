@@ -32,16 +32,16 @@ const InputTemuan: React.FC<CompoProps> = ({ id_lhp }) => {
   const { data: DataTemuanHasil, refetch } =
     useFetchAll<TemuanHasilData>('temuan_hasil');
 
-  const TemuanFilterID = DataTemuanHasil.filter(
-    (item) => item.id_st === Number(id_lhp)
-  );
-
   console.log('id_lhp: ', id_lhp);
 
   const { data: DataLHPCheck } = useFetchById<LHPData>(
     'lhp_id',
     Number(id_lhp)
   );
+  const TemuanFilterID = DataTemuanHasil.filter(
+    (item) => item.id_st === Number(DataLHPCheck?.id_st)
+  );
+
   const { data: DataStCheck } = useFetchById<SuratTugasData>(
     'surat_tugas',
     Number(DataLHPCheck?.id_st)
@@ -73,7 +73,7 @@ const InputTemuan: React.FC<CompoProps> = ({ id_lhp }) => {
         // id_kode_referensi: Number(data.id_kode_referensi),
         // id_kode_rekomendasi: Number(data.id_kode_rekomendasi),
         id_kode_temuan: Number(data.id_kode_temuan),
-        id_st: Number(id_lhp),
+        id_st: Number(DataLHPCheck?.id_st),
         id_user: Number(user?.id_user),
         // nilai_rekomendasi: Number(data.nilai_rekomendasi),
         kondisi_temuan: data.kondisi_temuan,
