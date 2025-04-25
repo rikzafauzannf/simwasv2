@@ -1,19 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 import { CardComponents } from '../Global/Card';
-import { ButtonLinkComponent } from '../Global/Button';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
-import { PKPTDataBase } from '@/interface/interfacePKPT';
-import {
-  useGetNameJenisPengawasan,
-  useGetNameST,
-  useGetNameUser,
-} from '@/hooks/useGetName';
+import { useGetNameST, useGetNameUser } from '@/hooks/useGetName';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { LHPData, NHPData } from '@/interface/interfaceHasilPengawasan';
+import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
-import { HiPaperAirplane } from 'react-icons/hi';
+import { HiPencilAlt } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 
@@ -56,7 +50,7 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
     Swal.fire({
       title: 'Buat Laporan Mingguan',
       html: `
-        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>        
+        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>
         <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
       `,
       focusConfirm: false,
@@ -115,11 +109,14 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
       <section className="grid md:grid-cols-3 gap-8">
         {currentItems.map((item, index) => (
           <CardComponents key={index}>
-            <p>ST:</p>
-            <h1>{getNameNoSP(item.id_st)}</h1>
+            <p>
+              ST: <b className="text-blue-500">{getNameNoSP(item.id_st)}</b>
+            </p>
             <p>{getProgramAudit(item.id_st)}</p>
             <hr />
-            <h1>Nomor LHP : {item.no_lhp}</h1>
+            <p>
+              Nomor LHP : <b className="text-blue-500">{item.no_lhp}</b>
+            </p>
             <p>Uraian : {item.keterangan_lhp}</p>
             <hr />
             <Link
@@ -136,13 +133,12 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
               </p>
             </Link>
             <p>{item.created_at}</p>
-            <hr className="mb-3" />
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => handleCreateReport(item.id_st)}
                 className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex gap-3 justify-start items-center"
               >
-                <HiPaperAirplane /> <p>|| Buat laporan</p>
+                <HiPencilAlt /> <p>Buat laporan</p>
               </button>
               <Link
                 href={`/dashboard/${todo}/${item.id_lhp}`}

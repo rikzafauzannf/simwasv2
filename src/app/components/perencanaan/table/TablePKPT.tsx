@@ -98,7 +98,7 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
       cell: (row: PKPTDataBase) => (
         <div className="flex gap-2">
           <Link
-            href={`/dashboard/perencanaan/pkpt/${row.id_pkpt}`}
+            href={`/dashboard/pkpt/${row.id_pkpt}`}
             className="p-2 text-blue-500 hover:text-blue-700"
           >
             <FaEye />
@@ -107,7 +107,7 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
             (user?.role === 'Developer' && (
               <>
                 <Link
-                  href={`/dashboard/perencanaan/pkpt/actions/${row.id_pkpt}`}
+                  href={`/dashboard/pkpt/actions/${row.id_pkpt}`}
                   className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
                   <FaPenFancy />
@@ -316,7 +316,7 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
           <h3 className="capitalize">Data {status}</h3>
           <div className="space-x-2">
             <Link
-              href={`/dashboard/perencanaan/pkpt/preview/${status}`}
+              href={`/dashboard/pkpt/preview/${status}`}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
               Preview Table

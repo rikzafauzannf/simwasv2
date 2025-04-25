@@ -12,13 +12,13 @@ const TindakLajutPage = () => {
       <div className="space-y-3">
         <h3 className="text-xl">Tindak Lanjut</h3>
         <MapDataTemuanHasil
-          todo="pelaksanaan/tindaklanjut/form"
+          todo="tindaklanjut/form"
           title="Buat Tindak Lanjut"
         />
         <div className="grid w-full gap-3">
-          <CardComponents>
-            <TableTindakLanjut />
-          </CardComponents>
+          {/* <CardComponents> */}
+          <TableTindakLanjut />
+          {/* </CardComponents> */}
         </div>
       </div>
     </AuthRoleWrapper>

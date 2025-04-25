@@ -56,7 +56,7 @@ const NotaHasilPengawasan = ({ id_st }: PropsID) => {
         reset(); // Reset form after successful submission
         alert('Data Nota Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
-        router.push('/dashboard/pelaksanaan/notahasil');
+        router.push('/dashboard/notahasil');
       } else {
         throw new Error(result.message);
       }

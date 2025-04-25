@@ -23,7 +23,6 @@ import {
 import { useFetchById } from '@/hooks/useFetchById';
 import { Button } from 'flowbite-react';
 import Swal from 'sweetalert2';
-// import { useQuery } from '@tanstack/react-query';
 
 const axiosSecvice = new AxiosService();
 
@@ -41,7 +40,6 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
     'pkpt',
     Number(params.id_pkpt)
   );
-  console.log('Data FROM DB : ', DataPKPT);
 
   const {
     optionsDataUser,
@@ -54,7 +52,6 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
     potentialScopes,
   } = useOptions();
 
-  // const [isLoading, setIsLoading] = React.useState(true);
   const [isDataLoaded, setIsDataLoaded] = React.useState(false);
 
   const {
@@ -104,98 +101,97 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
     useTeamStore();
   const [newMemberId, setNewMemberId] = React.useState<number | string>('');
 
-  // Effect untuk form data
-  // React.useEffect(() => {
-  //   if (DataPKPT && !isDataLoaded) {
-  //     setIsDataLoaded(true);
-
-  //     // Reset team members before adding new ones
-  //     resetTeamMembers();
-
-  //     // Parse and set team members from nama_anggota_tim
-  //     if (DataPKPT.nama_anggota_tim) {
-  //       const memberIds = DataPKPT.nama_anggota_tim
-  //         .split(',')
-  //         .map(id => id.trim())
-  //         .filter(Boolean);
-
-  //       memberIds.forEach(id => {
-  //         const member = potentialMembers.find(m => m.id === Number(id));
-  //         if (member) {
-  //           addTeamMember({ id: member.id, name: member.name });
-  //         }
-  //       });
-  //     }
-
-  //     // Reset form with data from API
-  //     reset({
-  //       ...DataPKPT,
-  //       id_jenis_pengawasan: Number(DataPKPT.id_jenis_pengawasan),
-  //       id_ruang_lingkup: Number(DataPKPT.id_ruang_lingkup),
-  //       id_jenis_laporan: Number(DataPKPT.id_jenis_laporan),
-  //       id_tingkat_resiko: Number(DataPKPT.id_tingkat_resiko),
-  //       nama_penanggung_jawab: String(DataPKPT.nama_penanggung_jawab),
-  //       nama_wakil_penanggung_jawab: String(DataPKPT.nama_wakil_penanggung_jawab),
-  //       nama_pengendali_teknis: String(DataPKPT.nama_pengendali_teknis),
-  //       nama_ketua_tim: String(DataPKPT.nama_ketua_tim),
-  //     });
-  //   }
-  // }, [DataPKPT, reset, isDataLoaded, addTeamMember, potentialMembers, resetTeamMembers]);
-
-  React.useEffect(() => {
-    if (DataPKPT?.nama_anggota_tim && !isDataLoaded) {
-      resetTeamMembers();
-
-      const memberIds = DataPKPT.nama_anggota_tim
-        .split(',')
-        .map((id) => id.trim())
-        .filter(Boolean);
-
-      memberIds.forEach((id) => {
-        const member = potentialMembers.find((m) => m.id === Number(id));
-        if (member) {
-          addTeamMember({ id: member.id, name: member.name });
-        }
-      });
-    }
-  }, [
-    DataPKPT?.nama_anggota_tim,
-    isDataLoaded,
-    resetTeamMembers,
-    potentialMembers,
-    addTeamMember,
-  ]);
-
-  // Effect terpisah untuk form reset
+  // Load initial data
   React.useEffect(() => {
     if (DataPKPT && !isDataLoaded) {
       setIsDataLoaded(true);
+
+      resetTeamMembers();
+
+      if (DataPKPT.nama_anggota_tim) {
+        const memberIds = DataPKPT.nama_anggota_tim
+          .split(',')
+          .map((id) => id.trim())
+          .filter(Boolean);
+
+        memberIds.forEach((id) => {
+          const member = potentialMembers.find((m) => m.id === Number(id));
+          if (member) {
+            addTeamMember({ id: member.id, name: member.name });
+          }
+        });
+      }
+
       reset({
         ...DataPKPT,
         id_jenis_pengawasan: Number(DataPKPT.id_jenis_pengawasan),
         id_ruang_lingkup: Number(DataPKPT.id_ruang_lingkup),
         id_jenis_laporan: Number(DataPKPT.id_jenis_laporan),
         id_tingkat_resiko: Number(DataPKPT.id_tingkat_resiko),
-        nama_penanggung_jawab: String(DataPKPT.nama_penanggung_jawab),
-        nama_wakil_penanggung_jawab: String(
-          DataPKPT.nama_wakil_penanggung_jawab
-        ),
-        nama_pengendali_teknis: String(DataPKPT.nama_pengendali_teknis),
-        nama_ketua_tim: String(DataPKPT.nama_ketua_tim),
+        nama_penanggung_jawab: DataPKPT.nama_penanggung_jawab,
+        nama_wakil_penanggung_jawab: DataPKPT.nama_wakil_penanggung_jawab,
+        nama_pengendali_teknis: DataPKPT.nama_pengendali_teknis,
+        nama_ketua_tim: DataPKPT.nama_ketua_tim,
+        anggota_tim: DataPKPT.anggota_tim,
+        nama_anggota_tim: DataPKPT.nama_anggota_tim,
+        tim: DataPKPT.tim,
       });
-    }
-  }, [DataPKPT, reset, isDataLoaded]);
 
-  console.log('data dari team: ', teamMembers);
+      setValue('nama_anggota_tim', DataPKPT.nama_anggota_tim || '');
+      setValue('tim', DataPKPT.tim || '');
+    }
+  }, [
+    DataPKPT,
+    reset,
+    isDataLoaded,
+    resetTeamMembers,
+    addTeamMember,
+    potentialMembers,
+    setValue,
+  ]);
+
+  // Update tim string when team members change
+  React.useEffect(() => {
+    if (DataPKPT && isDataLoaded) {
+      const dataTim = [
+        `PJ: ${getNameUser(Number(watch('nama_penanggung_jawab')))}`,
+        `WPJ: ${getNameUser(Number(watch('nama_wakil_penanggung_jawab')))}`,
+        `PT: ${getNameUser(Number(watch('nama_pengendali_teknis')))}`,
+        `KT: ${getNameUser(Number(watch('nama_ketua_tim')))}`,
+        `AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')}`,
+      ].join(' | ');
+
+      setValue('tim', dataTim);
+    }
+  }, [
+    watch('nama_penanggung_jawab'),
+    watch('nama_wakil_penanggung_jawab'),
+    watch('nama_pengendali_teknis'),
+    watch('nama_ketua_tim'),
+    teamMembers,
+    getNameUser,
+    setValue,
+    DataPKPT,
+    isDataLoaded,
+  ]);
+
+  // Update nama_anggota_tim when team members change
+  React.useEffect(() => {
+    if (teamMembers.length > 0) {
+      setValue(
+        'nama_anggota_tim',
+        teamMembers.map((item) => item.id).join(', ')
+      );
+    } else {
+      setValue('nama_anggota_tim', '');
+    }
+  }, [teamMembers, setValue]);
 
   const { scopes, addScope, removeScope } = useScopeStore();
   const [newScopeId, setNewScopeId] = React.useState<number | string>('');
 
-  console.log('data dari scope: ', scopes);
-
   const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
     try {
-      // Construct dataTim with proper formatting
       const dataTim = [
         `PJ: ${getNameUser(Number(data.nama_penanggung_jawab))}`,
         `WPJ: ${getNameUser(Number(data.nama_wakil_penanggung_jawab))}`,
@@ -222,26 +218,30 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
         throw new Error('Data nama penanggung jawab dan ketua tim harus diisi');
       }
 
-      console.log('Data to be submitted:', pkptDataForm);
       const result = await axiosSecvice.updateData(
         `/pkpt/${params.id_pkpt}`,
         pkptDataForm
       );
 
-      console.log('Respons dari server:', result);
-
       if (result.success) {
-        console.log(`${String(DataPKPT?.status)} berhasil diedit:`, result);
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: `Data ${String(DataPKPT?.status)} berhasil diedit`,
+        });
         reset();
         resetTeamMembers();
-        alert(`Data ${String(DataPKPT?.status)} berhasil diedit`);
-        router.push('/dashboard/perencanaan/pkpt');
+        router.push('/dashboard/pkpt');
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert(`Gagal menyimpan data ${String(DataPKPT?.status)}`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: `Gagal menyimpan data ${String(DataPKPT?.status)}`,
+      });
     }
   };
 
@@ -252,15 +252,18 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
         (member) => member.id === Number(newMemberId)
       );
       if (selectedMember) {
-        // Check if member already exists in the team
         const memberExists = teamMembers.some(
           (member) => member.id === selectedMember.id
         );
         if (!memberExists) {
           addTeamMember({ id: selectedMember.id, name: selectedMember.name });
-          setNewMemberId(''); // Reset selected member after adding
+          setNewMemberId('');
         } else {
-          alert('Anggota tim sudah ada dalam daftar');
+          Swal.fire({
+            icon: 'warning',
+            title: 'Perhatian',
+            text: 'Anggota tim sudah ada dalam daftar',
+          });
         }
       }
     }
@@ -279,25 +282,20 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
     }
   };
 
-  // Watch semua field yang akan mempengaruhi jumlah
+  // Calculate total days automatically
   const penanggungJawab = watch('penanggung_jawab');
   const wakilPenanggungJawab = watch('wakil_penanggung_jawab');
   const supervisor = watch('pengendali_teknis');
   const ketuaTim = watch('ketua_tim');
   const aTim = watch('anggota_tim');
 
-  // Effect untuk menghitung jumlah otomatis
   React.useEffect(() => {
     let total = 0;
-
-    // Hitung jumlah berdasarkan nilai yang diinput
     if (penanggungJawab) total += Number(penanggungJawab) || 0;
     if (wakilPenanggungJawab) total += Number(wakilPenanggungJawab) || 0;
     if (supervisor) total += Number(supervisor) || 0;
     if (ketuaTim) total += Number(ketuaTim) || 0;
     if (aTim) total += Number(aTim) || 0;
-
-    // Set nilai jumlah
     setValue('jumlah', total);
   }, [
     penanggungJawab,
@@ -351,7 +349,6 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                 name="ruangLingkup"
               />
 
-              {/* <div className="md:col-span-2"> */}
               <InputFieldComponent
                 label="Tujuan / Sasaran"
                 identiti="tSasaran"
@@ -418,10 +415,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     type="number"
                     name="PenanggungJawab"
                     placeholder="^"
-                    register={register('penanggung_jawab', {
-                      required: 'Penanggung Jawab wajib diisi',
-                      min: { value: 0, message: 'Tidak boleh negatif' },
-                    })}
+                    register={register('penanggung_jawab')}
                     error={errors.penanggung_jawab}
                   />
                 </div>
@@ -436,10 +430,11 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     error={errors.nama_penanggung_jawab}
                     type="select"
                     name="penanggung_jawab"
-                    defaultValue={DataPKPT?.nama_penanggung_jawab || ''}
+                    defaultValue={String(DataPKPT?.nama_penanggung_jawab || '')}
                   />
                 </div>
               </div>
+
               <div className="flex justify-start items-start gap-2 flex-nowrap w-full">
                 <div className="basis-20">
                   <InputFieldComponent
@@ -448,10 +443,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     type="number"
                     name="WakilPenanggungJawab"
                     placeholder="^"
-                    register={register('wakil_penanggung_jawab', {
-                      required: 'Wakil Penanggung Jawab wajib diisi',
-                      min: { value: 0, message: 'Tidak boleh negatif' },
-                    })}
+                    register={register('wakil_penanggung_jawab')}
                     error={errors.wakil_penanggung_jawab}
                   />
                 </div>
@@ -466,9 +458,13 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     error={errors.nama_wakil_penanggung_jawab}
                     type="select"
                     name="wakil_penanggung_jawab"
+                    defaultValue={String(
+                      DataPKPT?.nama_wakil_penanggung_jawab || ''
+                    )}
                   />
                 </div>
               </div>
+
               <div className="flex justify-start items-start gap-2 flex-nowrap w-full">
                 <div className="basis-20">
                   <InputFieldComponent
@@ -477,10 +473,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     type="number"
                     name="Supervisor"
                     placeholder="^"
-                    register={register('pengendali_teknis', {
-                      required: 'Pengendali Teknis Jawab wajib diisi',
-                      min: { value: 0, message: 'Tidak boleh negatif' },
-                    })}
+                    register={register('pengendali_teknis')}
                     error={errors.pengendali_teknis}
                   />
                 </div>
@@ -495,9 +488,13 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     error={errors.nama_pengendali_teknis}
                     type="select"
                     name="pengendali_teknis"
+                    defaultValue={String(
+                      DataPKPT?.nama_pengendali_teknis || ''
+                    )}
                   />
                 </div>
               </div>
+
               <div className="flex justify-start items-start gap-2">
                 <div className="basis-20">
                   <InputFieldComponent
@@ -506,10 +503,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     type="number"
                     name="KetuaTIM"
                     placeholder="^"
-                    register={register('ketua_tim', {
-                      required: 'Ketua TIM wajib diisi',
-                      min: { value: 0, message: 'Tidak boleh negatif' },
-                    })}
+                    register={register('ketua_tim')}
                     error={errors.ketua_tim}
                   />
                 </div>
@@ -523,6 +517,7 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     error={errors.nama_ketua_tim}
                     type="select"
                     name="ketua_tim"
+                    defaultValue={String(DataPKPT?.nama_ketua_tim || '')}
                   />
                 </div>
               </div>
@@ -538,10 +533,6 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                     register={register('anggota_tim', {
                       required: 'Anggota TIM wajib diisi',
                       min: { value: 0, message: 'Tidak boleh negatif' },
-                      // pattern: {
-                      //   value: /^[a-zA-Z\s]*$/,
-                      //   message: 'Hanya boleh berisi huruf dan spasi',
-                      // },
                     })}
                     error={errors.anggota_tim}
                   />
@@ -558,7 +549,6 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
                       <select
                         value={newMemberId}
                         onChange={(e) => {
-                          console.log('Selected value:', e.target.value);
                           setNewMemberId(e.target.value);
                         }}
                         className="border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600 text-black bg-slate-200/25 flex-1 px-2 py-1 text-sm sm:text-base"

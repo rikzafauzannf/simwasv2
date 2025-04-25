@@ -1,5 +1,5 @@
 import InputRekomendasi from '@/app/components/pelaksanaan/form/inputRekomendasi';
-import InputRingkasanPengawasan from '@/app/components/pelaksanaan/form/inputRingkasanPengawasan';
+import InputRingkasanPengawasan from '@/app/components/pelaksanaan/form/inputTemuan';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
 

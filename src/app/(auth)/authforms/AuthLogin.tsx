@@ -47,6 +47,8 @@ const AuthLogin = () => {
     }
   };
 
+  const router = useRouter();
+
   const onSubmitOTP = async () => {
     if (!NIP) {
       setError('NIP is not set');
@@ -69,8 +71,7 @@ const AuthLogin = () => {
       } else {
         throw new Error('OTP tidak valid');
       }
-
-      route.push('/dashboard');
+      router.push('/dashboard');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Terjadi kesalahan');
       Swal.fire({
@@ -127,10 +128,10 @@ const AuthLogin = () => {
             {errors.NIP && <p className="text-red-500">NIP tidak terdaftar</p>}
             <Button
               type="submit"
-              className="ml-2 text-slate-800 bg-slate-400 font-bold rounded-md shadow-md"
+              className="ml-2 text-zinc-200 bg-teal-500 font-bold rounded-l-sm shadow-md"
               disabled={showOtp}
             >
-              Send
+              Kirim
             </Button>
           </div>
         </div>
@@ -161,7 +162,7 @@ const AuthLogin = () => {
           </div>
           <Button
             color={'primary'}
-            className="w-full bg-primary text-white rounded-xl"
+            className="ml-2 text-zinc-200 bg-teal-500 font-bold rounded-sm shadow-md"
             onClick={onSubmitOTP}
           >
             Login

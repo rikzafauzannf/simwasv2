@@ -20,13 +20,13 @@ const PkptPage = () => {
         'Developer',
       ]}
     >
-      <div className="space-y-4">
+      <div className="space-y-6">
         <AkumulasiDataPKPT />
         {(user?.role === 'Perencana' || user?.role === 'Developer') && (
           <div>
             <ButtonLinkComponent
               Text="Input PKPT"
-              linkTo="/dashboard/perencanaan/pkpt/create/pkpt"
+              linkTo="/dashboard/pkpt/create/pkpt"
             />
           </div>
         )}
@@ -41,8 +41,8 @@ const PkptPage = () => {
         {(user?.role === 'Perencana' || user?.role === 'Developer') && (
           <div>
             <ButtonLinkComponent
-              Text="Input PKPT"
-              linkTo="/dashboard/perencanaan/pkpt/create/non-pkpt"
+              Text="Input NonPKPT"
+              linkTo="/dashboard/pkpt/create/non-pkpt"
             />
           </div>
         )}

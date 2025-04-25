@@ -1,4 +1,4 @@
-import InputRingkasanPengawasan from '@/app/components/pelaksanaan/form/inputRingkasanPengawasan';
+import InputTemuan from '@/app/components/pelaksanaan/form/inputTemuan';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
 import React from 'react';
 
@@ -13,7 +13,7 @@ const FormRingkasanPengawasanPage: React.FC<PageProps> = ({ params }) => {
   return (
     <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer']}>
       <div className="space-y-3">
-        <InputRingkasanPengawasan id_lhp={params.id_lhp} />
+        <InputTemuan id_lhp={params.id_lhp} />
       </div>
     </AuthRoleWrapper>
   );

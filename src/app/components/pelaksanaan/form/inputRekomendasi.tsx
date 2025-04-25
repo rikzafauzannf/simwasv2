@@ -17,7 +17,7 @@ import { useOptions } from '@/data/selectValue';
 import Swal from 'sweetalert2';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
-import RekomendasiChecker from '@/app/dashboard/ringkasanpengawasan/[id_lhp]/[id_temuan]/rekomendasiChecker';
+import RekomendasiChecker from '@/app/dashboard/hasiltemuan/[id_lhp]/[id_temuan]/rekomendasiChecker';
 import { useGetNameKode } from '@/hooks/useGetName';
 
 interface CompoProps {
@@ -80,13 +80,13 @@ const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
           text: 'Data Data Rekomendasi berhasil disimpan. Apakah Anda ingin menginput data lagi?',
           icon: 'success',
           showCancelButton: true,
-          confirmButtonText: 'Input Lagi',
+          confirmButtonText: 'Buat Rekomendasi Lagi',
           cancelButtonText: 'Selesai',
         }).then((result) => {
           if (result.isConfirmed) {
             reset(); // Reset the form to allow new input
           } else {
-            router.push('/dashboard/pelaporan/ringkasanpengawasan');
+            router.push('/dashboard/hasiltemuan');
           }
         });
         refetch();

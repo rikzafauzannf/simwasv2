@@ -84,7 +84,10 @@ const UpdateTindakLanjutForm: React.FC<PageProps> = ({ params }) => {
         tanggal_pengiriman: data.tanggal_pengiriman,
       };
       console.log('Data yang dikirim:', FormDataTL);
-      const result = await axiosSecvice.updateData(`/tindak_lanjut/${id_tindak_lanjut}`, FormDataTL);
+      const result = await axiosSecvice.updateData(
+        `/tindak_lanjut/${id_tindak_lanjut}`,
+        FormDataTL
+      );
 
       console.log('Respons dari server:', result);
 
@@ -92,7 +95,7 @@ const UpdateTindakLanjutForm: React.FC<PageProps> = ({ params }) => {
         console.log('Tindak Lanjut berhasil diperbarui:', result);
         reset();
         alert('Data Tindak Lanjut berhasil diperbarui');
-        route.push('/dashboard/pelaksanaan/tindaklanjut');
+        route.push('/dashboard/tindaklanjut');
       } else {
         throw new Error(result.message);
       }

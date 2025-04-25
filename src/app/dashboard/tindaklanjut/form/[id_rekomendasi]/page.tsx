@@ -80,7 +80,7 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
         console.log('Jenis Pengawasan berhasil disimpan:', result);
         reset();
         alert('Data Jenis Pengawasan berhasil disimpan');
-        route.push('/dashboard/pelaksanaan/tindaklanjut');
+        route.push('/dashboard/tindaklanjut');
       } else {
         throw new Error(result.message);
       }

@@ -17,14 +17,11 @@ const KendaliMutuPage = () => {
         title="Buat Kendalimutu / laporan"
         todo="pelaksanaan/kendalimutu/form"
       /> */}
-        <MapDataST
-          title="Buat Kendalimutu"
-          todo="pelaksanaan/kendalimutu/form"
-        />
+        <MapDataST title="Buat Kendalimutu" todo="kendalimutu/form" />
         <div className="grid w-full gap-3">
-          {/* <CardComponents> */}
-          <TableKendaliMutu />
-          {/* </CardComponents> */}
+          <CardComponents>
+            <TableKendaliMutu />
+          </CardComponents>
         </div>
       </div>
     </AuthRoleWrapper>

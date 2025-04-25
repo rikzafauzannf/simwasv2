@@ -242,7 +242,7 @@ const TableTemuanHasil: React.FC = () => {
           <h3>Data Temuan Hasil</h3>
           <div className="space-x-2">
             <Link
-              href={'/dashboard/pelaporan/ringkasanpengawasan/preview'}
+              href={'/dashboard/hasiltemuan/preview'}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
               Preview Table

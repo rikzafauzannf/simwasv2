@@ -12,7 +12,7 @@ import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useOptions } from '@/data/selectValue';
-import TemuanChecker from '@/app/dashboard/ringkasanpengawasan/[id_lhp]/temuanChecker';
+import TemuanChecker from '@/app/dashboard/hasiltemuan/[id_lhp]/temuanChecker';
 import Swal from 'sweetalert2';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { useFetchById } from '@/hooks/useFetchById';
@@ -26,15 +26,11 @@ interface CompoProps {
 
 const axiosSecvice = new AxiosService();
 
-const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_lhp }) => {
+const InputTemuan: React.FC<CompoProps> = ({ id_lhp }) => {
   const { user } = useAuthStore();
   const router = useRouter();
   const { data: DataTemuanHasil, refetch } =
     useFetchAll<TemuanHasilData>('temuan_hasil');
-
-  const TemuanFilterID = DataTemuanHasil.filter(
-    (item) => item.id_st === Number(id_lhp)
-  );
 
   console.log('id_lhp: ', id_lhp);
 
@@ -42,6 +38,10 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_lhp }) => {
     'lhp_id',
     Number(id_lhp)
   );
+  const TemuanFilterID = DataTemuanHasil.filter(
+    (item) => item.id_st === Number(DataLHPCheck?.id_st)
+  );
+
   const { data: DataStCheck } = useFetchById<SuratTugasData>(
     'surat_tugas',
     Number(DataLHPCheck?.id_st)
@@ -73,7 +73,7 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_lhp }) => {
         // id_kode_referensi: Number(data.id_kode_referensi),
         // id_kode_rekomendasi: Number(data.id_kode_rekomendasi),
         id_kode_temuan: Number(data.id_kode_temuan),
-        id_st: Number(id_lhp),
+        id_st: Number(DataLHPCheck?.id_st),
         id_user: Number(user?.id_user),
         // nilai_rekomendasi: Number(data.nilai_rekomendasi),
         kondisi_temuan: data.kondisi_temuan,
@@ -95,13 +95,13 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_lhp }) => {
           text: 'Data Temuan Hasil berhasil disimpan. Apakah Anda ingin menginput data lagi?',
           icon: 'success',
           showCancelButton: true,
-          confirmButtonText: 'Input Lagi',
+          confirmButtonText: 'Buat Rekomendasi',
           cancelButtonText: 'Selesai',
         }).then((result) => {
           if (result.isConfirmed) {
             reset(); // Reset the form to allow new input
           } else {
-            router.push('/dashboard/pelaporan/ringkasanpengawasan');
+            router.push('/dashboard/temuanhasil');
           }
         });
         refetch();
@@ -110,7 +110,11 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_lhp }) => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Gagal menyimpan data Jenis Pengawasan');
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed create data',
+        icon: 'error',
+      });
     }
   };
 
@@ -229,4 +233,4 @@ const InputRingkasanPengawasan: React.FC<CompoProps> = ({ id_lhp }) => {
   );
 };
 
-export default InputRingkasanPengawasan;
+export default InputTemuan;

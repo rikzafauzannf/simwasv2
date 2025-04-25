@@ -146,7 +146,7 @@ const SidebarContent: MenuItem[] = [
         name: 'Hasil Temuan',
         icon: 'solar:presentation-graph-line-duotone',
         id: uniqueId(),
-        url: '/dashboard/ringkasanpengawasan',
+        url: '/dashboard/hasiltemuan',
       },
     ],
   },
@@ -170,7 +170,7 @@ const SidebarContent: MenuItem[] = [
         icon: 'solar:presentation-graph-line-duotone',
         id: uniqueId(),
         url: '/dashboard/rekaptemuan',
-      },      
+      },
       // {
       //   name: 'TLHP',
       //   icon: 'solar:folder-check-broken',
@@ -229,6 +229,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Hasil Temuan',
       'Rekap Temuan',
       'Tindak Lanjut',
+      'Realisasi PKPT',
       'User Account',
     ],
     Developer: [
@@ -242,8 +243,8 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Hasil Temuan',
       'Rekap Temuan',
       'Tindak Lanjut',
-      'User Account',
       'Realisasi PKPT',
+      'User Account',
     ],
     Pimpinan: [
       'Dashboard',
@@ -255,8 +256,16 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Hasil Temuan',
       'Rekap Temuan',
       'Tindak Lanjut',
+      'Realisasi PKPT',
     ],
-    Perencana: ['Dashboard', ...dataReferensi, 'PKPT', 'Surat Tugas'],
+    Perencana: [
+      'Dashboard',
+      ...dataReferensi,
+      'PKPT',
+      'Surat Tugas',
+      'Rekap Temuan',
+      'Realisasi PKPT',
+    ],
     Pelaksana: [
       'Dashboard',
       'PKPT',
@@ -267,6 +276,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Hasil Temuan',
       'Rekap Temuan',
       'Tindak Lanjut',
+      'Realisasi PKPT',
     ],
     Auditor: [
       'Dashboard',
@@ -278,6 +288,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Hasil Temuan',
       'Rekap Temuan',
       'Tindak Lanjut',
+      'Realisasi PKPT',
     ],
   };
 

@@ -68,9 +68,9 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
       if (result.success) {
         console.log('Laporan Hasil Pengawasan berhasil disimpan:', result);
         reset(); // Reset form after successful submission
+        router.push('/dashboard/laporanhasil');
         alert('Data Laporan Hasil Pengawasan berhasil disimpan');
         // refetch(); // Refetch data to update the list
-        router.push('/dashboard/pelaporan/lembarhasil');
       } else {
         throw new Error(result.message);
       }
@@ -92,7 +92,7 @@ const LembarHasilPengawasan: React.FC<PropsID> = ({ id_nhp }) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-        <h3 className="text-xl">Upload LHP (Lembar Hasil Pengawasan)</h3>
+        <h3 className="text-xl">Upload LHP (Laporan Hasil Pengawasan)</h3>
         <CardComponents>
           <div className="space-y-3">
             <div className="space-y-2">

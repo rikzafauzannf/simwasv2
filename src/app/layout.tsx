@@ -7,6 +7,7 @@ import customTheme from '@/utils/theme/custom-theme';
 import './css/globals.css';
 import NextTopLoader from 'nextjs-toploader';
 import { Analytics } from '@vercel/analytics/react';
+import Breadcrumbs from './components/Breadcumb';
 
 const manrope = Manrope({ subsets: ['latin'] });
 
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        {/* <link rel="icon" href="/favicon.svg" type="image/svg+xml" /> */}
         <ThemeModeScript />
       </head>
       <body className={`${manrope.className}`}>

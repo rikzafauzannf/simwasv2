@@ -23,7 +23,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const authStore = useAuthStore.getState();
     const token = authStore.token;
-    
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

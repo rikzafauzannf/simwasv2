@@ -1,34 +1,28 @@
 'use client';
-
+import { useBreadcrumbs } from '@/hooks/useBreadCrumbs';
 import { Breadcrumb } from 'flowbite-react';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const Breadcrumbs = () => {
-  const pathname = usePathname();
-  const paths = pathname.split('/').filter((segment) => segment);
+  const breadcrumbs = useBreadcrumbs();
 
   return (
     <Breadcrumb className="mb-4">
-      <Breadcrumb.Item>
+      {/* <Breadcrumb.Item>
         <Link href="/" className="font-semibold text-blue-700">
           Home
         </Link>
-      </Breadcrumb.Item>
-      {paths.map((segment, index) => {
-        const href = `/${paths.slice(0, index + 1).join('/')}`;
-        const label = segment.replace(/-/g, ' ');
-        const isLast = index === paths.length - 1;
+      </Breadcrumb.Item> */}
 
+      {breadcrumbs.map((item, index) => {
+        const isLast = index === breadcrumbs.length - 1;
         return (
-          <Breadcrumb.Item key={href}>
+          <Breadcrumb.Item key={item.link}>
             {isLast ? (
-              <span className="font-bold">
-                {label.charAt(0).toUpperCase() + label.slice(1)}
-              </span>
+              <span className="font-bold">{item.title}</span>
             ) : (
-              <Link href={href} className="font-semibold text-blue-700">
-                {label.charAt(0).toUpperCase() + label.slice(1)}
+              <Link href={item.link} className="font-semibold text-blue-700">
+                {item.title}
               </Link>
             )}
           </Breadcrumb.Item>

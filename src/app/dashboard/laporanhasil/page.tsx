@@ -10,8 +10,8 @@ const LembarHasilPage = () => {
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
       <div className="space-y-3">
-        <h3 className="text-xl">Lembar Hasil Pengawasan</h3>
-        <MapDataNHP todo="pelaporan/lembarhasil/form" />
+        <h3 className="text-xl">Laporan Hasil Pengawasan</h3>
+        <MapDataNHP todo="laporanhasil/form" />
         <div className="grid w-full gap-3">
           {/* <CardComponents> */}
           <TableLHP />

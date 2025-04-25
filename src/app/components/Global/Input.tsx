@@ -44,7 +44,7 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <>
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-2 w-full">
         <label htmlFor={identiti} className="text-slate-800">
           {label}
         </label>
@@ -59,7 +59,7 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
             // className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600
             //   ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}
             //   ${error ? 'border-red-500' : ''}`}
-            className="form-control form-rounded-xl flex-1"
+            className="form-control form-rounded-xl flex-1 w-full"
           />
         ) : (
           <TextInput
@@ -72,7 +72,7 @@ export const InputFieldComponent: React.FC<InputFieldProps> = ({
             // className={`border border-b-2 border-t-0 border-l-0 border-r-0 shadow-md border-slate-600
             //   ${disabled ? 'bg-gray-100 text-[#b3b3b3]' : 'bg-white/50 text-black'}
             //   ${error ? 'border-red-500' : ''}`}
-            className="form-control form-rounded-xl flex-1"
+            className="form-control form-rounded-xl flex-1 w-full"
           />
         )}
 
