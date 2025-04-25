@@ -614,7 +614,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                         register={register('link_st', {
                           required: 'Masukan Link ST',
                           pattern: {
-                            value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/,
+                            value: /^https?:\/\/.+/i,
                             message: 'Mohon masukkan link yang valid'
                           }
                         })}
