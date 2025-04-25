@@ -98,10 +98,30 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
   useEffect(() => {
     const checkFormValidity = () => {
       // Required fields by tab
-      const requiredFieldsByTab: Record<string, Array<keyof ExtendedFormSuratTugas | 'anggota_tim'>> = {
-        informasi: ['bulan', 'no_tglsp', 'program_audit', 'jumlah_hp', 'waktu_awal', 'waktu_akhir'],
-        tim: ['tim_pemeriksa', 'wk_penanggung_jawab', 'pengendali_teknis', 'ketua_tim'],
-        audit: ['jumlah_objek', 'jumlah_laporan', 'id_jenis_audit', 'keterangan'],
+      const requiredFieldsByTab: Record<
+        string,
+        Array<keyof ExtendedFormSuratTugas | 'anggota_tim'>
+      > = {
+        informasi: [
+          'bulan',
+          'no_tglsp',
+          'program_audit',
+          'jumlah_hp',
+          'waktu_awal',
+          'waktu_akhir',
+        ],
+        tim: [
+          'tim_pemeriksa',
+          'wk_penanggung_jawab',
+          'pengendali_teknis',
+          'ketua_tim',
+        ],
+        audit: [
+          'jumlah_objek',
+          'jumlah_laporan',
+          'id_jenis_audit',
+          'keterangan',
+        ],
         // dokumen: uploadOption === 'link' ? ['link_st'] : ['uploadFile'],
         dokumen: ['link_st'],
       };
@@ -115,14 +135,14 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
       ];
 
       // Check if all required fields are filled
-      const allFieldsValid = allRequiredFields.every(field => {
+      const allFieldsValid = allRequiredFields.every((field) => {
         // if (field === 'uploadFile' && uploadOption !== 'file') return true;
         if (field === 'link_st' && uploadOption !== 'link') return true;
         if (field === 'anggota_tim') return teamMembers.length > 0;
-        
+
         const value = formValues[field];
         const fieldError = errors[field];
-        
+
         return value !== undefined && value !== '' && !fieldError;
       });
 
@@ -292,8 +312,8 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                     required: 'Jumlah Hari Penugasan wajib di isi',
                     min: {
                       value: 1,
-                      message: 'Jumlah hari minimal 1'
-                    }
+                      message: 'Jumlah hari minimal 1',
+                    },
                   })}
                   error={errors.jumlah_hp}
                 />
@@ -323,11 +343,14 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                     type="date"
                     register={register('waktu_akhir', {
                       required: 'Tanggal Akhir wajib di isi',
-                      validate: value => {
+                      validate: (value) => {
                         const startDate = new Date(watch('waktu_awal'));
                         const endDate = new Date(value);
-                        return endDate >= startDate || 'Tanggal berakhir harus setelah tanggal mulai';
-                      }
+                        return (
+                          endDate >= startDate ||
+                          'Tanggal berakhir harus setelah tanggal mulai'
+                        );
+                      },
                     })}
                     error={errors.waktu_akhir}
                   />
@@ -400,8 +423,10 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               <div className="space-y-4 bg-gray-50 p-4 rounded-lg">
                 <div className="flex flex-col space-y-2">
                   <label htmlFor="Tim" className="text-slate-800 font-medium">
-                    Anggota Tim * {' '}
-                    <span className={`px-2 py-1 rounded-full text-xs ${teamMembers.length > 0 ? 'bg-primary text-white' : 'bg-red-500 text-white'}`}>
+                    Anggota Tim *{' '}
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${teamMembers.length > 0 ? 'bg-primary text-white' : 'bg-red-500 text-white'}`}
+                    >
                       {teamMembers.length}
                     </span>
                   </label>
@@ -429,7 +454,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                     </button>
                   </div>
                   {teamMembers.length === 0 && (
-                    <p className="text-red-500 text-sm">Minimal satu anggota tim wajib ditambahkan</p>
+                    <p className="text-red-500 text-sm">
+                      Minimal satu anggota tim wajib ditambahkan
+                    </p>
                   )}
                 </div>
 
@@ -478,7 +505,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   register={register('jumlah_objek', {
                     min: {
                       value: 1,
-                      message: 'Jumlah objek minimal 1'
+                      message: 'Jumlah objek minimal 1',
                     },
                     required: 'Masukan jumlah objek',
                   })}
@@ -493,7 +520,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   register={register('jumlah_laporan', {
                     min: {
                       value: 1,
-                      message: 'Jumlah laporan minimal 1'
+                      message: 'Jumlah laporan minimal 1',
                     },
                     required: 'Masukan Jumlah Laporan',
                   })}
@@ -525,8 +552,8 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                     required: 'Masukan Keterangan',
                     minLength: {
                       value: 10,
-                      message: 'Keterangan minimal 10 karakter'
-                    }
+                      message: 'Keterangan minimal 10 karakter',
+                    },
                   })}
                   error={errors.keterangan}
                 />
@@ -615,8 +642,8 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                           required: 'Masukan Link ST',
                           pattern: {
                             value: /^https?:\/\/.+/i,
-                            message: 'Mohon masukkan link yang valid'
-                          }
+                            message: 'Mohon masukkan link yang valid',
+                          },
                         })}
                         error={errors.link_st}
                       />
@@ -671,7 +698,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
-            <TbSend2 className="mr-1" /> 
+            <TbSend2 className="mr-1" />
             Buat Surat Tugas
           </Button>
         </div>

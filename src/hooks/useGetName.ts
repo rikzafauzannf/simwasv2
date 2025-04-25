@@ -47,7 +47,7 @@ export const useGetNameLHP = () => {
   };
 
   const getUraianLHP = (id: number) => {
-    const data = DataRuangLingkup.filter((item) => item.id_lhp === id);
+    const data = DataRuangLingkup.filter((item) => item.id_st === id);
     return data.length > 0 ? data[0].keterangan_lhp : '';
   };
 

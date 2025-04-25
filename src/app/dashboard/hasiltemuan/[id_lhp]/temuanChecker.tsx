@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import React from 'react';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
+import { TbEyeUp } from 'react-icons/tb';
 
 interface propsID {
   DataTemuanHasil: TemuanHasilData[];
@@ -84,7 +85,7 @@ const TemuanChecker: React.FC<propsID> = ({ DataTemuanHasil, refetchData }) => {
                     href={`${item.id_st}/${item.id_tlhp}`}
                     className="shadow-md bg-blue-600 hover:bg-blue-700  font-semibold hover:font-bold rounded-md text-white flex-1"
                   >
-                    Buat Rekomendasi
+                    <TbEyeUp /> | Buat Rekomendasi
                   </Button>
                   <Button
                     onClick={() => handleDelete(item.id_tlhp)}

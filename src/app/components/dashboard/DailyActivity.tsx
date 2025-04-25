@@ -92,11 +92,11 @@ const DailyActivity: React.FC<PropsComponent> = ({ id_pkpt }) => {
                     <div className="">
                       <p className="text-dark text-start">{item.action}</p>
                       <Link
-                        href={`https://wa.me/${item.no_wa.replace(/^0/, '62')}`}
+                        href={`https://wa.me/${item.no_wa}`}
                         target="blank"
                         className="text-blue-700"
                       >
-                        {item.id} 
+                        {item.id}
                       </Link>
                     </div>
                   </div>

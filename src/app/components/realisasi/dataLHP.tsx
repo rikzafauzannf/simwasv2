@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { CardComponents } from '../Global/Card';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
@@ -10,6 +10,7 @@ import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { HiPencilAlt } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
 
 interface Props {
   todo: string;
@@ -22,11 +23,22 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
   const itemsPerPage = 6;
 
   const { data: DataLHP, isLoading, error } = useFetch<LHPData>('lhp');
+  const { data: DataTemuan } = useFetch<TemuanHasilData>('temuan_hasil');
+
   const { getNameUser, getUserPhone } = useGetNameUser();
   const { getNameNoSP, getProgramAudit } = useGetNameST();
 
+  // Filter LHP data to only show items that don't have corresponding entries in temuan_hasil
+  const filteredLHP = useMemo(() => {
+    // Create a set of id_lhp values from temuan_hasil for faster lookups
+    const temuanLhpIds = new Set(DataTemuan.map((temuan) => temuan.id_lhp));
+
+    // Return only LHP items that don't have their id_lhp in the temuan_hasil data
+    return DataLHP.filter((lhp) => !temuanLhpIds.has(lhp.id_lhp));
+  }, [DataLHP, DataTemuan]);
+
   // Search filter
-  const filteredData = DataLHP.filter(
+  const searchFilteredData = filteredLHP.filter(
     (item) =>
       item.keterangan_lhp.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.created_at.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -43,8 +55,11 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const currentItems = searchFilteredData.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(searchFilteredData.length / itemsPerPage);
   const { user } = useAuthStore();
   const handleCreateReport = async (id_st: number) => {
     Swal.fire({
@@ -95,6 +110,7 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
     !['Pelaksana', 'Auditor', 'Developer'].includes(user.role as string)
   )
     return null;
+
   return (
     <>
       <div className="mb-4">
@@ -105,6 +121,12 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+      </div>
+      <div className="mb-4">
+        <p className="font-bold text-blue-600">
+          Menampilkan {searchFilteredData.length} LHP yang belum memiliki temuan
+          hasil
+        </p>
       </div>
       <section className="grid md:grid-cols-3 gap-8">
         {currentItems.map((item, index) => (
@@ -146,12 +168,6 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
               >
                 {title}
               </Link>
-              {/* <button
-                onClick={() => handleReportClick(item.tim)}
-                className="py-1 px-3 w-full bg-green-600 text-white rounded-md text-center font-semibold"
-              >
-                Buat Laporan Mingguan
-              </button> */}
             </div>
           </CardComponents>
         ))}
@@ -167,13 +183,13 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
           Previous
         </button>
         <span className="px-4 py-2">
-          Page {currentPage} of {totalPages}
+          Page {currentPage} of {totalPages || 1}
         </span>
         <button
           onClick={() =>
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
-          disabled={currentPage === totalPages}
+          disabled={currentPage === totalPages || totalPages === 0}
           className="px-4 py-2 border rounded-md disabled:opacity-50"
         >
           Next

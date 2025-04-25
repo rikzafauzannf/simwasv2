@@ -5,6 +5,7 @@ export type TemuanHasilData = {
   kondisi_temuan: string;
   id_kode_temuan: number;
   id_user: number;
+  id_lhp: number;
   created_at: string;
 };
 
@@ -13,6 +14,7 @@ export interface FormTemuanHasil {
   uraian: string;
   kondisi_temuan: string;
   id_kode_temuan: number;
+  id_lhp: number;
   id_user: number;
 }
 

@@ -25,6 +25,7 @@ import {
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
+import { TbEyeUp } from 'react-icons/tb';
 
 const axiosSecvice = new AxiosService();
 
@@ -91,6 +92,12 @@ const TableTemuanHasil: React.FC = () => {
             >
               Act
             </Link> */}
+                <Link
+                  href={`/dashboard/hasiltemuan/${row.id_lhp}`}
+                  className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+                >
+                  <TbEyeUp />
+                </Link>
                 <button
                   onClick={() => handleDelete(row.id_tlhp)}
                   className="p-2 text-red-500 hover:text-red-700"
@@ -120,7 +127,7 @@ const TableTemuanHasil: React.FC = () => {
     },
     {
       name: 'Uraian',
-      selector: (row) => getKeteranganLHP(row.id_st),
+      selector: (row) => row.uraian,
       sortable: true,
     },
     {
