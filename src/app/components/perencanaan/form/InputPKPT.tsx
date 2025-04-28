@@ -17,7 +17,7 @@ import { useGetNameUser } from '@/hooks/useGetName';
 import { motion } from 'framer-motion';
 import { Button } from 'flowbite-react';
 import { useFetchById } from '@/hooks/useFetchById';
-
+import Select from "react-select";
 const axiosService = new AxiosService();
 
 interface StatusProps {
@@ -33,6 +33,8 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentSection, setCurrentSection] = useState(1);
   const totalSections = 4;
+  
+  const [placeholderText, setPlaceholderText] = useState("Pilih anggota tim");
 
   const {
     optionsDataUser,
@@ -65,7 +67,8 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
 
   const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
     useTeamStore();
-  const [newMemberId, setNewMemberId] = useState<number | string>('');
+    const [newMemberId, setNewMemberId] = useState<string | number | null>(null);
+
 
   const { scopes, addScope, removeScope,resetScopes } = useScopeStore();
   const [newScopeId, setNewScopeId] = useState<number | string>('');
@@ -162,6 +165,7 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
         if (!memberExists) {
           addTeamMember({ id: selectedMember.id, name: selectedMember.name });
           setNewMemberId(''); // Reset selected member after adding
+          setPlaceholderText("Cari anggota tim lain"); // Ganti placeholder
           showNotification(
             `${selectedMember.name} berhasil ditambahkan ke tim`,
             'success'
@@ -238,6 +242,8 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
         break;
     }
 
+    
+
     // Validate the fields for current section
     const isValid = await trigger(fieldsToValidate as any);
 
@@ -284,6 +290,11 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
   ]);
 
   console.log("scopee data :",scopes)
+
+  const options = potentialMembers.map((member) => ({
+    value: member.id,
+    label: member.name,
+  }));
 
   const renderProgressBar = () => {
     return (
@@ -737,7 +748,7 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
                         Anggota Tim [{teamMembers.length}]
                       </label>
                       <div className="flex flex-col sm:flex-row gap-3">
-                        <select
+                        {/* <select
                           value={newMemberId}
                           onChange={(e) => setNewMemberId(e.target.value)}
                           className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary flex-1"
@@ -750,7 +761,19 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
                               {member.name}
                             </option>
                           ))}
-                        </select>
+                        </select> */}
+
+<Select
+  options={options}
+  value={options.find((option) => option.value === newMemberId) || null}
+  onChange={(selectedOption) => {
+    setNewMemberId(selectedOption?.value ?? null); // gunakan null jika tidak ada selectedOption
+  }}
+  placeholder={placeholderText}
+  className="text-black"
+  isClearable
+/>
+                 
                         <button
                           onClick={handleAddMember}
                           type="button"
