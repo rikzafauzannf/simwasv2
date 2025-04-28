@@ -7,7 +7,7 @@ import { ButtonType } from '../../Global/Button';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash, FaPlus, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
 import { MdAssignment, MdSchedule, MdAttachMoney } from 'react-icons/md';
-import { PKPTFormData } from '@/interface/interfacePKPT';
+import { PKPTData, PKPTDataBase, PKPTFormData } from '@/interface/interfacePKPT';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useScopeStore } from '@/middleware/Store/useScopeStore';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
@@ -16,14 +16,17 @@ import { useOptions } from '@/data/selectValue';
 import { useGetNameUser } from '@/hooks/useGetName';
 import { motion } from 'framer-motion';
 import { Button } from 'flowbite-react';
+import { useFetchById } from '@/hooks/useFetchById';
 
 const axiosService = new AxiosService();
 
 interface StatusProps {
+  mode?: 'update' | 'create';
+  data?:PKPTDataBase;
   status?: string;
 }
 
-const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
+const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data }) => {
   const { user } = useAuthStore();
   const router = useRouter();
   const { getNameUser } = useGetNameUser();
@@ -64,58 +67,76 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
     useTeamStore();
   const [newMemberId, setNewMemberId] = useState<number | string>('');
 
-  const { scopes, addScope, removeScope } = useScopeStore();
+  const { scopes, addScope, removeScope,resetScopes } = useScopeStore();
   const [newScopeId, setNewScopeId] = useState<number | string>('');
 
-  const onSubmit: SubmitHandler<PKPTFormData> = async (data) => {
+  const dataChek = data
+  useEffect(() => {
+    if (mode === 'update' && data) {
+      reset({
+        ...data,
+        id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
+        id_ruang_lingkup: Array.isArray(data.id_ruang_lingkup)
+          ? undefined
+          : Number(data.id_ruang_lingkup),
+      });
+
+      resetTeamMembers();
+      resetScopes();
+
+      if (data.nama_anggota_tim) {
+        const anggotaIds = data.nama_anggota_tim.split(',').map((id) => Number(id.trim()));
+        anggotaIds.forEach((id) => {
+          const member = potentialMembers.find((m) => m.id === id);
+          if (member) addTeamMember({ id: member.id, name: member.name });
+        });
+      }
+
+      if (Array.isArray(data.id_ruang_lingkup)) {
+        data.id_ruang_lingkup.forEach((scope) => addScope({ id: scope.id, name: scope.name }));
+      } else {
+        const singleScope = potentialScopes.find((scope) => scope.id === Number(data.id_ruang_lingkup));
+        if (singleScope) addScope({ id: singleScope.id, name: singleScope.name });
+      }
+    }
+  }, [mode, data, reset, addTeamMember, addScope, potentialMembers, potentialScopes, resetTeamMembers, resetScopes]);
+
+  
+  
+  const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
     try {
       setIsSubmitting(true);
-      const dataTim = `PT: ${getNameUser(Number(data.nama_pengendali_teknis))} | KT: ${getNameUser(Number(data.nama_ketua_tim))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')} `;
 
-      const pkptData: PKPTFormData = {
-        id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
-        tujuan_sasaran: data.tujuan_sasaran,
-        area_pengawasan: data.area_pengawasan,
-        id_ruang_lingkup: Number(data.id_ruang_lingkup),
-        rmp_pkpt: data.rmp_pkpt,
-        rpl_pkpt: data.rpl_pkpt,
-        penanggung_jawab: data.penanggung_jawab,
-        wakil_penanggung_jawab: data.wakil_penanggung_jawab,
-        pengendali_teknis: data.pengendali_teknis,
-        ketua_tim: data.ketua_tim,
-        anggota_tim: data.anggota_tim,
-        nama_penanggung_jawab: data.nama_penanggung_jawab,
-        nama_wakil_penanggung_jawab: data.nama_wakil_penanggung_jawab,
-        nama_pengendali_teknis: data.nama_pengendali_teknis,
-        nama_ketua_tim: data.nama_ketua_tim,
+      const teamString = `PT: ${getNameUser(Number(formData.nama_pengendali_teknis))} | KT: ${getNameUser(Number(formData.nama_ketua_tim))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')}`;
+
+      const payload: PKPTFormData = {
+        ...formData,
+        id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
+        id_ruang_lingkup: Number(formData.id_ruang_lingkup),
+        id_jenis_laporan: Number(formData.id_jenis_laporan),
+        id_tingkat_resiko: Number(formData.id_tingkat_resiko),
         nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
-        tim: dataTim,
-        jumlah: Number(data.jumlah),
-        anggaran: data.anggaran,
-        jumlah_laporan: Number(data.jumlah_laporan),
-        id_jenis_laporan: Number(data.id_jenis_laporan),
-        sarana_prasarana: data.sarana_prasarana,
-        id_tingkat_resiko: Number(data.id_tingkat_resiko),
-        keterangan: data.keterangan,
-        status: status,
+        tim: teamString,
+        jumlah: Number(formData.jumlah),
         id_user: Number(user?.id_user),
+        status: status,
       };
 
-      const result = await axiosService.addData('/pkpt', pkptData);
+      const response = mode === 'update'
+        ? await axiosService.updateData(`/pkpt/${data?.id_pkpt}`, payload)
+        : await axiosService.addData('/pkpt', payload);
 
-      if (result.success) {
+      if (response.success) {
+        showNotification(`Data ${status.toUpperCase()} berhasil ${mode === 'update' ? 'diperbarui' : 'ditambahkan'}`, 'success');
         reset();
-        showNotification(
-          `Data ${status.toUpperCase()} berhasil disimpan!`,
-          'success'
-        );
         resetTeamMembers();
+        resetScopes();
         router.push('/dashboard/pkpt');
       } else {
-        throw new Error(result.message);
+        throw new Error(response.message);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Submit Error:', error);
       showNotification(`Gagal menyimpan data ${status}`, 'error');
     } finally {
       setIsSubmitting(false);
