@@ -157,9 +157,14 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
     },
     {
       name: 'Ruang Lingkup',
-      selector: (row) => getNameRuangLingkup(row.id_ruang_lingkup),
+      selector: (row) => {
+        const ruangLingkupList = row.id_ruang_lingkup?.split(', ') || [];
+        const ruangLingkupNames = ruangLingkupList.map((items:number) => getNameRuangLingkup(Number(items)));
+        return ruangLingkupNames.join(', '); // <- JOIN di sini
+      },
       sortable: true,
     },
+    
     {
       name: 'Tujuan / Sasaran',
       selector: (row) => row.tujuan_sasaran,

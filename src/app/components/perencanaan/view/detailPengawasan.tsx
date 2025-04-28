@@ -45,11 +45,20 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       </div>
       <p>Ruang Lingkup:</p>
       <section className="grid lg:grid-cols-4 gap-3">
-        <div className="bg-white p-2 rounded-md shadow-md text-center font-semibold">
-          {DataPKPT
+      {
+  DataPKPT?.id_ruang_lingkup.split(', ').map((items:number) => {
+    return (
+      <div className="bg-white p-2 rounded-md shadow-md text-center font-semibold" key={items}>
+        {getNameRuangLingkup(Number(items))}
+      </div>
+    );
+  })
+}
+        {/* <div className="bg-white p-2 rounded-md shadow-md text-center font-semibold"> */}
+          {/* {DataPKPT
             ? getNameRuangLingkup(DataPKPT.id_ruang_lingkup)
-            : 'No data available'}
-        </div>
+            : 'No data available'} */}
+        {/* </div> */}
         {/* <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
           kominfo
         </div>
