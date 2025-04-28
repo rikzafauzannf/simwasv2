@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { CardComponents } from '../../Global/Card';
 import { InputFieldComponent, SelectInputField } from '../../Global/Input';
@@ -69,10 +69,10 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
 
   const { scopes, addScope, removeScope,resetScopes } = useScopeStore();
   const [newScopeId, setNewScopeId] = useState<number | string>('');
-
+  const isResetDone = useRef(false); // 👈 penting supaya reset hanya sekali
   // const dataChek = data
   useEffect(() => {
-    if (mode === 'update' && data) {
+    if (mode === 'update' && data && !isResetDone.current) {
       reset({
         ...data,
         id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
@@ -80,6 +80,8 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
         //   ? undefined
         //   : Number(data.id_ruang_lingkup),
       });
+      isResetDone.current = true;
+
 
       resetTeamMembers();
       resetScopes();
@@ -111,9 +113,11 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
 
       const payload: PKPTFormData = {
         ...formData,
+
         jumlah_laporan:Number(formData.jumlah_laporan),
         id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
         id_ruang_lingkup: scopes.map((item)=>item.id).join(', '),
+
         id_jenis_laporan: Number(formData.id_jenis_laporan),
         id_tingkat_resiko: Number(formData.id_tingkat_resiko),
         nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),

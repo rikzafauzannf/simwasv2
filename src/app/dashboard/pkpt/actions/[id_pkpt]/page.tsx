@@ -38,7 +38,8 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
       'pkpt',
       Number(params.id_pkpt)
     );
-  return <InputPKPT mode='update' data={DataPKPT ?? undefined}  status={DataPKPT?.status}/>
-}
+  
+  return <InputPKPT mode='update' data={DataPKPT??undefined} status={DataPKPT?.status}/>
+
 
 export default ActiontPKPTPage;
