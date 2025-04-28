@@ -257,6 +257,8 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
     setValue,
   ]);
 
+  console.log("scopee data :",scopes)
+
   const renderProgressBar = () => {
     return (
       <div className="w-full mb-8">
@@ -374,7 +376,7 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
                 name="JenisPengawasan"
               />
 
-              <SelectInputField
+              {/* <SelectInputField
                 label="Ruang Lingkup"
                 identiti="select-field-rlingkup"
                 options={optionsRuangLingkup}
@@ -385,8 +387,62 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
                 error={errors.id_ruang_lingkup}
                 type="select"
                 name="ruangLingkup"
-              />
+              /> */}
 
+<div className="lg:col-span-2 w-full">
+  <div className="flex flex-col sm:flex-row items-start gap-4 w-full">
+    <div className="w-full sm:w-5/6 flex-1">
+      <div className="flex flex-col space-y-2 w-full">
+        <label htmlFor="ruangLingkup" className="text-slate-800 font-medium">
+          Ruang Lingkup [{scopes.length}]
+        </label>
+        <div className="flex flex-col gap-3 w-full">
+          <select
+            value={newScopeId}
+            onChange={(e) => setNewScopeId(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary flex-1"
+          >
+            <option value="" disabled>
+              Pilih ruang lingkup
+            </option>
+            {potentialScopes.map((scope) => (
+              <option key={scope.id} value={scope.id}>
+                {scope.name}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={handleAddScope}
+            type="button"
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center"
+          >
+            <FaPlus className="mr-2" /> Tambah
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+        {scopes.map((scope, index) => (
+          <div
+            key={scope.id}
+            className="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200 hover:bg-gray-100 transition-colors"
+          >
+            <span className="text-slate-800">{scope.name}</span>
+            <button
+              onClick={() => removeScope(index)}
+              type="button"
+              className="text-red-500 hover:text-red-700 transition-colors"
+            >
+              <FaTrash />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+              <div className='lg:col-span-2 w-full'>
               <InputFieldComponent
                 label="Tujuan / Sasaran"
                 identiti="tSasaran"
@@ -398,6 +454,7 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
                 })}
                 error={errors.tujuan_sasaran}
               />
+              </div>
             </section>
           </CardComponents>
 
