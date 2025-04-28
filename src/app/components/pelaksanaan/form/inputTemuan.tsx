@@ -19,6 +19,7 @@ import { useFetchById } from '@/hooks/useFetchById';
 import { SuratTugasData } from '@/interface/interfaceSuratTugas';
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import Link from 'next/link';
+import { TbId } from 'react-icons/tb';
 
 interface CompoProps {
   id_lhp: number;
@@ -31,24 +32,30 @@ const InputTemuan: React.FC<CompoProps> = ({ id_lhp }) => {
   const router = useRouter();
   const { data: DataTemuanHasil, refetch } =
     useFetchAll<TemuanHasilData>('temuan_hasil');
+  const { data: DataLHP } = useFetchAll<LHPData>('lhp');
+  const { data: DataST } = useFetchAll<SuratTugasData>('surat_tugas');
 
   console.log('id_lhp: ', id_lhp);
+  console.log('data Temuan: ', DataTemuanHasil);
 
-  const { data: DataLHPCheck } = useFetchById<LHPData>(
-    'lhp_id',
-    Number(id_lhp)
+  // const { data: DataLHPCheck } = useFetchById<LHPData>('lhp', Number(id_lhp));
+  const DataLHPCheck = DataLHP.find((items) => items.id_lhp == Number(id_lhp));
+  // const { data: DataStCheck } = useFetchById<SuratTugasData>(
+  //   'surat_tugas',
+  //   Number(DataLHPCheck?.id_st)
+  // );
+  const DataStCheck = DataST.find(
+    (items) => items.id_st === DataLHPCheck?.id_st
   );
+
+  console.log('data ST:', DataStCheck);
+
   const TemuanFilterID = DataTemuanHasil.filter(
-    (item) => item.id_st === Number(DataLHPCheck?.id_st)
-  );
-
-  const { data: DataStCheck } = useFetchById<SuratTugasData>(
-    'surat_tugas',
-    Number(DataLHPCheck?.id_st)
+    (item) => item.id_lhp === Number(id_lhp)
   );
 
   console.log('dataLHP :', DataLHPCheck);
-
+  console.log('temuan filter id :', TemuanFilterID);
   const { optionKodeReferensi, optionKodeRekomendasi, optionKodeTemuan } =
     useOptions();
 

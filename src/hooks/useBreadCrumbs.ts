@@ -30,6 +30,34 @@ const routeMapping: Record<string, BreadcrumbItem[]> = {
     { title: 'Dashboard', link: '/dashboard' },
     { title: 'Nota Hasil', link: '/dashboard/notahasil' },
   ],
+  '/dashboard/usermanage': [
+    { title: 'Dashboard', link: '/dashboard' },
+    { title: 'Pengguna', link: '/dashboard/usermanage' },
+  ],
+  '/dashboard/jenislaporan': [
+    { title: 'Dashboard', link: '/dashboard' },
+    { title: 'Jenis Laporan', link: '/dashboard/jenislaporan' },
+  ],
+  '/dashboard/jenispengawasan': [
+    { title: 'Dashboard', link: '/dashboard' },
+    { title: 'Jenis Pengawasan', link: '/dashboard/jenispengawasan' },
+  ],
+  '/dashboard/koderekomendasi': [
+    { title: 'Dashboard', link: '/dashboard' },
+    { title: 'Kode Rekomendasi', link: '/dashboard/koderekomendasi' },
+  ],
+  '/dashboard/kodetemuan': [
+    { title: 'Dashboard', link: '/dashboard' },
+    { title: 'Kode Temuan', link: '/dashboard/kodetemuan' },
+  ],
+  '/dashboard/ruanglingkup': [
+    { title: 'Dashboard', link: '/dashboard' },
+    { title: 'Ruang Lingkup', link: '/dashboard/ruanglingkup' },
+  ],
+  '/dashboard/tingkatresiko': [
+    { title: 'Dashboard', link: '/dashboard' },
+    { title: 'TIngkat Resiko', link: '/dashboard/tingkatresiko' },
+  ],
 };
 
 // Dynamic route patterns - Add patterns for routes with parameters
@@ -80,6 +108,22 @@ const dynamicRoutePatterns = [
       { title: 'Dashboard', link: '/dashboard' },
       { title: 'Surat Tugas', link: '/dashboard/surattugas' },
       { title: `Create Surat Tugas`, link: pathname },
+    ],
+  },
+  {
+    pattern: /^\/dashboard\/hasiltemuan\/([^\/]+)$/,
+    getBreadcrumbs: (pathname: string, id: string) => [
+      { title: 'Dashboard', link: '/dashboard' },
+      { title: 'Hasil Temuan', link: '/dashboard/hasiltemuan' },
+      { title: `Form`, link: pathname },
+    ],
+  },
+  {
+    pattern: /^\/dashboard\/tindaklanjut\/form\/([^\/]+)$/,
+    getBreadcrumbs: (pathname: string, id: string) => [
+      { title: 'Dashboard', link: '/dashboard' },
+      { title: 'Tindak Lanjut', link: '/dashboard/surattugas' },
+      { title: `Form`, link: pathname },
     ],
   },
   // Add more dynamic route patterns as needed

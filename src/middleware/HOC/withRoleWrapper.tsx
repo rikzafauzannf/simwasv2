@@ -29,7 +29,8 @@ const AuthRoleWrapper: React.FC<AuthRoleWrapperProps> = ({
     const checkAuth = async () => {
       try {
         // Check for token in localStorage
-        const storedToken = localStorage.getItem('auth_token');
+        const storedToken = localStorage.getItem('user');
+
 
         if (storedToken) {
           // If there's a token in localStorage, try to refresh the auth state

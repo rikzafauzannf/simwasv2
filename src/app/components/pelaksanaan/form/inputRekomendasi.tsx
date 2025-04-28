@@ -29,9 +29,9 @@ const axiosSecvice = new AxiosService();
 const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
   const { user } = useAuthStore();
   const router = useRouter();
-  const { data: DataByIdTemuan, refetch } =
+  const { data: DataRekom, refetch } =
     useFetchAll<RekomendasiData>('rekomendasi');
-  const dataFilter = DataByIdTemuan.filter(
+  const dataFilter = DataRekom.filter(
     (itemFilter) => itemFilter.id_tlhp === Number(id_temuan)
   );
   console.log('Data Rekomendasi By Temuan: ', dataFilter);
@@ -40,6 +40,8 @@ const InputRekomendasi: React.FC<CompoProps> = ({ id_temuan }) => {
     'temuan_hasil',
     id_temuan
   );
+
+  console.log('data Temuan:', DataTemuanCheck);
 
   const { optionKodeRekomendasi, optionKodeTemuan } = useOptions();
   const { getFieldKodeTemuan, getNameKodeTemuan } = useGetNameKode();
