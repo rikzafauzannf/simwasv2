@@ -10,6 +10,7 @@ interface ScopeStore {
   addScope: (scope: Scope) => void; // Accept a Scope object
   removeScope: (index: number) => void;
   resetScopes: () => void;
+  setScopes: (scopes: Scope[]) => void; // Add this line
 }
 
 export const useScopeStore = create<ScopeStore>((set) => ({
@@ -23,4 +24,5 @@ export const useScopeStore = create<ScopeStore>((set) => ({
       scopes: state.scopes.filter((_, i) => i !== index),
     })),
   resetScopes: () => set({ scopes: [] }),
+  setScopes: (scopes) => set({ scopes }), // Implement setScopes
 }));

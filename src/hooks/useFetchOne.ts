@@ -13,7 +13,7 @@ export const useFetchOne = <T>(collection: string) => {
       setIsLoading(true);
       const response = await axiosService.getAllData(collection);
       console.log('Raw API Response:', response);
-      
+
       if (response.success && response.data) {
         setData(response.data as T);
         setError(null);
@@ -37,6 +37,6 @@ export const useFetchOne = <T>(collection: string) => {
     data,
     isLoading,
     error,
-    refetch: fetchData
+    refetch: fetchData,
   };
 };

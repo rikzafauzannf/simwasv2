@@ -20,7 +20,8 @@ import React from 'react';
 import { exportToExcel } from './exportTindakLanjut';
 
 const TableTindakLanjutPreview = () => {
-  const { data: DataTemuanHasil } = useFetchAll<TemuanHasilData>('temuan_hasil');
+  const { data: DataTemuanHasil } =
+    useFetchAll<TemuanHasilData>('temuan_hasil');
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataTL } = useFetchAll<TindakLanjutDB>('tindak_lanjut');
   const { data: DataRekomendasi } = useFetchAll<RekomendasiData>('rekomendasi');
@@ -30,99 +31,110 @@ const TableTindakLanjutPreview = () => {
 
   // First, group all ST/LHP data by id_st
   const lhpData = React.useMemo(() => {
-    const stGroups: { [key: number]: { nomorLHP: string; uraianLHP: string; noSP: string } } = {};
-    
+    const stGroups: {
+      [key: number]: { nomorLHP: string; uraianLHP: string; noSP: string };
+    } = {};
+
     // Get unique id_st values from findings
-    const uniqueSTIds = Array.from(new Set(DataTemuanHasil?.map(temuan => Number(temuan.id_st))));
-    
+    const uniqueSTIds = Array.from(
+      new Set(DataTemuanHasil?.map((temuan) => Number(temuan.id_st)))
+    );
+
     // Map each id_st to its corresponding LHP info
-    uniqueSTIds.forEach(id_st => {
+    uniqueSTIds.forEach((id_st) => {
       stGroups[id_st] = {
         nomorLHP: getNomorLHP(id_st),
         uraianLHP: getUraianLHP(id_st),
-        noSP: getNameNoSP(id_st)
+        noSP: getNameNoSP(id_st),
       };
     });
-    
+
     return stGroups;
   }, [DataTemuanHasil, getNomorLHP, getUraianLHP, getNameNoSP]);
 
   // Group findings by id_st
   const temuanBySTId = React.useMemo(() => {
     const groups: { [key: number]: TemuanHasilData[] } = {};
-    
-    DataTemuanHasil.forEach(temuan => {
+
+    DataTemuanHasil.forEach((temuan) => {
       const stId = Number(temuan.id_st);
       if (!groups[stId]) {
         groups[stId] = [];
       }
       groups[stId].push(temuan);
     });
-    
+
     return groups;
   }, [DataTemuanHasil]);
 
   // Group recommendations by id_tlhp (temuan)
   const rekomendasiByTemuanId = React.useMemo(() => {
     const groups: { [key: number]: RekomendasiData[] } = {};
-    
-    DataRekomendasi.forEach(rekomendasi => {
+
+    DataRekomendasi.forEach((rekomendasi) => {
       const temuanId = rekomendasi.id_tlhp;
       if (!groups[temuanId]) {
         groups[temuanId] = [];
       }
       groups[temuanId].push(rekomendasi);
     });
-    
+
     return groups;
   }, [DataRekomendasi]);
 
   // Link tindak lanjut to rekomendasi
   const tindakLanjutByRekomendasiId = React.useMemo(() => {
     const groups: { [key: number]: TindakLanjutDB } = {};
-    
-    DataTL.forEach(tl => {
+
+    DataTL.forEach((tl) => {
       // Assuming id_lhp in TindakLanjutDB corresponds to id_rekomendasi
       groups[tl.id_lhp] = tl;
     });
-    
+
     return groups;
   }, [DataTL]);
 
   // Build the comprehensive structured data for the table
   const structuredData = React.useMemo(() => {
     // Sort the ST/LHP entries for consistency
-    const sortedSTIds = Object.keys(lhpData).map(Number).sort((a, b) => a - b);
-    
-    return sortedSTIds.map(stId => {
+    const sortedSTIds = Object.keys(lhpData)
+      .map(Number)
+      .sort((a, b) => a - b);
+
+    return sortedSTIds.map((stId) => {
       const lhpInfo = lhpData[stId];
       const temuanList = temuanBySTId[stId] || [];
-      
+
       // Map each temuan to include its rekomendasi and tindak lanjut
-      const temuansWithDetails = temuanList.map(temuan => {
+      const temuansWithDetails = temuanList.map((temuan) => {
         const rekomendasiList = rekomendasiByTemuanId[temuan.id_tlhp] || [];
-        
+
         // Map each rekomendasi to include its tindak lanjut
-        const rekomendasiWithTL = rekomendasiList.map(rekomendasi => ({
+        const rekomendasiWithTL = rekomendasiList.map((rekomendasi) => ({
           ...rekomendasi,
-          tindakLanjut: tindakLanjutByRekomendasiId[rekomendasi.id_rekomendasi]
+          tindakLanjut: tindakLanjutByRekomendasiId[rekomendasi.id_rekomendasi],
         }));
-        
+
         return {
           ...temuan,
-          rekomendasiList: rekomendasiWithTL
+          rekomendasiList: rekomendasiWithTL,
         };
       });
-      
+
       return {
         id_st: stId,
         lhpNumber: lhpInfo.nomorLHP,
         uraianLHP: lhpInfo.uraianLHP,
         noSP: lhpInfo.noSP,
-        temuans: temuansWithDetails
+        temuans: temuansWithDetails,
       };
     });
-  }, [lhpData, temuanBySTId, rekomendasiByTemuanId, tindakLanjutByRekomendasiId]);
+  }, [
+    lhpData,
+    temuanBySTId,
+    rekomendasiByTemuanId,
+    tindakLanjutByRekomendasiId,
+  ]);
 
   // Enrich temuan data with kode_temuan information
   const mergedDataTemuan = React.useMemo(() => {

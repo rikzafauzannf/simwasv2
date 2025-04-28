@@ -157,12 +157,12 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
             </Link>
             <p>{item.created_at}</p>
             <div className="flex flex-col gap-2">
-            <button
-                  onClick={() => handleCreateReport(item.id_st)}
-                  className="p-2 border border-blue-500 text-black rounded-md hover:bg-blue-600 hover:text-white flex gap-3 justify-start items-center"
-                >
-                  <HiPaperAirplane /> <p> || Buat laporan Harian / Mingguna</p>
-                </button>
+              <button
+                onClick={() => handleCreateReport(item.id_st)}
+                className="p-2 border border-blue-500 text-black rounded-md hover:bg-blue-600 hover:text-white flex gap-3 justify-start items-center"
+              >
+                <HiPaperAirplane /> <p> || Buat laporan Harian / Mingguan</p>
+              </button>
               <Link
                 href={`/dashboard/${todo}/${item.id_lhp}`}
                 className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
