@@ -162,7 +162,7 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
                   onClick={() => handleCreateReport(item.id_st)}
                   className="p-2 border border-blue-500 text-black rounded-md hover:bg-blue-600 hover:text-white flex gap-3 justify-start items-center"
                 >
-                  <HiPaperAirplane /> <p>|| Buat laporan</p>
+                  <HiPaperAirplane /> <p> || Buat laporan Harian / Mingguna</p>
                 </button>
                 <Link
                   href={`/dashboard/${todo}/${item.id_st}`}
