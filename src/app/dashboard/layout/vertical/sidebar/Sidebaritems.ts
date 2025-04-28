@@ -143,7 +143,7 @@ const SidebarContent: MenuItem[] = [
         url: '/dashboard/laporanhasil',
       },
       {
-        name: 'Hasil Temuan',
+        name: 'Ringkasan Hasil',
         icon: 'solar:presentation-graph-line-duotone',
         id: uniqueId(),
         url: '/dashboard/hasiltemuan',

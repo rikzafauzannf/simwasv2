@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { HiPencilAlt } from 'react-icons/hi';
+import { HiPaperAirplane } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
