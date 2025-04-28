@@ -42,7 +42,7 @@ const Notification = () => {
           <Dropdown.Item
             key={item.id_notifikasi}
             as={Link}
-            href={`/dashboard/perencanaan/pkpt/${item.id_pkpt}`}
+            href={`/dashboard/pkpt/${item.id_pkpt}`}
             className="px-3 py-3 flex items-center bg-hover group/link w-full gap-3 text-dark hover:bg-gray-100"
           >
             <div className="flex items-center gap-5">
@@ -75,7 +75,7 @@ const Notification = () => {
         {/* Add View All link */}
         <Dropdown.Item
           as={Link}
-          href="/dashboard/perencanaan/pkpt"
+          href="/dashboard/pkpt"
           className="text-center text-blue-600 hover:underline py-2 grid"
         >
           View All
