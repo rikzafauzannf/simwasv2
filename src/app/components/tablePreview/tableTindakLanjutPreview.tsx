@@ -20,8 +20,7 @@ import React from 'react';
 import { exportToExcel } from './exportTindakLanjut';
 
 const TableTindakLanjutPreview = () => {
-  const { data: DataTemuanHasil } =
-    useFetchAll<TemuanHasilData>('temuan_hasil');
+  const { data: DataTemuanHasil } = useFetchAll<TemuanHasilData>('temuan_hasil');
   const { data: DataKodeTemuan } = useFetchAll<KodeTemuanDB>('kode_temuan');
   const { data: DataTL } = useFetchAll<TindakLanjutDB>('tindak_lanjut');
   const { data: DataRekomendasi } = useFetchAll<RekomendasiData>('rekomendasi');
@@ -29,74 +28,103 @@ const TableTindakLanjutPreview = () => {
   const { getNomorLHP, getUraianLHP } = useGetNameLHP();
   const { getNameKodeTemuan, getNameKodeRekomendasi } = useGetNameKode();
 
-  // Group tindak lanjut data by id_tlhp
-  const groupedTL = React.useMemo(() => {
-    const groups: { [key: number]: TindakLanjutDB[] } = {};
-    DataTL.forEach((item) => {
-      if (!groups[item.id_lhp]) {
-        groups[item.id_lhp] = [];
-      }
-      groups[item.id_lhp].push(item);
+  // First, group all ST/LHP data by id_st
+  const lhpData = React.useMemo(() => {
+    const stGroups: { [key: number]: { nomorLHP: string; uraianLHP: string; noSP: string } } = {};
+    
+    // Get unique id_st values from findings
+    const uniqueSTIds = Array.from(new Set(DataTemuanHasil?.map(temuan => Number(temuan.id_st))));
+    
+    // Map each id_st to its corresponding LHP info
+    uniqueSTIds.forEach(id_st => {
+      stGroups[id_st] = {
+        nomorLHP: getNomorLHP(id_st),
+        uraianLHP: getUraianLHP(id_st),
+        noSP: getNameNoSP(id_st)
+      };
     });
+    
+    return stGroups;
+  }, [DataTemuanHasil, getNomorLHP, getUraianLHP, getNameNoSP]);
+
+  // Group findings by id_st
+  const temuanBySTId = React.useMemo(() => {
+    const groups: { [key: number]: TemuanHasilData[] } = {};
+    
+    DataTemuanHasil.forEach(temuan => {
+      const stId = Number(temuan.id_st);
+      if (!groups[stId]) {
+        groups[stId] = [];
+      }
+      groups[stId].push(temuan);
+    });
+    
+    return groups;
+  }, [DataTemuanHasil]);
+
+  // Group recommendations by id_tlhp (temuan)
+  const rekomendasiByTemuanId = React.useMemo(() => {
+    const groups: { [key: number]: RekomendasiData[] } = {};
+    
+    DataRekomendasi.forEach(rekomendasi => {
+      const temuanId = rekomendasi.id_tlhp;
+      if (!groups[temuanId]) {
+        groups[temuanId] = [];
+      }
+      groups[temuanId].push(rekomendasi);
+    });
+    
+    return groups;
+  }, [DataRekomendasi]);
+
+  // Link tindak lanjut to rekomendasi
+  const tindakLanjutByRekomendasiId = React.useMemo(() => {
+    const groups: { [key: number]: TindakLanjutDB } = {};
+    
+    DataTL.forEach(tl => {
+      // Assuming id_lhp in TindakLanjutDB corresponds to id_rekomendasi
+      groups[tl.id_lhp] = tl;
+    });
+    
     return groups;
   }, [DataTL]);
 
-  // Replace the existing groupedData memo with this new structure
-  const groupedData = React.useMemo(() => {
-    const lhpGroups: {
-      [key: string]: {
-        lhpNumber: string;
-        uraianLHP: string;
-        temuans: TemuanHasilData[];
-      };
-    } = {};
-
-    DataTemuanHasil.forEach((temuan) => {
-      const idST = Number(temuan.id_st);
-      const lhpNumber = getNomorLHP(idST);
-      const uraianLHP = getUraianLHP(idST);
-
-      if (!lhpGroups[lhpNumber]) {
-        lhpGroups[lhpNumber] = {
-          lhpNumber,
-          uraianLHP,
-          temuans: [],
-        };
-      }
-
-      lhpGroups[lhpNumber].temuans.push(temuan);
-    });
-
-    return lhpGroups;
-  }, [DataTemuanHasil, getNomorLHP, getUraianLHP]);
-
-  // Update the structuredData memo to correctly link tindak lanjut with rekomendasi
+  // Build the comprehensive structured data for the table
   const structuredData = React.useMemo(() => {
-    return Object.values(groupedData).map((lhpGroup) => {
+    // Sort the ST/LHP entries for consistency
+    const sortedSTIds = Object.keys(lhpData).map(Number).sort((a, b) => a - b);
+    
+    return sortedSTIds.map(stId => {
+      const lhpInfo = lhpData[stId];
+      const temuanList = temuanBySTId[stId] || [];
+      
+      // Map each temuan to include its rekomendasi and tindak lanjut
+      const temuansWithDetails = temuanList.map(temuan => {
+        const rekomendasiList = rekomendasiByTemuanId[temuan.id_tlhp] || [];
+        
+        // Map each rekomendasi to include its tindak lanjut
+        const rekomendasiWithTL = rekomendasiList.map(rekomendasi => ({
+          ...rekomendasi,
+          tindakLanjut: tindakLanjutByRekomendasiId[rekomendasi.id_rekomendasi]
+        }));
+        
+        return {
+          ...temuan,
+          rekomendasiList: rekomendasiWithTL
+        };
+      });
+      
       return {
-        lhpNumber: lhpGroup.lhpNumber,
-        uraianLHP: lhpGroup.uraianLHP,
-        temuans: lhpGroup.temuans.map((temuan) => {
-          const rekomendasiList = DataRekomendasi.filter(
-            (rek) => rek.id_tlhp === temuan.id_tlhp
-          );
-
-          // Map tindak lanjut to each rekomendasi
-          const rekomendasiWithTL = rekomendasiList.map((rek) => ({
-            ...rek,
-            tindakLanjut: DataTL.find((tl) => tl.id_lhp === rek.id_rekomendasi),
-          }));
-
-          return {
-            ...temuan,
-            rekomendasiList:
-              rekomendasiWithTL.length > 0 ? rekomendasiWithTL : [],
-          };
-        }),
+        id_st: stId,
+        lhpNumber: lhpInfo.nomorLHP,
+        uraianLHP: lhpInfo.uraianLHP,
+        noSP: lhpInfo.noSP,
+        temuans: temuansWithDetails
       };
     });
-  }, [groupedData, DataRekomendasi, DataTL]);
+  }, [lhpData, temuanBySTId, rekomendasiByTemuanId, tindakLanjutByRekomendasiId]);
 
+  // Enrich temuan data with kode_temuan information
   const mergedDataTemuan = React.useMemo(() => {
     return DataTemuanHasil.map((item) => {
       const kodeTemuan = DataKodeTemuan.find(
@@ -109,6 +137,7 @@ const TableTindakLanjutPreview = () => {
     }).filter((item) => item.kode_temuan !== null);
   }, [DataTemuanHasil, DataKodeTemuan]);
 
+  // Calculate totals for summary
   const totals = React.useMemo(() => {
     const totalNilaiRekomendasi = DataRekomendasi.reduce(
       (sum, item) => sum + (Number(item.rekomendasi_nilai) || 0),
@@ -150,8 +179,9 @@ const TableTindakLanjutPreview = () => {
       totalTidakDapatTL,
       totalSisaNominal,
     };
-  }, [DataTemuanHasil, DataRekomendasi, DataTL]);
+  }, [DataRekomendasi, DataTL]);
 
+  // Handle Excel export
   const handleExport = () => {
     exportToExcel(
       DataTemuanHasil,
@@ -165,7 +195,7 @@ const TableTindakLanjutPreview = () => {
     );
   };
 
-  // Add this after other grouped data memos
+  // Group kode temuan for summary section
   const groupedRekomendasi = React.useMemo(() => {
     const groups: { [key: number]: RekomendasiData[] } = {};
     DataRekomendasi.forEach((item) => {
@@ -214,7 +244,6 @@ const TableTindakLanjutPreview = () => {
             </div>
           </div>
         </CardComponents>
-        {/* <CardComponents> */}
         <PdfGenerator>
           <div className="space-y-3 w-full overflow-scroll p-4">
             <div className="text-center font-bold text-base text-[11px] lg:text-[14px]">
@@ -336,7 +365,7 @@ const TableTindakLanjutPreview = () => {
                                   className="border border-gray-300 p-2"
                                   rowSpan={totalLHPRows}
                                 >
-                                  {getNameNoSP(Number(temuan.id_st))}
+                                  {lhpGroup.noSP}
                                 </td>
                                 <td
                                   className="border border-gray-300 p-2"
@@ -385,6 +414,9 @@ const TableTindakLanjutPreview = () => {
                             <td className="border border-gray-300 p-2"></td>
                             <td className="border border-gray-300 p-2"></td>
                             <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
+                            <td className="border border-gray-300 p-2"></td>
                           </tr>
                         );
                       }
@@ -411,7 +443,7 @@ const TableTindakLanjutPreview = () => {
                                   className="border border-gray-300 p-2"
                                   rowSpan={totalLHPRows}
                                 >
-                                  {getNameNoSP(Number(temuan.id_st))}
+                                  {lhpGroup.noSP}
                                 </td>
                                 <td
                                   className="border border-gray-300 p-2"
@@ -644,6 +676,7 @@ const TableTindakLanjutPreview = () => {
                       </tr>
                     );
                   })}
+                  {/* Total Summary Row */}
                   <tr className="hover:bg-gray-100 text-center align-middle font-bold">
                     <td
                       className="border border-gray-300 p-2 text-center"
@@ -691,7 +724,6 @@ const TableTindakLanjutPreview = () => {
             </div>
           </div>
         </PdfGenerator>
-        {/* </CardComponents> */}
       </div>
     </AuthRoleWrapper>
   );
