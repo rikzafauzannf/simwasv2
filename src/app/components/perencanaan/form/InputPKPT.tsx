@@ -70,15 +70,15 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
   const { scopes, addScope, removeScope,resetScopes } = useScopeStore();
   const [newScopeId, setNewScopeId] = useState<number | string>('');
 
-  const dataChek = data
+  // const dataChek = data
   useEffect(() => {
     if (mode === 'update' && data) {
       reset({
         ...data,
         id_jenis_pengawasan: Number(data.id_jenis_pengawasan),
-        id_ruang_lingkup: Array.isArray(data.id_ruang_lingkup)
-          ? undefined
-          : Number(data.id_ruang_lingkup),
+        // id_ruang_lingkup: Array.isArray(data.id_ruang_lingkup)
+        //   ? undefined
+        //   : Number(data.id_ruang_lingkup),
       });
 
       resetTeamMembers();
@@ -111,8 +111,9 @@ const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data
 
       const payload: PKPTFormData = {
         ...formData,
+        jumlah_laporan:Number(formData.jumlah_laporan),
         id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
-        id_ruang_lingkup: Number(formData.id_ruang_lingkup),
+        id_ruang_lingkup: scopes.map((item)=>item.id).join(', '),
         id_jenis_laporan: Number(formData.id_jenis_laporan),
         id_tingkat_resiko: Number(formData.id_tingkat_resiko),
         nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),

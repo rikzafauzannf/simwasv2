@@ -63,7 +63,7 @@ export interface PKPTFormData {
   id_jenis_pengawasan: number;
   tujuan_sasaran: string;
   area_pengawasan: string;
-  id_ruang_lingkup: number;
+  id_ruang_lingkup: string;
   rmp_pkpt: string;
   rpl_pkpt: string;
   penanggung_jawab: string;
