@@ -312,7 +312,7 @@ const RealisasiPKPTPage = () => {
               s: { font: { size: 11 }, alignment: { horizontal: 'left' } },
             },
             {
-              v: pkpt.id_ruang_lingkup.split(', ').map((items:number)=><p>{getNameRuangLingkup(Number(items))}</p> ),
+              v: pkpt.id_ruang_lingkup.split(', ').map((items:number)=><p key={items}>{getNameRuangLingkup(Number(items))}</p> ),
               s: { font: { size: 11 }, alignment: { horizontal: 'left' } },
             },
             {
@@ -568,7 +568,7 @@ const RealisasiPKPTPage = () => {
                                   0
                                 )}
                               >
-                                {pkpt.id_ruang_lingkup.split(', ').map((items:number)=><p>{getNameRuangLingkup(Number(items))}</p> )}
+                                {pkpt.id_ruang_lingkup.split(', ').map((items:number)=><p key={items}>{getNameRuangLingkup(Number(items))}</p> )}
                               </td>
                               <td
                                 className="border border-gray-300 p-2 text-center"

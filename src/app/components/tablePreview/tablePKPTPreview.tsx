@@ -140,7 +140,7 @@ const TablePKPT = ({
                       {item.tujuan_sasaran}
                     </td>
                     <td className="border border-gray-300 p-2" colSpan={3}>
-                      {item.id_ruang_lingkup.split(', ').map((items:number)=><p>{hooks.getNameRuangLingkup(Number(items))}</p> )}
+                      {item.id_ruang_lingkup.split(', ').map((items:number)=><p key={items}>{hooks.getNameRuangLingkup(Number(items))}</p> )}
                       {/* {hooks.getNameRuangLingkup(item.id_ruang_lingkup)} */}
                     </td>
                     <td className="border border-gray-300 p-2">
