@@ -8,11 +8,8 @@ import { ButtonType } from '../../Global/Button';
 import { useTeamStore } from '@/middleware/Store/useTeamStore';
 import { FaTrash, FaPlus, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
 import { MdAssignment, MdSchedule, MdAttachMoney } from 'react-icons/md';
-import {
-  PKPTData,
-  PKPTDataBase,
-  PKPTFormData,
-} from '@/interface/interfacePKPT';
+
+import { PKPTData, PKPTDataBase, PKPTFormData } from '@/interface/interfacePKPT';
 
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useScopeStore } from '@/middleware/Store/useScopeStore';
@@ -30,15 +27,11 @@ const axiosService = new AxiosService();
 
 interface StatusProps {
   mode?: 'update' | 'create';
-  data?: PKPTDataBase;
+  data?:PKPTDataBase;
   status?: string;
 }
 
-const InputPKPT: React.FC<StatusProps> = ({
-  status = 'pkpt',
-  mode = 'create',
-  data,
-}) => {
+const InputPKPT: React.FC<StatusProps> = ({ status = 'pkpt',mode = 'create',data }) => {
   const { user } = useAuthStore();
   const router = useRouter();
   const { getNameUser } = useGetNameUser();
@@ -78,10 +71,10 @@ const InputPKPT: React.FC<StatusProps> = ({
 
   const { teamMembers, addTeamMember, removeTeamMember, resetTeamMembers } =
     useTeamStore();
-  const [newMemberId, setNewMemberId] = useState<string | number | null>(null);
+    const [newMemberId, setNewMemberId] = useState<string | number | null>(null);
 
 
-  const { scopes, addScope, removeScope, resetScopes } = useScopeStore();
+  const { scopes, addScope, removeScope,resetScopes } = useScopeStore();
   const [newScopeId, setNewScopeId] = useState<number | string>('');
   const isResetDone = useRef(false); // 👈 penting supaya reset hanya sekali
   // const dataChek = data
@@ -96,13 +89,12 @@ const InputPKPT: React.FC<StatusProps> = ({
       });
       isResetDone.current = true;
 
+
       resetTeamMembers();
       resetScopes();
 
       if (data.nama_anggota_tim) {
-        const anggotaIds = data.nama_anggota_tim
-          .split(',')
-          .map((id) => Number(id.trim()));
+        const anggotaIds = data.nama_anggota_tim.split(',').map((id) => Number(id.trim()));
         anggotaIds.forEach((id) => {
           const member = potentialMembers.find((m) => m.id === id);
           if (member) addTeamMember({ id: member.id, name: member.name });
@@ -110,181 +102,63 @@ const InputPKPT: React.FC<StatusProps> = ({
       }
 
       if (Array.isArray(data.id_ruang_lingkup)) {
-        data.id_ruang_lingkup.forEach((scope) =>
-          addScope({ id: scope.id, name: scope.name })
-        );
+        data.id_ruang_lingkup.forEach((scope) => addScope({ id: scope.id, name: scope.name }));
       } else {
-        const singleScope = potentialScopes.find(
-          (scope) => scope.id === Number(data.id_ruang_lingkup)
-        );
-        if (singleScope)
-          addScope({ id: singleScope.id, name: singleScope.name });
+        const singleScope = potentialScopes.find((scope) => scope.id === Number(data.id_ruang_lingkup));
+        if (singleScope) addScope({ id: singleScope.id, name: singleScope.name });
       }
     }
-  }, [
-    mode,
-    data,
-    reset,
-    addTeamMember,
-    addScope,
-    potentialMembers,
-    potentialScopes,
-    resetTeamMembers,
-    resetScopes,
-  ]);
+  }, [mode, data, reset, addTeamMember, addScope, potentialMembers, potentialScopes, resetTeamMembers, resetScopes]);
 
-  // const pt = watch('nama_pengendali_teknis')
-  // const kt = watch('nama_ketua_tim')
-
-  // const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
-  //   try {
-  //     setIsSubmitting(true);
-
-  //     const teamString = `PT: ${getNameUser(Number(pt))} | KT: ${getNameUser(Number(kt))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')}`;
-
-  //     const payload: PKPTFormData = {
-  //       ...formData,
-
-  //       jumlah_laporan: Number(formData.jumlah_laporan),
-  //       id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
-  //       id_ruang_lingkup: scopes.map((item) => item.id).join(', '),
-
-  //       id_jenis_laporan: Number(formData.id_jenis_laporan),
-  //       id_tingkat_resiko: Number(formData.id_tingkat_resiko),
-
-  //       nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
-  //       tim: teamString,
-  //       jumlah: Number(formData.jumlah),
-  //       id_user: Number(user?.id_user),
-  //       status: status,
-  //     };
-
-  //     const response =
-  //       mode === 'update'
-  //         ? await axiosService.updateData(`/pkpt/${data?.id_pkpt}`, payload)
-  //         : await axiosService.addData('/pkpt', payload);
-
-  //     if (response.success) {
-  //       showNotification(
-  //         `Data ${status.toUpperCase()} berhasil ${mode === 'update' ? 'diperbarui' : 'ditambahkan'}`,
-  //         'success'
-  //       );
-  //       reset();
-  //       resetTeamMembers();
-  //       resetScopes();
-  //       router.push('/dashboard/pkpt');
-  //     } else {
-  //       throw new Error(response.message);
-  //     }
-  //   } catch (error) {
-
-  //     console.error('Submit Error:', error);
-
-  //     showNotification(`Gagal menyimpan data ${status}`, 'error');
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
-
-  const [teamString, setTeamString] = useState('');
-
-
-useEffect(() => {
-
-  const pt = watch('nama_pengendali_teknis');
-
-  const kt = watch('nama_ketua_tim');
-
-
-  const newTeamString = `PT: ${getNameUser (Number(pt))} | KT: ${getNameUser (Number(kt))} | AT: ${teamMembers.map((item) => getNameUser (Number(item.id))).join(', ')}`;
 
   
+  
+  const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
+    try {
+      setIsSubmitting(true);
 
-  setTeamString(newTeamString);
+      const teamString = `PT: ${getNameUser(Number(formData.nama_pengendali_teknis))} | KT: ${getNameUser(Number(formData.nama_ketua_tim))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')}`;
 
-}, [teamMembers, watch('nama_pengendali_teknis'), watch('nama_ketua_tim')]);
+      const payload: PKPTFormData = {
+        ...formData,
 
+        jumlah_laporan:Number(formData.jumlah_laporan),
+        id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
+        id_ruang_lingkup: scopes.map((item)=>item.id).join(', '),
 
-const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
+        id_jenis_laporan: Number(formData.id_jenis_laporan),
+        id_tingkat_resiko: Number(formData.id_tingkat_resiko),
 
-  try {
-
-    setIsSubmitting(true);
-
-
-    const payload: PKPTFormData = {
-
-      ...formData,
-
-      jumlah_laporan: Number(formData.jumlah_laporan),
-
-      id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
-
-      id_ruang_lingkup: scopes.map((item) => item.id).join(', '),
-
-      id_jenis_laporan: Number(formData.id_jenis_laporan),
-
-      id_tingkat_resiko: Number(formData.id_tingkat_resiko),
-
-      nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
-
-      tim: teamString, // gunakan teamString yang sudah diperbarui
-
-      jumlah: Number(formData.jumlah),
-
-      id_user: Number(user?.id_user),
-
-      status: status,
-
-    };
+        nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
+        tim: teamString,
+        jumlah: Number(formData.jumlah),
+        id_user: Number(user?.id_user),
+        status: status,
+      };
 
 
-    const response =
-
-      mode === 'update'
-
+      const response = mode === 'update'
         ? await axiosService.updateData(`/pkpt/${data?.id_pkpt}`, payload)
-
         : await axiosService.addData('/pkpt', payload);
 
+      if (response.success) {
+        showNotification(`Data ${status.toUpperCase()} berhasil ${mode === 'update' ? 'diperbarui' : 'ditambahkan'}`, 'success');
+        reset();
+        resetTeamMembers();
+        resetScopes();
+        router.push('/dashboard/pkpt');
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
 
-    if (response.success) {
+      console.error('Submit Error:', error);
 
-      showNotification(
-
-        `Data ${status.toUpperCase()} berhasil ${mode === 'update' ? 'diperbarui' : 'ditambahkan'}`,
-
-        'success'
-
-      );
-
-      reset();
-
-      resetTeamMembers();
-
-      resetScopes();
-
-      router.push('/dashboard/pkpt');
-
-    } else {
-
-      throw new Error(response.message);
-
+      showNotification(`Gagal menyimpan data ${status}`, 'error');
+    } finally {
+      setIsSubmitting(false);
     }
-
-  } catch (error) {
-
-    console.error('Submit Error:', error);
-
-    showNotification(`Gagal menyimpan data ${status}`, 'error');
-
-  } finally {
-
-    setIsSubmitting(false);
-
-  }
-
-};
+  };
 
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
@@ -301,7 +175,6 @@ const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
           addTeamMember({ id: selectedMember.id, name: selectedMember.name });
           setNewMemberId(''); // Reset selected member after adding
           setPlaceholderText("Cari anggota tim lain"); // Ganti placeholder
-
           showNotification(
             `${selectedMember.name} berhasil ditambahkan ke tim`,
             'success'
@@ -422,13 +295,13 @@ const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
     setValue,
   ]);
 
-  console.log('scopee data :', scopes);
+  console.log("scopee data :",scopes)
+
 
   const options = potentialMembers.map((member) => ({
     value: member.id,
     label: member.name,
   }));
-
 
   const renderProgressBar = () => {
     return (
@@ -563,74 +436,72 @@ const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
 
               /> */}
 
-              <div className="lg:col-span-2 w-full">
-                <div className="flex flex-col sm:flex-row items-start gap-4 w-full">
-                  <div className="w-full sm:w-5/6 flex-1">
-                    <div className="flex flex-col space-y-2 w-full">
-                      <label
-                        htmlFor="ruangLingkup"
-                        className="text-slate-800 font-medium"
-                      >
-                        Ruang Lingkup [{scopes.length}]
-                      </label>
-                      <div className="flex flex-col gap-3 w-full">
-                        <select
-                          value={newScopeId}
-                          onChange={(e) => setNewScopeId(e.target.value)}
-                          className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary flex-1"
-                        >
-                          <option value="" disabled>
-                            Pilih ruang lingkup
-                          </option>
-                          {potentialScopes.map((scope) => (
-                            <option key={scope.id} value={scope.id}>
-                              {scope.name}
-                            </option>
-                          ))}
-                        </select>
-                        <button
-                          onClick={handleAddScope}
-                          type="button"
-                          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center"
-                        >
-                          <FaPlus className="mr-2" /> Tambah
-                        </button>
-                      </div>
-                    </div>
+<div className="lg:col-span-2 w-full">
+  <div className="flex flex-col sm:flex-row items-start gap-4 w-full">
+    <div className="w-full sm:w-5/6 flex-1">
+      <div className="flex flex-col space-y-2 w-full">
+        <label htmlFor="ruangLingkup" className="text-slate-800 font-medium">
+          Ruang Lingkup [{scopes.length}]
+        </label>
+        <div className="flex flex-col gap-3 w-full">
+          <select
+            value={newScopeId}
+            onChange={(e) => setNewScopeId(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary flex-1"
+          >
+            <option value="" disabled>
+              Pilih ruang lingkup
+            </option>
+            {potentialScopes.map((scope) => (
+              <option key={scope.id} value={scope.id}>
+                {scope.name}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={handleAddScope}
+            type="button"
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center"
+          >
+            <FaPlus className="mr-2" /> Tambah
+          </button>
+        </div>
+      </div>
 
-                    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                      {scopes.map((scope, index) => (
-                        <div
-                          key={scope.id}
-                          className="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200 hover:bg-gray-100 transition-colors"
-                        >
-                          <span className="text-slate-800">{scope.name}</span>
-                          <button
-                            onClick={() => removeScope(index)}
-                            type="button"
-                            className="text-red-500 hover:text-red-700 transition-colors"
-                          >
-                            <FaTrash />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+        {scopes.map((scope, index) => (
+          <div
+            key={scope.id}
+            className="flex items-center justify-between bg-gray-50 p-3 rounded-md border border-gray-200 hover:bg-gray-100 transition-colors"
+          >
+            <span className="text-slate-800">{scope.name}</span>
+            <button
+              onClick={() => removeScope(index)}
+              type="button"
+              className="text-red-500 hover:text-red-700 transition-colors"
+            >
+              <FaTrash />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
-              <div className="lg:col-span-2 w-full">
-                <InputFieldComponent
-                  label="Tujuan / Sasaran"
-                  identiti="tSasaran"
-                  type="text"
-                  name="TujuanSasaran"
-                  placeholder="Masukan Tujuan / Sasaran pengawasan"
-                  register={register('tujuan_sasaran', {
-                    required: 'Tujuan / Sasaran wajib diisi',
-                  })}
-                  error={errors.tujuan_sasaran}
-                />
+              <div className='lg:col-span-2 w-full'>
+              <InputFieldComponent
+                label="Tujuan / Sasaran"
+                identiti="tSasaran"
+                type="text"
+                name="TujuanSasaran"
+                placeholder="Masukan Tujuan / Sasaran pengawasan"
+                register={register('tujuan_sasaran', {
+                  required: 'Tujuan / Sasaran wajib diisi',
+                })}
+                error={errors.tujuan_sasaran}
+              />
+
               </div>
 
             </section>
@@ -674,7 +545,6 @@ const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
                   })}
                   error={errors.rmp_pkpt}
                 />
-                <FaCalendarAlt className="absolute right-3 top-9 text-gray-400" />
               </div>
               <div className="relative">
                 <InputFieldComponent
@@ -688,7 +558,6 @@ const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
                   })}
                   error={errors.rpl_pkpt}
                 />
-                <FaCalendarAlt className="absolute right-3 top-9 text-gray-400" />
               </div>
             </section>
           </CardComponents>
@@ -720,7 +589,7 @@ const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.3 }}
         >
-          <CardComponents>
+          <div className='bg-white rounded-lg p-8'>
             <div className="flex items-center mb-4">
               <FaUserFriends className="text-primary text-xl mr-2" />
               <h3 className="text-xl font-semibold">Tim Penugasan</h3>
@@ -907,20 +776,16 @@ const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
                         </select> */}
 
                         <Select
-                          options={options}
-                          value={
-                            options.find(
-                              (option) => option.value === newMemberId
-                            ) || null
-                          }
-                          onChange={(selectedOption) => {
-                            setNewMemberId(selectedOption?.value ?? null); // gunakan null jika tidak ada selectedOption
-                          }}
-                          placeholder={placeholderText}
-                          className="text-black"
-                          isClearable
+                        options={options}
+                        value={options.find((option) => option.value === newMemberId) || null}
+                        onChange={(selectedOption) => {
+                        setNewMemberId(selectedOption?.value ?? null); // gunakan null jika tidak ada selectedOption
+                        }}
+                        placeholder={placeholderText}
+                        className="text-black"
+                        isClearable
                         />
-
+                 
                         <button
                           onClick={handleAddMember}
                           type="button"
@@ -953,7 +818,7 @@ const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
                 </div>
               </div>
             </section>
-          </CardComponents>
+          </div>
 
           <div className="flex justify-between mt-4">
             <button

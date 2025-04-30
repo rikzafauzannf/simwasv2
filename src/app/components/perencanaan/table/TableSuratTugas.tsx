@@ -215,12 +215,12 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     //   selector: (row: SuratTugasData) => row.no_tgllh,
     //   sortable: true,
     // },
-    {
-      name: 'Jenis Audit',
-      selector: (row: SuratTugasData) =>
-        getNameJenisAudit(Number(row.id_jenis_audit)),
-      sortable: true,
-    },
+    // {
+    //   name: 'Jenis Audit',
+    //   selector: (row: SuratTugasData) =>
+    //     getNameJenisAudit(Number(row.id_jenis_audit)),
+    //   sortable: true,
+    // },
     {
       name: 'Keterangan',
       selector: (row: SuratTugasData) => row.keterangan,

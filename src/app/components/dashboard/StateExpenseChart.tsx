@@ -155,7 +155,9 @@ export default function StateExpenseChart() {
   return (
       <div className="p-4 h-full flex flex-col">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Anggaran per Quartal</h3>
+
+          <h3 className="text-lg font-semibold">Anggaran per Triwulan</h3>
+
           
           {/* Year filter dropdown */}
           <div className="flex items-center">

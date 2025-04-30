@@ -312,7 +312,7 @@ const RealisasiPKPTPage = () => {
               s: { font: { size: 11 }, alignment: { horizontal: 'left' } },
             },
             {
-              v: getNameRuangLingkup(pkpt.id_ruang_lingkup),
+              v: pkpt.id_ruang_lingkup.split(', ').map((items:number)=><p>{getNameRuangLingkup(Number(items))}</p> ),
               s: { font: { size: 11 }, alignment: { horizontal: 'left' } },
             },
             {
@@ -568,7 +568,7 @@ const RealisasiPKPTPage = () => {
                                   0
                                 )}
                               >
-                                {getNameRuangLingkup(pkpt.id_ruang_lingkup)}
+                                {pkpt.id_ruang_lingkup.split(', ').map((items:number)=><p>{getNameRuangLingkup(Number(items))}</p> )}
                               </td>
                               <td
                                 className="border border-gray-300 p-2 text-center"
@@ -598,9 +598,18 @@ const RealisasiPKPTPage = () => {
                                   0
                                 )}
                               >
-                                {pkpt.tim.split('|').map((items, index) => (
-                                  <p key={index}>{items}</p>
-                                ))}
+                                <p
+                  >
+                    PT: {getNameUser(Number(pkpt?.nama_pengendali_teknis))}                    
+                  </p>
+                  <p
+                  >
+                    KT: {getNameUser(Number(pkpt?.nama_ketua_tim))}                    
+                  </p>
+                  <p
+                  >
+                    AT: {pkpt?.nama_anggota_tim.split(', ').map((items)=>getNameUser(Number(items))).join(', ')}                    
+                  </p>
                               </td>
                               <td
                                 className="border border-gray-300 p-2 text-center"

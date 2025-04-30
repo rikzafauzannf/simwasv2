@@ -503,7 +503,6 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
               <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 flex items-center">
                 <FaClipboardList className="mr-2" /> Detail Audit
               </h3>
-
               <div className="grid md:grid-cols-2 gap-6">
 
                 <InputFieldComponent
@@ -537,7 +536,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   })}
                   error={errors.jumlah_laporan}
                 />
-
+                
                 {/* <SelectInputField
                   label="Jenis Audit *"
                   identiti="jenisAudit"

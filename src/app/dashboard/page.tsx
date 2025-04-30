@@ -3,8 +3,6 @@
 
 import { useState } from "react";
 import SummaryCard from "../components/dashboard/SummaryCard";
-import SupervisionTypeChart from "../components/dashboard/SupervisionTypeChart";
-import RiskDonutChart from "../components/dashboard/RiskDonutChart";
 import ReportBarChart from "../components/dashboard/ReportBarChart";
 import FollowUpDonutChart from "../components/dashboard/FollowUpDonutChart";
 import FindingsCard from "../components/dashboard/FindingCard";
@@ -14,9 +12,9 @@ import { DataSumaryPkpt } from "@/interface/interfaceChartData";
 import ChartTingkatRisiko from "../components/dashboard/ChartTingkatRisiko";
 import Image from 'next/image';
 import iconsTingkatResiko from '/public/images/products/tingkat_resiko_bg.svg';
-import IconsJenisPengawasan from '/public/images/products/jenis_pengawasn_bg.svg';
 import IconsJumlahLaporan from '/public/images/products/laporan_bg.svg';
 import IconsKN from '/public/images/products/anggaran_bg.svg';
+import ChartJenisPengawasan from "../components/dashboard/ChartJenisPengawasan";
 
 export default function Dashboard() {
   const [tab, setTab] = useState("overview");
@@ -26,16 +24,16 @@ export default function Dashboard() {
   
     const totalPKPT = dataSummary?.total_pkpt ?? 0;
     const totalStPkpt = dataSummary?.total_st_pkpt ?? 0;
-    // const totalLHP = dataSummary?.total_lhp ?? 0;
+    const totalLHP = dataSummary?.total_lhp_pkpt ?? 0;
     const totalNonPKPT = dataSummary?.total_non_pkpt ?? 0;
     const totalStNonPkpt = dataSummary?.total_st_non_pkpt ?? 0;
-  // const totalNonLHP = dataSummary?.total_non_lhp ?? 0;
+  const totalNonLHP = dataSummary?.total_lhp_non_pkpt ?? 0;
 
   return (
     <div>
       <div className="container mx-auto px-4 py-6">
         {/* Tab navigation */}
-        {/* <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex justify-center">
           <div className=" bg-opacity-80 rounded-lg p-2 bg-blue-500">
             <button 
               className={`px-2 py-2 rounded-lg ${tab === 'overview' ? 'bg-white text-blue-600' : 'text-white'}`}
@@ -56,7 +54,7 @@ export default function Dashboard() {
               Reports
             </button>
           </div>
-        </div> */}
+        </div>
 
         {/* Summary cards */}
         <div className="grid grid-cols-1 gap-6 mb-8 bg-blue-500 rounded-lg">
@@ -66,7 +64,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <SummaryCard title="Jumlah PKPT" value={String(totalPKPT)} />
               <SummaryCard title="Jumlah ST" value={String(totalStPkpt)} />
-              <SummaryCard title="Jumlah LHP" value="8" />
+              <SummaryCard title="Jumlah LHP" value={String(totalLHP)} />
             </div>
           </div>
           
@@ -76,7 +74,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <SummaryCard title="Jumlah Non PKPT" value={String(totalNonPKPT)} />
               <SummaryCard title="Jumlah ST" value={String(totalStPkpt)} />
-              <SummaryCard title="Jumlah LHP" value="11" />
+              <SummaryCard title="Jumlah LHP" value={String(totalNonLHP)} />
             </div>
           </div>
         </div>
@@ -86,7 +84,7 @@ export default function Dashboard() {
           {/* Supervision Type Bar Chart */}
           <div className="bg-white rounded-lg p-4 shadow-md flex flex-col lg:col-span-4">
             <div className="flex justify-between items-center mb-4">
-                <div className="flex gap-2 items-center">
+                {/* <div className="flex gap-2 items-center">
                   <Image
                     src={IconsJenisPengawasan}
                     alt="icons-jenis-pengawasan"
@@ -95,12 +93,12 @@ export default function Dashboard() {
                   <h3 className="font-bold text-sm md:text-lg text-neutral-700">
                     Jenis Pengawasan
                   </h3>
-                </div>
+                </div> */}
               <button className="text-blue-500">
               </button>
             </div>
             <div className="flex-grow">
-              <SupervisionTypeChart />
+              <ChartJenisPengawasan />
             </div>
           </div>
 

@@ -140,7 +140,8 @@ const TablePKPT = ({
                       {item.tujuan_sasaran}
                     </td>
                     <td className="border border-gray-300 p-2" colSpan={3}>
-                      {hooks.getNameRuangLingkup(item.id_ruang_lingkup)}
+                      {item.id_ruang_lingkup.split(', ').map((items:number)=><p>{hooks.getNameRuangLingkup(Number(items))}</p> )}
+                      {/* {hooks.getNameRuangLingkup(item.id_ruang_lingkup)} */}
                     </td>
                     <td className="border border-gray-300 p-2">
                       {item.rmp_pkpt}
@@ -167,9 +168,20 @@ const TablePKPT = ({
                       {item.jumlah}
                     </td>
                     <td className="border border-gray-300 p-2">
-                      {item.tim.split('|').map((id, index) => (
-                        <p key={index}>{id}</p>
-                      ))}
+                    <small
+                  >
+                    PT: {hooks.getNameUser(Number(item?.nama_pengendali_teknis))}                    
+                  </small>
+                  <br />
+                  <small
+                  >
+                    KT: {hooks.getNameUser(Number(item?.nama_ketua_tim))}                    
+                  </small>
+                  <br />
+                  <small
+                  >
+                    AT: {item?.nama_anggota_tim.split(', ').map((items)=>hooks.getNameUser(Number(items))).join(', ')}                    
+                  </small>
                     </td>
                     <td className="border border-gray-300 p-2">
                       {item.anggaran}

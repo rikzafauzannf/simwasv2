@@ -25,4 +25,6 @@ export type DataSumaryPkpt = {
   total_pkpt: number;
   total_st_non_pkpt: number;
   total_st_pkpt: number;
+  total_lhp_non_pkpt: number,
+  total_lhp_pkpt: number,
 };

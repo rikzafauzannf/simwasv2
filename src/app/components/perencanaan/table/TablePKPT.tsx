@@ -164,6 +164,7 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
           getNameRuangLingkup(Number(items))
         );
 
+
         return ruangLingkupNames.join(', '); // <- JOIN di sini
       },
       sortable: true,
