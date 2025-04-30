@@ -109,7 +109,7 @@ const InputTemuan: React.FC<CompoProps> = ({ id_lhp }) => {
           if (result.isConfirmed) {
             reset(); // Reset the form to allow new input
           } else {
-            router.push('/dashboard/temuanhasil');
+            router.push('/dashboard/hasiltemuan');
           }
         });
         refetch();
