@@ -47,8 +47,6 @@ const InputPKPT: React.FC<StatusProps> = ({
   const totalSections = 4;
   const [placeholderText, setPlaceholderText] = useState("Pilih anggota tim");
 
-  const [placeholderText, setPlaceholderText] = useState('Pilih anggota tim');
-
   const {
     optionsDataUser,
     optionsJenisAudit,
@@ -328,11 +326,6 @@ const InputPKPT: React.FC<StatusProps> = ({
     label: member.name,
   }));
 
-
-  const options = potentialMembers.map((member) => ({
-    value: member.id,
-    label: member.name,
-  }));
 
   const renderProgressBar = () => {
     return (
