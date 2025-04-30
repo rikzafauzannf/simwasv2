@@ -62,7 +62,7 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
     Swal.fire({
       title: 'Buat Laporan Mingguan',
       html: `
-        <input id="nomor" class="swal2-input" placeholder="Nomor Laporan"/>
+        <input id="nomor" type="date" class="swal2-input" placeholder="Tanggal Laporan"/>
         <textarea id="reportContent" class="swal2-textarea" placeholder="Isi Laporan"></textarea>
       `,
       focusConfirm: false,
