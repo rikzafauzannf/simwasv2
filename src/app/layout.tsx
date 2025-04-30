@@ -7,9 +7,9 @@ import customTheme from '@/utils/theme/custom-theme';
 import './css/globals.css';
 import NextTopLoader from 'nextjs-toploader';
 import { Analytics } from '@vercel/analytics/react';
-import Breadcrumbs from './components/Breadcumb';
 
 const manrope = Manrope({ subsets: ['latin'] });
+
 
 export const metadata: Metadata = {
   title: 'Simwas Kota Tasikmalaya',

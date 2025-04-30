@@ -25,4 +25,6 @@ export const useScopeStore = create<ScopeStore>((set) => ({
     })),
   resetScopes: () => set({ scopes: [] }),
   setScopes: (scopes) => set({ scopes }), // Implement setScopes
+
 }));
+

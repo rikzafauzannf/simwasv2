@@ -55,7 +55,24 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
     );
   })
 }
-     
+
+
+        {/* <div className="bg-white p-2 rounded-md shadow-md text-center font-semibold"> */}
+          {/* {DataPKPT
+            ? getNameRuangLingkup(DataPKPT.id_ruang_lingkup)
+            : 'No data available'} */}
+        {/* </div> */}
+        {/* <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
+          kominfo
+        </div>
+        <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
+          kominfo
+        </div>
+        <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
+          kominfo
+        </div> */}
+
+
       </section>
 
       {/* section data identiti*/}
@@ -164,7 +181,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
         <CardComponents>
           <p className="font-medium">Tim</p>
           <div className="flex flex-col gap-2">
-            {DataPKPT
+            {/* {DataPKPT
               ? DataPKPT?.tim.split('|').map((item, index) => (
                   <div
                     key={index}
@@ -173,7 +190,23 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
                     {item}
                   </div>
                 ))
-              : 'No data available'}
+              : 'No data available'} */}
+                  <div      
+                    className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950"
+                  >
+                    PT: {getNameUser(Number(DataPKPT?.nama_pengendali_teknis))}                    
+                  </div>
+                  <div      
+                    className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950"
+                  >
+                    KT: {getNameUser(Number(DataPKPT?.nama_ketua_tim))}                    
+                  </div>
+                  <div      
+                    className="bg-gray-50 p-2 rounded-md hover:font-semibold text-slate-950"
+                  >
+                    AT: {DataPKPT?.nama_anggota_tim.split(', ').map((items)=>getNameUser(Number(items))).join(', ')}                    
+                  </div>
+
             {/* {DataPKPT?.tim
               .split(',')
               .map((id) => getNameUser(Number(id)))

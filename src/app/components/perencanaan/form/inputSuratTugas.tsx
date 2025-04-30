@@ -225,7 +225,8 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
             }`}
             onClick={() => setActiveTab('tim')}
           >
-            <FaUsers /> Tim Pemeriksa
+            <FaUsers /> Susunan Tim
+
 
           </button>
           <button
@@ -365,14 +366,17 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
             <div className="space-y-6">
               <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 flex items-center">
 
-                <FaUsers className="mr-2" /> Tim Pemeriksa
+
+                <FaUsers className="mr-2" /> Susunan Tim
 
               </h3>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <SelectInputField
 
-                  label="Tim Pemeriksa/Pelaksana Kegiatan *"
+
+                  label="Penanggung Jawab *"
+
 
                   identiti="select-field-timpemeriksa"
                   options={optionsDataUser}
@@ -500,8 +504,8 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 <FaClipboardList className="mr-2" /> Detail Audit
               </h3>
 
-
               <div className="grid md:grid-cols-2 gap-6">
+
                 <InputFieldComponent
                   label="Jumlah Objek Pengawasan *"
                   identiti="jumlahObjek"
@@ -535,7 +539,6 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 />
 
                 {/* <SelectInputField
-
                   label="Jenis Audit *"
                   identiti="jenisAudit"
                   name="jenisAudit"

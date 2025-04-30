@@ -13,6 +13,8 @@ const CardAkumulasiDataALL = () => {
 
   const totalStPkpt = dataSummary?.total_st_pkpt ?? 0;
   const totalStNonPkpt = dataSummary?.total_st_non_pkpt ?? 0;
+  const totalPKPT = dataSummary?.total_pkpt ?? 0;
+  const totalNonPKPT = dataSummary?.total_non_pkpt ?? 0;
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-4">

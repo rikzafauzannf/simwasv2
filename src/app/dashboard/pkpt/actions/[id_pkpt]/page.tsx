@@ -17,12 +17,10 @@ const ActiontPKPTPage: React.FC<PageProps> = ({ params }) => {
   );
 
   return (
-
     <InputPKPT
       mode="update"
       data={DataPKPT ?? undefined}
       status={DataPKPT?.status}
-
     />
   );
 };

@@ -168,6 +168,7 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
       },
       sortable: true,
     },
+    
     {
       name: 'Tujuan / Sasaran',
       selector: (row) => row.tujuan_sasaran,

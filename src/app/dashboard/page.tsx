@@ -1,84 +1,195 @@
-'use client';
-import React from 'react';
-import { CardComponents } from '../components/Global/Card';
-import CardAkumulasiDataALL from '../components/dashboard/CardAkumulasiDataALL';
-import ChartTingkatRisiko from '../components/dashboard/ChartTingkatRisiko';
-import ChartPengawasan from '../components/dashboard/ChartPengawasan';
-import ChartRuangLingkup from '../components/dashboard/ChartRuangLingkup';
-import ChartJenisPengawasan from '../components/dashboard/ChartJenisPengawasan';
-import ChartAnggaran from '../components/dashboard/ChartAnggaran';
-import Chartlaporan from '../components/dashboard/ChartLaporan';
-import RevenueForecast from '../components/dashboard/RevenueForecast';
-import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
-import { useAuthStore } from '@/middleware/Store/useAuthStore';
+"use client";
+// File: src/app/page.tsx
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionPanel,
-  AccordionTitle,
-  Card,
-} from 'flowbite-react';
-import Breadcrumbs from '../components/Breadcumb';
-// import SalesProfit from '../components/dashboard/RevenueForecast';
-// import NewCustomers from '../components/dashboard/NewCustomers';
-// import TotalIncome from '../components/dashboard/TotalIncome';
-// import ProductRevenue from '../components/dashboard/ProductRevenue';
-// import DailyActivity from '../components/dashboard/DailyActivity';
-// import BlogCards from '../components/dashboard/BlogCards';
-// import Link from 'next/link';
+import { useState } from "react";
+import SummaryCard from "../components/dashboard/SummaryCard";
+import SupervisionTypeChart from "../components/dashboard/SupervisionTypeChart";
+import RiskDonutChart from "../components/dashboard/RiskDonutChart";
+import ReportBarChart from "../components/dashboard/ReportBarChart";
+import FollowUpDonutChart from "../components/dashboard/FollowUpDonutChart";
+import FindingsCard from "../components/dashboard/FindingCard";
+import StateExpenseChart from "../components/dashboard/StateExpenseChart";
+import { useFetchOne } from "@/hooks/useFetchOne";
+import { DataSumaryPkpt } from "@/interface/interfaceChartData";
+import ChartTingkatRisiko from "../components/dashboard/ChartTingkatRisiko";
+import Image from 'next/image';
+import iconsTingkatResiko from '/public/images/products/tingkat_resiko_bg.svg';
+import IconsJenisPengawasan from '/public/images/products/jenis_pengawasn_bg.svg';
+import IconsJumlahLaporan from '/public/images/products/laporan_bg.svg';
+import IconsKN from '/public/images/products/anggaran_bg.svg';
 
-const page = () => {
+export default function Dashboard() {
+  const [tab, setTab] = useState("overview");
+
+  const { data: dataSummary, isLoading } =
+    useFetchOne<DataSumaryPkpt>('dashboartotalpkpt');
+  
+    const totalPKPT = dataSummary?.total_pkpt ?? 0;
+    const totalStPkpt = dataSummary?.total_st_pkpt ?? 0;
+    // const totalLHP = dataSummary?.total_lhp ?? 0;
+    const totalNonPKPT = dataSummary?.total_non_pkpt ?? 0;
+    const totalStNonPkpt = dataSummary?.total_st_non_pkpt ?? 0;
+  // const totalNonLHP = dataSummary?.total_non_lhp ?? 0;
+
   return (
-    <AuthRoleWrapper
-      allowedRoles={[
-        'Admin',
-        'Pimpinan',
-        'Perencana',
-        'Pelaksana',
-        'Auditor',
-        'Developer',
-      ]}
-    >
-      <div className="space-y-8">
-        {/* top */}
-        {/* <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
-          <div className="lg:col-span-2"> */}
-        <CardAkumulasiDataALL />
-        {/* </div> */}
-        {/* <CardComponents>
-            <ChartTingkatRisiko />
-          </CardComponents> */}
-        {/* </section> */}
+    <div>
+      <div className="container mx-auto px-4 py-6">
+        {/* Tab navigation */}
+        {/* <div className="mb-8 flex justify-center">
+          <div className=" bg-opacity-80 rounded-lg p-2 bg-blue-500">
+            <button 
+              className={`px-2 py-2 rounded-lg ${tab === 'overview' ? 'bg-white text-blue-600' : 'text-white'}`}
+              onClick={() => setTab('overview')}
+            >
+              Overview
+            </button>
+            <button 
+              className={`px-2 py-2 rounded-lg ${tab === 'details' ? 'bg-white text-blue-600' : 'text-white'}`}
+              onClick={() => setTab('details')}
+            >
+              Details
+            </button>
+            <button 
+              className={`px-2 py-2 rounded-lg ${tab === 'reports' ? 'bg-white text-blue-600' : 'text-white'}`}
+              onClick={() => setTab('reports')}
+            >
+              Reports
+            </button>
+          </div>
+        </div> */}
 
-        {/* data chart */}
-        <CardComponents>
-          <ChartJenisPengawasan />
-        </CardComponents>
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 w-full">
-          <CardComponents>
-            {/* <ChartRuangLingkup /> */}
-            <ChartTingkatRisiko />
-          </CardComponents>
-          <div className="lg:col-span-2">
-            <CardComponents>
-              {/* <ChartPengawasan />     */}
-              <Chartlaporan />
-            </CardComponents>
+        {/* Summary cards */}
+        <div className="grid grid-cols-1 gap-6 mb-8 bg-blue-500 rounded-lg">
+          {/* PKPT Section */}
+          <div className="bg-white bg-opacity-20 p-4 m-4 rounded-lg">
+            <h2 className="text-white text-center text-xl font-semibold mb-4">PKPT</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <SummaryCard title="Jumlah PKPT" value={String(totalPKPT)} />
+              <SummaryCard title="Jumlah ST" value={String(totalStPkpt)} />
+              <SummaryCard title="Jumlah LHP" value="8" />
+            </div>
           </div>
-          <div className="lg:col-span-3">
-            <CardComponents>
-              <ChartAnggaran />
-            </CardComponents>
+          
+          {/* Non PKPT Section */}
+          <div className="bg-white bg-opacity-20 p-4 m-4 rounded-lg">
+            <h2 className="text-white text-center text-xl font-semibold mb-4">Non PKPT</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <SummaryCard title="Jumlah Non PKPT" value={String(totalNonPKPT)} />
+              <SummaryCard title="Jumlah ST" value={String(totalStPkpt)} />
+              <SummaryCard title="Jumlah LHP" value="11" />
+            </div>
           </div>
-          {/* <CardComponents>
-            <Chartlaporan />
-          </CardComponents> */}
-        </section>
-        {/* <RevenueForecast /> */}
+        </div>
+
+        {/* Charts Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Supervision Type Bar Chart */}
+          <div className="bg-white rounded-lg p-4 shadow-md flex flex-col lg:col-span-4">
+            <div className="flex justify-between items-center mb-4">
+                <div className="flex gap-2 items-center">
+                  <Image
+                    src={IconsJenisPengawasan}
+                    alt="icons-jenis-pengawasan"
+                    className="w-8 md:w-10"
+                  />
+                  <h3 className="font-bold text-sm md:text-lg text-neutral-700">
+                    Jenis Pengawasan
+                  </h3>
+                </div>
+              <button className="text-blue-500">
+              </button>
+            </div>
+            <div className="flex-grow">
+              <SupervisionTypeChart />
+            </div>
+          </div>
+
+          {/* Risk Donut Chart */}
+          <div className="bg-white rounded-lg p-4 shadow-md flex flex-col lg:col-span-1">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-2 items-center">
+                <Image
+                  src={iconsTingkatResiko}
+                  alt="icon-tingkat-resiko"
+                  className="w-8 md:w-10"
+                />
+                <h3 className="font-bold text-sm md:text-lg text-neutral-700">
+                  Tingkat Risiko
+                </h3>
+              </div>
+              <button className="text-blue-500">
+              </button>
+            </div>
+            <div className="flex-grow">
+              <ChartTingkatRisiko />
+            </div>
+          </div>
+
+          {/* Report Bar Chart */}
+          <div className="bg-white rounded-lg p-4 shadow-md flex flex-col lg:col-span-3">
+            <div className="flex justify-between items-center mb-4">
+                <div className="flex gap-2 items-center">
+                  <Image
+                    src={IconsJumlahLaporan}
+                    alt="icons-jumlah-laporan"
+                    className="w-8 md:w-10"
+                  />
+                  <h3 className="font-bold text-sm md:text-lg text-neutral-700">
+                    Jumlah Laporan
+                  </h3>
+                </div>
+              <button className="text-blue-500">
+              </button>
+            </div>
+            <div className="flex-grow">
+              <ReportBarChart />
+            </div>
+          </div>
+
+          {/* Follow Up Donut Chart */}
+          <div className="bg-white rounded-lg p-4 shadow-md flex flex-col lg:col-span-4">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex gap-2 items-center">
+                <Image
+                  src={iconsTingkatResiko}
+                  alt="icon-tingkat-resiko"
+                  className="w-8 md:w-10"
+                />
+                <h3 className="font-bold text-sm md:text-lg text-neutral-700">
+                  Tindak Lanjut
+                </h3>
+              </div>
+              <button className="text-blue-500">
+              </button>
+            </div>
+            <div className="flex-grow flex flex-row">
+              <div className="flex-1"><FollowUpDonutChart /></div>
+              <div className="flex-1"><FindingsCard /></div>
+            </div>
+          </div>
+
+          {/* State Expense Chart */}
+          <div className="bg-white rounded-lg p-4 shadow-md flex flex-col lg:col-span-4">
+            <div className="flex justify-between items-center mb-4">
+                  <div className="flex gap-2 items-center">
+                  <Image
+                    src={IconsKN}
+                    alt="icons-Kerugian-Negara"
+                    className="w-8 md:w-10"
+                  />
+                  <h3 className="font-bold text-sm md:text-lg text-neutral-700">
+                    Kerugian Negara
+                  </h3>
+                </div>
+              <button className="text-blue-500">
+              </button>
+            </div>
+            <div className="flex-grow">
+              <StateExpenseChart />
+            </div>
+          </div>
+        </div>
       </div>
-    </AuthRoleWrapper>
+    </div>
   );
-};
-
-export default page;
+}

@@ -133,55 +133,158 @@ const InputPKPT: React.FC<StatusProps> = ({
     resetScopes,
   ]);
 
-  const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
-    try {
-      setIsSubmitting(true);
+  // const pt = watch('nama_pengendali_teknis')
+  // const kt = watch('nama_ketua_tim')
 
-      const teamString = `PT: ${getNameUser(Number(formData.nama_pengendali_teknis))} | KT: ${getNameUser(Number(formData.nama_ketua_tim))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')}`;
+  // const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
+  //   try {
+  //     setIsSubmitting(true);
 
-      const payload: PKPTFormData = {
-        ...formData,
+  //     const teamString = `PT: ${getNameUser(Number(pt))} | KT: ${getNameUser(Number(kt))} | AT: ${teamMembers.map((item) => getNameUser(Number(item.id))).join(', ')}`;
 
-        jumlah_laporan: Number(formData.jumlah_laporan),
-        id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
-        id_ruang_lingkup: scopes.map((item) => item.id).join(', '),
+  //     const payload: PKPTFormData = {
+  //       ...formData,
 
-        id_jenis_laporan: Number(formData.id_jenis_laporan),
-        id_tingkat_resiko: Number(formData.id_tingkat_resiko),
+  //       jumlah_laporan: Number(formData.jumlah_laporan),
+  //       id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
+  //       id_ruang_lingkup: scopes.map((item) => item.id).join(', '),
 
-        nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
-        tim: teamString,
-        jumlah: Number(formData.jumlah),
-        id_user: Number(user?.id_user),
-        status: status,
-      };
+  //       id_jenis_laporan: Number(formData.id_jenis_laporan),
+  //       id_tingkat_resiko: Number(formData.id_tingkat_resiko),
 
-      const response =
-        mode === 'update'
-          ? await axiosService.updateData(`/pkpt/${data?.id_pkpt}`, payload)
-          : await axiosService.addData('/pkpt', payload);
+  //       nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
+  //       tim: teamString,
+  //       jumlah: Number(formData.jumlah),
+  //       id_user: Number(user?.id_user),
+  //       status: status,
+  //     };
 
-      if (response.success) {
-        showNotification(
-          `Data ${status.toUpperCase()} berhasil ${mode === 'update' ? 'diperbarui' : 'ditambahkan'}`,
-          'success'
-        );
-        reset();
-        resetTeamMembers();
-        resetScopes();
-        router.push('/dashboard/pkpt');
-      } else {
-        throw new Error(response.message);
-      }
-    } catch (error) {
+  //     const response =
+  //       mode === 'update'
+  //         ? await axiosService.updateData(`/pkpt/${data?.id_pkpt}`, payload)
+  //         : await axiosService.addData('/pkpt', payload);
 
-      console.error('Submit Error:', error);
+  //     if (response.success) {
+  //       showNotification(
+  //         `Data ${status.toUpperCase()} berhasil ${mode === 'update' ? 'diperbarui' : 'ditambahkan'}`,
+  //         'success'
+  //       );
+  //       reset();
+  //       resetTeamMembers();
+  //       resetScopes();
+  //       router.push('/dashboard/pkpt');
+  //     } else {
+  //       throw new Error(response.message);
+  //     }
+  //   } catch (error) {
 
-      showNotification(`Gagal menyimpan data ${status}`, 'error');
-    } finally {
-      setIsSubmitting(false);
+  //     console.error('Submit Error:', error);
+
+  //     showNotification(`Gagal menyimpan data ${status}`, 'error');
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+  const [teamString, setTeamString] = useState('');
+
+
+useEffect(() => {
+
+  const pt = watch('nama_pengendali_teknis');
+
+  const kt = watch('nama_ketua_tim');
+
+
+  const newTeamString = `PT: ${getNameUser (Number(pt))} | KT: ${getNameUser (Number(kt))} | AT: ${teamMembers.map((item) => getNameUser (Number(item.id))).join(', ')}`;
+
+  
+
+  setTeamString(newTeamString);
+
+}, [teamMembers, watch('nama_pengendali_teknis'), watch('nama_ketua_tim')]);
+
+
+const onSubmit: SubmitHandler<PKPTFormData> = async (formData) => {
+
+  try {
+
+    setIsSubmitting(true);
+
+
+    const payload: PKPTFormData = {
+
+      ...formData,
+
+      jumlah_laporan: Number(formData.jumlah_laporan),
+
+      id_jenis_pengawasan: Number(formData.id_jenis_pengawasan),
+
+      id_ruang_lingkup: scopes.map((item) => item.id).join(', '),
+
+      id_jenis_laporan: Number(formData.id_jenis_laporan),
+
+      id_tingkat_resiko: Number(formData.id_tingkat_resiko),
+
+      nama_anggota_tim: teamMembers.map((item) => item.id).join(', '),
+
+      tim: teamString, // gunakan teamString yang sudah diperbarui
+
+      jumlah: Number(formData.jumlah),
+
+      id_user: Number(user?.id_user),
+
+      status: status,
+
+    };
+
+
+    const response =
+
+      mode === 'update'
+
+        ? await axiosService.updateData(`/pkpt/${data?.id_pkpt}`, payload)
+
+        : await axiosService.addData('/pkpt', payload);
+
+
+    if (response.success) {
+
+      showNotification(
+
+        `Data ${status.toUpperCase()} berhasil ${mode === 'update' ? 'diperbarui' : 'ditambahkan'}`,
+
+        'success'
+
+      );
+
+      reset();
+
+      resetTeamMembers();
+
+      resetScopes();
+
+      router.push('/dashboard/pkpt');
+
+    } else {
+
+      throw new Error(response.message);
+
     }
-  };
+
+  } catch (error) {
+
+    console.error('Submit Error:', error);
+
+    showNotification(`Gagal menyimpan data ${status}`, 'error');
+
+  } finally {
+
+    setIsSubmitting(false);
+
+  }
+
+};
 
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
