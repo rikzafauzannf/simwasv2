@@ -10,6 +10,7 @@ export interface FormKendaliMutu {
   notulensi_kesepakatan: boolean;
   reviu_supervisi: boolean;
   link_google_drive: string;
+  id_ruang_lingkup: any;
 }
 
 export interface KendaliMutuData {
@@ -17,6 +18,7 @@ export interface KendaliMutuData {
   id_st: number;
   id_user: number;
   id_no_tg: string;
+  id_ruang_lingkup: any;
   kartu_penugasan: boolean;
   kertas_kerja_pengawasan: boolean;
   ceklis_penyelesaian: boolean;

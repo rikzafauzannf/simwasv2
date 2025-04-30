@@ -45,6 +45,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
       </div>
       <p>Ruang Lingkup:</p>
       <section className="grid lg:grid-cols-4 gap-3">
+
       {
   DataPKPT?.id_ruang_lingkup.split(', ').map((items:number) => {
     return (
@@ -54,20 +55,7 @@ const DetailPengawasan = ({ id_pkpt }: Props) => {
     );
   })
 }
-        {/* <div className="bg-white p-2 rounded-md shadow-md text-center font-semibold"> */}
-          {/* {DataPKPT
-            ? getNameRuangLingkup(DataPKPT.id_ruang_lingkup)
-            : 'No data available'} */}
-        {/* </div> */}
-        {/* <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
-          kominfo
-        </div>
-        <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
-          kominfo
-        </div>
-        <div className="bg-white p-2 rounded-md shadow-md text-center font-medium">
-          kominfo
-        </div> */}
+     
       </section>
 
       {/* section data identiti*/}

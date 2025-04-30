@@ -2,12 +2,16 @@
 
 import React, { useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEye, FaPenFancy } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import Link from 'next/link';
 import { KendaliMutuData } from '@/interface/interfaceKendaliMutu';
 import { useFetchAll } from '@/hooks/useFetchAll';
-import { useGetNamePKPT, useGetNameST } from '@/hooks/useGetName';
+import {
+  useGetNamePKPT,
+  useGetNameRuangLingkup,
+  useGetNameST,
+} from '@/hooks/useGetName';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { useAuthStore } from '@/middleware/Store/useAuthStore';
@@ -19,6 +23,8 @@ const TableKendaliMutu = () => {
   const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
     user?.role as string
   );
+
+  const { getNameRuangLingkup } = useGetNameRuangLingkup();
 
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<KendaliMutuData[]>([]);
@@ -39,12 +45,12 @@ const TableKendaliMutu = () => {
           >
             <FaEye />
           </Link>
-          {/* <Link
-            href={'/perencanaan/pkpt/actions/1'}
-            className="p-2 bg-primary hover:bg-lightprimary hover:shadow-md rounded-md text-white hover:text-black"
+          <Link
+            href={`/dashboard/kendalimutu/act/${row.id}`}
+            className="p-2 text-green-500 hover:text-blue-700"
           >
-            Act
-          </Link> */}
+            <FaPenFancy/>
+          </Link>
           {/* <button
             onClick={() => handleEdit(row)}
             className="p-2 text-yellow-500 hover:text-yellow-700"
@@ -68,8 +74,25 @@ const TableKendaliMutu = () => {
       sortable: true,
     },
     {
+      name: 'Ruang Lingkup',
+      selector: (row) => {
+        const ruangLingkupList = row.id_ruang_lingkup?.split(', ') || [];
+        const ruangLingkupNames = ruangLingkupList.map((items: number) =>
+          getNameRuangLingkup(Number(items))
+        );
+        return ruangLingkupNames.join(', '); // <- JOIN di sini
+      },
+      sortable: true,
+    },
+    {
       name: 'Program Audit',
       selector: (row) => getProgramAudit(row.id_st),
+      sortable: true,
+    },
+    {
+      name: 'No.TG',
+      selector: (row) =>
+        String(row.id_no_tg),
       sortable: true,
     },
     {

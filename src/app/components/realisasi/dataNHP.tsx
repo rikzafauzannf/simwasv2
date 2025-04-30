@@ -144,7 +144,7 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
               </button>
               <Link
                 href={`/dashboard/${todo}/${item.id_nhp}`}
-                className="py-2 px-3 w-full border border-violet-600 text-slate-900 rounded-md text-center font-reguler hover:bg-violet-700 hover:text-white"
+                className="py-2 px-3 w-full bg-blue-600 text-white rounded-md text-center font-reguler hover:bg-blue-700"
               >
                 Buat LHP
               </Link>

@@ -107,7 +107,7 @@ const TableLHP: React.FC = () => {
       sortable: true,
     },
     {
-      name: 'Perancang NHP',
+      name: 'Perancang LHP',
       selector: (row) => getNameUser(row.id_user),
       sortable: true,
     },

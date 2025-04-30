@@ -96,7 +96,7 @@ const DailyActivity: React.FC<PropsComponent> = ({ id_pkpt }) => {
                         target="blank"
                         className="text-blue-700"
                       >
-                        {item.id}
+                        {item.id} 
                       </Link>
                     </div>
                   </div>

@@ -248,7 +248,7 @@
 //                   Tambah
 //                 </button>
 //               </div>
-//             </div>            
+//             </div>
 //             <div className="mt-4 space-y-2 w-full">
 //               {scopes.map((scope, index) => (
 //                 <div

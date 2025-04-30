@@ -12,8 +12,8 @@ const RingkasanPengawasanPage = () => {
       allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
     >
       <div className="space-y-3 w-full">
-        <h3 className="text-xl">Hasil Temuan</h3>
-        <MapDataLHP title="Buat TLHP & Rekomendasi" todo="hasiltemuan" />
+        <h3 className="text-xl">Ringkasan Hasil</h3>
+        <MapDataLHP title="Buat Ringkasan Hasil" todo="hasiltemuan" />
         <div className="grid min-w-full gap-3">
           {/* <CardCompo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nents> */}
           <TableTemuanHasil />

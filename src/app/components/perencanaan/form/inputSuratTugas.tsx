@@ -119,7 +119,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
         audit: [
           'jumlah_objek',
           'jumlah_laporan',
-          'id_jenis_audit',
+          // 'id_jenis_audit',
           'keterangan',
         ],
         // dokumen: uploadOption === 'link' ? ['link_st'] : ['uploadFile'],
@@ -162,7 +162,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
         id_pkpt: Number(id_pkpt),
         anggota_tim: teamMembers.map((item) => String(item.id)).join(','),
         bulan: data.bulan,
-        id_jenis_audit: Number(data.id_jenis_audit),
+        id_jenis_audit: null,
         jumlah_laporan: Number(data.jumlah_laporan),
         jumlah_objek: Number(data.jumlah_objek),
         keterangan: data.keterangan,
@@ -226,6 +226,7 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
             onClick={() => setActiveTab('tim')}
           >
             <FaUsers /> Tim Pemeriksa
+
           </button>
           <button
             type="button"
@@ -363,12 +364,16 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
           {activeTab === 'tim' && (
             <div className="space-y-6">
               <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 flex items-center">
+
                 <FaUsers className="mr-2" /> Tim Pemeriksa
+
               </h3>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <SelectInputField
+
                   label="Tim Pemeriksa/Pelaksana Kegiatan *"
+
                   identiti="select-field-timpemeriksa"
                   options={optionsDataUser}
                   register={register('tim_pemeriksa', {
@@ -495,11 +500,13 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                 <FaClipboardList className="mr-2" /> Detail Audit
               </h3>
 
-              <div className="grid md:grid-cols-3 gap-6">
+
+              <div className="grid md:grid-cols-2 gap-6">
                 <InputFieldComponent
                   label="Jumlah Objek Pengawasan *"
                   identiti="jumlahObjek"
                   name="jumlahObjek"
+
                   placeholder="Tentukan Jumlah Objek Pengawasan"
                   type="number"
                   register={register('jumlah_objek', {
@@ -526,7 +533,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   })}
                   error={errors.jumlah_laporan}
                 />
-                <SelectInputField
+
+                {/* <SelectInputField
+
                   label="Jenis Audit *"
                   identiti="jenisAudit"
                   name="jenisAudit"
@@ -537,7 +546,9 @@ const InputSuratTugas: React.FC<PropsID> = ({ id_pkpt }) => {
                   })}
                   error={errors.id_jenis_audit}
                   type="select"
-                />
+
+                /> */}
+
               </div>
 
               <div>

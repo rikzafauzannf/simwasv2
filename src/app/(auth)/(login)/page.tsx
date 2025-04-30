@@ -29,14 +29,16 @@ const BoxedLogin = () => {
               {isLogin ? 'Login Menggunakan NIP' : 'Register Menggunakan NIP'}
             </p>
             {isLogin ? <AuthLogin /> : <AuthRegister />}
-            <button
+            {/* <button
               onClick={toggleAuth}
               className="mt-4 text-primary text-sm font-medium"
             >
               {isLogin
                 ? 'Tidak Memiliki Akun? Daftar disini'
                 : 'Memiliki Akun? Login disini'}
-            </button>
+
+            </button> */}
+
           </div>
         </div>
       </div>
