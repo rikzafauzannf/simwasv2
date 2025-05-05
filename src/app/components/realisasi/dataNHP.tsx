@@ -97,7 +97,7 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
 
   if (
     !user ||
-    !['Pelaksana', 'Auditor', 'Developer'].includes(user.role as string)
+    !['Pelaksana', 'Auditor', 'Developer','PEP','JFA'].includes(user.role as string)
   )
     return null;
   return (

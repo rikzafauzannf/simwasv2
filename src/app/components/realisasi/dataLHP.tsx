@@ -109,7 +109,7 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
 
   if (
     !user ||
-    !['Pelaksana', 'Auditor', 'Developer'].includes(user.role as string)
+    !['Pelaksana', 'Auditor', 'Developer','PEP','JFA'].includes(user.role as string)
   )
     return null;
 

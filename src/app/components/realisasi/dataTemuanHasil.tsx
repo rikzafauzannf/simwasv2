@@ -84,7 +84,7 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
   const { user } = useAuthStore();
   if (
     !user ||
-    !['Pelaksana', 'Auditor', 'Developer'].includes(user.role as string)
+    !['Pelaksana', 'Auditor', 'Developer','JFA'].includes(user.role as string)
   )
     return null;
 
