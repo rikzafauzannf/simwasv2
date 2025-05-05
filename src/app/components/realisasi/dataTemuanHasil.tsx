@@ -19,6 +19,8 @@ import { formatCurrency, formatToLocalDate } from '@/data/formatData';
 import { useFetchAll } from '@/hooks/useFetchAll';
 import { CardComponents } from '../Global/Card';
 import { LHPData } from '@/interface/interfaceHasilPengawasan';
+import Lottie from "lottie-react";
+import animationsload from '../../../../public/animation_load.json'
 
 interface Props {
   todo: string;
@@ -92,7 +94,8 @@ const MapDataTemuanHasil: React.FC<Props> = ({ todo, title }) => {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="text-center">
-          <Spinner size="xl" className="mx-auto mb-4" />
+          {/* <Spinner size="xl" className="mx-auto mb-4" /> */}
+          <Lottie animationData={animationsload} loop={true}/>
           <p className="text-gray-500">Loading data...</p>
         </div>
       </div>
