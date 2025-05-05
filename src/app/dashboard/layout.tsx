@@ -22,7 +22,6 @@ export default function Layout({
         'PEP',
         'JFA',
         'OPD'
-
       ]}
     >
       <div className="flex w-full min-h-screen">

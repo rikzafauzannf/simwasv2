@@ -221,7 +221,7 @@ const TableTindakLanjutPreview = () => {
 
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','PEP','JFA']}
     >
       <div className=" container mx-auto px-4 max-w-screen-xl overflow-x-auto">
         <CardComponents>
