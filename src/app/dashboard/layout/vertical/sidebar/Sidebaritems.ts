@@ -293,7 +293,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
     PEP: [
       'Dashboard',
       'PKPT',
-      'Surat Tugas',
+      // 'Surat Tugas',
       // 'Kendali Mutu',
       // 'Nota Hasil',
       'Laporan Hasil',
