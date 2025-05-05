@@ -484,7 +484,7 @@ const RealisasiPKPTPage = () => {
 
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','PEP','JFA']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','PEP','JFA','OPD']}
     >
       <div className="space-y-4">
         <CardComponents>

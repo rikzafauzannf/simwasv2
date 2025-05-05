@@ -8,10 +8,10 @@ import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 const TindakLajutPage = () => {
   const {user} = useAuthStore()
-  const hashPermisson = ['Developer','PEP','JFA']
+  const hashPermisson = ['Developer','PEP','JFA','OPD']
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','PEP','JFA']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','PEP','JFA','OPD']}
     >
       <div className="space-y-3">
         <h3 className="text-xl">Tindak Lanjut</h3>

@@ -6,7 +6,7 @@ import React from 'react';
 const PreviewTemuan = () => {
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','JFA','PEP']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','JFA','PEP','OPD']}
     >
       {' '}
       <TableTindakLanjutPreview />

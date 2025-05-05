@@ -155,7 +155,7 @@ const UpdateTindakLanjutForm: React.FC<PageProps> = ({ params }) => {
 
   const { OptionsStatusTL } = useOptions();
   return (
-    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer','PEP','JFA']}>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer','PEP','JFA','OPD']}>
       <div className="space-y-3">
         <h3 className="text-xl">Tindak Lanjut</h3>
         <CardChecker id_rekomendasi={Number(TindakLanjutData?.id_lhp)} />
