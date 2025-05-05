@@ -316,15 +316,15 @@ export function filterSidebarByRole(role: string): MenuItem[] {
     ],
     OPD: [
       'Dashboard',
-      'PKPT',
+      // 'PKPT',
       // 'Surat Tugas',
       // 'Kendali Mutu',
       // 'Nota Hasil',
       // 'Laporan Hasil',
       // 'Ringkasan Hasil',
-      'Rekap Temuan',
+      // 'Rekap Temuan',
       'Tindak Lanjut',
-      'Realisasi PKPT',
+      // 'Realisasi PKPT',
     ],
   };
 
