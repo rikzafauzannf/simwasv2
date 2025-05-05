@@ -122,7 +122,7 @@ const TableTemuanPreview = () => {
 
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','JFA','PEP']}
     >
       <div className="space-y-3">
         <CardComponents>

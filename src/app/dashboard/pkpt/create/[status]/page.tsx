@@ -11,7 +11,7 @@ interface PageProps {
 const CreatePage = ({ params }: PageProps) => {
   const status = params.status;
   return (
-    <AuthRoleWrapper allowedRoles={['Perencana', 'Developer','PEPs']}>
+    <AuthRoleWrapper allowedRoles={['Perencana', 'Developer','PEP']}>
       <div className="space-y-4">
         <h1 className="text-xl font-semibold capitalize">Input {status}</h1>
         <InputPKPT status={status} />

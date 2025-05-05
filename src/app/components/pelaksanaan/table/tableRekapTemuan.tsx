@@ -25,7 +25,7 @@ const axiosSecvice = new AxiosService();
 
 const TableRekapTemuan: React.FC = () => {
   const { user } = useAuthStore();
-  const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
+  const hashPermission = ['Pelaksana', 'Auditor', 'Developer','JFA'].includes(
     user?.role as string
   );
   const {

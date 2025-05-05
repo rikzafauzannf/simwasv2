@@ -20,7 +20,7 @@ const axiosService = new AxiosService();
 
 const TableKendaliMutu = () => {
   const { user } = useAuthStore();
-  const hashPermission = ['Pelaksana', 'Auditor', 'Developer'].includes(
+  const hashPermission = ['Pelaksana', 'Auditor', 'Developer','JFA'].includes(
     user?.role as string
   );
 

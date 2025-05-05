@@ -28,6 +28,7 @@ const TableSuratTugas = ({ id_pkpt, filterID }: PropsOptions) => {
     'Perencana',
     'Pelaksana',
     'Auditor',
+    'PEP','JFA',
     'Developer',
   ].includes(user?.role as string);
 

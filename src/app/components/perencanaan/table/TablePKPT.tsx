@@ -103,7 +103,7 @@ const TablePKPT: React.FC<PropsStatus> = ({ status = 'pkpt' }) => {
           >
             <FaEye />
           </Link>
-          {user?.role === 'Perencana' ||
+          {user?.role === 'PEP' ||
             (user?.role === 'Developer' && (
               <>
                 <Link
