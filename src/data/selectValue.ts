@@ -161,7 +161,7 @@ export const useOptions = () => {
     },
   ];
 
-  if (user?.role === 'Admin' || user?.role === 'Developer') {
+  if (user?.role === 'Developer') {
     optionsRole.push({
       value: 'Developer',
       label: 'Developer',
