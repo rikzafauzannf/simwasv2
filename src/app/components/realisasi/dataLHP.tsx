@@ -12,6 +12,7 @@ import { HiPaperAirplane } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { TemuanHasilData } from '@/interface/interfaceTemuanHasil';
+import CreateReport from '../createReport';
 
 interface Props {
   todo: string;
@@ -157,14 +158,15 @@ const MapDataLHP: React.FC<Props> = ({ todo, title }) => {
             </Link>
             <p>{item.created_at}</p>
             <div className="flex flex-col gap-2">
-              <button
+              {/* <button
                 onClick={() => handleCreateReport(item.id_st)}
 
                 className="p-2 border border-blue-500 text-black rounded-md hover:bg-blue-600 hover:text-white flex gap-3 justify-start items-center"
               >
                 <HiPaperAirplane /> <p> || Buat laporan Harian / Mingguan</p>
 
-              </button>
+              </button> */}
+              <CreateReport id_st={item.id_st} />
               <Link
                 href={`/dashboard/${todo}/${item.id_lhp}`}
                 className="py-2 px-3 w-full  bg-violet-600 text-white rounded-md text-center font-reguler hover:bg-violet-700"

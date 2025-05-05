@@ -11,7 +11,7 @@ const FormRekapSuratPage: React.FC<PageProps> = ({ params }) => {
   const id = params.id_pkpt;
   return (
     <AuthRoleWrapper
-      allowedRoles={['Perencana', 'Pelaksana', 'Auditor', 'Developer']}
+      allowedRoles={['Perencana', 'Pelaksana', 'Auditor', 'Developer','PEP','JFA']}
     >
       <InputSuratTugas id_pkpt={id} />
     </AuthRoleWrapper>

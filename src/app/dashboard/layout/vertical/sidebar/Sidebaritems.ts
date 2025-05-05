@@ -220,16 +220,16 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Dashboard',
       ...dataReferensi,
       // 'Data Referensi',
-      'Dashboard',
-      'PKPT',
-      'Surat Tugas',
-      'Kendali Mutu',
-      'Nota Hasil',
-      'Laporan Hasil',
-      'Ringkasan Hasil',
-      'Rekap Temuan',
-      'Tindak Lanjut',
-      'Realisasi PKPT',
+      // 'Dashboard',
+      // 'PKPT',
+      // 'Surat Tugas',
+      // 'Kendali Mutu',
+      // 'Nota Hasil',
+      // 'Laporan Hasil',
+      // 'Ringkasan Hasil',
+      // 'Rekap Temuan',
+      // 'Tindak Lanjut',
+      // 'Realisasi PKPT',
       'User Account',
     ],
     Developer: [
@@ -260,7 +260,7 @@ export function filterSidebarByRole(role: string): MenuItem[] {
     ],
     Perencana: [
       'Dashboard',
-      ...dataReferensi,
+      // ...dataReferensi,
       'PKPT',
       'Surat Tugas',
       'Rekap Temuan',
@@ -290,7 +290,73 @@ export function filterSidebarByRole(role: string): MenuItem[] {
       'Tindak Lanjut',
       'Realisasi PKPT',
     ],
+    PEP: [
+      'Dashboard',
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Laporan Hasil',
+      'Ringkasan Hasil',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+      'Realisasi PKPT',
+    ],
+    JFA: [
+      'Dashboard',
+      'PKPT',
+      'Surat Tugas',
+      'Kendali Mutu',
+      'Nota Hasil',
+      'Laporan Hasil',
+      'Ringkasan Hasil',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+      'Realisasi PKPT',
+    ],
+    OPD: [
+      'Dashboard',
+      'PKPT',
+      // 'Surat Tugas',
+      // 'Kendali Mutu',
+      // 'Nota Hasil',
+      // 'Laporan Hasil',
+      // 'Ringkasan Hasil',
+      'Rekap Temuan',
+      'Tindak Lanjut',
+      'Realisasi PKPT',
+    ],
   };
+
+  // note
+//   Role (be)
+// 1. Admin
+// - referensi
+// - Dashboard
+// - user management
+// 2. Pimpinan
+// - bisa melihat semua fitur tetapi hanya melihat saja
+// - Referensi nggak perlu
+// 3. PEP (perencana evaluasi & pelaporan)
+// - pkpt
+// - Ringkasan hasil
+// - Tindak lanjut
+// - Ringkasan Hasil
+// - LHP
+// - temuan hasil
+// - Realisasi pkpt
+// 4. JFA/PPUPD (Auditor / pelaksana) = hanya dapat melihat di tim saja
+// - pkpt,
+// - ST, 
+// - kendali mutu, 
+// - nhp,
+// - lhp 
+// - ringkasan hasil, 
+// - tindak lanjut
+// - Rekap temuan
+// - Realisasi pkpt
+// 5. OPD/Auditi
+// - Rekapan Tindak Lanjut Berdasarkan Ruang Lingkup
 
   return SidebarContent.map((item) => {
     const filteredChildren = item.children?.filter((child) => {

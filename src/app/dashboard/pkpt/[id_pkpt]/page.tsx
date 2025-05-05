@@ -68,6 +68,8 @@ const ViewPkptPage = ({ params }: PageProps) => {
         'Pelaksana',
         'Auditor',
         'Developer',
+        'PEP',
+        'JFA'
       ]}
     >
       <section className="flex flex-col lg:flex-row justify-start items-start gap-3 w-full">

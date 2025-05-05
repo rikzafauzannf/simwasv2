@@ -13,7 +13,7 @@ const FormNotaHasilPage = ({ params }: PageProps) => {
 
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','JFA']}
     >
       <NotaHasilPengawasan id_st={id_st} />
     </AuthRoleWrapper>

@@ -103,7 +103,7 @@ const KodeReferensi = () => {
   };
 
   return (
-    <AuthRoleWrapper allowedRoles={['Admin', 'Perencana']}>
+    <AuthRoleWrapper allowedRoles={['Admin', 'Developer']}>
       <div className="space-y-3">
         <h3 className="text-xl"># Kode Referensi</h3>
         <CardComponents>

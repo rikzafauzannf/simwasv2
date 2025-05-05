@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
 import { HiPaperAirplane } from 'react-icons/hi';
 import { Badge } from 'flowbite-react';
+import CreateReport from '../createReport';
 
 interface PropsComponent {
   title: string;
@@ -158,12 +159,13 @@ const MapDataST = ({ title, todo }: PropsComponent) => {
               </Link>
               <p>{item.created_at}</p>
               <div className="flex flex-col gap-2">
-                <button
+                {/* <button
                   onClick={() => handleCreateReport(item.id_st)}
                   className="p-2 border border-blue-500 text-black rounded-md hover:bg-blue-600 hover:text-white flex gap-3 justify-start items-center"
                 >
                   <HiPaperAirplane /> <p> || Buat laporan Harian / Mingguan</p>
-                </button>
+                </button> */}
+                <CreateReport id_st={item.id_st} />
                 <Link
                   href={`/dashboard/${todo}/${item.id_st}`}
                   className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-center text-sm"

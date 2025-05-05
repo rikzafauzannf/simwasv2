@@ -18,11 +18,13 @@ const PkptPage = () => {
         'Pelaksana',
         'Auditor',
         'Developer',
+        'PEP',
+        'JFA',        
       ]}
     >
       <div className="space-y-6">
         <AkumulasiDataPKPT />
-        {(user?.role === 'Perencana' || user?.role === 'Developer') && (
+        {(user?.role === 'Perencana' || user?.role === 'Developer' || user?.role === 'PEP') && (
           <div>
             <ButtonLinkComponent
               Text="Input PKPT"
@@ -38,7 +40,7 @@ const PkptPage = () => {
           <TablePKPT />
           {/* </CardComponents> */}
         </div>
-        {(user?.role === 'Perencana' || user?.role === 'Developer') && (
+        {(user?.role === 'Perencana' || user?.role === 'Developer' || user?.role === 'PEP') && (
           <div>
             <ButtonLinkComponent
               Text="Input NonPKPT"

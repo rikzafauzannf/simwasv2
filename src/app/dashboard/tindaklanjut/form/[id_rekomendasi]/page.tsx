@@ -126,7 +126,7 @@ const TndakLanjutFormPage: React.FC<PageProps> = ({ params }) => {
 
   const { OptionsStatusTL } = useOptions();
   return (
-    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer']}>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer','PEP','JFA']}>
       <div className="space-y-3">
         <h3 className="text-xl">Tindak Lanjut</h3>
         <CardChecker id_rekomendasi={id_rekomendasi} />

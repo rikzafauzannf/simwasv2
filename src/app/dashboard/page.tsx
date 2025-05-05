@@ -7,7 +7,7 @@ import ReportBarChart from "../components/dashboard/ReportBarChart";
 import FollowUpDonutChart from "../components/dashboard/FollowUpDonutChart";
 import FindingsCard from "../components/dashboard/FindingCard";
 import StateExpenseChart from "../components/dashboard/StateExpenseChart";
-import { useFetchOne } from "@/hooks/useFetchOne";
+import { useFetchOne } from "@/hooks/useFetchOne";21
 import { DataSumaryPkpt } from "@/interface/interfaceChartData";
 import ChartTingkatRisiko from "../components/dashboard/ChartTingkatRisiko";
 import Image from 'next/image';
@@ -17,7 +17,7 @@ import IconsKN from '/public/images/products/anggaran_bg.svg';
 import ChartJenisPengawasan from "../components/dashboard/ChartJenisPengawasan";
 
 export default function Dashboard() {
-
+  const [tab, setTab] = useState("overview");
 
   const { data: dataSummary, isLoading } =
     useFetchOne<DataSumaryPkpt>('dashboartotalpkpt');
@@ -32,7 +32,30 @@ export default function Dashboard() {
   return (
     <div>
       <div className="container mx-auto px-4 py-6">
-        
+        {/* Tab navigation */}
+        <div className="mb-8 flex justify-center">
+          <div className=" bg-opacity-80 rounded-lg p-2 bg-blue-500">
+            <button 
+              className={`px-2 py-2 rounded-lg ${tab === 'overview' ? 'bg-white text-blue-600' : 'text-white'}`}
+              onClick={() => setTab('overview')}
+            >
+              Overview
+            </button>
+            <button 
+              className={`px-2 py-2 rounded-lg ${tab === 'details' ? 'bg-white text-blue-600' : 'text-white'}`}
+              onClick={() => setTab('details')}
+            >
+              Details
+            </button>
+            <button 
+              className={`px-2 py-2 rounded-lg ${tab === 'reports' ? 'bg-white text-blue-600' : 'text-white'}`}
+              onClick={() => setTab('reports')}
+            >
+              Reports
+            </button>
+          </div>
+        </div>
+
         {/* Summary cards */}
         <div className="grid grid-cols-1 gap-6 mb-8 bg-blue-500 rounded-lg">
           {/* PKPT Section */}

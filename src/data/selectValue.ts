@@ -10,6 +10,7 @@ import {
   TingkatResikoDB,
 } from '@/interface/interfaceReferensi';
 import { UserManageDB } from '@/interface/interfaceUserManage';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 
 export const useOptions = () => {
   const { data: DataJenisLaporan = [] } =
@@ -29,6 +30,8 @@ export const useOptions = () => {
   const { data: DataKodeReferensi } =
     useFetchAll<KodeReferensiData>('kode_referensi');
 
+  const {user} = useAuthStore()
+  
   const optionsJenisLaporan = DataJenisLaporan.map((item) => ({
     value: String(item.id_jenis_laporan),
     label: `${item.jenis_laporan} - ${item.keterangan}`,
@@ -88,6 +91,37 @@ export const useOptions = () => {
     label: `${item.kode_referensi} - ${item.keterangan_kode}`,
   }));
 
+// note
+// Role (be)
+// 1. Admin
+// - referensi
+// - Dashboard
+// - user management
+// 2. Pimpinan
+// - bisa melihat semua fitur tetapi hanya melihat saja
+// - Referensi nggak perlu
+//
+// 3. PEP (perencana evaluasi & pelaporan)
+// - pkpt
+// - Ringkasan hasil
+// - Tindak lanjut
+// - Ringkasan Hasil
+// - LHP
+// - temuan hasil
+// - Realisasi pkpt
+// 4. JFA/PPUPD (Auditor / pelaksana) = hanya dapat melihat di tim saja
+// - pkpt,
+// - ST, 
+// - kendali mutu, 
+// - nhp,
+// - lhp 
+// - ringkasan hasil, 
+// - tindak lanjut
+// - Rekap temuan
+// - Realisasi pkpt
+// 5. OPD/Auditi
+// - Rekapan Tindak Lanjut Berdasarkan Ruang Lingkup
+
   const optionsRole = [
     {
       value: 'Admin',
@@ -97,23 +131,42 @@ export const useOptions = () => {
       value: 'Pimpinan',
       label: 'Pimpinan',
     },
+    // {
+    //   value: 'Perencana',
+    //   label: 'Perencana',
+    // },
+    // {
+    //   value: 'Pelaksana',
+    //   label: 'Pelaksana',
+    // },
+    // {
+    //   value: 'Auditor',
+    //   label: 'Auditor',
+    // },
+    // { 
+    //   value: 'Developer',
+    //   label: 'Developer',
+    // },
     {
-      value: 'Perencana',
-      label: 'Perencana',
+      value: 'PEP',
+      label: 'PEP (perencana evaluasi & pelaporan)',
     },
     {
-      value: 'Pelaksana',
-      label: 'Pelaksana',
+      value: 'JFA',
+      label: 'JFA/PPUPD (Auditor / pelaksana)',
     },
     {
-      value: 'Auditor',
-      label: 'Auditor',
-    },
-    {
-      value: 'Developer',
-      label: 'Developer',
+      value: 'OPD',
+      label: 'OPD/Auditi',
     },
   ];
+
+  if (user?.role === 'Admin' || user?.role === 'Developer') {
+    optionsRole.push({
+      value: 'Developer',
+      label: 'Developer',
+    });
+  }
 
   const OptionsStatusTL = [
     {

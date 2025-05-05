@@ -60,6 +60,8 @@ const ViewSuratTugas: React.FC<PageProps> = ({ params }) => {
         'Pelaksana',
         'Auditor',
         'Developer',
+        'PEP',
+        'JFA'
       ]}
     >
       <h3 className="text-xl mb-3"># Detail Surat Tugas</h3>

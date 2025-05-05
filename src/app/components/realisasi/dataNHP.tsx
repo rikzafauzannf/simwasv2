@@ -16,6 +16,7 @@ import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import { HiPaperAirplane } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import { AxiosService } from '@/services/axiosInstance.service';
+import CreateReport from '../createReport';
 
 interface Props {
   todo: string;
@@ -136,12 +137,13 @@ const MapDataNHP: React.FC<Props> = ({ todo }) => {
             <p>{item.created_at}</p>
             <hr className="mb-3" />
             <div className="flex flex-col gap-2">
-              <button
+              {/* <button
                 onClick={() => handleCreateReport(item.id_st)}
                 className="p-2 border border-blue-500 text-black rounded-md hover:bg-blue-600 hover:text-white flex gap-3 justify-start items-center"
               >
                 <HiPaperAirplane /> <p> || Buat laporan Harian / Mingguan</p>
-              </button>
+              </button> */}
+              <CreateReport id_st={item.id_st} />
               <Link
                 href={`/dashboard/${todo}/${item.id_nhp}`}
                 className="py-2 px-3 w-full bg-blue-600 text-white rounded-md text-center font-reguler hover:bg-blue-700"

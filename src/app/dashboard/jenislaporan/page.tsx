@@ -102,7 +102,7 @@ const JenisLaporan = () => {
   };
 
   return (
-    <AuthRoleWrapper allowedRoles={['Admin', 'Perencana', 'Developer']}>
+    <AuthRoleWrapper allowedRoles={['Admin', 'Developer']}>
       <div className="space-y-3">
         <h3 className="text-xl"># Jenis Laporan</h3>
         <CardComponents>

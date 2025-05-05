@@ -95,7 +95,7 @@ const JenisAudit = () => {
   };
 
   return (
-    <AuthRoleWrapper allowedRoles={['Admin', 'Perencana']}>
+    <AuthRoleWrapper allowedRoles={['Admin', 'Developer']}>
       <div className="space-y-3">
         <h3 className="text-xl"># Jenis Audit</h3>
         <CardComponents>

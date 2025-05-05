@@ -13,7 +13,7 @@ const LembarHasilForm: React.FC<pageProps> = ({ params }) => {
   console.log('params nhp id: ', params.id_nhp);
 
   return (
-    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer']}>
+    <AuthRoleWrapper allowedRoles={['Pelaksana', 'Auditor', 'Developer','JFA','PEP']}>
       <div className="space-y-3">
         <LembarHasilPengawasan id_nhp={params.id_nhp} />
       </div>

@@ -1,10 +1,15 @@
+'use client'
 import { CardComponents } from '@/app/components/Global/Card';
 import TableSuratTugas from '@/app/components/perencanaan/table/TableSuratTugas';
 import MapDataPkpt from '@/app/components/realisasi/datapkpt';
 import AuthRoleWrapper from '@/middleware/HOC/withRoleWrapper';
+import { useAuthStore } from '@/middleware/Store/useAuthStore';
 import React from 'react';
 
 const SuratTugasPage = () => {
+  const {user} = useAuthStore()
+  const hashPermission = ['Developer','PEP','JFA']
+  
   return (
     <AuthRoleWrapper
       allowedRoles={[
@@ -14,6 +19,8 @@ const SuratTugasPage = () => {
         'Pelaksana',
         'Auditor',
         'Developer',
+        'PEP',
+        'JFA'
       ]}
     >
       <div className="space-y-3">
@@ -22,7 +29,12 @@ const SuratTugasPage = () => {
         <MapDataPkpt todo="perencanaan/surattugas/form" />
       </CollapseComponents> */}
 
-        <MapDataPkpt todo="surattugas/form" title="Buat ST" />
+          
+{hashPermission.includes(String(user?.role)) && (
+  <MapDataPkpt todo="surattugas/form" title="Buat ST" />
+)}
+
+        
         <div className="grid w-full gap-3">
           {/* <CardComponents> */}
           <TableSuratTugas />

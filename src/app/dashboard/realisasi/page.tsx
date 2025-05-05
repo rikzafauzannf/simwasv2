@@ -313,6 +313,7 @@ const RealisasiPKPTPage = () => {
             },
             {
               v: pkpt.id_ruang_lingkup.split(', ').map((items:number)=><p key={items}>{getNameRuangLingkup(Number(items))}</p> ),
+
               s: { font: { size: 11 }, alignment: { horizontal: 'left' } },
             },
             {
@@ -483,7 +484,7 @@ const RealisasiPKPTPage = () => {
 
   return (
     <AuthRoleWrapper
-      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer']}
+      allowedRoles={['Admin', 'Pimpinan', 'Pelaksana', 'Auditor', 'Developer','PEP','JFA']}
     >
       <div className="space-y-4">
         <CardComponents>
@@ -569,6 +570,7 @@ const RealisasiPKPTPage = () => {
                                 )}
                               >
                                 {pkpt.id_ruang_lingkup.split(', ').map((items:number)=><p key={items}>{getNameRuangLingkup(Number(items))}</p> )}
+
                               </td>
                               <td
                                 className="border border-gray-300 p-2 text-center"

@@ -141,6 +141,7 @@ const TablePKPT = ({
                     </td>
                     <td className="border border-gray-300 p-2" colSpan={3}>
                       {item.id_ruang_lingkup.split(', ').map((items:number)=><p key={items}>{hooks.getNameRuangLingkup(Number(items))}</p> )}
+
                       {/* {hooks.getNameRuangLingkup(item.id_ruang_lingkup)} */}
                     </td>
                     <td className="border border-gray-300 p-2">
@@ -239,6 +240,8 @@ const TablePKPTPreview: React.FC<StatusProps> = ({ status = 'pkpt' }) => {
         'Pelaksana',
         'Auditor',
         'Developer',
+        'PEP',
+        'JFA'
       ]}
     >
       <div className="container mx-auto px-4 max-w-screen-xl overflow-x-auto space-y-5">
