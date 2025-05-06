@@ -149,11 +149,11 @@ export const useOptions = () => {
     // },
     {
       value: 'PEP',
-      label: 'PEP (perencana evaluasi & pelaporan)',
+      label: 'PEP',
     },
     {
       value: 'JFA',
-      label: 'JFA/PPUPD (Auditor / pelaksana)',
+      label: 'JFA/PPUPD',
     },
     {
       value: 'OPD',
